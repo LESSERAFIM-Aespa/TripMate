@@ -1,8 +1,8 @@
 package kr.sparta.tripmate.util
 
 object Constants {
-    val Url = "https://www.googleapis.com/youtube/v3/"
-
-    const val Authorization = ""
+    val naverUrl = "https://openapi.naver.com/v1/"
+    const val client_id = ""
+    const val client_secret = ""
 
 }
