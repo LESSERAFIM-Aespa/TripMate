@@ -3,17 +3,20 @@ name: Android CI
 on:
   push:
     branches: 
-      - first
-      - second
-      - third
-      - fourth
+      - feat/main
+      - feat/budget
+      - feat/community
+      - feat/home
+      - feat/gourmet
+      - feat/myPage
   pull_request:
     branches: 
-      - main
-      - first
-      - second
-      - third
-      - fourth
+      - feat/main
+      - feat/budget
+      - feat/community
+      - feat/home
+      - feat/gourmet
+      - feat/myPage
 
 jobs:
   build:
