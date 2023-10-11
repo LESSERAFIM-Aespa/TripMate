@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.fragment.gourmet
+package kr.sparta.tripmate.fragment.scrap
 
 import android.content.Context
 import android.os.Bundle
@@ -10,19 +10,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.NaverNetWorkClient
-import kr.sparta.tripmate.api.NaverNetWorkClient.apiService
-import kr.sparta.tripmate.databinding.FragmentGourmetBinding
-import kr.sparta.tripmate.`interface`.ItemClick
-import kr.sparta.tripmate.viewmodel.gourmet.GourmetFactory
-import kr.sparta.tripmate.viewmodel.gourmet.GourmetViewModel
+import kr.sparta.tripmate.databinding.FragmentScrapBinding
+import kr.sparta.tripmate.viewmodel.scrapmodel.ScrapFactory
+import kr.sparta.tripmate.viewmodel.scrapmodel.ScrapViewModel
 
-class GourmetFragment : Fragment() {
-    private val binding by lazy { FragmentGourmetBinding.inflate(layoutInflater) }
-    private lateinit var gourmetAdapter: GourmetAdapter
+class ScrapFragment : Fragment() {
+    private val binding by lazy {FragmentScrapBinding.inflate(layoutInflater) }
+    private lateinit var scrapAdapter: ScrapAdapter
     private val apiServiceInstance = NaverNetWorkClient.apiService
-    private val gourmetViewModel : GourmetViewModel by viewModels {GourmetFactory(apiServiceInstance)}
+    private val scrapViewModel : ScrapViewModel by viewModels {ScrapFactory(apiServiceInstance)}
 
     var searchQuery:String? = null
 
@@ -45,11 +42,11 @@ class GourmetFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        gourmetViewModel.apply {
+        scrapViewModel.apply {
             gourResult.observe(viewLifecycleOwner){
-                gourmetAdapter.items.clear()
-                gourmetAdapter.items.addAll(it)
-                gourmetAdapter.notifyDataSetChanged()
+                scrapAdapter.items.clear()
+                scrapAdapter.items.addAll(it)
+                scrapAdapter.notifyDataSetChanged()
                 isLoading.observe(viewLifecycleOwner){isLoading ->
                     binding.gourmetLoading.visibility = if(isLoading) View.VISIBLE else View.GONE
                 }
@@ -58,11 +55,11 @@ class GourmetFragment : Fragment() {
         }
     }
     private fun searchView() {
-        gourmetAdapter = GourmetAdapter(requireContext())
+        scrapAdapter = ScrapAdapter(requireContext())
 
         binding.gourmetRecyclerView.apply {
             layoutManager = GridLayoutManager(context,3)
-            adapter = gourmetAdapter
+            adapter = scrapAdapter
             setHasFixedSize(true)
         }
     }
@@ -89,7 +86,7 @@ class GourmetFragment : Fragment() {
     }
     private fun setupListeners(){
         searchQuery?.let {
-            gourmetViewModel.GourmetServerResults(searchQuery!!)
+            scrapViewModel.GourmetServerResults(searchQuery!!)
         }
     }
 }

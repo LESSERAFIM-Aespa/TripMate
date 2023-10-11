@@ -1,22 +1,22 @@
-package kr.sparta.tripmate.fragment.gourmet
+package kr.sparta.tripmate.fragment.scrap
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import kr.sparta.tripmate.api.model.GourmetModel
+import kr.sparta.tripmate.api.model.ScrapModel
 import kr.sparta.tripmate.databinding.GourmetitemsBinding
 
 
-class GourmetAdapter(private val context: Context) :
+class ScrapAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items = ArrayList<GourmetModel>()
+    var items = ArrayList<ScrapModel>()
 
     inner class GourmetViewHolder(private val binding: GourmetitemsBinding) : RecyclerView
     .ViewHolder(binding.root) {
-        fun bind(items: GourmetModel) {
+        fun bind(items: ScrapModel) {
             binding.apply {
                 gourmetTitle.text = items.title
                 Glide.with(context).load(items.url).into(gourmetUrl)
