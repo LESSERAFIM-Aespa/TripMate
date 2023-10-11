@@ -9,7 +9,7 @@ import kr.sparta.tripmate.viewpager2adapter.ViewPager2Adapter
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val tabList = listOf("Budget", "Commu", "Home", "Gourmet","MyPage")
+    private val tabList = listOf("Budget", "Commu", "Home", "Scrap","MyPage")
     private val it = this@MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> tab.setIcon(it, R.drawable.budget)
                 1 -> tab.setIcon(it, R.drawable.community)
                 2 -> tab.setIcon(it, R.drawable.home)
-                3 -> tab.setIcon(it, R.drawable.gourmet)
+                3 -> tab.setIcon(it, R.drawable.scrap)
                 4 -> tab.setIcon(it, R.drawable.mypage)
             }
         }.attach()

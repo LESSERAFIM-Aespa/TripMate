@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.api
 
 import kr.sparta.tripmate.api.serverdata.naver.GourmetServerData
+import kr.sparta.tripmate.api.serverdata.naver.ScrapServerData
 import kr.sparta.tripmate.util.Constants
 import retrofit2.Call
 import retrofit2.http.GET
@@ -12,8 +13,8 @@ interface NetWorkInterface {
         "X-Naver-Client-Id: ${Constants.client_id}",
         "X-Naver-Client-Secret: ${Constants.client_secret}"
     )
-    @GET("search/local.json")
-    fun getGourmet(
+    @GET("search/blog.json")
+    fun getScrap(
         @QueryMap queryMap: HashMap<String, String>
-    ): Call<GourmetServerData?>?
+    ): Call<ScrapServerData?>?
 }
