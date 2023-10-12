@@ -6,4 +6,7 @@
     </style>
 
     <style name="Theme.TripMate" parent="Base.Theme.TripMate" />
+    <style name="Theme.TripMate.RemoveSplash" parent="Theme.TripMate">
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>
