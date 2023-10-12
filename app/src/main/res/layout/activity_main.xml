@@ -11,8 +11,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/titlebackground"
         android:layout_marginTop="40dp"
+        android:src="@drawable/titlebackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
