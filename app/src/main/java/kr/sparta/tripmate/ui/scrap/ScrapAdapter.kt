@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import kr.sparta.tripmate.data.model.ScrapModel
-import kr.sparta.tripmate.databinding.GourmetitemsBinding
+import kr.sparta.tripmate.databinding.ScraptitemsBinding
+import kr.sparta.tripmate.util.method.removeHtmlTags
 
 
 class ScrapAdapter(private val context: Context) :
@@ -16,16 +17,17 @@ class ScrapAdapter(private val context: Context) :
     var items = ArrayList<ScrapModel>()
 
     interface ItemClick {
-        fun onClick(view: View, position: Int )
+        fun onClick(view: View, position: Int)
     }
+
     var itemClick: ItemClick? = null
 
-    inner class GourmetViewHolder(private val binding: GourmetitemsBinding) : RecyclerView
+    inner class GourmetViewHolder(private val binding: ScraptitemsBinding) : RecyclerView
     .ViewHolder(binding.root) {
         fun bind(items: ScrapModel) {
             binding.apply {
-                gourmetTitle.text = items.title
-                Glide.with(context).load(items.url).into(gourmetUrl)
+                scrapTitle.text = removeHtmlTags(items.title)
+                scrapContent.text = removeHtmlTags(items.description)
 
                 itemView.setOnClickListener {
                     itemClick?.onClick(it, position)
@@ -35,7 +37,7 @@ class ScrapAdapter(private val context: Context) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = GourmetitemsBinding.inflate(
+        val binding = ScraptitemsBinding.inflate(
             LayoutInflater.from(parent.context), parent,
             false
         )

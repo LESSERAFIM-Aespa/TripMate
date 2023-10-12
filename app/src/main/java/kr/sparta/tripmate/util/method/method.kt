@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
+import java.util.regex.Pattern
 
 fun Context.shortToast(message: String, time: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, message, time).show()
@@ -12,4 +13,9 @@ fun Context.shortToast(message: String, time: Int = Toast.LENGTH_SHORT) {
 
 fun TabLayout.Tab.setIcon(context: Context, @DrawableRes resourceId: Int) {
     this.icon = ContextCompat.getDrawable(context, resourceId)
+}
+
+fun removeHtmlTags(input: String): String {
+    val pattern = Pattern.compile("<.*?>")
+    return pattern.matcher(input).replaceAll("")
 }
