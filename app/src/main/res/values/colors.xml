@@ -105,9 +105,12 @@
     <color name="OrangeA400">#FF9100</color>
     <color name="OrangeA700">#FF6D00</color>
 
+    <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="Brown100">#D7CCC8</color>
     <color name="Gray100">#F5F5F5</color>
     <color name="Gray200">#EEEEEE</color>
+
+    <color name="searchoutline">#585858</color>
 </resources>
