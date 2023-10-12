@@ -4,6 +4,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginActivity">
+    android:background="@color/splash"
+    tools:context=".ui.splash.SplashActivity">
+
+    <FrameLayout
+        android:id="@+id/login_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/bg_splash" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/login_center_constraint"
+            android:layout_width="270dp"
+            android:layout_height="330dp"
+            android:layout_gravity="center"
+            android:background="@drawable/searchview_outline">
+
+            <TextView
+                android:id="@+id/login_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
+                android:text="@string/login_title"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/login_center_constraint"
+                app:layout_constraintStart_toStartOf="@+id/login_center_constraint"
+                app:layout_constraintTop_toTopOf="@id/login_center_constraint" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/login_google"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/login_button_google_outline"
+                android:paddingStart="20dp"
+                android:drawableStart="@drawable/logingoogle"
+                android:text="@string/Sign_in_with_Google"
+                android:textColor="@color/Blue400"
+                android:elevation="100dp"
+                app:layout_constraintEnd_toEndOf="@id/login_center_constraint"
+                app:layout_constraintStart_toStartOf="@id/login_center_constraint"
+                app:layout_constraintTop_toBottomOf="@id/login_title" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="20dp"
+                android:paddingStart="20dp"
+                android:background="@drawable/login_button_apple_outline"
+                android:drawableStart="@drawable/loginapple"
+                android:text="@string/Sign_in_with_Apple"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/login_center_constraint"
+                app:layout_constraintStart_toStartOf="@id/login_center_constraint"
+                app:layout_constraintTop_toBottomOf="@id/login_google" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/login_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:gravity="center"
+        android:text="@string/splash_logo_text"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
