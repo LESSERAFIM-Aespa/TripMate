@@ -1,5 +1,7 @@
 package kr.sparta.tripmate.ui.main
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
@@ -8,6 +10,10 @@ import kr.sparta.tripmate.databinding.ActivityMainBinding
 import kr.sparta.tripmate.util.method.setIcon
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
+    }
+
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private val tabList = listOf("Budget", "Commu", "Home", "Scrap","MyPage")
     private val it = this@MainActivity
