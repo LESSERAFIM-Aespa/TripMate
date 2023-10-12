@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="splash_logo_text">TRIPMATE</string>
+    <string name="login_title">우리와 함께 여행을 \n즐겨보세요!</string>
+    <string name="Sign_in_with_Google">Sign in with Google</string>
+    <string name="Sign_in_with_Apple">Sign in with Apple</string>
 </resources>
