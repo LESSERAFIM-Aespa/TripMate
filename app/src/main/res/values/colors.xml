@@ -111,7 +111,12 @@
     <color name="Brown100">#D7CCC8</color>
     <color name="Gray100">#F5F5F5</color>
     <color name="Gray200">#EEEEEE</color>
+    <color name="Gray">#d9d9d9</color>
 
     <color name="searchoutline">#585858</color>
-    <color name="splash">#E9C46A</color>
+    <color name="primary">#E9C46A</color>
+    <color name="secondary">#E76F51</color>
+    <color name="mypage_background">#08192B</color>
+    <color name="primary_bold">#CEAD5D</color>
+    <color name="secondary_bold">#AF533C</color>
 </resources>
