@@ -9,8 +9,6 @@ on:
       - feat/home
       - feat/scrap
       - feat/myPage
-      - feat/login
-      - feat/splash
   pull_request:
     branches: 
       - feat/main
@@ -19,8 +17,6 @@ on:
       - feat/home
       - feat/scrap
       - feat/myPage
-      - feat/login
-      - feat/splash
 
 jobs:
   build:
