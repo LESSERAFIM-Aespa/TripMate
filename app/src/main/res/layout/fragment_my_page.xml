@@ -11,6 +11,7 @@
         android:id="@+id/mypage_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,6 +24,22 @@
             android:layout_gravity="center"
             android:text="@string/mypage_toolbar_title" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_gravity="end"
+            android:id="@+id/mypage_setting"
+            android:layout_marginHorizontal="7dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_setting" />
+
+        <TextView
+            android:layout_gravity="end"
+            android:id="@+id/mypage_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:text="@string/mypage_edit_text" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView

@@ -13,4 +13,5 @@
     <string name="mypage_toolbar_title">내 정보</string>
     <string name="mypage_edit_submit">확인</string>
     <string name="mypage_edit_cancel">취소</string>
+    <string name="mypage_edit_text">Edit</string>
 </resources>
