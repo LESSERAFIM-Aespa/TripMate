@@ -7,7 +7,7 @@ import kr.sparta.tripmate.ui.budget.BudgetFragment
 import kr.sparta.tripmate.ui.community.CommunityFragment
 import kr.sparta.tripmate.ui.scrap.ScrapFragment
 import kr.sparta.tripmate.ui.home.HomeFragment
-import kr.sparta.tripmate.ui.mypage.MyPageFragment
+import kr.sparta.tripmate.ui.mypage.home.MyPageFragment
 
 class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity){
     override fun getItemCount(): Int = 5
@@ -21,7 +21,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapt
 
             3 -> ScrapFragment()
 
-            else -> MyPageFragment()
+            else -> MyPageFragment.newInstance()
         }
     }
 }
