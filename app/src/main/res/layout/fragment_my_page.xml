@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mypage_background"
+    android:background="@color/fragment_background"
     tools:context=".ui.mypage.home.MyPageFragment">
 
     <androidx.appcompat.widget.Toolbar

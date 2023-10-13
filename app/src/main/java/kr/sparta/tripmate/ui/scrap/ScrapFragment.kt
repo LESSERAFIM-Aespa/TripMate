@@ -1,6 +1,5 @@
 package kr.sparta.tripmate.ui.scrap
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,40 +7,38 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import kr.sparta.tripmate.api.naver.NaverNetWorkClient
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
-import kr.sparta.tripmate.ui.viewmodel.scrapmodel.ScrapFactory
-import kr.sparta.tripmate.ui.viewmodel.scrapmodel.ScrapViewModel
+import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapFactory
+import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapViewModel
 
 class ScrapFragment : Fragment() {
+    companion object {
+        fun newInstance(): ScrapFragment = ScrapFragment()
+    }
+
     private val binding by lazy { FragmentScrapBinding.inflate(layoutInflater) }
+
     private lateinit var scrapAdapter: ScrapAdapter
-    private val apiServiceInstance = NaverNetWorkClient.apiService
-    private val scrapViewModel: ScrapViewModel by viewModels { ScrapFactory(apiServiceInstance) }
-    private lateinit var scrapResults: ActivityResultLauncher<Intent>
-    var searchQuery: String? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        scrapResults = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == AppCompatActivity.RESULT_OK) {
-
+    private val scrapResults =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
             }
         }
-    }
+
+    private val scrapViewModel: ScrapViewModel by viewModels { ScrapFactory() }
+    var searchQuery: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         setUpView()
         searchView()
@@ -54,35 +51,27 @@ class ScrapFragment : Fragment() {
         observeViewModel()
     }
 
-    private fun observeViewModel() {
-        scrapViewModel.apply {
-            gourResult.observe(viewLifecycleOwner) {
-                scrapAdapter.items.clear()
-                scrapAdapter.items.addAll(it)
-                scrapAdapter.notifyDataSetChanged()
-                isLoading.observe(viewLifecycleOwner) { isLoading ->
-                    binding.gourmetLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
-                }
+    private fun observeViewModel() = with(scrapViewModel) {
+        gourResult.observe(viewLifecycleOwner) {
+            scrapAdapter.submitList(it)
+
+            isLoading.observe(viewLifecycleOwner) { isLoading ->
+                binding.gourmetLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
         }
     }
 
     private fun searchView() {
-        scrapAdapter = ScrapAdapter(requireContext())
+        scrapAdapter = ScrapAdapter(
+            onItemClick = { model, position ->
+                val intent = ScrapDetail.newIntentForScrap(requireContext(), model)
+                scrapResults.launch(intent)
+            },
+        )
 
-        binding.gourmetRecyclerView.apply {
+        binding.scrapGourmetRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = scrapAdapter.apply {
-                itemClick = object : ScrapAdapter.ItemClick {
-                    override fun onClick(view: View, position: Int) {
-                        val intent = Intent(context, ScrapDetail::class.java)
-                        val gson = GsonBuilder().create()
-                        val data = gson.toJson(scrapAdapter.items[position])
-                        intent.putExtra("scrapdata", data)
-                        scrapResults.launch(intent)
-                    }
-                }
-            }
+            adapter = scrapAdapter
             setHasFixedSize(true)
         }
     }
@@ -94,7 +83,7 @@ class ScrapFragment : Fragment() {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     if (!query.isNullOrEmpty()) {
                         searchQuery = query.trim()
-                        Log.d("TripMates", "검색어 : ${searchQuery}")
+                        Log.d("TripMates", "검색어 : $searchQuery")
                         setupListeners()
                     }
                     return false
@@ -110,7 +99,7 @@ class ScrapFragment : Fragment() {
 
     private fun setupListeners() {
         searchQuery?.let {
-            scrapViewModel.GourmetServerResults(searchQuery!!)
+            scrapViewModel.gourmetServerResults(searchQuery!!)
         }
     }
 }
