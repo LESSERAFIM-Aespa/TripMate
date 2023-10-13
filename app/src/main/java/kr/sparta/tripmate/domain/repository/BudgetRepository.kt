@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.data.repository
+package kr.sparta.tripmate.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.budget.Budget
