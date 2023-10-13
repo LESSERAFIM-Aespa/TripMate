@@ -6,6 +6,7 @@ import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.data.room.BudgetDatabase
+import kr.sparta.tripmate.domain.repository.BudgetRepository
 
 class BudgetRepositoryImpl(context: Context) : BudgetRepository {
     private val database = BudgetDatabase.getDatabsae(context)
