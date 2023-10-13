@@ -3,6 +3,7 @@ package kr.sparta.tripmate.api.naver
 import com.google.gson.GsonBuilder
 import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.api.Constants
+import kr.sparta.tripmate.data.datasource.remote.ScrapRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,8 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NaverNetWorkClient {
-    val apiService : NetWorkInterface
-        get() = instance.create(NetWorkInterface::class.java)
+    val apiService : ScrapRemoteDataSource
+        get() = instance.create(ScrapRemoteDataSource::class.java)
 
     private fun createOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
@@ -30,7 +31,7 @@ object NaverNetWorkClient {
     }
 
     private val instance: Retrofit
-        private get() {
+        get() {
             val gson = GsonBuilder().setLenient().create()
 
             return Retrofit.Builder()

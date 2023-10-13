@@ -1,5 +1,8 @@
 package kr.sparta.tripmate.ui.scrap
 
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,40 +10,48 @@ import android.webkit.WebViewClient
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityScrapDetailBinding
-import org.json.JSONException
-import org.json.JSONObject
+import kr.sparta.tripmate.domain.model.ScrapModel
 
 class ScrapDetail : AppCompatActivity() {
+    companion object {
+        const val EXTRA_MODEL = "extra_model"
+        fun newIntentForScrap(context: Context, model: ScrapModel): Intent =
+            Intent(context, ScrapDetail::class.java).apply {
+                putExtra(EXTRA_MODEL, model)
+            }
+    }
+
     private val binding by lazy { ActivityScrapDetailBinding.inflate(layoutInflater) }
+
+    private val model by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(EXTRA_MODEL, ScrapModel::class.java)
+        } else {
+            intent.getParcelableExtra(EXTRA_MODEL)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        ScrapWebView()
+
+        scrapWebView()
     }
 
-    private fun ScrapWebView() {
+    private fun scrapWebView() {
         binding.scrapWebview.apply {
-            val data = intent.getStringExtra("scrapdata")
-            var bloggerlink: String? = null
-            if (data != null) {
-                try {
-                    val jsonData = JSONObject(data)
-                    bloggerlink = jsonData.getString("bloggerlink")
-                } catch (e: JSONException) {
-                    Log.e("TripMates", "파싱 에러: $e")
-                }
-            }
-            webViewClient = WebViewClient()
-            settings.javaScriptEnabled = true
-            lifecycleScope.launch {
-                delay(500)
-                if (!bloggerlink.isNullOrEmpty()) {
-                    val url = "https://$bloggerlink"
-                    loadUrl(url)
-                } else {
-                    Log.e("TripMates", "url 에러")
+            model?.let {
+                webViewClient = WebViewClient()
+                settings.javaScriptEnabled = true
+
+                lifecycleScope.launch {
+                    delay(500)
+                    if (it.url.isNotEmpty()) {
+                        loadUrl(it.url)
+                    } else {
+                        Log.e("ScrapDetail", "you need check for Url : ${it.url}")
+                    }
                 }
             }
         }
