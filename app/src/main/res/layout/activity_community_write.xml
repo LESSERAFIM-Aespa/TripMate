@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/community_write_userprofile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
@@ -49,11 +49,11 @@
         android:text="User_name"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/community_write_userprofile"
         app:layout_constraintTop_toBottomOf="@+id/community_write_title" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/communitiy_wirte_addimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -63,13 +63,13 @@
         app:srcCompat="@drawable/addimage" />
 
     <ImageView
-        android:id="@+id/write_like"
+        android:id="@+id/community_write_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_wirte_addimage"
         app:srcCompat="@drawable/star" />
 
     <TextView
@@ -80,8 +80,8 @@
         android:layout_marginTop="26dp"
         android:text="80k"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/write_like"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintStart_toEndOf="@+id/community_write_like"
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_wirte_addimage" />
 
     <TextView
         android:id="@+id/community_write_viewcount"
@@ -92,10 +92,10 @@
         android:text="3.14k"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/community_write_likecount"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_wirte_addimage" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/community_write_description"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginStart="10dp"
@@ -106,6 +106,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_wirte_addimage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
