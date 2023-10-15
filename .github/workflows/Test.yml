@@ -45,7 +45,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-
-    - name: Create service_account.json
-      id: createServiceAccount
-      run: echo '${{ secrets.SERVICE_ACCOUNT_JSON }}' > service_account.json
