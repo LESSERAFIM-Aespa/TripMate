@@ -42,34 +42,14 @@
                 app:layout_constraintStart_toStartOf="@+id/login_center_constraint"
                 app:layout_constraintTop_toTopOf="@id/login_center_constraint" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.gms.common.SignInButton
                 android:id="@+id/login_google"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/login_button_google_outline"
-                android:paddingStart="20dp"
-                android:drawableStart="@drawable/logingoogle"
-                android:text="@string/Sign_in_with_Google"
-                android:textColor="@color/Blue400"
-                android:elevation="100dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/login_title"
                 app:layout_constraintEnd_toEndOf="@id/login_center_constraint"
                 app:layout_constraintStart_toStartOf="@id/login_center_constraint"
-                app:layout_constraintTop_toBottomOf="@id/login_title" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="20dp"
-                android:paddingStart="20dp"
-                android:background="@drawable/login_button_apple_outline"
-                android:drawableStart="@drawable/loginapple"
-                android:text="@string/Sign_in_with_Apple"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/login_center_constraint"
-                app:layout_constraintStart_toStartOf="@id/login_center_constraint"
-                app:layout_constraintTop_toBottomOf="@id/login_google" />
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

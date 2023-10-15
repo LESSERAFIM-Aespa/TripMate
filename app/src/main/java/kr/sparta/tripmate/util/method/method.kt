@@ -11,6 +11,10 @@ fun Context.shortToast(message: String, time: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, message, time).show()
 }
 
+fun Context.longToast(message: String, time: Int = Toast.LENGTH_LONG) {
+    Toast.makeText(this, message, time).show()
+}
+
 fun TabLayout.Tab.setIcon(context: Context, @DrawableRes resourceId: Int) {
     this.icon = ContextCompat.getDrawable(context, resourceId)
 }

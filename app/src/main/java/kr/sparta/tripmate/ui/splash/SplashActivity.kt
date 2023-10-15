@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import kr.sparta.tripmate.databinding.ActivitySplashBinding
+import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 
 /**
@@ -29,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
     private fun startSplash() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            val intent = MainActivity.newIntent(this@SplashActivity).apply {
+            val intent = LoginActivity.newIntent(this@SplashActivity).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             }
             startActivity(intent)
