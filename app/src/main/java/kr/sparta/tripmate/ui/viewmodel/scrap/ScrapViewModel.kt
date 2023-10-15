@@ -11,34 +11,26 @@ import kr.sparta.tripmate.domain.model.toScrapModel
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 
 class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel() {
-    private val _gourResult = MutableLiveData<List<ScrapModel>>()
-    val gourResult: LiveData<List<ScrapModel>> get() = _gourResult
+    private val _scrapResult = MutableLiveData<List<ScrapModel>>()
+    val scrapResult: LiveData<List<ScrapModel>> get() = _scrapResult
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun gourmetServerResults(q: String) = viewModelScope.launch {
+    fun ScrapServerResults(q: String) = viewModelScope.launch {
         kotlin.runCatching {
             // loading start
             _isLoading.value = true
 
             val result = searchBlog(q)
-            val gourmetItems = ArrayList<ScrapModel>()
+            val scrapItems = ArrayList<ScrapModel>()
             result.items?.let {
                 for (i in it.indices) {
-                    gourmetItems.add(it[i].toScrapModel())
+                    scrapItems.add(it[i].toScrapModel())
                 }
-                _gourResult.value = gourmetItems
+                _scrapResult.value = scrapItems
                 // loading end
                 _isLoading.value = false
-
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems}")
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems[0].url}")
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems[0].title}")
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems[0].description}")
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems[0].bloggername}")
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems[0].bloggerlink}")
-                Log.d("TripMates", "gourmet데이터 : ${gourmetItems[0].postdate}")
             }
         }.onFailure {
             _isLoading.value = false

@@ -52,6 +52,7 @@
         android:id="@+id/scrap_gourmet_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="17dp"
         android:background="@drawable/bodyshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

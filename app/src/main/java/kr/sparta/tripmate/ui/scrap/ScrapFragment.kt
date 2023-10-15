@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import kr.sparta.tripmate.api.naver.NaverNetWorkClient
@@ -52,7 +53,7 @@ class ScrapFragment : Fragment() {
     }
 
     private fun observeViewModel() = with(scrapViewModel) {
-        gourResult.observe(viewLifecycleOwner) {
+        scrapResult.observe(viewLifecycleOwner) {
             scrapAdapter.submitList(it)
 
             isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -70,7 +71,7 @@ class ScrapFragment : Fragment() {
         )
 
         binding.scrapGourmetRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context,3)
             adapter = scrapAdapter
             setHasFixedSize(true)
         }
@@ -99,7 +100,7 @@ class ScrapFragment : Fragment() {
 
     private fun setupListeners() {
         searchQuery?.let {
-            scrapViewModel.gourmetServerResults(searchQuery!!)
+            scrapViewModel.ScrapServerResults(searchQuery!!)
         }
     }
 }
