@@ -9,13 +9,13 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
 import kr.sparta.tripmate.util.method.setIcon
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TabLayoutListener {
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val tabList = listOf("Budget", "Commu", "Home", "Scrap","MyPage")
+    private val tabList = listOf("Budget", "Commu", "Home", "Scrap", "MyPage")
     private val it = this@MainActivity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,13 @@ class MainActivity : AppCompatActivity() {
     private fun ViewPager2State() {
         binding.viewPager2.apply {
             adapter = ViewPager2Adapter(it)
-            setCurrentItem(2,false)
+            setCurrentItem(2, false)
             setUserInputEnabled(false)
         }
     }
 
     private fun PageChangeCallBack() {
-        binding.viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             var currentState = 0
             var currentPosition = 0
 
@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                if(currentState == ViewPager2.SCROLL_STATE_DRAGGING&&currentPosition == position){
-                    if (currentPosition == 0) binding.viewPager2.currentItem =4
-                    else if(currentPosition ==4) binding.viewPager2.currentItem =0
+                if (currentState == ViewPager2.SCROLL_STATE_DRAGGING && currentPosition == position) {
+                    if (currentPosition == 0) binding.viewPager2.currentItem = 4
+                    else if (currentPosition == 4) binding.viewPager2.currentItem = 0
                 }
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
@@ -79,5 +79,25 @@ class MainActivity : AppCompatActivity() {
                 super.onPageScrollStateChanged(state)
             }
         })
+    }
+
+    override fun onScrapClicked() {
+        clickedViewPager2(3)
+    }
+
+    override fun onMyPageClicked() {
+        clickedViewPager2(4)
+    }
+
+    override fun onCommuClicked() {
+        clickedViewPager2(1)
+    }
+
+    override fun onBudgetClicked() {
+        clickedViewPager2(0)
+    }
+
+    private fun clickedViewPager2(item: Int) {
+        binding.viewPager2.setCurrentItem(item, true)
     }
 }
