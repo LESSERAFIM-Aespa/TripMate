@@ -110,7 +110,7 @@ class ScrapFragment : Fragment() {
 
     private fun setupListeners() {
         searchQuery?.let {
-            scrapViewModel.ScrapServerResults(searchQuery!!)
+            scrapViewModel.ScrapServerResults(searchQuery!!, requireContext())
         }
     }
 

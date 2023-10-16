@@ -118,7 +118,12 @@ class LoginActivity : AppCompatActivity() {
                 uid
             )
         )
-        SharedPreferences.saveUid(this,uid)
+        SharedPreferences.apply {
+            saveUid(this@LoginActivity,uid)
+            saveProfile(this@LoginActivity,photoUrl)
+            saveNickName(this@LoginActivity,nickName)
+        }
+
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
