@@ -6,4 +6,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:layout_gravity">center</item>
     </style>
+
+    <style name="ShapeAppearanceOverlayExtended">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100dp</item>
+    </style>
+
 </resources>
