@@ -11,6 +11,7 @@ on:
       - feat/myPage
       - feat/login
       - feat/splash
+      - feat/setting
   pull_request:
     branches: 
       - feat/main
@@ -21,6 +22,7 @@ on:
       - feat/myPage
       - feat/login
       - feat/splash
+      - feat/setting
 
 jobs:
   build:
