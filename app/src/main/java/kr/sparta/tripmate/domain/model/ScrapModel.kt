@@ -11,4 +11,7 @@ data class ScrapModel(
     val bloggername: String,
     val bloggerlink: String,
     val postdate: String,
-) : Parcelable
+    var isLike:Boolean = false
+) : Parcelable{
+    constructor() : this("", "", "", "", "", "", false)
+}
