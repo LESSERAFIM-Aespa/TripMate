@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.ui.mypage.board.BoardFragment
-import kr.sparta.tripmate.ui.mypage.scrap.ScrapBookmarkFragment
+import kr.sparta.tripmate.ui.mypage.scrap.BookmarkFragment
 
 class MyPageTabLayoutAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
 
@@ -20,7 +20,7 @@ class MyPageTabLayoutAdapter(fragment: FragmentActivity) : FragmentStateAdapter(
         )
         fragments.add(
             MyPageTab(
-                fragment = ScrapBookmarkFragment.newInstance(),
+                fragment = BookmarkFragment.newInstance(),
                 title = R.string.mypage_tab_scrap,
             ),
         )
