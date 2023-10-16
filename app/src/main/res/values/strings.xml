@@ -14,7 +14,12 @@
     <string name="mypage_edit_submit">확인</string>
     <string name="mypage_edit_cancel">취소</string>
     <string name="mypage_edit_text">Edit</string>
+
     <string name="scrap_toolbar_title">스크랩</string>
     <string name="scrap_bg_content_description">BackgroundImage</string>
-    <string name="default_web_client_id"></string>
+    <string name="default_web_client_id">"login-a7a4e"</string>
+    <string name="mypage_edittext_hint">간단한 자기소개를 작성해주세요(최대 30자)</string>
+    <string name="setting_toolbar_title">설정</string>
+    <string name="setting_logout_button_text">로그아웃</string>
+    <string name="setting_withdrawal_button_text">회원탈퇴</string>
 </resources>
