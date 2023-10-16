@@ -63,9 +63,15 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
+    implementation("io.coil-kt:coil:2.4.0")
+
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
     implementation("androidx.fragment:fragment-ktx:1.6.1")
+
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
     implementation("com.google.android.material:material:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
