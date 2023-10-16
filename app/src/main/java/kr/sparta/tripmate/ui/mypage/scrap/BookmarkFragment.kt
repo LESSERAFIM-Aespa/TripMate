@@ -5,21 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kr.sparta.tripmate.databinding.FragmentScrapBinding
-import kr.sparta.tripmate.databinding.FragmentScrapBookmarkBinding
+import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
 
-class ScrapBookmarkFragment : Fragment() {
+class BookmarkFragment : Fragment() {
     companion object {
-        fun newInstance(): ScrapBookmarkFragment = ScrapBookmarkFragment()
+        fun newInstance(): BookmarkFragment = BookmarkFragment()
     }
 
-    private var _binding : FragmentScrapBookmarkBinding? = null
+    private var _binding : FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
+    private val adapter by lazy {
+        BookmarkListAdapter()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentScrapBookmarkBinding.inflate(inflater, container, false)
+        _binding = FragmentBookmarkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -29,7 +32,8 @@ class ScrapBookmarkFragment : Fragment() {
         initView()
     }
 
-    private fun initView() {
-
+    private fun initView()=with(binding) {
+        bookmarkRecyclerview.adapter = adapter
+        bookmarkRecyclerview.setHasFixedSize(true)
     }
 }
