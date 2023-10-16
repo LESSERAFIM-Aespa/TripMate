@@ -13,6 +13,7 @@ import kr.sparta.tripmate.util.method.removeHtmlTags
 
 class ScrapAdapter(
     private val onItemClick: (ScrapModel, Int) -> Unit,
+    private val onLikeClick: (ScrapModel, Int) -> Unit
 ) : ListAdapter<ScrapModel, ScrapAdapter.ScrapViewHolder>(
     object : DiffUtil.ItemCallback<ScrapModel>() {
         override fun areItemsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
@@ -31,8 +32,14 @@ class ScrapAdapter(
             scrapContent.text = removeHtmlTags(items.description)
             scrapImage.setImageResource(R.drawable.blogimage)
 
-            itemView.setOnClickListener {
+            scrapTypeIconCardView.setOnClickListener {
                 onItemClick(items, bindingAdapterPosition)
+            }
+            scrapLike.setOnClickListener {
+                onLikeClick(items, bindingAdapterPosition)
+                if(items.isLike){
+                    scrapLike.setImageResource(R.drawable.paintedlove)
+                } else scrapLike.setImageResource(R.drawable.love)
             }
         }
     }
