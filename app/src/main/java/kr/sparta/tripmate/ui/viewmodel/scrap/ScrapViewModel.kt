@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.ScrapModel
 import kr.sparta.tripmate.domain.model.toScrapModel
@@ -16,7 +19,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-
+    private val scrap_Ref: DatabaseReference = Firebase.database.reference.child("scrapItems")
     fun ScrapServerResults(q: String) = viewModelScope.launch {
         kotlin.runCatching {
             // loading start
@@ -29,6 +32,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
                     scrapItems.add(it[i].toScrapModel())
                 }
                 _scrapResult.value = scrapItems
+                scrap_Ref.setValue(scrapItems)
                 // loading end
                 _isLoading.value = false
             }
