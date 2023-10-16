@@ -15,6 +15,10 @@ class BoardFragment : Fragment() {
 
     private var _binding : FragmentBoardBinding? = null
     private val binding get() = _binding!!
+    private val adapter by lazy {
+        BoardListAdapter()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,7 +33,7 @@ class BoardFragment : Fragment() {
         initView()
     }
 
-    private fun initView() {
-
+    private fun initView()=with(binding) {
+        boardMainRecyclerview.adapter = adapter
     }
 }
