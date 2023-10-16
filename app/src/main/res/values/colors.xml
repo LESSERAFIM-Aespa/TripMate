@@ -119,4 +119,7 @@
     <color name="fragment_background">#08192B</color>
     <color name="primary_bold">#CEAD5D</color>
     <color name="secondary_bold">#AF533C</color>
+
+    <color name="ligth_background">#F5F5F5</color>
+    <color name="dark_background">#D9D9D9</color>
 </resources>
