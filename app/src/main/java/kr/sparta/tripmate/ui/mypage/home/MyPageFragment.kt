@@ -1,6 +1,8 @@
 package kr.sparta.tripmate.ui.mypage.home
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,10 +10,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMyPageBinding
+import kr.sparta.tripmate.ui.setting.SettingActivity
 
 class MyPageFragment : Fragment() {
     companion object {
@@ -20,9 +24,15 @@ class MyPageFragment : Fragment() {
 
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
+
     private val adapter: MyPageTabLayoutAdapter by lazy {
         MyPageTabLayoutAdapter(requireActivity())
     }
+    private val settingLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +55,10 @@ class MyPageFragment : Fragment() {
             tab.setText(adapter.getTitle(position))
         }.attach()
 
+        // 설정페이지 이동
         mypageSettingButton.setOnClickListener {
-
+            val intent : Intent = SettingActivity.newIntent(requireContext())
+            settingLauncher.launch(intent)
         }
 
         // Edit 버튼클릭시 viewType변경
@@ -98,7 +110,7 @@ class MyPageFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, start: Int, count: Int, after: Int) {
                 // 글자수 textView 업데이트
-                mypageProfileCheckLengthTextview.text= "${p0?.length}/30"
+                mypageProfileCheckLengthTextview.text = "${p0?.length}/30"
             }
 
             override fun afterTextChanged(p0: Editable?) {
