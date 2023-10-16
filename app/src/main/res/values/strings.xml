@@ -24,4 +24,7 @@
     <string name="setting_logout_button_text">로그아웃</string>
     <string name="setting_withdrawal_button_text">회원탈퇴</string>
     <string name="community_main_title">커뮤니티</string>
+    <string name="welcome">환영 합니다!</string>
+    <string name="popularposts">인기글</string>
+    <string name="budgetmanagement">가계부 관리</string>
 </resources>

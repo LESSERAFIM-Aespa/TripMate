@@ -1,6 +1,8 @@
 package kr.sparta.tripmate.ui.viewmodel.scrap
 
+import android.content.Context
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,6 +14,7 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.ScrapModel
 import kr.sparta.tripmate.domain.model.toScrapModel
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel() {
     private val _scrapResult = MutableLiveData<List<ScrapModel>>()
@@ -20,7 +23,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun ScrapServerResults(q: String) = viewModelScope.launch {
+    fun ScrapServerResults(q: String, context: Context) = viewModelScope.launch {
         kotlin.runCatching {
             // loading start
             _isLoading.value = true
@@ -32,7 +35,9 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
                     scrapItems.add(it[i].toScrapModel())
                 }
                 _scrapResult.value = scrapItems
-
+                val scrap_Ref: DatabaseReference = Firebase.database.reference.child("UserData")
+                    .child(SharedPreferences.getUid(context)).child("homeItems")
+                scrap_Ref.setValue(scrapItems)
                 // loading end
                 _isLoading.value = false
             }
