@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/fragment_background">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/com_toolbar"
-        android:layout_width="414dp"
-        android:layout_height="182dp"
-        android:background="@color/black"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/community_main_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,60 +17,47 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/title_community"
-            android:text="커뮤니티"
+            android:text="@string/community_main_title"
             android:textColor="@color/white"
             android:textSize="40sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.06"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="423dp"
-            android:layout_height="119dp"
-            android:src="@drawable/titlebackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_community"
-            tools:layout_editor_absoluteY="61dp" />
+    </androidx.appcompat.widget.Toolbar>
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/comm_SearchView"
-            android:layout_width="371dp"
-            android:layout_height="47dp"
-            android:layout_marginHorizontal="40dp"
-            android:background="@drawable/searchview_outline"
-            android:iconifiedByDefault="false"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:queryHint="검색" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:id="@+id/community_main_top_background"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/community_bg_content_description"
+        android:src="@drawable/bg_splash"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/community_main_toolbar" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/gourmet_SearchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/scrap_content_outline"
+        app:layout_constraintBottom_toTopOf="@+id/scrap_gourmet_recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/community_main_toolbar"
+        app:queryHint="검색" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scrap_gourmet_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:background="@drawable/bodyshape"
-        android:backgroundTint="@color/white"
+        android:padding="30dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/comm_recyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_margin="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/community_main_top_background"
+        tools:listitem="@layout/fragment_community_main_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>
