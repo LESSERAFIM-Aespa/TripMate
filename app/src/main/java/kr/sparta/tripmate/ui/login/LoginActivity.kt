@@ -23,6 +23,7 @@ import kr.sparta.tripmate.domain.model.UserData
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.shortToast
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class LoginActivity : AppCompatActivity() {
     companion object {
@@ -117,6 +118,7 @@ class LoginActivity : AppCompatActivity() {
                 uid
             )
         )
+        SharedPreferences.saveUid(this,uid)
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

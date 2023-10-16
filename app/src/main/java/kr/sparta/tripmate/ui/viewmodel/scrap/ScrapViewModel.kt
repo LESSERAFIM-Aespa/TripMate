@@ -19,7 +19,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-    private val scrap_Ref: DatabaseReference = Firebase.database.reference.child("scrapItems")
+
     fun ScrapServerResults(q: String) = viewModelScope.launch {
         kotlin.runCatching {
             // loading start
@@ -32,7 +32,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
                     scrapItems.add(it[i].toScrapModel())
                 }
                 _scrapResult.value = scrapItems
-                scrap_Ref.setValue(scrapItems)
+
                 // loading end
                 _isLoading.value = false
             }
