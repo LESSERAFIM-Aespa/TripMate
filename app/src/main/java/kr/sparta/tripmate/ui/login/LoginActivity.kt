@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var login_Database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
-
+    private var isLogin = false
     private val googleLogin: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -98,15 +98,11 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)   //credential을 이용해서 firebase로 해당 유저를 로그인한다.
             .addOnCompleteListener(this) { task ->      //로그인작업이 완료될때 리스너
                 if (task.isSuccessful) {
-                    val user = auth.currentUser     //파이어베이스에 로그인한 사용자 정보
-                    savedLogin(                                     //저장할 데이터들 함수로 보냄
-                        user?.email.toString(), user?.displayName.toString(),
-                        user?.photoUrl?.toString() ?: "", user?.uid!!
-                    )
-                    longToast("${user.displayName}의 계정으로 로그인 되었습니다.")
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                    SuccessLogin()
+                    shortToast("닉네임을 입력해주세요")
+
                 } else {
+                    FailLogin()
                     shortToast("인증에 실패 했습니다.")
                 }
             }
@@ -121,5 +117,45 @@ class LoginActivity : AppCompatActivity() {
                 uid
             )
         )
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
+
+    private fun ChangeLayout(isLogin: Boolean) {
+        val nick_layout = binding.nickCenterConstraint
+        val login_layout = binding.loginCenterConstraint
+        if (isLogin) {
+            login_layout.visibility = View.GONE
+            nick_layout.visibility = View.VISIBLE
+
+            LoginBtn()
+        } else {
+            login_layout.visibility = View.VISIBLE
+            nick_layout.visibility = View.GONE
+        }
+
+    }
+
+    private fun LoginBtn() {
+        val user = auth.currentUser     //파이어베이스에 로그인한 사용자 정보
+        binding.nickBtn.setOnClickListener {
+            val input_nickName = binding.nickEdit.text.toString()
+            longToast("${input_nickName}의 계정으로 로그인 되었습니다.")
+            savedLogin(                                     //저장할 데이터들 함수로 보냄
+                user?.email.toString(), input_nickName,
+                user?.photoUrl?.toString() ?: "", user?.uid!!
+            )
+        }
+    }
+
+    private fun SuccessLogin() {
+        isLogin = true
+        ChangeLayout(isLogin)
+    }
+
+    private fun FailLogin() {
+        isLogin = false
+        ChangeLayout(isLogin)
+    }
+
 }

@@ -5,6 +5,7 @@
     <string name="splash_logo_text">TRIPMATE</string>
 
     <string name="login_title">우리와 함께 여행을 \n즐겨보세요!</string>
+    <string name="nick_title">닉네임을 \n입력해주세요!</string>
     <string name="Sign_in_with_Google">Sign in with Google</string>
     <string name="Sign_in_with_Apple">Sign in with Apple</string>
 
