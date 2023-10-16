@@ -25,32 +25,32 @@
             android:text="@string/mypage_toolbar_title" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_gravity="end"
-            android:id="@+id/mypage_setting"
-            android:layout_marginHorizontal="7dp"
+            android:id="@+id/mypage_setting_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="7dp"
             android:background="@drawable/ic_setting" />
 
         <TextView
-            android:layout_gravity="end"
-            android:id="@+id/mypage_edit"
+            android:id="@+id/mypage_edit_text_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/mypage_edit_text"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:text="@string/mypage_edit_text" />
+            android:textSize="14sp" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
-        android:id="@+id/mypage_profile_background"
+        android:id="@+id/mypage_profile_background_imageview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/bg_splash"
-        app:layout_constraintBottom_toBottomOf="@id/mypage_profile_image"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_profile_imageview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mypage_profile_image" />
+        app:layout_constraintTop_toTopOf="@id/mypage_profile_imageview" />
 
     <LinearLayout
         android:id="@+id/mypage_profile_container"
@@ -60,13 +60,13 @@
         android:orientation="vertical"
         android:paddingVertical="10dp"
         android:paddingStart="40dp"
-        app:layout_constraintBottom_toBottomOf="@id/mypage_profile_image"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_profile_imageview"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/mypage_profile_image"
-        app:layout_constraintTop_toTopOf="@id/mypage_profile_image">
+        app:layout_constraintStart_toStartOf="@+id/mypage_profile_imageview"
+        app:layout_constraintTop_toTopOf="@id/mypage_profile_imageview">
 
         <TextView
-            android:id="@+id/mypage_profile_id"
+            android:id="@+id/mypage_profile_id_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -75,7 +75,7 @@
             tools:text="Google ID(@뒷부분제외)" />
 
         <TextView
-            android:id="@+id/mypage_profile_datetime"
+            android:id="@+id/mypage_profile_datetime_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2023년 9월 27일 가입" />
@@ -84,7 +84,7 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/mypage_profile_image"
+        android:id="@+id/mypage_profile_imageview"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginStart="30dp"
@@ -93,46 +93,52 @@
         app:layout_constraintTop_toBottomOf="@+id/mypage_toolbar" />
 
     <LinearLayout
-        android:id="@+id/mypage_edit_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center|top"
         android:orientation="vertical"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_profile_image">
+        app:layout_constraintTop_toBottomOf="@+id/mypage_profile_imageview">
 
         <TextView
-            android:id="@+id/mypage_profile_content"
+            android:id="@+id/mypage_profile_content_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:background="@drawable/mypage_profile_content_box" />
 
         <FrameLayout
+            android:id="@+id/mypage_editmode_edittext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:visibility="gone">
 
             <EditText
-                android:id="@+id/mypage_profile_content_edit"
+                android:id="@+id/mypage_profile_content_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
                 android:autofillHints="hint"
                 android:background="@drawable/mypage_profile_content_box_edit"
                 android:inputType="text"
                 android:maxLength="30"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mypage_profile_container" />
+                app:layout_constraintTop_toBottomOf="@+id/mypage_profile_container"
+                android:hint="@string/mypage_edittext_hint"
+                android:gravity="top"
+                tools:ignore="LabelFor" />
 
             <TextView
+                android:id="@+id/mypage_profile_check_length_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
-                android:layout_marginHorizontal="25dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_marginVertical="5dp"
                 android:textColor="@color/Gray"
                 android:textStyle="bold"
@@ -140,6 +146,7 @@
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/mypage_editmode_button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
@@ -148,7 +155,7 @@
             android:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/mypage_edit_cancel"
+                android:id="@+id/mypage_edit_cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
@@ -158,7 +165,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/mypage_edit_submit"
+                android:id="@+id/mypage_edit_submit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:background="@drawable/mypage_button_submit"
@@ -168,13 +175,13 @@
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/mypage_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabTextColor="@color/black" />
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
+            android:id="@+id/mypage_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white" />
