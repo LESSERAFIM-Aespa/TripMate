@@ -17,4 +17,10 @@
     <string name="scrap_toolbar_title">스크랩</string>
     <string name="scrap_bg_content_description">BackgroundImage</string>
     <string name="default_web_client_id"></string>
+
+    <string name="budget_list_title">가계부 관리</string>
+    <string name="budget_status_text">과정</string>
+    <string name="budget_statistics_text">통계</string>
+    <string name="budget_principal_text">원금</string>
+    <string name="budget_balance_text">잔액</string>
 </resources>
