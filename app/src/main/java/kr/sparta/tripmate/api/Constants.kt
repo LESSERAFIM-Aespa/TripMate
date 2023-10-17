@@ -5,4 +5,7 @@ object Constants {
     const val client_id = ""
     const val client_secret = ""
 
+    var EMPTYTYPE = 0
+    var SCRAPTYPE = 1
+
 }

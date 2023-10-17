@@ -84,4 +84,12 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
             }
         }
     }
+
+    fun updateIsLike(model: ScrapModel, position: Int) {
+        //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
+        val list = scrapResult.value.orEmpty().toMutableList()
+        list.find { it.url == model.url } ?: return
+        list[position] = model
+        _scrapResult.value = list
+    }
 }
