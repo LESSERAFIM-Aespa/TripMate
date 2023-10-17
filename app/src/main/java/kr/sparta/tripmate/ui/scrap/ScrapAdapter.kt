@@ -38,7 +38,6 @@ class ScrapAdapter(
             }
             scrapLike.setOnClickListener {
                 onLikeClick(items, bindingAdapterPosition)
-              scrapLike.likeChange(items.isLike)
             }
             scrapLike.likeChange(items.isLike)
         }
