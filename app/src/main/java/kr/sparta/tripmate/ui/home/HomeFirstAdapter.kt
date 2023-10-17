@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
+import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
 import kr.sparta.tripmate.databinding.ScraptitemsBinding
 import kr.sparta.tripmate.domain.model.ScrapModel
 import kr.sparta.tripmate.util.method.removeHtmlTags
@@ -23,19 +25,16 @@ class HomeFirstAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
             override fun areContentsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
                 return oldItem == newItem
             }
-
         }
     ) {
 
-    inner class FirstViewHolder(private val binding: ScraptitemsBinding) : RecyclerView.ViewHolder
+    inner class FirstViewHolder(private val binding: HomeFirstItemsBinding) : RecyclerView.ViewHolder
         (binding.root) {
         fun bind(items: ScrapModel) = with(binding) {
-            Log.d("TripMates","홈 아이템:${items}")
-            Log.d("TripMates","홈 아이템:${items.title}")
-            Log.d("TripMates", "홈아이템:${items.description}")
-            scrapTitle.text = removeHtmlTags(items.title)
-            scrapContent.text = removeHtmlTags(items.description)
-            scrapImage.setImageResource(R.drawable.blogimage)
+            Log.d("TripMates", "뷰홀더에 항목${items}")
+            homeFirstTitle.text = removeHtmlTags(items.title)
+            homeFirstContent.text = removeHtmlTags(items.description)
+            homeFirstImage.setImageResource(R.drawable.blogimage)
 
             itemView.setOnClickListener {
                 onItemClick(items, bindingAdapterPosition)
@@ -43,22 +42,53 @@ class HomeFirstAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
         }
     }
 
-    inner class SecondViewHolder(private val binding: EmptyViewBinding) : RecyclerView.ViewHolder
+    inner class EmptyViewHolder(private val binding: EmptyViewBinding) : RecyclerView.ViewHolder
         (binding.root) {
         fun bind() {
+            Log.d("TripMates","빈텍스트 호출되고있냐?")
             binding.emptyTextView.text = "결과가 없습니다."
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding = ScraptitemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FirstViewHolder(binding)
+        return when (viewType) {
+            Constants.EMPTYTYPE -> {
+                val binding = EmptyViewBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
+                EmptyViewHolder(binding)
+            }
+
+            else -> {
+                val binding =
+                    HomeFirstItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                FirstViewHolder(binding)
+            }
+        }
     }
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        holder as FirstViewHolder
-        Log.d("TripMates","어댑터 position${position}")
-        holder.bind(getItem(position))
+
+        when (holder.itemViewType) {
+            Constants.EMPTYTYPE -> {
+                holder as EmptyViewHolder
+                holder.bind()
+            }
+
+            Constants.SCRAPTYPE -> {
+                holder as FirstViewHolder
+                holder.bind(getItem(position))
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (getItem(position) is ScrapModel) {
+            Constants.SCRAPTYPE
+        } else {
+            Constants.EMPTYTYPE
+        }
     }
 }
