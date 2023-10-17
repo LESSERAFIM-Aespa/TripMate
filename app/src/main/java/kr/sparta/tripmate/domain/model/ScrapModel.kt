@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ScrapModel(
-    val title: String,
+        val title: String,
     val url: String,
     val description: String,
     val bloggername: String,
