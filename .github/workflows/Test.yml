@@ -8,7 +8,7 @@ on:
       - feat/community
       - feat/home
       - feat/scrap
-      - feat/myPage
+      - feat/mypage
       - feat/login
       - feat/splash
       - feat/setting
@@ -19,7 +19,7 @@ on:
       - feat/community
       - feat/home
       - feat/scrap
-      - feat/myPage
+      - feat/mypage
       - feat/login
       - feat/splash
       - feat/setting
