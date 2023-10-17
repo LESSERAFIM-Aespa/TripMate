@@ -32,4 +32,17 @@
     <string name="budget_statistics_text">통계</string>
     <string name="budget_principal_text">원금</string>
     <string name="budget_balance_text">잔액</string>
+    <string name="budget_content_name">가계부 이름</string>
+    <string name="budget_content_input_name">이름을 입력해 주세요</string>
+    <string name="budget_content_startdate">시작 날짜</string>
+    <string name="budget_content_date">기간</string>
+    <string name="budget_content_enddate">종료 날짜</string>
+    <string name="budget_content_input_date">날짜를 입력해 주세요</string>
+    <string name="budget_content_money">원금</string>
+    <string name="budget_content_input_money">원금을 입력해 주세요</string>
+    <string name="budget_content_category">카테고리</string>
+    <string name="budget_content_cancel">취소</string>
+    <string name="budget_content_save">저장</string>
+    <string name="budget_category_input_name">이름을 입력해 주세요</string>
+    <string name="budget_category_color">색상</string>
 </resources>
