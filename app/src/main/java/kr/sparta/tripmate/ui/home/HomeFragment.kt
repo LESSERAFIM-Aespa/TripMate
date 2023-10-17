@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -20,6 +22,10 @@ class HomeFragment : Fragment() {
     private val firstViewModel: FirstViewModel by viewModels()
     private lateinit var homeFirstAdapter: HomeFirstAdapter
 
+    private val homeResults = registerForActivityResult(ActivityResultContracts
+        .StartActivityForResult()){
+        if(it.resultCode == AppCompatActivity.RESULT_OK){}
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -43,6 +49,7 @@ class HomeFragment : Fragment() {
         homeFirstAdapter = HomeFirstAdapter(
             onItemClick = { model, position ->
                 val intent = ScrapDetail.newIntentForScrap(requireContext(), model)
+                homeResults.launch(intent)
             }
         )
         binding.homeRecyclerView1.apply {
