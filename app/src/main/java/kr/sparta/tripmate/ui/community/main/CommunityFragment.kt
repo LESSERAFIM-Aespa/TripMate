@@ -21,7 +21,7 @@ class CommunityFragment : Fragment() {
 
     // Write a message to the database
     private val database = Firebase.database
-    private val communityRef = database.getReference("Communitydata")
+    private val communityRef = database.getReference("CommunityData")
 
 
 
@@ -39,10 +39,15 @@ class CommunityFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
 
+        auth.currentUser?.let {
             communityRef
-                .child(auth.currentUser!!.uid)
-                .setValue(CommunityModel(
-                    "아이디","이미지", "제목","닉네임", "프로필","1800","1500"))
+                .child(it.uid)
+                .setValue(
+                    CommunityModel(
+                        "아이디", "이미지", "제목", "닉네임", "프로필", "1800", "1500"
+                    )
+                )
+        }
 
 
 
