@@ -9,7 +9,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 
-class CommunityListAdapter: ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
+class CommunityListAdapter(private val dataModelList: MutableList<CommunityModel>): ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
     object: DiffUtil.ItemCallback<CommunityModel>() {
         override fun areItemsTheSame(oldItem: CommunityModel, newItem: CommunityModel): Boolean {
             return oldItem.id == newItem.id
