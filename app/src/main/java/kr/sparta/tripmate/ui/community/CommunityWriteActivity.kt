@@ -2,13 +2,9 @@ package kr.sparta.tripmate.ui.community
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
@@ -36,40 +32,21 @@ class CommunityWriteActivity : AppCompatActivity() {
         viewModel.updateDataModelList(newData) // ViewModel을 통해 데이터를 업데이트
 
 
-//        myRef.child(Firebase.auth.currentUser!!.uid)
-//            .addValueEventListener(object : ValueEventListener{
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    dataModelList.clear() // 기존 데이터를 지우고 새 데이터로 교체
-//
-//                    for (dataModel in snapshot.children){
-//                        Log.d("Data",dataModel.toString())
-//                        dataModelList.add(dataModel.getValue(CommunityModel::class.java)!!)
-//                    }
-//                    Log.d("DataModel", dataModelList.toString())
-//
-//                    adapter.notifyDataSetChanged()
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                    TODO("Not yet implemented")
-//                }
-//
-//            })
-
         binding = ActivityCommunityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.communityWriteBackbutton.setOnClickListener {
-            finish()
+            finish() //백버튼을 누를시 현재 액티비티를 종료하도록 설정
         }
         binding.communityWriteShare.setOnClickListener {
 
-            //            파이어베이스로 데이터 저장하기
+
             val body_write = binding.communityWriteDescription.text.toString()
             val title_write = binding.communityWriteTitle.text.toString()
-
+            // 파이어베이스로 저장하기 위한 설정및 함수호출
             val database = Firebase.database
-            val myRef = database.getReference("CommunityData").child(Firebase.auth.currentUser!!.uid)
+            val myRef =
+                database.getReference("CommunityData").child(Firebase.auth.currentUser!!.uid)
             val model = CommunityModel(
                 id = "게시글 ID",
                 thumbnail = null, // null 또는 이미지 URL
@@ -87,8 +64,8 @@ class CommunityWriteActivity : AppCompatActivity() {
                     // 데이터가 성공적으로 저장될 때 RecyclerView 업데이트
                     val newData = mutableListOf<CommunityModel>() // 새 데이터를 가져오는 코드가 필요
                     viewModel.updateDataModelList(newData) // ViewModel을 통해 데이터를 업데이트
-                }
-            Toast.makeText(this,"글이 게시되었습니다(저장완료)",Toast.LENGTH_LONG).show()
+                } // // 파이어베이스로 저장하기 위한 설정및 함수호출(끝)
+            Toast.makeText(this, "글이 게시되었습니다(저장완료)", Toast.LENGTH_LONG).show()
         }
     }
 }

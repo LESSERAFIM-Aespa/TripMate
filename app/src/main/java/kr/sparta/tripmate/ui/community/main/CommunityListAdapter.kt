@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.CircleCropTransformation
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 
 class CommunityListAdapter(private val dataModelList: MutableList<CommunityModel>): ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(

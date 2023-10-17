@@ -13,13 +13,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 
 class CommunityFragment : Fragment() {
-    private var _binding : FragmentCommunityBinding? = null
+    private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
     private val viewModel: CommunityViewModel by viewModels()
     private val adapter by lazy {
@@ -37,9 +36,11 @@ class CommunityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         // Firebase에서 데이터를 가져오고 RecyclerView 어댑터를 업데이트
         val database = Firebase.database
         val myRef = database.getReference("CommunityData").child(Firebase.auth.currentUser!!.uid)
+
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val newData = mutableListOf<CommunityModel>()
@@ -66,7 +67,7 @@ class CommunityFragment : Fragment() {
         }
     }
 
-    private fun initview()=with(binding) {
+    private fun initview() = with(binding) {
         communityMainRecyclerView.adapter = adapter
     }
 }
