@@ -38,7 +38,7 @@ class CommunityWriteActivity : AppCompatActivity() {
         binding.communityWriteBackbutton.setOnClickListener {
             finish() //백버튼을 누를시 현재 액티비티를 종료하도록 설정
         }
-        binding.communityWriteShare.setOnClickListener {
+        binding.communityWriteIcShare.setOnClickListener {
 
 
             val body_write = binding.communityWriteDescription.text.toString()
