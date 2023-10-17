@@ -51,6 +51,7 @@ class CommunityFragment : Fragment() {
 
 
 
+
         initview()
     }
 
