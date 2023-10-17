@@ -13,10 +13,6 @@ class ProcedureDetailActivity : AppCompatActivity() {
         const val EXTRA_PROCEDURE_NUM = "extra_procedure_num"
 
 
-        //test 용,이동 확인후 삭제할것
-        fun newIntent(context: Context) =
-            Intent(context, ProcedureDetailActivity::class.java)
-
         fun newIntent(context: Context, procedureNum: Int) =
             Intent(context, ProcedureDetailActivity::class.java).apply {
                 putExtra(EXTRA_PROCEDURE_NUM, procedureNum)
@@ -27,7 +23,9 @@ class ProcedureDetailActivity : AppCompatActivity() {
         ActivityProcedureDetailBinding.inflate(layoutInflater)
     }
 
-    private val procedureNum = intent.getIntExtra(EXTRA_PROCEDURE_NUM, 0)
+    private val procedureNum by lazy {
+        intent.getIntExtra(EXTRA_PROCEDURE_NUM, 0)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +35,25 @@ class ProcedureDetailActivity : AppCompatActivity() {
     }
 
     private fun initViews() = with(binding) {
+        procedureDetailBackImageview.setOnClickListener {
+            finish()
+        }
+
+        procedureDetailEditImageview.setOnClickListener {
+            startActivity(
+                ProcedureContentActivity.newIntentForEdit(
+                    this@ProcedureDetailActivity, procedureNum
+                )
+            )
+        }
+
+        procedureDetailDeleteImageview.setOnClickListener {
+            showDeleteDialog()
+        }
+    }
+
+    // delete dialog가 나오게 적용
+    private fun showDeleteDialog() {
 
     }
 }
