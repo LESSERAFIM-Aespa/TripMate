@@ -118,5 +118,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view2" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/budget_detail_floatingactionbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/primary"
+        android:drawableTint="@color/black"
+        android:src="@drawable/ic_add"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp"
+        app:rippleColor="@color/primary_bold"
+        app:shapeAppearance="@style/ShapeAppearanceOverlayExtended" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
