@@ -93,4 +93,7 @@ dependencies {
 
     // use aslivedata
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+
+    // use colorpicker dialog
+    implementation("com.github.Dhaval2404:ColorPicker:2.3")
 }
