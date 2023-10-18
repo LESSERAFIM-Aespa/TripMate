@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.community.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
+import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 
 class CommunityFragment : Fragment() {
     private var _binding : FragmentCommunityBinding? = null
@@ -38,16 +40,24 @@ class CommunityFragment : Fragment() {
 
         auth = FirebaseAuth.getInstance()
 
+        binding.writeBtn.setOnClickListener {
+            val intent = Intent(context, CommunityWriteActivity::class.java)
+            startActivity(intent)
+        }
 
-        auth.currentUser?.let {
+
+        val user = auth.currentUser
+        user?.let {
+            val uid = it.uid
             communityRef
-                .child(it.uid)
+                .child(uid)
                 .setValue(
                     CommunityModel(
-                        "아이디", "이미지", "제목", "닉네임", "프로필", "1800", "1500"
+                        id, "이미지", "제목", "닉네임", "프로필", "1800", "1500"
                     )
                 )
         }
+
 
 
 

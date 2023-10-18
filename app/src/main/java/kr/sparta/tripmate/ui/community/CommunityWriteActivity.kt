@@ -21,7 +21,7 @@ class CommunityWriteActivity : AppCompatActivity() {
         binding.communityWriteBackbutton.setOnClickListener {
             finish()
         }
-        binding.communityWriteShare.setOnClickListener {
+        binding.communityWriteIcShare.setOnClickListener {
             val intent = Intent(this, CommunityDetailActivity::class.java)
             startActivity(intent)
 
