@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.domain.model
+package kr.sparta.tripmate.domain.model.scrap
 
 data class ScrapServerDataEntity(
     val lastBuildDate: String?,

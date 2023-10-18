@@ -2,7 +2,6 @@ package kr.sparta.tripmate.ui.viewmodel.scrap
 
 import android.content.Context
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +13,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.domain.model.ScrapModel
-import kr.sparta.tripmate.domain.model.toScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.scrap.toScrapModel
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 

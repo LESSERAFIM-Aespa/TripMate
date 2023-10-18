@@ -1,7 +1,8 @@
-package kr.sparta.tripmate.domain.model
+package kr.sparta.tripmate.domain.model.scrap
 
-import kr.sparta.tripmate.data.model.ScrapItems
-import kr.sparta.tripmate.data.model.ScrapServerData
+import kr.sparta.tripmate.data.model.scrap.ScrapItems
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapServerData
 
 fun ScrapServerData.toEntity(): ScrapServerDataEntity = ScrapServerDataEntity(
     lastBuildDate = lastBuildDate,
