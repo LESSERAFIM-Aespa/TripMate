@@ -10,7 +10,6 @@ import com.google.firebase.database.ValueEventListener
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
-
 class HomeFirstRepositoryImpl() {
     private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
     fun getData(uid:String): LiveData<MutableList<ScrapEntity>> {
