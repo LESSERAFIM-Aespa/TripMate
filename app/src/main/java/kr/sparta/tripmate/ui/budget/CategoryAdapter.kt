@@ -2,6 +2,8 @@ package kr.sparta.tripmate.ui.budget
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
@@ -23,24 +25,43 @@ class CategoryAdapter(val categoryListEventListener: CategoryListEventListener) 
     }) {
 
     interface CategoryListEventListener {
-        fun onColorButtonClicked(pos: Int, view: Button)
+        fun onDeleteButtonClicked(pos: Int)
+        fun onColorButtonClicked(pos: Int, button: Button)
     }
+
+    var saveList: MutableList<Category> = mutableListOf()
 
     inner class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
-            val pos = absoluteAdapterPosition
-            val currentItem = currentList[pos]
-            if (currentItem.name.isNotBlank()) {
-                budgetCategoryNameEdittext.setText(currentItem.name)
+            if (saveList[absoluteAdapterPosition].name.isNotBlank()) {
+                budgetCategoryNameEdittext.setText(saveList[absoluteAdapterPosition].name)
             }
-            if (currentItem.color.isNotBlank()) {
+            if (saveList[absoluteAdapterPosition].color.isNotBlank()) {
                 budgetCategoryColorButton.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor(currentItem.color))
+                    ColorStateList.valueOf(Color.parseColor(saveList[absoluteAdapterPosition].color))
             }
             budgetCategoryColorButton.setOnClickListener {
-                categoryListEventListener.onColorButtonClicked(pos, budgetCategoryColorButton)
+                categoryListEventListener.onColorButtonClicked(
+                    absoluteAdapterPosition,
+                    budgetCategoryColorButton
+                )
             }
+            budgetCategoryDeleteButton.setOnClickListener {
+                categoryListEventListener.onDeleteButtonClicked(absoluteAdapterPosition)
+            }
+            budgetCategoryNameEdittext.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    saveList[absoluteAdapterPosition] =
+                        saveList[absoluteAdapterPosition].copy(name = budgetCategoryNameEdittext.text.toString())
+                }
+            })
         }
     }
 

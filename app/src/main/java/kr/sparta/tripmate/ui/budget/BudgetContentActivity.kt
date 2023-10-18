@@ -4,12 +4,15 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
@@ -50,29 +53,33 @@ class BudgetContentActivity : AppCompatActivity() {
     private val budgetNum by lazy { intent.getIntExtra(EXTRA_BUDGET_NUM, 0) }
     private val categoryAdapter by lazy {
         CategoryAdapter(object : CategoryAdapter.CategoryListEventListener {
+            override fun onDeleteButtonClicked(pos: Int) {
+                onDeleteCategory(pos)
+            }
+
             override fun onColorButtonClicked(pos: Int, button: Button) {
                 showColorPickerDialog(pos, button)
             }
         })
     }
-
-    private fun showColorPickerDialog(pos: Int, button: Button) {
-        val currentItem = categoryAdapter.currentList[pos]
-        val currentList = categoryAdapter.currentList.toMutableList()
-        ColorPickerDialog
-            .Builder(this)        				// Pass Activity Instance
-            .setTitle("색상 선택")           	// Default "Choose Color"
-            .setPositiveButton("확인")
-            .setNegativeButton("취소")
-            .setColorShape(ColorShape.SQAURE)   // Default ColorShape.CIRCLE
-            .setDefaultColor(currentItem.color)     // Pass Default Color
-            .setColorListener { color, colorHex ->
-                // Handle Color Selection
-                currentList[pos] = currentItem.copy(color = colorHex)
-                categoryAdapter.submitList(currentList)
-            }
-            .show()
+    private val swipeHelper by lazy {
+        SwipeHelper(categoryAdapter).apply {
+            setClamp(resources.displayMetrics.widthPixels.toFloat() / 4)
+        }
     }
+
+    private fun onDeleteCategory(pos: Int) {
+        if (pos in 0..2) {
+            swipeHelper.removePreviousClampAnyway(binding.budgetCategoryRecyclerview)
+            Toast.makeText(this, "해당항목은 삭제할수없습니다", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val currentList = categoryAdapter.currentList.toMutableList()
+        categoryAdapter.saveList.removeAt(pos)
+        currentList.removeAt(pos)
+        categoryAdapter.submitList(currentList)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,11 +116,27 @@ class BudgetContentActivity : AppCompatActivity() {
         budgetCategoryRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@BudgetContentActivity)
             adapter = categoryAdapter
+            val list = listOf<Category>(
+                Category(budgetNum, "교통비", "#F4A261"),
+                Category(budgetNum, "식비", "#E76F51"),
+                Category(budgetNum, "기타", "#D9D9D9"),
+            )
+            categoryAdapter.saveList = list.toMutableList()
+            categoryAdapter.submitList(list)
+
+        }
+
+        ItemTouchHelper(swipeHelper).attachToRecyclerView(budgetCategoryRecyclerview)
+        budgetCategoryRecyclerview.setOnTouchListener { view, motionEvent ->
+            swipeHelper.removePreviousClamp(budgetCategoryRecyclerview)
+            false
         }
 
         budgetCategoryFloatingactionbutton.setOnClickListener {
             val currentList = categoryAdapter.currentList.toMutableList()
-            currentList.add(Category(budgetNum, "", "#E9C46A"))
+            val category = Category(budgetNum, "", "#E9C46A")
+            currentList.add(category)
+            categoryAdapter.saveList.add(category)
             categoryAdapter.submitList(currentList)
         }
 
@@ -169,7 +192,22 @@ class BudgetContentActivity : AppCompatActivity() {
                 arr[2].toInt()
             ).show()
         }
+    }
 
+    private fun showColorPickerDialog(pos: Int, button: Button) {
+        val currentItem = categoryAdapter.currentList[pos]
+        ColorPickerDialog
+            .Builder(this)                        // Pass Activity Instance
+            .setTitle("색상 선택")            // Default "Choose Color"
+            .setPositiveButton("확인")
+            .setNegativeButton("취소")
+            .setColorShape(ColorShape.SQAURE)
+            .setDefaultColor(currentItem.color)
+            .setColorListener { _, colorHex ->
+                button.backgroundTintList =
+                    ColorStateList.valueOf(Color.parseColor(colorHex))
+            }
+            .show()
     }
 }
 
