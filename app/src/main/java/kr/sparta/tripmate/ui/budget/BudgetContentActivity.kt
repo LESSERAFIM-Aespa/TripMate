@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.dhaval2404.colorpicker.ColorPickerDialog
+import com.github.dhaval2404.colorpicker.model.ColorShape
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
@@ -55,7 +57,21 @@ class BudgetContentActivity : AppCompatActivity() {
     }
 
     private fun showColorPickerDialog(pos: Int, button: Button) {
-
+        val currentItem = categoryAdapter.currentList[pos]
+        val currentList = categoryAdapter.currentList.toMutableList()
+        ColorPickerDialog
+            .Builder(this)        				// Pass Activity Instance
+            .setTitle("색상 선택")           	// Default "Choose Color"
+            .setPositiveButton("확인")
+            .setNegativeButton("취소")
+            .setColorShape(ColorShape.SQAURE)   // Default ColorShape.CIRCLE
+            .setDefaultColor(currentItem.color)     // Pass Default Color
+            .setColorListener { color, colorHex ->
+                // Handle Color Selection
+                currentList[pos] = currentItem.copy(color = colorHex)
+                categoryAdapter.submitList(currentList)
+            }
+            .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +113,7 @@ class BudgetContentActivity : AppCompatActivity() {
 
         budgetCategoryFloatingactionbutton.setOnClickListener {
             val currentList = categoryAdapter.currentList.toMutableList()
-            currentList.add(Category(budgetNum, "", ""))
+            currentList.add(Category(budgetNum, "", "#E9C46A"))
             categoryAdapter.submitList(currentList)
         }
 
