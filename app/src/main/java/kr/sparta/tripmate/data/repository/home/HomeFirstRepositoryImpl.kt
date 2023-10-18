@@ -40,6 +40,7 @@ class HomeFirstRepositoryImpl() {
 
         val dataListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+<<<<<<< HEAD
                 if (snapshot.exists()) {
                     val homeScrapDataList = mutableListOf<ScrapModel>()
                     for (dataSnapshot in snapshot.children) {
@@ -49,6 +50,20 @@ class HomeFirstRepositoryImpl() {
                     firstData.value = homeScrapDataList
                 } else firstData.value = mutableListOf()
 >>>>>>> 839c670 ([hotfix] 에러 수정 및 리펠토링)
+=======
+                try{
+                    if (snapshot.exists()) {
+                        val homeScrapDataList = mutableListOf<ScrapModel>()
+                        for (dataSnapshot in snapshot.children) {
+                            val homeScrapData = dataSnapshot.getValue(ScrapModel::class.java)
+                            homeScrapData?.let { homeScrapDataList.add(it) }
+                        }
+                        firstData.value = homeScrapDataList
+                    } else firstData.value = mutableListOf()
+                } catch(e: Exception){
+                    firstData.value = mutableListOf()
+                }
+>>>>>>> 7c24d50 ([feat] 커뮤니티 메인에 다른사람 글도 읽을 수 있게 설정)
             }
 
             override fun onCancelled(error: DatabaseError) {
