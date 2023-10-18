@@ -76,11 +76,17 @@ class ScrapFragment : Fragment() {
                 scrapResults.launch(intent)
             },
             onLikeClick = { model, position ->
-                model.isLike = !model.isLike
 
+                scrapViewModel.updateIsLike(
+                    model = model.copy(
+                        isLike = !model.isLike
+                    ),
+                    position
+                )
+                //위에서 model의 isLike값을 반전시키고 뷰모델에서 업데이트되기때문에 아래의 model.isLike는 값이 반전되기 이전이다.
                 if (model.isLike) {
-                    saveScrapFirebase(model)
-                } else deleteScrapFirebase(model)
+                    deleteScrapFirebase(model)
+                } else saveScrapFirebase(model)
             }
         )
 

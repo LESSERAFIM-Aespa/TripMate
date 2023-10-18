@@ -11,19 +11,28 @@ import com.bumptech.glide.Glide
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMypageBoardItemBinding
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
+import kr.sparta.tripmate.domain.model.ScrapModel
 
-class BookmarkListAdapter:ListAdapter<BookmarkModel, BookmarkListAdapter.Holder>(object: DiffUtil.ItemCallback<BookmarkModel>() {
-    override fun areItemsTheSame(oldItem: BookmarkModel, newItem: BookmarkModel): Boolean {
-        return oldItem.url == newItem.url
-    }
+class BookmarkListAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
+    ListAdapter<ScrapModel,
+            BookmarkListAdapter
+            .Holder>(object :
+        DiffUtil.ItemCallback<ScrapModel>() {
+        override fun areItemsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
+            return oldItem.url == newItem.url
+        }
 
-    override fun areContentsTheSame(oldItem: BookmarkModel, newItem: BookmarkModel): Boolean {
-        return oldItem == newItem
-    }
+        override fun areContentsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
+            return oldItem == newItem
+        }
 
-}) {
+    }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = FragmentMypageBookmarkItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = FragmentMypageBookmarkItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return Holder(view)
     }
 
@@ -31,11 +40,16 @@ class BookmarkListAdapter:ListAdapter<BookmarkModel, BookmarkListAdapter.Holder>
         return holder.bind(getItem(position))
     }
 
-    class Holder(private val binding: FragmentMypageBookmarkItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item : BookmarkModel)=with(binding) {
+    inner class Holder(private val binding: FragmentMypageBookmarkItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: ScrapModel) = with(binding) {
             bookmarkImage.setImageResource(R.drawable.blogimage)
             bookmarkTitle.text = item.title
             bookmarkContent.text = item.description
+
+            itemView.setOnClickListener {
+                onItemClick(item, bindingAdapterPosition)
+            }
         }
     }
 }

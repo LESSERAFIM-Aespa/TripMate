@@ -50,4 +50,5 @@
     <string name="procedure_time_text">시간</string>
     <string name="procedure_memo_text">메모</string>
     <string name="budget_category_input_name">카테고리 이름을 입력해 주세요</string>
+    <string name="empty_view">결과가 없습니다.</string>
 </resources>
