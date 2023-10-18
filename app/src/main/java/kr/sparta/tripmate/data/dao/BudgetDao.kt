@@ -42,10 +42,6 @@ interface BudgetDao {
     @Query("SELECT * FROM BUDGET WHERE NUM =:num")
     fun getAllBudgetsToFlowWithNum(num: Int): Flow<List<Budget>>
 
-<<<<<<< HEAD
     @Query("SELECT * FROM BUDGET ORDER BY NUM DESC LIMIT 1")
-=======
-    @Query("SELECT * FROM BUDGET ORDER BY NUM LIMIT 1")
->>>>>>> e548c7c ([Feat] 가계부 insert 기능 추가)
     suspend fun getLastBudget(): List<Budget>
 }
