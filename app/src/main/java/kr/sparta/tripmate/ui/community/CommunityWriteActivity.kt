@@ -44,7 +44,7 @@ class CommunityWriteActivity : AppCompatActivity() {
     }
 
     private fun communitySaveBtn() {
-           //9. 데이터베이스 경로
+        //9. 데이터베이스 경로
         binding.communityWriteIcShare.setOnClickListener {
             val bodyWrite = binding.communityWriteDescription.text.toString()
             val titleWrite = binding.communityWriteTitle.text.toString()

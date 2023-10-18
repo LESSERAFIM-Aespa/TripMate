@@ -73,7 +73,7 @@ class CommunityListAdapter(
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
             communityMainLikesButton.setOnClickListener {
-                    onLikeClicked(item,bindingAdapterPosition)
+                onLikeClicked(item,bindingAdapterPosition)
             }
             if (item.commuIsLike) {
                 communityMainLikesButton.setBackgroundResource(R.drawable.paintedstar)
