@@ -20,19 +20,24 @@
         android:id="@+id/community_write_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="27dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/background_community_write_view_tpye1"
         android:hint="제목을을 입력하세요"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/communitiy_write_addimage"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_write_backbutton" />
+        app:layout_constraintTop_toBottomOf="@+id/community_write_backbutton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/communitiy_wirte_addimage"
+        android:id="@+id/communitiy_write_addimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/community_write_title"
@@ -41,16 +46,18 @@
     <EditText
         android:id="@+id/community_write_description"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="340dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="10dp"
+        android:background="@drawable/background_community_write_view_tpye1"
         android:hint="내용을 입력하세요"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/communitiy_wirte_addimage" />
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_write_addimage" />
 
     <ImageView
         android:id="@+id/community_write_ic_share"
