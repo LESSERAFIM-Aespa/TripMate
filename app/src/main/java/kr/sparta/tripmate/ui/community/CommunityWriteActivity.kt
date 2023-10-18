@@ -25,9 +25,6 @@ class CommunityWriteActivity : AppCompatActivity() {
 
         val newData = mutableListOf<CommunityModel>()// newData에 데이터를 추가
         val adapter = CommunityListAdapter(dataModelList)
-        val database = Firebase.database
-        val myRef = database.getReference("CommunityData")
-
 
         viewModel.updateDataModelList(newData) // ViewModel을 통해 데이터를 업데이트
 
