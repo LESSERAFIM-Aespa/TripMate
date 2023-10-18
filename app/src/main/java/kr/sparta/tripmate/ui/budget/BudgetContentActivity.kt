@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -20,7 +21,11 @@ import com.github.dhaval2404.colorpicker.model.ColorShape
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
+import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
+import kr.sparta.tripmate.domain.repository.BudgetRepository
+import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModelFactory
 import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {
@@ -42,6 +47,10 @@ class BudgetContentActivity : AppCompatActivity() {
 
     private val binding: ActivityBudgetContentBinding by lazy {
         ActivityBudgetContentBinding.inflate(layoutInflater)
+    }
+
+    private val contentViewModel: BudgetContentViewModel by viewModels {
+        BudgetContentViewModelFactory(entryType!!, BudgetRepositoryImpl(this), budgetNum)
     }
 
     private val entryType by lazy {
@@ -153,66 +162,75 @@ class BudgetContentActivity : AppCompatActivity() {
         }
 
         budgetSaveButton.setOnClickListener {
+            when {
+                budgetNameEdittext.text.toString().isBlank() -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "가계부 이름이 공백입니다. 다시 확인해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                budgetNameEdittext.text.toString().length >= 30 -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "가계부 이름은 30자이내로 적어주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                budgetStartdateTextview.text.toString() == "날짜를 입력해 주세요" || budgetEnddateTextview.text.toString() == "날짜를 입력해 주세요" -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "날짜를 확인해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                budgetStartdateTextview.text.toString() > budgetEnddateTextview.text.toString() -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "시작일이 종료일보다 큽니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                budgetMoneyEdittext.text.toString().isBlank() -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "원금이 비어있습니다",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                !budgetMoneyEdittext.text.toString().isDigitsOnly() -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "소수와 음수는 원금으로 사용할수없습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                categoryAdapter.saveList.any { it.name.isBlank() || it.name.length > 30 } -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "카테고리이름을 30자이내로 적어주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
             //저장버튼
             when (entryType) {
                 BudgetContentType.ADD -> {
-                    when {
-                        budgetNameEdittext.text.toString().isBlank() -> {
-                            Toast.makeText(this@BudgetContentActivity, "가계부 이름이 공백입니다. 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
-                        }
-                        budgetNameEdittext.text.toString().length >= 30 -> {
-                            Toast.makeText(
-                                this@BudgetContentActivity,
-                                "가계부 이름은 30자이내로 적어주세요.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        budgetStartdateTextview.text.toString() == "날짜를 입력해 주세요" || budgetEnddateTextview.text.toString() == "날짜를 입력해 주세요" -> {
-                            Toast.makeText(
-                                this@BudgetContentActivity,
-                                "날짜를 확인해주세요",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        budgetStartdateTextview.text.toString() > budgetEnddateTextview.text.toString() -> {
-                            Toast.makeText(
-                                this@BudgetContentActivity,
-                                "시작일이 종료일보다 큽니다.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        budgetMoneyEdittext.text.toString().isBlank() -> {
-                            Toast.makeText(
-                                this@BudgetContentActivity,
-                                "원금이 비어있습니다",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        !budgetMoneyEdittext.text.toString().isDigitsOnly() -> {
-                            Toast.makeText(
-                                this@BudgetContentActivity,
-                                "소수와 음수는 원금으로 사용할수없습니다.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        categoryAdapter.saveList.any{it.name.isBlank() || it.name.length >30} ->{
-                            Toast.makeText(
-                                this@BudgetContentActivity,
-                                "카테고리이름을 30자이내로 적어주세요",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        else -> {
-                            val budget = Budget(
-                                name = budgetNameEdittext.text.toString(),
-                                startDate = budgetStartdateTextview.text.toString(),
-                                endDate = budgetEnddateTextview.text.toString(),
-                                money = budgetMoneyEdittext.text.toString().toInt()
-                            )
-                            val category = categoryAdapter.saveList
-                            finish()
-                        }
-                    }
+                    val budget = Budget(
+                        name = budgetNameEdittext.text.toString(),
+                        startDate = budgetStartdateTextview.text.toString(),
+                        endDate = budgetEnddateTextview.text.toString(),
+                        money = budgetMoneyEdittext.text.toString().toInt()
+                    )
+                    val categories = categoryAdapter.saveList
+                    contentViewModel.inserBudgetAndCategories(budget, categories)
+                    finish()
                 }
 
                 BudgetContentType.EDIT -> {

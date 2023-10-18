@@ -2,12 +2,13 @@ package kr.sparta.tripmate.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.budget.Budget
+import kr.sparta.tripmate.data.model.budget.BudgetCategories
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 
 interface BudgetRepository {
     suspend fun insertBudgets(vararg budgets: Budget)
-    suspend fun updaateBudgets(vararg budgets: Budget)
+    suspend fun updateBudgets(vararg budgets: Budget)
     suspend fun deleteBugets(vararg budgets: Budget)
     suspend fun insertCategories(vararg categories: Category)
     suspend fun updateCategories(vararg categories: Category)
@@ -47,4 +48,8 @@ interface BudgetRepository {
      * 과정(Procedure)테이블이 바뀌때마다 가져옴
      * */
     fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<List<Procedure>>
+
+    suspend fun getBudgetCategories(num: Int) : List<BudgetCategories>
+    suspend fun getLastBudget() : List<Budget>
+    suspend fun getProceduresWithNum(num : Int) : List<Procedure>
 }
