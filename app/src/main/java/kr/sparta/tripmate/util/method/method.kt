@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.tabs.TabLayout
+import java.text.DecimalFormat
 import java.util.regex.Pattern
 
 fun Context.shortToast(message: String, time: Int = Toast.LENGTH_SHORT) {
@@ -23,3 +24,5 @@ fun removeHtmlTags(input: String): String {
     val pattern = Pattern.compile("<.*?>")
     return pattern.matcher(input).replaceAll("")
 }
+
+fun Int.toMoneyFormat(): String = DecimalFormat("#,###").format(this)
