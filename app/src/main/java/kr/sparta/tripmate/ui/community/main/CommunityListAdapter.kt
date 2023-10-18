@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 
-class CommunityListAdapter(private val dataModelList: MutableList<CommunityModel>): ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
+class CommunityListAdapter(private val dataModelList: List<CommunityModel>): ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
     object: DiffUtil.ItemCallback<CommunityModel>() {
         override fun areItemsTheSame(oldItem: CommunityModel, newItem: CommunityModel): Boolean {
             return oldItem.id == newItem.id

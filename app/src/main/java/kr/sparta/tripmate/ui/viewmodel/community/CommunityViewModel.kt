@@ -9,7 +9,7 @@ class CommunityViewModel : ViewModel() {
     private val _dataModelList = MutableLiveData<MutableList<CommunityModel>>()
     val dataModelList: LiveData<MutableList<CommunityModel>> get() = _dataModelList
 
-    fun updateDataModelList(newData: MutableList<CommunityModel>) {
-        _dataModelList.value = newData
+    fun updateDataModelList(allCommunityData: MutableList<CommunityModel>) {
+        _dataModelList.value = allCommunityData
     }
 }
