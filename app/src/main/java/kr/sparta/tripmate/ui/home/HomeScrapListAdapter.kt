@@ -10,7 +10,11 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
 import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
+<<<<<<< HEAD:app/src/main/java/kr/sparta/tripmate/ui/home/HomeScrapListAdapter.kt
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+=======
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
+>>>>>>> 839c670 ([hotfix] 에러 수정 및 리펠토링):app/src/main/java/kr/sparta/tripmate/ui/home/HomeFirstAdapter.kt
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
 class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
