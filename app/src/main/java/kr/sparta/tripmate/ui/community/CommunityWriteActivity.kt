@@ -1,22 +1,30 @@
 package kr.sparta.tripmate.ui.community
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.provider.MediaStore
+import android.util.Log
 import androidx.activity.viewModels
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
 import kr.sparta.tripmate.ui.community.main.CommunityModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
+import java.io.ByteArrayOutputStream
+
 
 /**
  * 작성자 : 박성수
@@ -28,7 +36,9 @@ class CommunityWriteActivity : AppCompatActivity() {
     private val viewModel: CommunityViewModel by viewModels()
     private var commuThumbnail = R.drawable.emptycommu
     private lateinit var binding: ActivityCommunityWriteBinding
-    private lateinit var commu_Database : DatabaseReference         //1. 데이터베이스 객체 생성
+    private lateinit var commu_Database: DatabaseReference         //1. 데이터베이스 객체 생성
+    private val storage = Firebase.storage
+    private var imageUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,53 +48,142 @@ class CommunityWriteActivity : AppCompatActivity() {
         commu_Database = Firebase.database.reference                        //2. 데이터베이스 객체 초기화
 
         communityBackBtn()      //3. 뒤로가기 버튼
+        communityAddImage()
         communitySaveBtn()     //4. 게시하기 버튼
-
-
     }
 
     private fun communitySaveBtn() {
-        //9. 데이터베이스 경로
         binding.communityWriteIcShare.setOnClickListener {
-            val bodyWrite = binding.communityWriteDescription.text.toString()
-            val titleWrite = binding.communityWriteTitle.text.toString()
-            val uid = SharedPreferences.getUid(this)                 //5. sharedpreferences에 저장된 uid
-            val myRef = commu_Database.child("CommunityData")
-            val nickName = SharedPreferences.getNickName(this)          //6. sharedpreferences에 저장된 닉네임
-            val profile = SharedPreferences.getProfile(this)            //7.sharedpreferences에 저장된 프로필 사진
-            val key = myRef.push()
-            val writeModel = CommunityModel(uid,commuThumbnail.toString(), titleWrite, bodyWrite, nickName,
-                profile,"","0","${key}") //8. 작성 목록
-            // 파이어베이스로 저장하기 위한 설정및 함수호출
-
-            myRef.addListenerForSingleValueEvent(object :ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val commuList = ArrayList<CommunityModel>()     //10. 파이어베이스에 저장될 리스트
-
-                    for (items in snapshot.children){   //11. 데이터베이스에 저장된 항목을 불러와서 10에서만든 리스트에 추가한다.
-                        val getcommuModel = items.getValue(CommunityModel::class.java)
-                        getcommuModel?.let{
-                            commuList.add(it)
-                        }
-                    }
-                    commuList.add(writeModel)   //12. 11에서 추가한 데이터에 내가 작성한 목록을 추가한다.
-                    myRef.setValue(commuList)   //13. 11,12에서 추가된 데이터를 파이어베이스의 데이터베이스에 덮어씌운다.
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-
-            shortToast("글이 게시되었습니다(저장완료)")
-            finish()    //14. 저장했으면 커뮤니티 메인화면으로 넘어간다.
+            if (imageUrl == null) {        // imageURL 이 없을때 처리
+                handleNoImageAdded()
+            } else {                       // imageURL 이 생성되었을때 처리
+                continueWithSave()
+            }
         }
     }
+
+    private fun continueWithSave() {
+        //9. 데이터베이스 경로소ㅑ
+        val bodyWrite = binding.communityWriteDescription.text.toString()
+        val titleWrite = binding.communityWriteTitle.text.toString()
+        val uid = SharedPreferences.getUid(this)                 //5. sharedpreferences에 저장된 uid
+        val myRef = commu_Database.child("CommunityData")
+        val nickName = SharedPreferences.getNickName(this)          //6. sharedpreferences에 저장된 닉네임
+        val profile =
+            SharedPreferences.getProfile(this)            //7.sharedpreferences에 저장된 프로필 사진
+        val key = myRef.push()
+
+        val imageRef = storage.reference.child("$titleWrite.jpg")
+        val imageView = binding.communitiyWriteAddimage
+
+        imageView.isDrawingCacheEnabled = true
+        imageView.buildDrawingCache()
+        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        val uploadTask = imageRef.putBytes(data)
+        uploadTask.addOnFailureListener {
+        }
+        imageRef.putBytes(data).addOnSuccessListener { taskSnapshot ->
+
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                val imageUrl = uri.toString()
+                saveToDatabase(uid, titleWrite, bodyWrite, nickName, profile, key, imageUrl)
+
+            }
+        }
+    }
+
+    private fun handleNoImageAdded() {               // 이미지를 추가 하지 않았을때의 처리 방식
+        val bodyWrite = binding.communityWriteDescription.text.toString()
+        val titleWrite = binding.communityWriteTitle.text.toString()
+        val uid = SharedPreferences.getUid(this) // 5. sharedpreferences에 저장된 uid
+        val myRef = commu_Database.child("CommunityData")
+        val nickName = SharedPreferences.getNickName(this) // 6. sharedpreferences에 저장된 닉네임
+        val profile = SharedPreferences.getProfile(this) // 7.sharedpreferences에 저장된 프로필 사진
+        val key = myRef.push()
+
+        val imageUrl = ""
+        saveToDatabase(uid, titleWrite, bodyWrite, nickName, profile, key, imageUrl)
+    }
+
+    private fun saveToDatabase(
+        uid: String,
+        titleWrite: String,
+        bodyWrite: String,
+        nickName: String,
+        profile: String,
+        key: DatabaseReference,
+        imageUrl: String
+    ) {
+        val writeModel = CommunityModel(
+            uid,
+            commuThumbnail.toString(),
+            titleWrite,
+            bodyWrite,
+            nickName,
+            profile,
+            "",
+            "0",
+            key.toString(),
+            imageUrl
+        )
+
+        val myRef = commu_Database.child("CommunityData")
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val commuList = ArrayList<CommunityModel>()
+
+                for (items in snapshot.children) {
+                    val getcommuModel = items.getValue(CommunityModel::class.java)
+                    getcommuModel?.let {
+                        commuList.add(it)
+                    }
+                }
+                commuList.add(writeModel)
+                myRef.setValue(commuList)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+        shortToast("글이 게시되었습니다(저장완료)")
+        finish()
+    }
+
 
     private fun communityBackBtn() {
         binding.communityWriteBackbutton.setOnClickListener {
             finish() //백버튼을 누를시 현재 액티비티를 종료하도록 설정
+        }
+    }
+
+    private fun communityAddImage() {
+        binding.communitiyWriteAddimage.setOnClickListener {
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivityForResult(gallery, 100)
+
+        }
+
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            val selectedImageUri = data?.data
+            binding.communitiyWriteAddimage.setImageURI(selectedImageUri)
+            handleImageselected(selectedImageUri)
+        }
+    }
+
+    private fun handleImageselected(selectedImageUri: Uri?) {  // imageURL 을 생성할 지 말지
+        if (selectedImageUri != null) {       // addImage가 활성화 될때 imageURL이 생성 됨
+            imageUrl = selectedImageUri.toString()
+        } else {                              // addImage가 비활성화 일때는 ""로 받아옴.
+            imageUrl = ""
         }
     }
 }
