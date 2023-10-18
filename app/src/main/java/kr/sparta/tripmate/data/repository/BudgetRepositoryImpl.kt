@@ -21,7 +21,7 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
         budgetDao.insertBudgets(*budgets)
     }
 
-    override suspend fun updaateBudgets(vararg budgets: Budget) {
+    override suspend fun updateBudgets(vararg budgets: Budget) {
         budgetDao.updateBudgets(*budgets)
     }
 
@@ -128,4 +128,8 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
             emit(result)
         }
     }
+
+    override suspend fun getBudgetCategories(num: Int) = budgetCategoriesDao.getAllBudgetCategories(num)
+    override suspend fun getLastBudget(): List<Budget> = budgetDao.getLastBudget()
+    override suspend fun getProceduresWithNum(num: Int): List<Procedure> = proceduresDao.getAllProceduresWithNum(num)
 }

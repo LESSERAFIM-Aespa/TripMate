@@ -44,7 +44,7 @@ abstract class BudgetDatabase : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(
                     context = context,
                     klass = BudgetDatabase::class.java,
-                    name = "budget_database"
+                    name = "budget_database_1"
                 ).addMigrations(MIGRATION_1_2)
                     .build()
             }
