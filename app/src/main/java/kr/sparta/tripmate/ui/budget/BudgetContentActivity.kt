@@ -3,13 +3,17 @@ package kr.sparta.tripmate.ui.budget
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
-import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
 import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {
@@ -41,7 +45,18 @@ class BudgetContentActivity : AppCompatActivity() {
         )
     }
 
-    private val budgetNum by lazy { intent.getIntExtra(EXTRA_BUDGET_NUM, -1) }
+    private val budgetNum by lazy { intent.getIntExtra(EXTRA_BUDGET_NUM, 0) }
+    private val categoryAdapter by lazy {
+        CategoryAdapter(object : CategoryAdapter.CategoryListEventListener {
+            override fun onColorButtonClicked(pos: Int, button: Button) {
+                showColorPickerDialog(pos, button)
+            }
+        })
+    }
+
+    private fun showColorPickerDialog(pos: Int, button: Button) {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +90,17 @@ class BudgetContentActivity : AppCompatActivity() {
             showDatePickerDialog(str, budgetEnddateTextview)
         }
 
+        budgetCategoryRecyclerview.apply {
+            layoutManager = LinearLayoutManager(this@BudgetContentActivity)
+            adapter = categoryAdapter
+        }
+
+        budgetCategoryFloatingactionbutton.setOnClickListener {
+            val currentList = categoryAdapter.currentList.toMutableList()
+            currentList.add(Category(budgetNum, "", ""))
+            categoryAdapter.submitList(currentList)
+        }
+
         budgetDetailBackImageview.setOnClickListener {
             //뒤로가기
             finish()
@@ -106,6 +132,7 @@ class BudgetContentActivity : AppCompatActivity() {
         val df1 = DecimalFormat("00")
         val listener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
             textView.text = "$year.${df1.format(month + 1)}.${df1.format(day)}"
+            textView.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
         if (str.isBlank() || str == "날짜를 입력해 주세요") {
             val cal = Calendar.getInstance()
@@ -122,7 +149,7 @@ class BudgetContentActivity : AppCompatActivity() {
                 this,
                 listener,
                 arr[0].toInt(),
-                arr[1].toInt()-1,
+                arr[1].toInt() - 1,
                 arr[2].toInt()
             ).show()
         }
