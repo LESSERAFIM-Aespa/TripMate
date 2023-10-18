@@ -48,6 +48,10 @@ class BudgetContentViewModel(
             after@ for (category in categories) {
                 for ((idx, beforeCategory) in beforeCategories.withIndex()) {
                     if (!checkedArr[idx] && category.num == beforeCategory.num) {
+                        if (category == beforeCategory) {
+                            checkedArr[idx] = true
+                            continue@after
+                        }
                         repository.updateCategories(category)
                         checkedArr[idx] = true
                         continue@after
@@ -58,7 +62,7 @@ class BudgetContentViewModel(
             val etcNum = beforeCategories[2].num // 기타 카테고리
             checkedArr.forEachIndexed { index, b ->
                 if (!b){
-                    val currentCategory = categories[index]
+                    val currentCategory = beforeCategories[index]
                     val procedures = repository.getProceduresWithNum(currentCategory.num).map { it.copy(categoryNum = etcNum) }.toTypedArray()
                     repository.updateProcedures(*procedures)
                     repository.deleteCategories(currentCategory)
