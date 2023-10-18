@@ -238,6 +238,14 @@ class BudgetContentActivity : AppCompatActivity() {
                 }
 
                 BudgetContentType.EDIT -> {
+                    val budget = Budget(
+                        name = budgetNameEdittext.text.toString(),
+                        startDate = budgetStartdateTextview.text.toString(),
+                        endDate = budgetEnddateTextview.text.toString(),
+                        money = budgetMoneyEdittext.text.toString().toInt()
+                    )
+                    val categories = categoryAdapter.saveList
+                    contentViewModel.updateBudgetAndCategories(budget, categories)
                     finish()
                 }
 
