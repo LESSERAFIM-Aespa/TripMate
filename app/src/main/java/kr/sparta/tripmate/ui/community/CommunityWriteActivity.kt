@@ -13,6 +13,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
+import kr.sparta.tripmate.ui.community.main.CommunityListAdapter
 import kr.sparta.tripmate.ui.community.main.CommunityModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
@@ -33,14 +34,20 @@ class CommunityWriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val allCommunityData = mutableListOf<CommunityModel>()
+//        val adapter = CommunityListAdapter(dataModelList)
+        val database = Firebase.database
+        val myRef = database.getReference("CommunityData")
+
+
+        viewModel.updateDataModelList(allCommunityData) // ViewModel을 통해 데이터를 업데이트
+
         binding = ActivityCommunityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         commu_Database = Firebase.database.reference                        //2. 데이터베이스 객체 초기화
 
         communityBackBtn()      //3. 뒤로가기 버튼
         communitySaveBtn()     //4. 게시하기 버튼
-
-
     }
 
     private fun communitySaveBtn() {
