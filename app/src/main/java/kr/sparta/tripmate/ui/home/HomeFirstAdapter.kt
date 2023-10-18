@@ -10,8 +10,7 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
 import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
-import kr.sparta.tripmate.databinding.ScraptitemsBinding
-import kr.sparta.tripmate.domain.model.ScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
 class HomeFirstAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :

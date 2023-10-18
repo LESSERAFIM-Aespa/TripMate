@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.domain.model.ScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.databinding.ScraptitemsBinding
 import kr.sparta.tripmate.util.method.removeHtmlTags
 

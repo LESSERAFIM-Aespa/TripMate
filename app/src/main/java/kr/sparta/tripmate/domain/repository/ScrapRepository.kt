@@ -1,6 +1,6 @@
 package kr.sparta.tripmate.domain.repository
 
-import kr.sparta.tripmate.domain.model.ScrapServerDataEntity
+import kr.sparta.tripmate.domain.model.scrap.ScrapServerDataEntity
 
 interface ScrapRepository {
     suspend fun getSearchBlog(
