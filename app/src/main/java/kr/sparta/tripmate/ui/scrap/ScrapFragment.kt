@@ -11,7 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
@@ -57,6 +60,7 @@ class ScrapFragment : Fragment() {
 
     private fun observeViewModel() = with(scrapViewModel) {
         scrapResult.observe(viewLifecycleOwner) {
+            Log.d("TripMates", "어댑터에들어갈 isLike ${it[0].isLike} ${it[1].isLike}")
             scrapAdapter.submitList(it)
 
             isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -72,11 +76,17 @@ class ScrapFragment : Fragment() {
                 scrapResults.launch(intent)
             },
             onLikeClick = { model, position ->
-                model.isLike = !model.isLike
 
+                scrapViewModel.updateIsLike(
+                    model = model.copy(
+                        isLike = !model.isLike
+                    ),
+                    position
+                )
+                //위에서 model의 isLike값을 반전시키고 뷰모델에서 업데이트되기때문에 아래의 model.isLike는 값이 반전되기 이전이다.
                 if (model.isLike) {
-                    saveScrapFirebase(model)
-                } else deleteScrapFirebase(model)
+                    deleteScrapFirebase(model)
+                } else saveScrapFirebase(model)
             }
         )
 
@@ -116,17 +126,29 @@ class ScrapFragment : Fragment() {
 
     private fun saveScrapFirebase(model: ScrapModel) {
         val scrapRef = ScrapRef()
-        scrapRef.get().addOnSuccessListener {
-            if (it.exists()) {
-                val current_Index = it.childrenCount
-                val new_Index = current_Index + 1
+        scrapRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val getScrapList = ArrayList<ScrapModel>()
 
-                scrapRef.child(new_Index.toString()).setValue(model)
-            } else scrapRef.child("1").setValue(model)
+                for (items in dataSnapshot.children) {
+                    val existingModel = items.getValue(ScrapModel::class.java)
+                    existingModel?.let {
+                        getScrapList.add(it)
+                    }
+                }
+                val isDuplicate = getScrapList.any { it.url == model.url }
 
-        }.addOnFailureListener {
-            Log.d("TripMates", "Error reading data: $it")
-        }
+                if (!isDuplicate) {
+                    getScrapList.add(model)
+
+                    scrapRef.setValue(getScrapList)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("TripMates", "Error reading data: $databaseError")
+            }
+        })
     }
 
     private fun deleteScrapFirebase(model: ScrapModel) {
@@ -146,9 +168,8 @@ class ScrapFragment : Fragment() {
     }
 
     private fun ScrapRef(): DatabaseReference {
-        return scrap_Database.child("UserData")
+        return scrap_Database.child("scrapData")
             .child(SharedPreferences.getUid(requireContext()))
-            .child("scrapData")
     }
 
 }

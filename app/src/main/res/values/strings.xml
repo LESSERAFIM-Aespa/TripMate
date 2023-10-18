@@ -3,9 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="splash_logo_text">TRIPMATE</string>
-
-    <string name="login_title">우리와 함께 여행을 \n즐겨보세요!</string>
     <string name="nick_title">닉네임을 \n입력해주세요!</string>
+    <string name="login_title">우리와 함께 여행을 \n즐겨보세요!</string>
     <string name="Sign_in_with_Google">Sign in with Google</string>
     <string name="Sign_in_with_Apple">Sign in with Apple</string>
 
@@ -27,4 +26,29 @@
     <string name="welcome">환영 합니다!</string>
     <string name="popularposts">인기글</string>
     <string name="budgetmanagement">가계부 관리</string>
+
+    <string name="budget_list_title">가계부 관리</string>
+    <string name="budget_status_text">과정</string>
+    <string name="budget_statistics_text">통계</string>
+    <string name="budget_principal_text">원금</string>
+    <string name="budget_balance_text">잔액</string>
+    <string name="budget_content_name">가계부 이름</string>
+    <string name="budget_content_input_name">이름을 입력해 주세요</string>
+    <string name="budget_content_startdate">시작 날짜</string>
+    <string name="budget_content_date">기간</string>
+    <string name="budget_content_enddate">종료 날짜</string>
+    <string name="budget_content_input_date">날짜를 입력해 주세요</string>
+    <string name="budget_content_money">원금</string>
+    <string name="budget_content_input_money">원금을 입력해 주세요</string>
+    <string name="budget_content_category">카테고리</string>
+    <string name="budget_content_cancel">취소</string>
+    <string name="budget_content_save">저장</string>
+    <string name="budget_category_color">색상</string>
+    <string name="budget_procedure_spend_text">지출</string>
+    <string name="budget_procedure_time_text">시간</string>
+    <string name="procedure_name_text">과정 이름</string>
+    <string name="procedure_time_text">시간</string>
+    <string name="procedure_memo_text">메모</string>
+    <string name="budget_category_input_name">카테고리 이름을 입력해 주세요</string>
+    <string name="empty_view">결과가 없습니다.</string>
 </resources>

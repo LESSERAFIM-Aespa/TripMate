@@ -2,6 +2,7 @@ package kr.sparta.tripmate.ui.scrap
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -37,10 +38,8 @@ class ScrapAdapter(
             }
             scrapLike.setOnClickListener {
                 onLikeClick(items, bindingAdapterPosition)
-                if(items.isLike){
-                    scrapLike.setImageResource(R.drawable.paintedlove)
-                } else scrapLike.setImageResource(R.drawable.love)
             }
+            scrapLike.likeChange(items.isLike)
         }
     }
 
@@ -54,5 +53,12 @@ class ScrapAdapter(
 
     override fun onBindViewHolder(holder: ScrapViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+    fun ImageView.likeChange(isLiked: Boolean) {
+        if (isLiked) {
+            this.setImageResource(R.drawable.paintedlove)
+        } else {
+            this.setImageResource(R.drawable.love)
+        }
     }
 }

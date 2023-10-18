@@ -1,11 +1,11 @@
-package kr.sparta.tripmate.domain.model
+package kr.sparta.tripmate.data.model.home
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-
 @Parcelize
-data class ScrapModel(
-        val title: String,
+data class HomeScrapData(
+    val type: Int,
+    val title: String,
     val url: String,
     val description: String,
     val bloggername: String,
@@ -13,5 +13,5 @@ data class ScrapModel(
     val postdate: String,
     var isLike:Boolean = false
 ) : Parcelable{
-    constructor() : this("", "", "", "", "", "", false)
+    constructor() : this(0,"", "", "", "", "", "", false)
 }
