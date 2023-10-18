@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_budget_view_type1"
+        android:paddingBottom="15dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/budget_procedure_category_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_budget_view_type2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="10dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="교통비" />
+
+            <TextView
+                android:id="@+id/budget_procedure_price_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:gravity="end"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/budget_procedure_category_textview"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="500,000원" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/budget_procedure_title_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            tools:text="비행기 표" />
+
+        <TextView
+            android:id="@+id/budget_procedure_before_money_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:maxLines="1"
+            android:paddingHorizontal="5dp"
+            android:textColor="@color/searchoutline"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/budget_procedure_title_textview"
+            tools:text="5,000,000" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/searchoutline"
+            app:layout_constraintBottom_toBottomOf="@+id/budget_procedure_before_money_textview"
+            app:layout_constraintEnd_toEndOf="@+id/budget_procedure_before_money_textview"
+            app:layout_constraintStart_toStartOf="@+id/budget_procedure_before_money_textview"
+            app:layout_constraintTop_toTopOf="@+id/budget_procedure_before_money_textview" />
+
+        <TextView
+            android:id="@+id/budget_procedure_total_amount_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/budget_procedure_time_textview"
+            app:layout_constraintTop_toBottomOf="@+id/budget_procedure_before_money_textview"
+            tools:text="5,000,000원" />
+
+        <TextView
+            android:id="@+id/budget_procedure_time_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/budget_procedure_total_amount_textview"
+            app:layout_constraintStart_toStartOf="@+id/budget_procedure_title_textview"
+            tools:text="14 : 05" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
