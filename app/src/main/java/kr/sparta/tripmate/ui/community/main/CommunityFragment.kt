@@ -61,7 +61,7 @@ class CommunityFragment : Fragment() {
         })
 
         initview()
-        binding.gotowritepage.setOnClickListener {
+        binding.writeBtn.setOnClickListener {
             val intent = Intent(context, CommunityWriteActivity::class.java)
             startActivity(intent)
         }
