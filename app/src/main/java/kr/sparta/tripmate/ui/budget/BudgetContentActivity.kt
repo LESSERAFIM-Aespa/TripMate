@@ -1,12 +1,16 @@
 package kr.sparta.tripmate.ui.budget
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
+import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {
     companion object {
@@ -41,38 +45,88 @@ class BudgetContentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView( binding.root)
+        setContentView(binding.root)
 
         initViews()
     }
 
-    private fun initViews() = with(binding){
-        when(entryType){
-            BudgetContentType.ADD -> budgetDetailTitleTextview.text = "가계부 추가"
-            BudgetContentType.EDIT -> budgetDetailTitleTextview.text = "가계부 수정"
+    private fun initViews() = with(binding) {
+        when (entryType) {
+            BudgetContentType.ADD -> {
+                budgetDetailTitleTextview.text = "가계부 추가"
+            }
+
+            BudgetContentType.EDIT -> {
+                budgetDetailTitleTextview.text = "가계부 수정"
+            }
+
             else -> {}
         }
 
+        budgetStartdateTextview.setOnClickListener {
+            // 시작날짜
+            val str = budgetStartdateTextview.text.toString()
+            showDatePickerDialog(str, budgetStartdateTextview)
+        }
+
+        budgetEnddateTextview.setOnClickListener {
+            // 종료날짜
+            val str = budgetEnddateTextview.text.toString()
+            showDatePickerDialog(str, budgetEnddateTextview)
+        }
+
         budgetDetailBackImageview.setOnClickListener {
+            //뒤로가기
             finish()
         }
 
         budgetCancelButton.setOnClickListener {
+            //취소하기
             finish()
         }
 
         budgetSaveButton.setOnClickListener {
-            when(entryType){
+            //저장버튼
+            when (entryType) {
                 BudgetContentType.ADD -> {
 
                 }
+
                 BudgetContentType.EDIT -> {
 
                 }
+
                 else -> {}
             }
             finish()
         }
+    }
+
+    private fun showDatePickerDialog(str: String, textView: TextView) {
+        val df1 = DecimalFormat("00")
+        val listener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+            textView.text = "$year.${df1.format(month + 1)}.${df1.format(day)}"
+        }
+        if (str.isBlank() || str == "날짜를 입력해 주세요") {
+            val cal = Calendar.getInstance()
+            DatePickerDialog(
+                this,
+                listener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        } else {
+            val arr = str.split(".")
+            DatePickerDialog(
+                this,
+                listener,
+                arr[0].toInt(),
+                arr[1].toInt()-1,
+                arr[2].toInt()
+            ).show()
+        }
+
     }
 }
 
