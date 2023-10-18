@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.community
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -42,8 +43,6 @@ class CommunityWriteActivity : AppCompatActivity() {
 
             val intent = Intent(this, CommunityDetailActivity::class.java)
             startActivity(intent)
-       {
-
 
 
             val body_write = binding.communityWriteDescription.text.toString()
