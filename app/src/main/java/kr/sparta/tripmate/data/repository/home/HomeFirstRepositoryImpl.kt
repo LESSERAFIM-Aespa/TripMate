@@ -1,6 +1,5 @@
 package kr.sparta.tripmate.data.repository.home
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.DataSnapshot
@@ -8,12 +7,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kr.sparta.tripmate.data.model.home.HomeScrapData
-import kr.sparta.tripmate.domain.model.ScrapModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
 
 
-class HomeFirstRepositorylmpl() {
+class HomeFirstRepositoryImpl() {
     private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
     fun getData(uid:String): LiveData<MutableList<ScrapModel>> {
         val firstData = MutableLiveData<MutableList<ScrapModel>>()

@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.databinding.ActivityScrapDetailBinding
-import kr.sparta.tripmate.domain.model.ScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
 
 class ScrapDetail : AppCompatActivity() {
     companion object {

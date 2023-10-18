@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.domain.model
+package kr.sparta.tripmate.domain.model.login
 
 data class UserData(
     val login_Id: String,

@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
-import kr.sparta.tripmate.domain.model.ScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
