@@ -10,20 +10,35 @@ import com.google.firebase.database.ValueEventListener
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
 class HomeFirstRepositoryImpl() {
     private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
     fun getData(uid:String): LiveData<MutableList<ScrapEntity>> {
         val firstData = MutableLiveData<MutableList<ScrapEntity>>()
+=======
+
+
+class HomeFirstRepositoryImpl() {
+    private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
+    fun getData(uid:String): LiveData<MutableList<ScrapModel>> {
+        val firstData = MutableLiveData<MutableList<ScrapModel>>()
+>>>>>>> f8dd8aa ([feat] 커뮤니티 메인에 다른사람 글도 읽을 수 있게 설정)
 
         val dataListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 try{
                     if (snapshot.exists()) {
+<<<<<<< HEAD
                         val homeScrapDataList = mutableListOf<ScrapEntity>()
                         for (dataSnapshot in snapshot.children) {
                             val homeScrapData = dataSnapshot.getValue(ScrapEntity::class.java)
+=======
+                        val homeScrapDataList = mutableListOf<ScrapModel>()
+                        for (dataSnapshot in snapshot.children) {
+                            val homeScrapData = dataSnapshot.getValue(ScrapModel::class.java)
+>>>>>>> f8dd8aa ([feat] 커뮤니티 메인에 다른사람 글도 읽을 수 있게 설정)
                             homeScrapData?.let { homeScrapDataList.add(it) }
                         }
                         firstData.value = homeScrapDataList
@@ -31,6 +46,7 @@ class HomeFirstRepositoryImpl() {
                 } catch(e: Exception){
                     firstData.value = mutableListOf()
                 }
+<<<<<<< HEAD
 =======
 =======
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
@@ -68,6 +84,8 @@ class HomeFirstRepositoryImpl() {
                     firstData.value = mutableListOf()
                 }
 >>>>>>> 7c24d50 ([feat] 커뮤니티 메인에 다른사람 글도 읽을 수 있게 설정)
+=======
+>>>>>>> f8dd8aa ([feat] 커뮤니티 메인에 다른사람 글도 읽을 수 있게 설정)
             }
 
             override fun onCancelled(error: DatabaseError) {
