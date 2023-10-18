@@ -39,9 +39,6 @@ class CommunityWriteActivity : AppCompatActivity() {
         }
         binding.communityWriteIcShare.setOnClickListener {
 
-            val intent = Intent(this, CommunityDetailActivity::class.java)
-            startActivity(intent)
-
             val body_write = binding.communityWriteDescription.text.toString()
             val title_write = binding.communityWriteTitle.text.toString()
             // 파이어베이스로 저장하기 위한 설정및 함수호출
