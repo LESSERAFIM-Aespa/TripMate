@@ -2,6 +2,7 @@ package kr.sparta.tripmate.ui.community.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,14 @@ import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
+import kotlin.math.log
 
 
 class CommunityFragment : Fragment() {
+
+    private val allPostIds = mutableListOf<String>()
+    private val allCommunityData = mutableListOf<CommunityModel>()
+
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
@@ -28,12 +34,6 @@ class CommunityFragment : Fragment() {
     private val adapter by lazy {
         CommunityListAdapter(viewModel.dataModelList.value ?: mutableListOf())
     }
-
-    // Write a message to the database
-    private val database = Firebase.database
-    private val communityRef = database.getReference("CommunityData")
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,20 +54,28 @@ class CommunityFragment : Fragment() {
 
         // Firebase에서 데이터를 가져오고 RecyclerView 어댑터를 업데이트
         val database = Firebase.database
-        val myRef = database.getReference("CommunityData").child(Firebase.auth.currentUser!!.uid)
+        val myRef = database.getReference("CommunityData")
 
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val newData = mutableListOf<CommunityModel>()
-                for (dataModel in snapshot.children) {
-                    newData.add(dataModel.getValue(CommunityModel::class.java)!!)
+                val allCommunityData = mutableListOf<CommunityModel>()
+
+                for (userPostSnapshot in snapshot.children) {
+                    for (postSnapshot in userPostSnapshot.children) {
+                        val postId = postSnapshot.key
+                        val postModel = postSnapshot.getValue(CommunityModel::class.java)
+                        if (postId != null && postModel != null) {
+                            allCommunityData.add(postModel)
+                        }
+                    }
                 }
 
-                // 가져온 데이터를 ViewModel을 통해 업데이트
-                viewModel.updateDataModelList(newData)
 
+                // 가져온 데이터를 ViewModel을 통해 업데이트
+                viewModel.updateDataModelList(allCommunityData)
                 // RecyclerView 어댑터 업데이트
-                adapter.submitList(newData)
+                adapter.submitList(allCommunityData)
+
             }
 
             override fun onCancelled(error: DatabaseError) {

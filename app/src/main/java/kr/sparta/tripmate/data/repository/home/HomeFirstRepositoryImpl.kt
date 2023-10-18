@@ -17,14 +17,18 @@ class HomeFirstRepositoryImpl() {
 
         val dataListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    val homeScrapDataList = mutableListOf<ScrapModel>()
-                    for (dataSnapshot in snapshot.children) {
-                        val homeScrapData = dataSnapshot.getValue(ScrapModel::class.java)
-                        homeScrapData?.let { homeScrapDataList.add(it) }
-                    }
-                    firstData.value = homeScrapDataList
-                } else firstData.value = mutableListOf()
+                try{
+                    if (snapshot.exists()) {
+                        val homeScrapDataList = mutableListOf<ScrapModel>()
+                        for (dataSnapshot in snapshot.children) {
+                            val homeScrapData = dataSnapshot.getValue(ScrapModel::class.java)
+                            homeScrapData?.let { homeScrapDataList.add(it) }
+                        }
+                        firstData.value = homeScrapDataList
+                    } else firstData.value = mutableListOf()
+                } catch(e: Exception){
+                    firstData.value = mutableListOf()
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

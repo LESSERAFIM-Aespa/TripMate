@@ -1,7 +1,6 @@
 package kr.sparta.tripmate.ui.community.main
 
 data class CommunityModel(
-
     val id: String, // 게시글 id
     val thumbnail: String?, // 이미지
     val title: String?, // 제목
@@ -14,4 +13,3 @@ data class CommunityModel(
     // 매개 변수 없는 생성자 추가 : 파이어베이스는 불러올때 빈생성자를 받아서 이렇게 사용해야함
     constructor() : this("", null, null, null, null, null, null, null)
 }
-
