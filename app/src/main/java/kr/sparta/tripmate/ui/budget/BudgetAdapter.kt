@@ -27,7 +27,7 @@ class BudgetAdapter(private val budgetListEventListener: BudgetListEventListener
     inner class ViewHolder(private val binding: ItemBudgetBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
-            root.setOnClickListener { budgetListEventListener.itemClicked(absoluteAdapterPosition) }
+            root.setOnClickListener { budgetListEventListener.itemClicked(currentList[absoluteAdapterPosition].num) }
             budgetItemStatusTextview.text =
                 "${currentList[absoluteAdapterPosition].money.toMoneyFormat()}원 -> ${currentList[absoluteAdapterPosition].resultMoeny.toMoneyFormat()}원"
             budgetItemDurationTextview.text =
