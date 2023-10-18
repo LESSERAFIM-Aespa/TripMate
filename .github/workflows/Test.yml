@@ -12,6 +12,8 @@ on:
       - feat/login
       - feat/splash
       - feat/setting
+      - feat/budgetlist
+      - feat/budgetdetail
   pull_request:
     branches: 
       - feat/main
@@ -23,6 +25,8 @@ on:
       - feat/login
       - feat/splash
       - feat/setting
+      - feat/budgetlist
+      - feat/budgetdetail
 
 jobs:
   build:
