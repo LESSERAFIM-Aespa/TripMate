@@ -40,6 +40,11 @@ class CommunityWriteActivity : AppCompatActivity() {
         }
         binding.communityWriteIcShare.setOnClickListener {
 
+            val intent = Intent(this, CommunityDetailActivity::class.java)
+            startActivity(intent)
+       {
+
+
 
             val body_write = binding.communityWriteDescription.text.toString()
             val title_write = binding.communityWriteTitle.text.toString()

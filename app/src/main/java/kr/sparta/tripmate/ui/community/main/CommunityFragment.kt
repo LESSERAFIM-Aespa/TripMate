@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.auth.FirebaseAuth
 import androidx.fragment.app.viewModels
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -17,13 +18,22 @@ import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 
+
 class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: CommunityViewModel by viewModels()
+
     private val adapter by lazy {
         CommunityListAdapter(viewModel.dataModelList.value ?: mutableListOf())
     }
+
+    // Write a message to the database
+    private val database = Firebase.database
+    private val communityRef = database.getReference("CommunityData")
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +45,12 @@ class CommunityFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)   
+
+        binding.writeBtn.setOnClickListener {
+            val intent = Intent(context, CommunityWriteActivity::class.java)
+            startActivity(intent)
+        }
 
         // Firebase에서 데이터를 가져오고 RecyclerView 어댑터를 업데이트
         val database = Firebase.database
@@ -60,6 +75,7 @@ class CommunityFragment : Fragment() {
             }
         })
 
+
         initview()
         binding.gotowritepage.setOnClickListener {
             val intent = Intent(context, CommunityWriteActivity::class.java)
@@ -69,5 +85,12 @@ class CommunityFragment : Fragment() {
 
     private fun initview() = with(binding) {
         communityMainRecyclerView.adapter = adapter
+
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
