@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/community_write_backbutton" />
 
     <ImageView
-        android:id="@+id/communitiy_wirte_addimage"
+        android:id="@+id/communitiy_write_addimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/communitiy_wirte_addimage" />
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_write_addimage" />
 
     <ImageView
         android:id="@+id/community_write_ic_share"
