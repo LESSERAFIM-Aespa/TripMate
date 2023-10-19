@@ -16,6 +16,6 @@ data class CommunityModel(
     val key : String?,
     val commuIsLike:Boolean = false
 ) : Parcelable{
-        // 매개 변수 없는 생성자 추가 : 파이어베이스는 불러올때 빈생성자를 받아서 이렇게 사용해야함
-        constructor() : this("", null, null, null, null, null, null, null, null)
+    // 매개 변수 없는 생성자 추가 : 파이어베이스는 불러올때 빈생성자를 받아서 이렇게 사용해야함
+    constructor() : this("", null, null, null, null, null, null, null, null)
 }
