@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.community.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,8 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
-class CommunityListAdapter(private val dataModelList: List<CommunityModel>): ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
+class CommunityListAdapter(private val
+onProfileClicked:(CommunityModel,Int)->Unit):
+    ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
     object: DiffUtil.ItemCallback<CommunityModel>() {
         override fun areItemsTheSame(oldItem: CommunityModel, newItem: CommunityModel): Boolean {
             return oldItem.id == newItem.id
@@ -29,14 +34,28 @@ class CommunityListAdapter(private val dataModelList: List<CommunityModel>): Lis
         holder.bind(getItem(position))
     }
 
-    class CommunityHolder(private val binding : FragmentCommunityMainItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CommunityHolder(private val binding : FragmentCommunityMainItemBinding) : RecyclerView
+        .ViewHolder(binding.root) {
         fun bind(item: CommunityModel)=with(binding) {
             communityMainThumbnail.load(item.thumbnail)
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
-            communityMainProfileThumbnail.load(item.profileThumbnail)
+            communityMainThumbnail.setOnClickListener {
+                val intent = Intent(itemView.context,CommunityDetailActivity::class.java)
+                intent.putExtra("Data",item)
+                itemView.context.startActivity(intent)
+
+            }
+            communityMainProfileThumbnail.apply {
+                load(item.profileThumbnail)
+                setOnClickListener {
+                    onProfileClicked(item, bindingAdapterPosition)
+                }
+            }
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
+
+
         }
     }
 }
