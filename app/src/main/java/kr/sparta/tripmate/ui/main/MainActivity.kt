@@ -4,55 +4,53 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
-import kr.sparta.tripmate.util.method.setIcon
+import kr.sparta.tripmate.ui.home.HomeFragment
 
-class MainActivity : AppCompatActivity(), TabLayoutListener {
+class MainActivity : AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
     }
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private val tabList = listOf("Budget", "Commu", "Home", "Scrap", "MyPage")
-    private val it = this@MainActivity
+    private val viewPagerAdapter by lazy { ViewPager2Adapter(this) }
+
+    private val mainActivity = this@MainActivity
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        viewPager2State()
 
-        ViewPager2State()
-        TabLayoutMediator()
-        PageChangeCallBack()
-
-    }
-
-    private fun TabLayoutMediator() {
-        com.google.android.material.tabs.TabLayoutMediator(
+        TabLayoutMediator(
             binding.tabLayout,
             binding.viewPager2
         ) { tab, position ->
-            tab.text = tabList[position]
-            when (position) {
-                0 -> tab.setIcon(it, R.drawable.budget)
-                1 -> tab.setIcon(it, R.drawable.community)
-                2 -> tab.setIcon(it, R.drawable.home)
-                3 -> tab.setIcon(it, R.drawable.scrap)
-                4 -> tab.setIcon(it, R.drawable.mypage)
-            }
+            tab.setText(viewPagerAdapter.getTitme(position))
+            tab.setIcon(viewPagerAdapter.getIcon(position))
         }.attach()
+
+        pageChangeCallBack()
+        binding.viewPager2.offscreenPageLimit = viewPagerAdapter.itemCount
     }
 
-    private fun ViewPager2State() {
+    private fun viewPager2State() {
         binding.viewPager2.apply {
-            adapter = ViewPager2Adapter(it)
-            setCurrentItem(2, false)
+            adapter = viewPagerAdapter
+            setCurrentItem(
+                viewPagerAdapter.findFragmentTabIndex(R.string.main_tab_title_home),
+                false
+            )
             setUserInputEnabled(false)
         }
     }
 
-    private fun PageChangeCallBack() {
+    private fun pageChangeCallBack() {
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             var currentState = 0
             var currentPosition = 0
@@ -81,23 +79,14 @@ class MainActivity : AppCompatActivity(), TabLayoutListener {
         })
     }
 
-    override fun onScrapClicked() {
-        clickedViewPager2(3)
-    }
-
-    override fun onMyPageClicked() {
-        clickedViewPager2(4)
-    }
-
-    override fun onCommuClicked() {
-        clickedViewPager2(1)
-    }
-
-    override fun onBudgetClicked() {
-        clickedViewPager2(0)
-    }
-
-    private fun clickedViewPager2(item: Int) {
-        binding.viewPager2.setCurrentItem(item, true)
+    /**
+     * 작성자: 서정한
+     * 내용: 홈 탭에서 다른 탭으로 이동시 사용
+     * ViewPagerAdapter에서 Tab 이름을 검색하여 나온
+     * index값을 가져와 Tab 현재위치를 바꿔줌
+     * */
+    fun moveTabFragment(title: Int) {
+        val index = viewPagerAdapter.findFragmentTabIndex(title)
+        binding.viewPager2.setCurrentItem(index, false)
     }
 }
