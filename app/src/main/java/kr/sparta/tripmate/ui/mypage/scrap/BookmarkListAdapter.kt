@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
-class BookmarkListAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
-    ListAdapter<ScrapModel,
+class BookmarkListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
+    ListAdapter<ScrapEntity,
             BookmarkListAdapter
             .Holder>(object :
-        DiffUtil.ItemCallback<ScrapModel>() {
-        override fun areItemsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
+        DiffUtil.ItemCallback<ScrapEntity>() {
+        override fun areItemsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
             return oldItem.url == newItem.url
         }
 
-        override fun areContentsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
+        override fun areContentsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
             return oldItem == newItem
         }
 
@@ -38,7 +39,7 @@ class BookmarkListAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
 
     inner class Holder(private val binding: FragmentMypageBookmarkItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ScrapModel) = with(binding) {
+        fun bind(item: ScrapEntity) = with(binding) {
             bookmarkImage.setImageResource(R.drawable.blogimage)
             bookmarkTitle.text = item.title
             bookmarkContent.text = item.description
