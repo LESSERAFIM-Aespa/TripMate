@@ -4,10 +4,15 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
+<<<<<<< HEAD
+=======
+import kr.sparta.tripmate.ui.home.HomeFragment
+>>>>>>> 90d9be3 ([Feat] : 탭 이동방식 변경)
 
 class MainActivity : AppCompatActivity() {
     companion object {
