@@ -19,7 +19,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
-import kr.sparta.tripmate.ui.community.main.CommunityListAdapter
 import kr.sparta.tripmate.ui.community.main.CommunityModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
@@ -43,14 +42,6 @@ class CommunityWriteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val allCommunityData = mutableListOf<CommunityModel>()
-//        val adapter = CommunityListAdapter(dataModelList)
-        val database = Firebase.database
-        val myRef = database.getReference("CommunityData")
-
-
-        viewModel.updateDataModelList(allCommunityData) // ViewModel을 통해 데이터를 업데이트
 
         binding = ActivityCommunityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
