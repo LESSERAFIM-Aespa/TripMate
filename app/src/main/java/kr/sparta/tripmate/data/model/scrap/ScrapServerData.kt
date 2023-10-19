@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.data.model
+package kr.sparta.tripmate.data.model.scrap
 
 import com.google.gson.annotations.SerializedName
 

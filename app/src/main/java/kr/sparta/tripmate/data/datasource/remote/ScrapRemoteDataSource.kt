@@ -1,12 +1,10 @@
 package kr.sparta.tripmate.data.datasource.remote
 
 import kr.sparta.tripmate.api.Constants
-import kr.sparta.tripmate.data.model.ScrapServerData
-import retrofit2.Call
+import kr.sparta.tripmate.data.model.scrap.ScrapServerData
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
-import retrofit2.http.QueryMap
 
 interface ScrapRemoteDataSource {
     @Headers(

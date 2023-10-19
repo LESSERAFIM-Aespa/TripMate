@@ -5,13 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
-import com.bumptech.glide.Glide
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.databinding.FragmentMypageBoardItemBinding
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
-import kr.sparta.tripmate.domain.model.ScrapModel
+import kr.sparta.tripmate.data.model.scrap.ScrapModel
 
 class BookmarkListAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
     ListAdapter<ScrapModel,
