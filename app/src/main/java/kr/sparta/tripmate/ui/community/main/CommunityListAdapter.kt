@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.community.main
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(private val
@@ -38,6 +40,12 @@ onProfileClicked:(CommunityModel,Int)->Unit):
             communityMainThumbnail.load(item.thumbnail)
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
+            communityMainThumbnail.setOnClickListener {
+                val intent = Intent(itemView.context,CommunityDetailActivity::class.java)
+                intent.putExtra("Data",item)
+                itemView.context.startActivity(intent)
+
+            }
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
                 setOnClickListener {
