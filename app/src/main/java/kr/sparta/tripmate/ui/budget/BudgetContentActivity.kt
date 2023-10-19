@@ -173,6 +173,7 @@ class BudgetContentActivity : AppCompatActivity() {
                         "가계부 이름이 공백입니다. 다시 확인해주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
+
                 }
 
                 budgetNameEdittext.text.toString().length >= 30 -> {
@@ -222,34 +223,35 @@ class BudgetContentActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
-            //저장버튼
-            when (entryType) {
-                BudgetContentType.ADD -> {
-                    val budget = Budget(
-                        name = budgetNameEdittext.text.toString(),
-                        startDate = budgetStartdateTextview.text.toString(),
-                        endDate = budgetEnddateTextview.text.toString(),
-                        money = budgetMoneyEdittext.text.toString().toInt()
-                    )
-                    val categories = categoryAdapter.saveList
-                    contentViewModel.inserBudgetAndCategories(budget, categories)
-                    finish()
-                }
+                else ->{
+                    when (entryType) {
+                        BudgetContentType.ADD -> {
+                            val budget = Budget(
+                                name = budgetNameEdittext.text.toString(),
+                                startDate = budgetStartdateTextview.text.toString(),
+                                endDate = budgetEnddateTextview.text.toString(),
+                                money = budgetMoneyEdittext.text.toString().toInt()
+                            )
+                            val categories = categoryAdapter.saveList
+                            contentViewModel.inserBudgetAndCategories(budget, categories)
+                            finish()
+                        }
 
-                BudgetContentType.EDIT -> {
-                    val budget = Budget(
-                        name = budgetNameEdittext.text.toString(),
-                        startDate = budgetStartdateTextview.text.toString(),
-                        endDate = budgetEnddateTextview.text.toString(),
-                        money = budgetMoneyEdittext.text.toString().toInt()
-                    )
-                    val categories = categoryAdapter.saveList
-                    contentViewModel.updateBudgetAndCategories(budget, categories)
-                    finish()
-                }
+                        BudgetContentType.EDIT -> {
+                            val budget = Budget(
+                                name = budgetNameEdittext.text.toString(),
+                                startDate = budgetStartdateTextview.text.toString(),
+                                endDate = budgetEnddateTextview.text.toString(),
+                                money = budgetMoneyEdittext.text.toString().toInt()
+                            )
+                            val categories = categoryAdapter.saveList
+                            contentViewModel.updateBudgetAndCategories(budget, categories)
+                            finish()
+                        }
 
-                else -> {}
+                        else -> {}
+                    }
+                }
             }
         }
     }
