@@ -3,10 +3,7 @@ package kr.sparta.tripmate.domain.model.scrap
 import kr.sparta.tripmate.data.model.scrap.ScrapItems
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.data.model.scrap.ScrapServerData
-<<<<<<< HEAD
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
-=======
->>>>>>> 839c670 ([hotfix] 에러 수정 및 리펠토링)
 
 fun ScrapServerData.toEntity(): ScrapServerDataEntity = ScrapServerDataEntity(
     lastBuildDate = lastBuildDate,
