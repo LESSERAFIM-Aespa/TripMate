@@ -18,6 +18,7 @@ import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.budget.BudgetContentActivity.Companion.EXTRA_BUDGET_ENTRY_TYPE
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModelFactory
+import kr.sparta.tripmate.util.method.toTimeFormat
 import java.util.Calendar
 
 class ProcedureContentActivity : AppCompatActivity() {
@@ -126,18 +127,22 @@ class ProcedureContentActivity : AppCompatActivity() {
     }
 
     private fun showDateAndTimePickerDialog(str: String, textView: TextView) {
-        val df1 = DecimalFormat("00")
         val isFirst = str == "시간과 날짜를 입력해 주세요"
         val listener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-            val date = "$year.${df1.format(month + 1)}.${df1.format(day)}"
+            val date = "$year.${(month + 1).toTimeFormat()}.${day.toTimeFormat()}"
             if (date >= startDate && date <= endDate) {
                 val timeSetListener =
                     TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                         textView.setTextColor(ContextCompat.getColor(this, R.color.black))
-                        textView.text = date + " ${df1.format(hourOfDay)}:${df1.format(minute)}"
+                        textView.text =
+                            date + " ${hourOfDay.toTimeFormat()}:${minute.toTimeFormat()}"
                     }
                 if (isFirst) {
-                    TimePickerDialog(this, timeSetListener, 0, 0, true).show()
+                    TimePickerDialog(this, timeSetListener, 0, 0, true).apply {
+                        setOnCancelListener {
+                            showDateAndTimePickerDialogAgain(year, month, day, textView)
+                        }
+                    }.show()
                 } else {
                     val (_, time) = str.split(" ")
                     val (hour, minute) = time.split(":")
@@ -177,8 +182,54 @@ class ProcedureContentActivity : AppCompatActivity() {
                 arr[2].toInt()
             ).show()
         }
+    }
 
-
+    private fun showDateAndTimePickerDialogAgain(
+        year: Int,
+        month: Int,
+        day: Int,
+        textView: TextView,
+    ) {
+        val listener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+            val date = "$year.${(month + 1).toTimeFormat()}.${day.toTimeFormat()}"
+            if (date >= startDate && date <= endDate) {
+                val timeSetListener =
+                    TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                        textView.setTextColor(ContextCompat.getColor(this, R.color.black))
+                        textView.text =
+                            date + " ${hourOfDay.toTimeFormat()}:${minute.toTimeFormat()}"
+                    }
+                TimePickerDialog(
+                    this,
+                    timeSetListener,
+                    0,
+                    0,
+                    true
+                ).apply {
+                    setOnCancelListener {
+                        showDateAndTimePickerDialogAgain(
+                            year,
+                            month,
+                            day,
+                            textView
+                        )
+                    }
+                }.show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "날짜는 시작일:$startDate 와 종료일:$endDate 사이로 해주세요",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        DatePickerDialog(
+            this,
+            listener,
+            year,
+            month,
+            day
+        ).show()
     }
 }
 
