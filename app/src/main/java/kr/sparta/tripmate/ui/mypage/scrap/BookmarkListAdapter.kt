@@ -9,9 +9,13 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 <<<<<<< HEAD
+<<<<<<< HEAD
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 =======
 >>>>>>> 839c670 ([hotfix] 에러 수정 및 리펠토링)
+=======
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+>>>>>>> 31e02f9 ([Refector] : ScrapModel -> ScrapEntity 변경)
 
 class BookmarkListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
     ListAdapter<ScrapEntity,
