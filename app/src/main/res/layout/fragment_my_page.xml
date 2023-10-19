@@ -32,14 +32,13 @@
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/ic_setting" />
 
-        <TextView
-            android:id="@+id/mypage_edit_text_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/mypage_edit_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="end"
-            android:text="@string/mypage_edit_text"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:layout_marginHorizontal="7dp"
+            android:background="@drawable/mypage_baseline_create_24" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
