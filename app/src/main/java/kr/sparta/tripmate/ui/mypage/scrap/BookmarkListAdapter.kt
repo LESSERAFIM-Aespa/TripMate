@@ -9,6 +9,7 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+
 class BookmarkListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
     ListAdapter<ScrapEntity,
             BookmarkListAdapter

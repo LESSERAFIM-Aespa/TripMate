@@ -13,13 +13,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-<<<<<<< HEAD
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapEntity
-=======
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
-import kr.sparta.tripmate.domain.model.scrap.toScrapModel
->>>>>>> 839c670 ([hotfix] 에러 수정 및 리펠토링)
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.domain.usecase.RemoveFirebaseScrapData
 import kr.sparta.tripmate.domain.usecase.SaveFirebaseScrapData

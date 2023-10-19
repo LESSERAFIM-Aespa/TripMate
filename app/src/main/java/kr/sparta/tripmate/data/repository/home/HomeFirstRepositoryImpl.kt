@@ -8,20 +8,21 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
 
 class HomeFirstRepositoryImpl() {
     private val databaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
-    fun getData(uid:String): LiveData<MutableList<ScrapModel>> {
-        val firstData = MutableLiveData<MutableList<ScrapModel>>()
+    fun getData(uid:String): LiveData<MutableList<ScrapEntity>> {
+        val firstData = MutableLiveData<MutableList<ScrapEntity>>()
 
         val dataListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 try{
                     if (snapshot.exists()) {
-                        val homeScrapDataList = mutableListOf<ScrapModel>()
+                        val homeScrapDataList = mutableListOf<ScrapEntity>()
                         for (dataSnapshot in snapshot.children) {
-                            val homeScrapData = dataSnapshot.getValue(ScrapModel::class.java)
+                            val homeScrapData = dataSnapshot.getValue(ScrapEntity::class.java)
                             homeScrapData?.let { homeScrapDataList.add(it) }
                         }
                         firstData.value = homeScrapDataList
