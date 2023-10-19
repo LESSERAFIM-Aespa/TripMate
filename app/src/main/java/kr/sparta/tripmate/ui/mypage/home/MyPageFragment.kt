@@ -12,10 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMyPageBinding
 import kr.sparta.tripmate.ui.setting.SettingActivity
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageFragment : Fragment() {
     companion object {
@@ -49,6 +51,16 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
+        // UserInfo 설정
+        fun initUserInfo() {
+            val nickname = SharedPreferences.getNickName(requireContext())
+            val thumbnail = SharedPreferences.getProfile(requireContext())
+            mypageProfileImageview.load(thumbnail)
+            mypageProfileNickTextview.text = nickname
+        }
+
+        initUserInfo()
+
         mypageViewpager.adapter = adapter
 
         TabLayoutMediator(mypageTablayout, mypageViewpager) { tab, position ->
@@ -75,7 +87,7 @@ class MyPageFragment : Fragment() {
         }
 
         // Edit버튼 클릭
-        mypageEditTextButton.setOnClickListener {
+        mypageEditButton.setOnClickListener {
             // 이전입력되었던 텍스트 가져오기(있을경우)
             val beforeText = mypageProfileContentTextview.text
             mypageProfileContentEdittext.setText(beforeText)
