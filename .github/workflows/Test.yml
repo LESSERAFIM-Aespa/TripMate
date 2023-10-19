@@ -6,6 +6,8 @@ on:
       - feat/main
       - feat/budget
       - feat/community
+      - feat/communitymain
+      - feat/communitydetail
       - feat/home
       - feat/scrap
       - feat/mypage
@@ -19,6 +21,8 @@ on:
       - feat/main
       - feat/budget
       - feat/community
+      - feat/communitymain
+      - feat/communitydetail
       - feat/home
       - feat/scrap
       - feat/mypage
