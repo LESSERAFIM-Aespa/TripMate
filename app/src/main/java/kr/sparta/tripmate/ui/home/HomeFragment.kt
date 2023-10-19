@@ -11,13 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
+import kr.sparta.tripmate.ui.budget.BudgetFragment
+import kr.sparta.tripmate.ui.community.main.CommunityFragment
 import kr.sparta.tripmate.ui.main.MainActivity
+import kr.sparta.tripmate.ui.mypage.home.MyPageFragment
 import kr.sparta.tripmate.ui.scrap.ScrapDetail
+import kr.sparta.tripmate.ui.scrap.ScrapFragment
 import kr.sparta.tripmate.ui.viewmodel.home.FirstViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeFragment : Fragment() {
+    companion object {
+        fun newInstance(): HomeFragment = HomeFragment()
+    }
+
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private val firstViewModel: FirstViewModel by viewModels()
     private lateinit var homeFirstAdapter: HomeFirstAdapter
@@ -35,14 +44,41 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         inputToolBar()
-        clickedProfile()
-        clickedScrap()
-        clickedCommu()
-        clickedBudget()
+        // 페이지 이동 정의
+        initRoute()
 
         homeView()
 
         return binding.root
+    }
+
+    /**
+     * 작성자: 서정한
+     * 내용: Home에서 다른 Fragment로 이동하는 로직
+     * */
+    private fun initRoute()=with(binding) {
+        val mainActivity = requireActivity() as MainActivity
+
+        // 프로필
+        homeProfileImage.setOnClickListener {
+            mainActivity.moveTabFragment(R.string.main_tab_title_mypage)
+        }
+
+        // 스크랩
+        homeArrow1.setOnClickListener {
+            mainActivity.moveTabFragment(R.string.main_tab_title_scrap)
+        }
+
+        // 커뮤니티
+        homeArrow2.setOnClickListener {
+            mainActivity.moveTabFragment(R.string.main_tab_title_community)
+        }
+
+        // 가계부
+        homeArrow3.setOnClickListener {
+            mainActivity.moveTabFragment(R.string.main_tab_title_budget)
+        }
+
     }
 
     private fun homeView() {
@@ -69,31 +105,6 @@ class HomeFragment : Fragment() {
             getFirstData(SharedPreferences.getUid(requireContext())).observe(viewLifecycleOwner) {
                 homeFirstAdapter.submitList(it)
             }
-        }
-    }
-
-
-    private fun clickedBudget() {
-        binding.homeArrow3.setOnClickListener {
-            (context as MainActivity).onBudgetClicked()
-        }
-    }
-
-    private fun clickedCommu() {
-        binding.homeArrow2.setOnClickListener {
-            (context as MainActivity).onCommuClicked()
-        }
-    }
-
-    private fun clickedScrap() {
-        binding.homeArrow1.setOnClickListener {
-            (context as MainActivity).onScrapClicked()
-        }
-    }
-
-    private fun clickedProfile() {
-        binding.homeProfileImage.setOnClickListener {
-            (context as MainActivity).onMyPageClicked()
         }
     }
 
