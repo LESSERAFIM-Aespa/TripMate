@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
-                android:text="시간을 입력해주세요"
+                android:text="시간과 날짜를 입력해 주세요"
                 android:textColor="@color/searchoutline"
                 android:paddingVertical="10dp"
                 android:textSize="16sp"
