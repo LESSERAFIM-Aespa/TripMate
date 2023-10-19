@@ -42,4 +42,6 @@ interface BudgetDao {
     @Query("SELECT * FROM BUDGET WHERE NUM =:num")
     fun getAllBudgetsToFlowWithNum(num: Int): Flow<List<Budget>>
 
+    @Query("SELECT * FROM BUDGET ORDER BY NUM DESC LIMIT 1")
+    suspend fun getLastBudget(): List<Budget>
 }

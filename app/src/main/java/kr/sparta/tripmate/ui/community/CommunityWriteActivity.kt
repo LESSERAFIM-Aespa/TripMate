@@ -64,6 +64,7 @@ class CommunityWriteActivity : AppCompatActivity() {
                 )
             }
             myRef
+                .push()
                 .setValue(model)
                 .addOnSuccessListener {
                     // 데이터가 성공적으로 저장될 때 RecyclerView 업데이트
