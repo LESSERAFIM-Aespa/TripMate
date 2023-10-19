@@ -10,11 +10,12 @@ import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 
 class ProcedureDetailActivity : AppCompatActivity() {
     companion object {
+        const val EXTRA_BUDGET_NUM = "extra_budget_num"
         const val EXTRA_PROCEDURE_NUM = "extra_procedure_num"
 
-
-        fun newIntent(context: Context, procedureNum: Int) =
+        fun newIntent(context: Context, budgetNum: Int, procedureNum: Int) =
             Intent(context, ProcedureDetailActivity::class.java).apply {
+                putExtra(EXTRA_BUDGET_NUM, budgetNum)
                 putExtra(EXTRA_PROCEDURE_NUM, procedureNum)
             }
     }
@@ -22,7 +23,9 @@ class ProcedureDetailActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityProcedureDetailBinding.inflate(layoutInflater)
     }
-
+    private val budgetNum by lazy {
+        intent.getIntExtra(EXTRA_BUDGET_NUM, 0)
+    }
     private val procedureNum by lazy {
         intent.getIntExtra(EXTRA_PROCEDURE_NUM, 0)
     }
@@ -42,7 +45,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
         procedureDetailEditImageview.setOnClickListener {
             startActivity(
                 ProcedureContentActivity.newIntentForEdit(
-                    this@ProcedureDetailActivity, procedureNum
+                    this@ProcedureDetailActivity, budgetNum , procedureNum
                 )
             )
         }
