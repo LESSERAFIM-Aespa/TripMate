@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -19,6 +20,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -39,6 +41,7 @@ class ScrapFragment : Fragment() {
         }
 
     private val scrapViewModel: ScrapViewModel by viewModels { ScrapFactory() }
+
     var searchQuery: String? = null
 
     override fun onCreateView(
@@ -124,14 +127,14 @@ class ScrapFragment : Fragment() {
         }
     }
 
-    private fun saveScrapFirebase(model: ScrapModel) {
+    private fun saveScrapFirebase(model: ScrapEntity) {
         val scrapRef = ScrapRef()
         scrapRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val getScrapList = ArrayList<ScrapModel>()
+                val getScrapList = ArrayList<ScrapEntity>()
 
                 for (items in dataSnapshot.children) {
-                    val existingModel = items.getValue(ScrapModel::class.java)
+                    val existingModel = items.getValue(ScrapEntity::class.java)
                     existingModel?.let {
                         getScrapList.add(it)
                     }
@@ -151,7 +154,7 @@ class ScrapFragment : Fragment() {
         })
     }
 
-    private fun deleteScrapFirebase(model: ScrapModel) {
+    private fun deleteScrapFirebase(model: ScrapEntity) {
         val scrapRef = ScrapRef()
 
         scrapRef.get().addOnSuccessListener {

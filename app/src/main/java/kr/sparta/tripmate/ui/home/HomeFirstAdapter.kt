@@ -11,17 +11,18 @@ import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
 import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
-class HomeFirstAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
-    ListAdapter<ScrapModel,
+class HomeFirstAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
+    ListAdapter<ScrapEntity,
             RecyclerView.ViewHolder>(
-        object : DiffUtil.ItemCallback<ScrapModel>() {
-            override fun areItemsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
+        object : DiffUtil.ItemCallback<ScrapEntity>() {
+            override fun areItemsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
                 return oldItem.url == newItem.url
             }
 
-            override fun areContentsTheSame(oldItem: ScrapModel, newItem: ScrapModel): Boolean {
+            override fun areContentsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
                 return oldItem == newItem
             }
         }
@@ -29,7 +30,7 @@ class HomeFirstAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
 
     inner class FirstViewHolder(private val binding: HomeFirstItemsBinding) : RecyclerView.ViewHolder
         (binding.root) {
-        fun bind(items: ScrapModel) = with(binding) {
+        fun bind(items: ScrapEntity) = with(binding) {
             Log.d("TripMates", "뷰홀더에 항목${items}")
             homeFirstTitle.text = removeHtmlTags(items.title)
             homeFirstContent.text = removeHtmlTags(items.description)
@@ -84,7 +85,7 @@ class HomeFirstAdapter(private val onItemClick: (ScrapModel, Int) -> Unit) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) is ScrapModel) {
+        return if (getItem(position) is ScrapEntity) {
             Constants.SCRAPTYPE
         } else {
             Constants.EMPTYTYPE
