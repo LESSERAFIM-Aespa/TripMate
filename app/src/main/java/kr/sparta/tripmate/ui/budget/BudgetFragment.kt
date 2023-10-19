@@ -27,13 +27,13 @@ class BudgetFragment : Fragment() {
     private val budgetAdapter by lazy {
         BudgetAdapter(object : BudgetAdapter.BudgetListEventListener {
             override fun itemClicked(num: Int) {
-                //startActivity(BudgetDetailActivity.newIntent(this@BudgetFragment.requireContext(),num))
-                startActivity(
+                startActivity(BudgetDetailActivity.newIntent(this@BudgetFragment.requireContext(),num))
+                /*startActivity(
                     BudgetContentActivity.newIntentForEdit(
                         this@BudgetFragment.requireContext(),
                         num
                     )
-                )
+                )*/
             }
         })
     }
@@ -66,12 +66,6 @@ class BudgetFragment : Fragment() {
         budgetListRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = budgetAdapter
-        }
-
-        //test
-        // 이동연결확립후 삭제할거
-        textView.setOnClickListener {
-            startActivity(BudgetDetailActivity.newIntent(requireContext(), 1))
         }
     }
 
