@@ -48,7 +48,9 @@ class CommunityViewModel : ViewModel() {
                         }
                     }
                 }
-                _dataModelList.value = allCommunityData     //5. 데이터베이스에서 받아온 데이터를 넣어줌
+                if(!allCommunityData.isNullOrEmpty()){
+                    _dataModelList.value = allCommunityData     //5. 데이터베이스에서 받아온 데이터를 넣어줌
+                }
                 _isLoading.value = false            //6. 검색해서 데이터를 모두 받아왔으므로 로딩을 false로 바꿔줌(검색끝났다고)
             }
 
