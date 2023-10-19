@@ -3,6 +3,7 @@ package kr.sparta.tripmate.domain.model.scrap
 import kr.sparta.tripmate.data.model.scrap.ScrapItems
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.data.model.scrap.ScrapServerData
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
 fun ScrapServerData.toEntity(): ScrapServerDataEntity = ScrapServerDataEntity(
     lastBuildDate = lastBuildDate,
@@ -30,6 +31,15 @@ fun ArrayList<ScrapItems>.toEntity(): ArrayList<ScrapItemsEntity> {
 }
 
 fun ScrapItemsEntity.toScrapModel(): ScrapModel = ScrapModel(
+    title = title.orEmpty(),
+    url = link.orEmpty(),
+    description = description.orEmpty(),
+    bloggername = bloggername.orEmpty(),
+    bloggerlink = bloggerlink.orEmpty(),
+    postdate = postdate.orEmpty(),
+)
+
+fun ScrapItemsEntity.toScrapEntity(): ScrapEntity = ScrapEntity(
     title = title.orEmpty(),
     url = link.orEmpty(),
     description = description.orEmpty(),
