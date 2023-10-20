@@ -5,10 +5,11 @@ import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
 /**
  * 작성자: 서정한
- * 내용: Firebase RDB에서 받아온
- * Scrap 데이터 Repository
+ * 내용: Firebase RDB의 Scrap Data Repository
  * */
 interface FirebaseScrapRepository {
     // 스크렙데이터 가져오기
-    fun getScrapedData(uid: String, liveData: MutableLiveData<List<ScrapEntity>>)
+    fun getScrapdData(uid: String, liveData: MutableLiveData<List<ScrapEntity?>>)
+    fun saveScrapData(uid: String, model: ScrapEntity)
+    fun removeScrapData(uid: String, model: ScrapEntity)
 }
