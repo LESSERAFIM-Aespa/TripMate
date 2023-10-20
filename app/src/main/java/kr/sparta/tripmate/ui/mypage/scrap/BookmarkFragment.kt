@@ -70,6 +70,7 @@ class BookmarkFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        // 사용자가 저장한 Scrap목록을 Firebase에서 가져와 적용
         viewModel.updateScrapData(requireContext())
     }
 }
