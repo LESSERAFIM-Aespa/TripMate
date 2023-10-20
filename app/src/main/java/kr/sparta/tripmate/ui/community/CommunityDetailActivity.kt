@@ -3,6 +3,7 @@ package kr.sparta.tripmate.ui.community
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
@@ -18,16 +19,25 @@ class CommunityDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         //데이터를 받는 부분
         writeItem = intent.getParcelableExtra<CommunityModel>("Data")!!
-        setupViews()
+
+        if (writeItem.addedImage != null) {
+            binding.communityIvAddImage.visibility = View.VISIBLE
+            setupViews()
+        } else {
+            setupViews()
+        }
 
         binding.communityDetailBackbutton.setOnClickListener {
             finish()
         }
     }
+
     private fun setupViews() {
         binding.communityUserprofile.load(writeItem.profileThumbnail)
         binding.communityTvDetailTitle.text = writeItem.title
         binding.communityTvDetailDescription.text = writeItem.body
         binding.communityTvDetailUsername.text = writeItem.profileNickname
+        binding.communityIvAddImage.load(writeItem.addedImage){
+        }
     }
 }
