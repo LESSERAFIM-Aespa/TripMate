@@ -8,10 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
-<<<<<<< HEAD
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
-=======
->>>>>>> 839c670 ([hotfix] 에러 수정 및 리펠토링)
 
 class BookmarkListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
     ListAdapter<ScrapEntity,
