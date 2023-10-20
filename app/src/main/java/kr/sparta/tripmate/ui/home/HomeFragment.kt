@@ -2,6 +2,7 @@ package kr.sparta.tripmate.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
-import kr.sparta.tripmate.ui.budget.BudgetFragment
-import kr.sparta.tripmate.ui.community.main.CommunityFragment
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.mypage.home.MyPageFragment
 import kr.sparta.tripmate.ui.scrap.ScrapDetail
-import kr.sparta.tripmate.ui.scrap.ScrapFragment
-import kr.sparta.tripmate.ui.viewmodel.home.FirstViewModel
+import kr.sparta.tripmate.ui.viewmodel.home.HomeScrapFactory
+import kr.sparta.tripmate.ui.viewmodel.home.HomeScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeFragment : Fragment() {
@@ -28,13 +26,20 @@ class HomeFragment : Fragment() {
     }
 
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-    private val firstViewModel: FirstViewModel by viewModels()
-    private lateinit var homeFirstAdapter: HomeFirstAdapter
-
-    private val homeResults = registerForActivityResult(ActivityResultContracts
-        .StartActivityForResult()){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){}
+    private val homeScrapViewModel: HomeScrapViewModel by viewModels() {
+        HomeScrapFactory()
     }
+
+    private lateinit var homeScrapListAdapter: HomeScrapListAdapter
+
+    private val homeResults = registerForActivityResult(
+        ActivityResultContracts
+            .StartActivityForResult()
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
     }
@@ -56,7 +61,7 @@ class HomeFragment : Fragment() {
      * 작성자: 서정한
      * 내용: Home에서 다른 Fragment로 이동하는 로직
      * */
-    private fun initRoute()=with(binding) {
+    private fun initRoute() = with(binding) {
         val mainActivity = requireActivity() as MainActivity
 
         // 프로필
@@ -82,7 +87,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun homeView() {
-        homeFirstAdapter = HomeFirstAdapter(
+        homeScrapListAdapter = HomeScrapListAdapter(
             onItemClick = { model, position ->
                 val intent = ScrapDetail.newIntentForScrap(requireContext(), model)
                 homeResults.launch(intent)
@@ -90,20 +95,21 @@ class HomeFragment : Fragment() {
         )
         binding.homeRecyclerView1.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = homeFirstAdapter
+            adapter = homeScrapListAdapter
             setHasFixedSize(true)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        firstViewModel.apply {
-            getFirstData(SharedPreferences.getUid(requireContext())).observe(viewLifecycleOwner) {
-                homeFirstAdapter.submitList(it)
+        with(homeScrapViewModel) {
+            homeScraps.observe(viewLifecycleOwner) { list ->
+                homeScrapListAdapter.submitList(list)
             }
         }
     }
@@ -113,5 +119,11 @@ class HomeFragment : Fragment() {
         Glide.with(requireContext())
             .load(SharedPreferences.getProfile(requireContext()))
             .into(binding.homeProfileImage)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // 사용자가 저장한 Scrap목록을 Firebase에서 가져와 적용
+        homeScrapViewModel.updateScrapData(requireContext())
     }
 }
