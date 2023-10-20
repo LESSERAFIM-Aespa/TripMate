@@ -10,5 +10,5 @@ import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
  * 전달해준다.
  * */
 class GetFirebaseScrapData(private val repository: FirebaseScrapRepository) {
-    fun invoke(uid: String, liveData: MutableLiveData<List<ScrapEntity>>) = repository.getScrapedData(uid, liveData)
+    operator fun invoke(uid: String, liveData: MutableLiveData<List<ScrapEntity?>>) = repository.getScrapdData(uid, liveData)
 }
