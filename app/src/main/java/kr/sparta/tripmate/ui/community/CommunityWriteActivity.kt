@@ -11,9 +11,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
 import kr.sparta.tripmate.ui.community.main.CommunityModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 /**
@@ -24,20 +26,17 @@ import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 class CommunityWriteActivity : AppCompatActivity() {
 
     private val viewModel: CommunityViewModel by viewModels()
-
+    private var commuThumbnail = R.drawable.emptycommu
     private lateinit var binding: ActivityCommunityWriteBinding
     private lateinit var commu_Database : DatabaseReference         //1. 데이터베이스 객체 생성
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityCommunityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         commu_Database = Firebase.database.reference                        //2. 데이터베이스 객체 초기화
-//        val allCommunityData = mutableListOf<CommunityModel>()
-//        val myRef = database.getReference("CommunityData")
 
-
-//        viewModel.updateDataModelList(allCommunityData) // ViewModel을 통해 데이터를 업데이트
         communityBackBtn()      //3. 뒤로가기 버튼
         communitySaveBtn()     //4. 게시하기 버튼
 
@@ -45,27 +44,31 @@ class CommunityWriteActivity : AppCompatActivity() {
     }
 
     private fun communitySaveBtn() {
+           //9. 데이터베이스 경로
         binding.communityWriteIcShare.setOnClickListener {
             val bodyWrite = binding.communityWriteDescription.text.toString()
             val titleWrite = binding.communityWriteTitle.text.toString()
             val uid = SharedPreferences.getUid(this)                 //5. sharedpreferences에 저장된 uid
+            val myRef = commu_Database.child("CommunityData").child(uid)
             val nickName = SharedPreferences.getNickName(this)          //6. sharedpreferences에 저장된 닉네임
             val profile = SharedPreferences.getProfile(this)            //7.sharedpreferences에 저장된 프로필 사진
-            val writeModel = CommunityModel(uid,"", titleWrite, bodyWrite, nickName,profile,"","") //8. 작성 목록
+            val key = myRef.push()
+            val writeModel = CommunityModel(uid,commuThumbnail.toString(), titleWrite, bodyWrite, nickName,
+                profile,"","0","${key}") //8. 작성 목록
             // 파이어베이스로 저장하기 위한 설정및 함수호출
-            val myRef = commu_Database.child("CommunityData").child(uid)    //9. 데이터베이스 경로
+
             myRef.addListenerForSingleValueEvent(object :ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val CommuList = ArrayList<CommunityModel>()     //10. 파이어베이스에 저장될 리스트
+                    val commuList = ArrayList<CommunityModel>()     //10. 파이어베이스에 저장될 리스트
 
                     for (items in snapshot.children){   //11. 데이터베이스에 저장된 항목을 불러와서 10에서만든 리스트에 추가한다.
                         val getcommuModel = items.getValue(CommunityModel::class.java)
                         getcommuModel?.let{
-                            CommuList.add(it)
+                            commuList.add(it)
                         }
                     }
-                    CommuList.add(writeModel)   //12. 11에서 추가한 데이터에 내가 작성한 목록을 추가한다.
-                    myRef.setValue(CommuList)   //13. 11,12에서 추가된 데이터를 파이어베이스의 데이터베이스에 덮어씌운다.
+                    commuList.add(writeModel)   //12. 11에서 추가한 데이터에 내가 작성한 목록을 추가한다.
+                    myRef.setValue(commuList)   //13. 11,12에서 추가된 데이터를 파이어베이스의 데이터베이스에 덮어씌운다.
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -74,28 +77,7 @@ class CommunityWriteActivity : AppCompatActivity() {
 
             })
 
-//            val model = myRef.key?.let {
-//                CommunityModel(
-//                    id = it, // 고유 게시물 ID
-//                    thumbnail = null, // null 또는 이미지 URL
-//                    title = title_write, // title_write 변수의 값
-//                    body = body_write, // body_write 변수의 값
-//                    profileNickname = "",
-//                    profileThumbnail = SharedPreferences.getProfile(this), //sharedpreference에
-//                    // 저장된 프로필 사진
-//                    views = "0", // 초기 조회수 값
-//                    likes = "0" // 초기 좋아요 수 값
-//                )
-//            }
-//            myRef
-//                .push()
-//                .setValue(model)
-//                .addOnSuccessListener {
-//                    // 데이터가 성공적으로 저장될 때 RecyclerView 업데이트
-//                    val newData = mutableListOf<CommunityModel>() // 새 데이터를 가져오는 코드가 필요
-//                    viewModel.updateDataModelList(newData) // ViewModel을 통해 데이터를 업데이트
-//                } // // 파이어베이스로 저장하기 위한 설정및 함수호출(끝)
-            Toast.makeText(this, "글이 게시되었습니다(저장완료)", Toast.LENGTH_LONG).show()
+            shortToast("글이 게시되었습니다(저장완료)")
             finish()    //14. 저장했으면 커뮤니티 메인화면으로 넘어간다.
         }
     }

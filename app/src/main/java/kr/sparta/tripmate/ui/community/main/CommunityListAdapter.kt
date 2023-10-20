@@ -7,26 +7,43 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
-class CommunityListAdapter(private val
-onProfileClicked:(CommunityModel,Int)->Unit):
+class CommunityListAdapter(
+    private val
+    onProfileClicked: (CommunityModel, Int) -> Unit,
+    private val
+    onLikeClicked: (CommunityModel, Int) -> Unit,
+    private val
+    onThumbnailClicked: (CommunityModel, Int) -> Unit
+) :
     ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
-    object: DiffUtil.ItemCallback<CommunityModel>() {
-        override fun areItemsTheSame(oldItem: CommunityModel, newItem: CommunityModel): Boolean {
-            return oldItem.id == newItem.id
-        }
+        object : DiffUtil.ItemCallback<CommunityModel>() {
+            override fun areItemsTheSame(
+                oldItem: CommunityModel,
+                newItem: CommunityModel
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-        override fun areContentsTheSame(oldItem: CommunityModel, newItem: CommunityModel): Boolean {
-            return oldItem == newItem
-        }
+            override fun areContentsTheSame(
+                oldItem: CommunityModel,
+                newItem: CommunityModel
+            ): Boolean {
+                return oldItem == newItem
+            }
 
-    }
-) {
+        }
+    ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityHolder {
-        val view = FragmentCommunityMainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = FragmentCommunityMainItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return CommunityHolder(view)
     }
 
@@ -34,10 +51,11 @@ onProfileClicked:(CommunityModel,Int)->Unit):
         holder.bind(getItem(position))
     }
 
-    inner class CommunityHolder(private val binding : FragmentCommunityMainItemBinding) : RecyclerView
+    inner class CommunityHolder(private val binding: FragmentCommunityMainItemBinding) :
+        RecyclerView
         .ViewHolder(binding.root) {
-        fun bind(item: CommunityModel)=with(binding) {
-            communityMainThumbnail.load(item.thumbnail)
+        fun bind(item: CommunityModel) = with(binding) {
+            if (!item.thumbnail.isNullOrEmpty()) communityMainThumbnail.setImageResource(item.thumbnail.toInt())
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
             communityMainThumbnail.setOnClickListener {
@@ -49,11 +67,19 @@ onProfileClicked:(CommunityModel,Int)->Unit):
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
                 setOnClickListener {
-                    onProfileClicked(item, bindingAdapterPosition)
+                    onThumbnailClicked(item, bindingAdapterPosition)
                 }
             }
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
+            communityMainLikesButton.setOnClickListener {
+                    onLikeClicked(item,bindingAdapterPosition)
+            }
+            if (item.commuIsLike) {
+                communityMainLikesButton.setBackgroundResource(R.drawable.paintedstar)
+            } else {
+                communityMainLikesButton.setBackgroundResource(R.drawable.hollowstar)
+            }
 
 
         }
