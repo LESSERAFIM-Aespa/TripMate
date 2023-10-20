@@ -14,13 +14,15 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.domain.model.scrap.toScrapEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapModel
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel() {
-    private val _scrapResult = MutableLiveData<List<ScrapModel>>()
-    val scrapResult: LiveData<List<ScrapModel>> get() = _scrapResult
+    private val _scrapResult = MutableLiveData<List<ScrapEntity>>()
+    val scrapResult: LiveData<List<ScrapEntity>> get() = _scrapResult
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -31,10 +33,10 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
             _isLoading.value = true
 
             val result = searchBlog(q)
-            val scrapItems = ArrayList<ScrapModel>()
+            val scrapItems = ArrayList<ScrapEntity>()
             result.items?.let {
                 for (i in it.indices) {
-                    scrapItems.add(it[i].toScrapModel())
+                    scrapItems.add(it[i].toScrapEntity())
                 }
                 // 검색데이터와 저장된데이터를 비교해서 검색했을때 북마크 추가된 데이터들을 체크표시 해줍니다.
                 scrapFef(context) { getScrapList ->
@@ -52,16 +54,16 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
 
     private fun scrapFef(
         context: Context,
-        onSuccess: (List<ScrapModel>) -> Unit
+        onSuccess: (List<ScrapEntity>) -> Unit
     ) {
         val scrapRef: DatabaseReference = Firebase.database.reference.child("scrapData")
             .child(SharedPreferences.getUid(context))
         scrapRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val getScrapList = ArrayList<ScrapModel>()
+                val getScrapList = ArrayList<ScrapEntity>()
 
                 for (items in dataSnapshot.children) {
-                    val loadScrapList = items.getValue(ScrapModel::class.java)
+                    val loadScrapList = items.getValue(ScrapEntity::class.java)
                     loadScrapList?.let {
                         getScrapList.add(it)
                     }
@@ -74,7 +76,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
             }
         })
     }
-    private fun DupScrap(scrapItems: List<ScrapModel>, getScrapList: List<ScrapModel>) {
+    private fun DupScrap(scrapItems: List<ScrapEntity>, getScrapList: List<ScrapEntity>) {
         for (i in 0 until scrapItems.size) {
             val isDuplicate = getScrapList.any { it.url == scrapItems[i].url }
             if (isDuplicate) {
@@ -84,7 +86,7 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
         }
     }
 
-    fun updateIsLike(model: ScrapModel, position: Int) {
+    fun updateIsLike(model: ScrapEntity, position: Int) {
         //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
         val list = scrapResult.value.orEmpty().toMutableList()
         list.find { it.url == model.url } ?: return

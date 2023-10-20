@@ -6,6 +6,8 @@ on:
       - feat/main
       - feat/budget
       - feat/community
+      - feat/communitymain
+      - feat/communitydetail
       - feat/home
       - feat/scrap
       - feat/mypage
@@ -14,11 +16,15 @@ on:
       - feat/setting
       - feat/budgetlist
       - feat/budgetdetail
+      - refector/home
+      - feat/procedure
   pull_request:
     branches: 
       - feat/main
       - feat/budget
       - feat/community
+      - feat/communitymain
+      - feat/communitydetail
       - feat/home
       - feat/scrap
       - feat/mypage
@@ -27,7 +33,8 @@ on:
       - feat/setting
       - feat/budgetlist
       - feat/budgetdetail
-
+      - refector/home
+      - feat/procedure
 jobs:
   build:
 
