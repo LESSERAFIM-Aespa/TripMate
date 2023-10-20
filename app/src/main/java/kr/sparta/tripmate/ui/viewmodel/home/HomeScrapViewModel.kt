@@ -10,7 +10,7 @@ import kr.sparta.tripmate.domain.usecase.GetFirebaseScrapData
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeScrapViewModel(private val getFirebaseScrapData: GetFirebaseScrapData) : ViewModel() {
-    private val _homeScraps : MutableLiveData<List<ScrapEntity>> = MutableLiveData()
+    private val _homeScraps : MutableLiveData<List<ScrapEntity?>> = MutableLiveData()
     val homeScraps get() = _homeScraps
 
     fun updateScrapData(context: Context) {
