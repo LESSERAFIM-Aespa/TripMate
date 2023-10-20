@@ -29,5 +29,6 @@ class CommunityDetailActivity : AppCompatActivity() {
         binding.communityDetailTitle.text = writeItem.title
         binding.communityDetailDescription.text = writeItem.body
         binding.communityDetailUsername.text = writeItem.profileNickname
+        binding.communitiyDetailImage.load(writeItem.addedImage)
     }
 }
