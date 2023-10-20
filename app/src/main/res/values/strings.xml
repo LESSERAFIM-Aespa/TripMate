@@ -58,4 +58,9 @@
     <string name="main_tab_title_mypage">MyPage</string>
     <string name="pleaseentertitle">제목을 입력하세요.</string>
     <string name="pleaseenteryourdetails">내용을 입력해주세요</string>
+    <string name="community_detail_title">디테일페이지제목</string>
+    <string name="community_detail_username">사용자닉네임</string>
+    <string name="community_detail_body">내용이 들어갈 자리</string>
+    <string name="community_detail_likecount">80k</string>
+    <string name="community_detail_viewcount">3.14k</string>
 </resources>
