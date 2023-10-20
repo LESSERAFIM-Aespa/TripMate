@@ -29,10 +29,6 @@ import kotlin.math.log
  * 기존의 코드는 주석처리해놨습니다. 확인하시고 말씀해주시면 삭제하겠습니다.
  */
 class CommunityFragment : Fragment() {
-
-//    private val allPostIds = mutableListOf<String>()
-//    private val allCommunityData = mutableListOf<CommunityModel>()
-
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
@@ -40,9 +36,17 @@ class CommunityFragment : Fragment() {
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
-            onProfileClicked =
+            onThumbnailClicked =
             { model, position ->
                 (requireContext() as MainActivity).moveTabFragment(R.string.main_tab_title_mypage)
+            }, onProfileClicked = { model, position ->
+
+            }, onLikeClicked = { model, position ->
+                viewModel.updateCommuIsLike(
+                    model = model.copy(
+                        commuIsLike = !model.commuIsLike
+                    ), position
+                )
             })
     }
 
@@ -101,12 +105,12 @@ class CommunityFragment : Fragment() {
     }
 
     private fun initViewModel() {
-       viewModel.dataModelList.observe(viewLifecycleOwner){ //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
-           Log.d("TripMates", "커뮤데이터 :${it[0].views}")
-           commuAdapter.submitList(it)
-       }
-        viewModel.isLoading.observe(viewLifecycleOwner){//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
-            binding.communityLoading.visibility = if(it) View.VISIBLE else View.GONE
+        viewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
+            Log.d("TripMates", "커뮤데이터 :${it[0].views}")
+            commuAdapter.submitList(it)
+        }
+        viewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
+            binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 

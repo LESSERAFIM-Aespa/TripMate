@@ -20,7 +20,8 @@
             android:id="@+id/community_main_thumbnail"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/emptycommu"/>
 
     </androidx.cardview.widget.CardView>
 
@@ -72,7 +73,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="5dp"
-        android:background="@drawable/star"
+        android:background="@drawable/hollowstar"
         app:layout_constraintBottom_toBottomOf="@+id/community_main_likes"
         app:layout_constraintEnd_toStartOf="@+id/community_main_likes"
         app:layout_constraintTop_toTopOf="@+id/community_main_likes" />
