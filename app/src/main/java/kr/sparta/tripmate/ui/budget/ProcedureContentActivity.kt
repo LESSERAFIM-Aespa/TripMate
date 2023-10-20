@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,6 +24,7 @@ import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModelFactory
 import kr.sparta.tripmate.util.method.toTimeFormat
+import kotlin.math.abs
 
 class ProcedureContentActivity : AppCompatActivity() {
     companion object {
@@ -126,6 +128,12 @@ class ProcedureContentActivity : AppCompatActivity() {
                     val procedure = list.orEmpty().first()
                     binding.procedureNameEdittext.setText(procedure.name)
                     binding.procedureTimeTextview.text = procedure.time
+                    if (procedure.money <= 0){
+                        binding.procedureMoneyTextview.isSelected = true
+                        binding.procedureMoneyTextview.text = "소비"
+                        binding.procedureMoneyTextview.backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
+                    }
+                    binding.procedureMoneyEdittext.setText("${abs(procedure.money)}")
                     binding.procedureMemoEdittext.setText(procedure.description)
                     loop@ for (i in 0 until arrayAdapter.count) {
                         val category = arrayAdapter.getItem(i)
@@ -152,9 +160,26 @@ class ProcedureContentActivity : AppCompatActivity() {
         procedureCancelButton.setOnClickListener {
             finish()
         }
+        procedureMoneyTextview.setOnClickListener {
+            procedureMoneyTextview.apply {
+                when (isSelected) {
+                    true -> {
+                        text = "지출"
+                        backgroundTintList = ColorStateList.valueOf(getColor(R.color.secondary))
+                    }
+
+                    false -> {
+                        text = "수입"
+                        backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
+                    }
+                }
+                isSelected = !isSelected
+            }
+        }
+
         procedureSaveButton.setOnClickListener {
-            when{
-                procedureNameEdittext.text.toString().isBlank() ->{
+            when {
+                procedureNameEdittext.text.toString().isBlank() -> {
                     Toast.makeText(
                         this@ProcedureContentActivity,
                         "과정 이름이 공백입니다. 다시 확인해주세요.",
@@ -196,19 +221,21 @@ class ProcedureContentActivity : AppCompatActivity() {
 
 
                 else -> {
-                    /*val procedure = Procedure(
-                        categoryNum = arrayAdapter.getItem(procedureCategorySpinner.selectedItemPosition).num!!,
+                    val money = procedureMoneyEdittext.text.toString().toInt()
+                    val procedure = Procedure(
+                        categoryNum = arrayAdapter.getItem(procedureCategorySpinner.selectedItemPosition)!!.num,
                         name = procedureNameEdittext.text.toString(),
                         description = procedureMemoEdittext.text.toString(),
-                        money = ,
+                        money = if (binding.procedureMoneyTextview.isSelected) -money else money,
                         time = procedureTimeTextview.text.toString()
-                    )*/
+                    )
                     when (entryType) {
                         ProcedureContentType.ADD -> {
-                           //procedureContentViewModel.inserProcedure(procedure)
+                            procedureContentViewModel.inserProcedure(procedure)
                         }
+
                         ProcedureContentType.EDIT -> {
-                            //procedureContentViewModel.inserProcedure(procedure.copy(num = procedureNum))
+                            procedureContentViewModel.updateProcedure(procedure.copy(num = procedureNum))
                         }
 
                         else -> {}
