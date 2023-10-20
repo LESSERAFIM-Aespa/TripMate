@@ -148,6 +148,7 @@
                 tools:text="500,000원" />
 
             <TextView
+                android:id="@+id/procedure_money_state_textview"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

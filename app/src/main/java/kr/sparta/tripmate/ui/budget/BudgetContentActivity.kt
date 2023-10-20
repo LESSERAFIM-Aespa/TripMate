@@ -224,28 +224,21 @@ class BudgetContentActivity : AppCompatActivity() {
                     ).show()
                 }
                 else ->{
+                    val budget = Budget(
+                        name = budgetNameEdittext.text.toString(),
+                        startDate = budgetStartdateTextview.text.toString(),
+                        endDate = budgetEnddateTextview.text.toString(),
+                        money = budgetMoneyEdittext.text.toString().toInt()
+                    )
+                    val categories = categoryAdapter.saveList
                     when (entryType) {
                         BudgetContentType.ADD -> {
-                            val budget = Budget(
-                                name = budgetNameEdittext.text.toString(),
-                                startDate = budgetStartdateTextview.text.toString(),
-                                endDate = budgetEnddateTextview.text.toString(),
-                                money = budgetMoneyEdittext.text.toString().toInt()
-                            )
-                            val categories = categoryAdapter.saveList
                             contentViewModel.inserBudgetAndCategories(budget, categories)
                             finish()
                         }
 
                         BudgetContentType.EDIT -> {
-                            val budget = Budget(
-                                name = budgetNameEdittext.text.toString(),
-                                startDate = budgetStartdateTextview.text.toString(),
-                                endDate = budgetEnddateTextview.text.toString(),
-                                money = budgetMoneyEdittext.text.toString().toInt()
-                            )
-                            val categories = categoryAdapter.saveList
-                            contentViewModel.updateBudgetAndCategories(budget, categories)
+                            contentViewModel.updateBudgetAndCategories(budget.copy(num = budgetNum), categories)
                             finish()
                         }
 
@@ -316,6 +309,7 @@ class BudgetContentActivity : AppCompatActivity() {
             .setColorListener { _, colorHex ->
                 button.backgroundTintList =
                     ColorStateList.valueOf(Color.parseColor(colorHex))
+                categoryAdapter.saveList[pos] = currentItem.copy(color = colorHex)
             }
             .show()
     }
