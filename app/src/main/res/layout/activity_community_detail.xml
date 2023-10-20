@@ -19,24 +19,47 @@
     <TextView
         android:id="@+id/community_detail_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginEnd="27dp"
-        android:text="Title"
+        android:layout_height="70dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="29dp"
+        android:text="타이틀타이틀타이틀타이틀"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_detail_backbutton" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/community_layout_exist_image"
+        android:layout_width="409dp"
+        android:layout_height="265dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="1dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/community_userprofile">
+
+        <ImageView
+            android:layout_width="305dp"
+            android:layout_height="249dp"
+            android:foregroundGravity="center"
+            android:src="@drawable/image_48" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/community_userprofile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="135dp"
+        app:layout_constraintEnd_toStartOf="@+id/community_detail_username"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_detail_title"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_user_profile" />
 
     <TextView
@@ -44,70 +67,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="286dp"
+        android:layout_marginTop="140dp"
         android:text="User_name"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/community_userprofile"
-        app:layout_constraintTop_toBottomOf="@+id/community_detail_title" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/communitiy_detail_image"
+        android:id="@+id/community_detail_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="437dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/community_detail_likecount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_detail_username"
-        app:srcCompat="@drawable/addimage" />
-
-    <ImageView
-        android:id="@+id/community_write_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/communitiy_detail_image"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/star" />
 
     <TextView
-        android:id="@+id/community_write_likecount"
+        android:id="@+id/community_detail_likecount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="27dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="442dp"
         android:text="80k"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/community_detail_viewcount"
-        app:layout_constraintStart_toEndOf="@+id/community_write_like"
-        app:layout_constraintTop_toBottomOf="@+id/communitiy_detail_image" />
+        app:layout_constraintStart_toEndOf="@+id/community_detail_like"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/community_detail_viewcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="442dp"
         android:text="3.14k"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/community_write_likecount"
-        app:layout_constraintTop_toBottomOf="@+id/communitiy_detail_image" />
+        app:layout_constraintStart_toEndOf="@+id/community_detail_likecount"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/community_detail_description"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="350dp"
+        android:layout_height="210dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="469dp"
+        android:layout_marginEnd="27dp"
         android:text="내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/communitiy_detail_image" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
