@@ -20,42 +20,41 @@
         android:id="@+id/community_write_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/background_community_write_view_tpye1"
-        android:hint="제목을을 입력하세요"
+       android:layout_margin="20dp"
+        android:hint="@string/pleaseentertitle"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/communitiy_write_addimage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_write_backbutton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/community_write_backbutton"/>
 
     <ImageView
         android:id="@+id/communitiy_write_addimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginVertical="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/community_write_title"
-        app:srcCompat="@drawable/addimage" />
+        android:src="@drawable/imageadd"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/Brown100"
+        app:layout_constraintTop_toBottomOf="@+id/communitiy_write_addimage"
+        android:layout_margin="15dp"/>
     <EditText
         android:id="@+id/community_write_description"
         android:layout_width="match_parent"
-        android:layout_height="340dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/background_community_write_view_tpye1"
-        android:hint="내용을 입력하세요"
+        android:layout_height="250dp"
+        android:layout_marginHorizontal="15dp"
+        android:background="@null"
+        android:hint="@string/pleaseenteryourdetails"
         android:textStyle="bold"
+        android:gravity="top|start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/communitiy_write_addimage" />
 
@@ -68,6 +67,6 @@
         app:layout_constraintHorizontal_bias="0.918"
         app:layout_constraintStart_toEndOf="@+id/community_write_backbutton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/share" />
+        android:src="@drawable/writepost"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
