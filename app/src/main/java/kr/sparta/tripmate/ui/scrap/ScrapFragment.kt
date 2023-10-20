@@ -1,6 +1,8 @@
 package kr.sparta.tripmate.ui.scrap
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -128,6 +130,18 @@ class ScrapFragment : Fragment() {
     }
 
     private fun saveScrapFirebase(model: ScrapEntity) {
+        /**
+         * 작성자: 서정한
+         * 내용: 스크랩데이터를 네이버에서 받아올때 html태그가 String에 섞여있음.
+         * 검색한 데이터의 String값만 뽑아내기위한 메서드
+         * */
+        fun stripHtml(html: String): String {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                return Html.fromHtml(html).toString()
+            }
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
+        }
+
         val scrapRef = ScrapRef()
         scrapRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -142,8 +156,13 @@ class ScrapFragment : Fragment() {
                 val isDuplicate = getScrapList.any { it.url == model.url }
 
                 if (!isDuplicate) {
-                    getScrapList.add(model)
-
+                    getScrapList.add(
+                        model.copy(
+                            title = stripHtml(model.title),
+                            description = stripHtml(model.description)
+                        )
+                    )
+                    Log.d("TripMates", "블로그 타이틀 : ${stripHtml(model.title)}")
                     scrapRef.setValue(getScrapList)
                 }
             }
