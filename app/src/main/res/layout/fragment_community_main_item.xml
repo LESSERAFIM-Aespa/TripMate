@@ -20,12 +20,8 @@
             android:id="@+id/community_main_thumbnail"
             android:layout_width="100dp"
             android:layout_height="100dp"
-<<<<<<< HEAD
             android:scaleType="centerCrop"
             android:src="@drawable/emptycommu"/>
-=======
-            android:scaleType="centerCrop" />
->>>>>>> df5c14c ([Refactor] 커뮤니티 리펙토링)
 
     </androidx.cardview.widget.CardView>
 
