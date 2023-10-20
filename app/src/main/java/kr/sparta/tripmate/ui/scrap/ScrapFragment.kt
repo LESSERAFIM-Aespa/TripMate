@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.scrap
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -11,7 +12,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -32,7 +32,7 @@ class ScrapFragment : Fragment() {
         fun newInstance(): ScrapFragment = ScrapFragment()
     }
 
-    private lateinit var scrap_Database: DatabaseReference
+    private lateinit var scrapContext : Context
     private val binding by lazy { FragmentScrapBinding.inflate(layoutInflater) }
 
     private lateinit var scrapAdapter: ScrapAdapter
@@ -46,11 +46,15 @@ class ScrapFragment : Fragment() {
 
     var searchQuery: String? = null
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        scrapContext = context
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        scrap_Database = Firebase.database.reference
 
         setUpView()
         searchView()
@@ -125,73 +129,18 @@ class ScrapFragment : Fragment() {
 
     private fun setupListeners() {
         searchQuery?.let {
-            scrapViewModel.ScrapServerResults(searchQuery!!, requireContext())
+            scrapViewModel.searchAPIResult(searchQuery!!, requireContext())
         }
     }
 
     private fun saveScrapFirebase(model: ScrapEntity) {
-        /**
-         * 작성자: 서정한
-         * 내용: 스크랩데이터를 네이버에서 받아올때 html태그가 String에 섞여있음.
-         * 검색한 데이터의 String값만 뽑아내기위한 메서드
-         * */
-        fun stripHtml(html: String): String {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                return Html.fromHtml(html).toString()
-            }
-            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
-        }
-
-        val scrapRef = ScrapRef()
-        scrapRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val getScrapList = ArrayList<ScrapEntity>()
-
-                for (items in dataSnapshot.children) {
-                    val existingModel = items.getValue(ScrapEntity::class.java)
-                    existingModel?.let {
-                        getScrapList.add(it)
-                    }
-                }
-                val isDuplicate = getScrapList.any { it.url == model.url }
-
-                if (!isDuplicate) {
-                    getScrapList.add(
-                        model.copy(
-                            title = stripHtml(model.title),
-                            description = stripHtml(model.description)
-                        )
-                    )
-                    Log.d("TripMates", "블로그 타이틀 : ${stripHtml(model.title)}")
-                    scrapRef.setValue(getScrapList)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("TripMates", "Error reading data: $databaseError")
-            }
-        })
+        val uid = SharedPreferences.getUid(scrapContext)
+        scrapViewModel.saveScrap(uid, model)
     }
+
 
     private fun deleteScrapFirebase(model: ScrapEntity) {
-        val scrapRef = ScrapRef()
-
-        scrapRef.get().addOnSuccessListener {
-            for (child in it.children) {
-                val item = child.getValue(ScrapModel::class.java)
-                if (item != null && item.title == model.title && item.url == model.url) {
-                    child.ref.removeValue()
-                    break
-                }
-            }
-        }.addOnFailureListener {
-            Log.d("TripMates", "Error reading data: $it")
-        }
+        val uid = SharedPreferences.getUid(scrapContext)
+        scrapViewModel.removeScrap(uid, model)
     }
-
-    private fun ScrapRef(): DatabaseReference {
-        return scrap_Database.child("scrapData")
-            .child(SharedPreferences.getUid(requireContext()))
-    }
-
 }
