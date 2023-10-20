@@ -49,7 +49,7 @@ class CommunityWriteActivity : AppCompatActivity() {
             val bodyWrite = binding.communityWriteDescription.text.toString()
             val titleWrite = binding.communityWriteTitle.text.toString()
             val uid = SharedPreferences.getUid(this)                 //5. sharedpreferences에 저장된 uid
-            val myRef = commu_Database.child("CommunityData").child(uid)
+            val myRef = commu_Database.child("CommunityData")
             val nickName = SharedPreferences.getNickName(this)          //6. sharedpreferences에 저장된 닉네임
             val profile = SharedPreferences.getProfile(this)            //7.sharedpreferences에 저장된 프로필 사진
             val key = myRef.push()
