@@ -30,7 +30,7 @@ class ProcedureContentActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ProcedureContentActivit"
         const val EXTRA_PROCEDURE_ENTRY_TYPE = "extra_procedure_entry_type"
-        const val EXTRA_BUDGET_NUM = "extra_procedure_num"
+        const val EXTRA_BUDGET_NUM = "extra_budget_num"
         const val EXTRA_PROCEDURE_NUM = "extra_procedure_num"
 
         fun newIntentForAdd(context: Context, budgetNum: Int) =
@@ -108,6 +108,7 @@ class ProcedureContentActivity : AppCompatActivity() {
             }
 
         }
+        Log.d(TAG, "initViewModels: $budgetNum")
         with(procedureContentViewModel) {
             budgetCategories.observe(this@ProcedureContentActivity) { list ->
                 val budgetCategories = list.orEmpty().first()
