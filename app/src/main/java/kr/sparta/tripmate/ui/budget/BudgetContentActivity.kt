@@ -316,6 +316,7 @@ class BudgetContentActivity : AppCompatActivity() {
             .setColorListener { _, colorHex ->
                 button.backgroundTintList =
                     ColorStateList.valueOf(Color.parseColor(colorHex))
+                categoryAdapter.saveList[pos] = currentItem.copy(color = colorHex)
             }
             .show()
     }
