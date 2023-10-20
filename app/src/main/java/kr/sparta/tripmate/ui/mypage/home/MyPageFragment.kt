@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
@@ -66,6 +67,8 @@ class MyPageFragment : Fragment() {
         TabLayoutMediator(mypageTablayout, mypageViewpager) { tab, position ->
             tab.setText(adapter.getTitle(position))
         }.attach()
+
+        mypageViewpager.offscreenPageLimit = adapter.itemCount
 
         // 설정페이지 이동
         mypageSettingButton.setOnClickListener {
