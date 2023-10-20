@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.mypage.scrap.BookmarkFragment">
 
@@ -11,9 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        android:padding="15dp"
-        tools:listitem="@layout/fragment_mypage_bookmark_item"
-        />
+        app:spanCount="2"
+        android:layout_gravity="fill_horizontal"
+        tools:listitem="@layout/fragment_mypage_bookmark_item" />
 
-</FrameLayout>
+</LinearLayout>

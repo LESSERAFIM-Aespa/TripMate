@@ -11,7 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
 import kr.sparta.tripmate.ui.scrap.ScrapDetail
-import kr.sparta.tripmate.ui.viewmodel.home.FirstViewModel
+import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageFactory
+import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class BookmarkFragment : Fragment() {
@@ -23,7 +24,6 @@ class BookmarkFragment : Fragment() {
         if(it.resultCode == AppCompatActivity.RESULT_OK){}
     }
 
-    private val scrapViewModel: FirstViewModel by viewModels()
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
     private val bookmarkAdapter by lazy {
@@ -32,6 +32,9 @@ class BookmarkFragment : Fragment() {
                 bookmarkResults.launch(ScrapDetail.newIntentForScrap(requireContext(), model))
             }
         )
+    }
+    private val viewModel: BookmarkPageViewModel by viewModels() {
+        BookmarkPageFactory()
     }
 
     override fun onCreateView(
@@ -49,19 +52,24 @@ class BookmarkFragment : Fragment() {
         initViewModel()
     }
 
-    private fun initViewModel() {
-        with(scrapViewModel) {
-            getFirstData(SharedPreferences.getUid(requireContext())).observe(viewLifecycleOwner){
-                bookmarkAdapter.submitList(it)
-            }
-        }
-    }
-
     private fun initView() = with(binding) {
       bookmarkRecyclerview.apply {
           layoutManager = GridLayoutManager(requireContext(),2)
           adapter = bookmarkAdapter
           setHasFixedSize(true)
       }
+    }
+
+    private fun initViewModel() {
+        with(viewModel) {
+            myPageList.observe(viewLifecycleOwner){
+                bookmarkAdapter.submitList(it)
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.updateScrapData(requireContext())
     }
 }

@@ -51,4 +51,9 @@
     <string name="procedure_memo_text">메모</string>
     <string name="budget_category_input_name">카테고리 이름을 입력해 주세요</string>
     <string name="empty_view">결과가 없습니다.</string>
+    <string name="main_tab_title_budget">Budget</string>
+    <string name="main_tab_title_community">Commu</string>
+    <string name="main_tab_title_home">Home</string>
+    <string name="main_tab_title_scrap">Scrap</string>
+    <string name="main_tab_title_mypage">MyPage</string>
 </resources>

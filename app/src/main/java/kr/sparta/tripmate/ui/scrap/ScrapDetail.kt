@@ -12,11 +12,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.databinding.ActivityScrapDetailBinding
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
 class ScrapDetail : AppCompatActivity() {
     companion object {
         const val EXTRA_MODEL = "extra_model"
-        fun newIntentForScrap(context: Context, model: ScrapModel): Intent =
+        fun newIntentForScrap(context: Context, model: ScrapEntity): Intent =
             Intent(context, ScrapDetail::class.java).apply {
                 putExtra(EXTRA_MODEL, model)
             }
@@ -26,7 +27,7 @@ class ScrapDetail : AppCompatActivity() {
 
     private val model by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_MODEL, ScrapModel::class.java)
+            intent.getParcelableExtra(EXTRA_MODEL, ScrapEntity::class.java)
         } else {
             intent.getParcelableExtra(EXTRA_MODEL)
         }
