@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
@@ -41,7 +42,7 @@ class CommunityFragment : Fragment() {
         CommunityListAdapter(
             onProfileClicked =
             { model, position ->
-                (context as MainActivity).onMyPageClicked()
+                (requireContext() as MainActivity).moveTabFragment(R.string.main_tab_title_mypage)
             })
     }
 
