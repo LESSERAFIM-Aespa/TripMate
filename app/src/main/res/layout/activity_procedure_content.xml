@@ -197,7 +197,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_budget_view_type1"
                     android:fontFamily="@font/inter"
-                    android:hint="@string/budget_content_input_money"
+                    android:hint="금액을 입력해 주세요"
                     android:inputType="numberDecimal"
                     android:padding="10dp"
                     android:paddingHorizontal="20dp"
