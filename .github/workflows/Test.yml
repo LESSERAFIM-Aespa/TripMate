@@ -17,10 +17,7 @@ on:
       - feat/budgetlist
       - feat/budgetdetail
       - refector/home
-<<<<<<< HEAD
       - feat/procedure
-=======
->>>>>>> d66b3c7c1ac27d7abf26e5a8c4bc6419360d9f66
   pull_request:
     branches: 
       - feat/main
@@ -37,11 +34,7 @@ on:
       - feat/budgetlist
       - feat/budgetdetail
       - refector/home
-<<<<<<< HEAD
       - feat/procedure
-=======
-
->>>>>>> d66b3c7c1ac27d7abf26e5a8c4bc6419360d9f66
 jobs:
   build:
 
