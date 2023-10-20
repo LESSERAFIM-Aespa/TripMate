@@ -7,6 +7,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
@@ -57,8 +58,9 @@ class ProcedureDetailActivity : AppCompatActivity() {
     private fun initViewModels() {
         with(procedureDetailViewModel) {
             procedure.observe(this@ProcedureDetailActivity) { list ->
+                if (list.isEmpty()) finish()
+                val procedure = list.first()
                 val categories = categories.value.orEmpty()
-                val procedure = list.orEmpty().first()
 
                 binding.procedureDetailTitleTextview.text = procedure.name
                 categories.firstOrNull {
@@ -70,9 +72,9 @@ class ProcedureDetailActivity : AppCompatActivity() {
                 }
                 binding.procedureTimeTextview.text = procedure.time
                 binding.procedureDescriptionTextview.text = procedure.description
-                if (procedure.money > 0){
+                if (procedure.money > 0) {
                     binding.procedureMoneyStateTextview.text = "지출"
-                }else{
+                } else {
                     binding.procedureMoneyStateTextview.text = "수입"
                 }
                 binding.procedureMoneyTextview.text = abs(procedure.money).toMoneyFormat() + "원"
@@ -100,6 +102,18 @@ class ProcedureDetailActivity : AppCompatActivity() {
 
     // delete dialog가 나오게 적용
     private fun showDeleteDialog() {
-
+        val builder = AlertDialog.Builder(this).apply {
+            setTitle("삭제하기")
+            setMessage(
+                "삭제한 항목은 되돌릴 수 없습니다.\n" +
+                        "삭제하시겠습니까?"
+            )
+            setNegativeButton("취소") { _, _ -> }
+            setPositiveButton("확인") { _, _ ->
+                procedureDetailViewModel.deleteProcedure()
+                finish()
+            }
+        }
+        builder.show()
     }
 }
