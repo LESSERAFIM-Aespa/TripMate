@@ -58,4 +58,8 @@
     <string name="main_tab_title_mypage">MyPage</string>
     <string name="pleaseentertitle">제목을 입력하세요.</string>
     <string name="pleaseenteryourdetails">내용을 입력해주세요</string>
+
+    <string name="budget_detail_tab_procedure">과정</string>
+    <string name="budget_detail_tab_statistics">통계</string>
+
 </resources>
