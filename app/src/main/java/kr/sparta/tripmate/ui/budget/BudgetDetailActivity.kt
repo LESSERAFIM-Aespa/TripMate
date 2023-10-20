@@ -16,8 +16,6 @@ class BudgetDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_BUDGET_NUM = "extra_budget_num"
-
-
         //test 용,이동 확인후 삭제할것
         fun newIntent(context: Context) = Intent(context, BudgetDetailActivity::class.java)
 
