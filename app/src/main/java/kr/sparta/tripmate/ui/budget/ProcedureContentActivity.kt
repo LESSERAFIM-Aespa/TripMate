@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Category
+import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModel
@@ -72,6 +73,8 @@ class ProcedureContentActivity : AppCompatActivity() {
         )
     }
 
+    private lateinit var arrayAdapter: ArrayAdapter<Category>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -81,7 +84,7 @@ class ProcedureContentActivity : AppCompatActivity() {
     }
 
     private fun initViewModels() {
-        val arrayAdapter = object : ArrayAdapter<Category>(this, R.layout.itme_spinner) {
+        arrayAdapter = object : ArrayAdapter<Category>(this, R.layout.itme_spinner) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val view = super.getView(position, convertView, parent)
                 with(view) {
@@ -150,19 +153,69 @@ class ProcedureContentActivity : AppCompatActivity() {
             finish()
         }
         procedureSaveButton.setOnClickListener {
-
-            when (entryType) {
-                ProcedureContentType.ADD -> {
-
+            when{
+                procedureNameEdittext.text.toString().isBlank() ->{
+                    Toast.makeText(
+                        this@ProcedureContentActivity,
+                        "과정 이름이 공백입니다. 다시 확인해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
-                ProcedureContentType.EDIT -> {
-
+                procedureNameEdittext.text.toString().length >= 30 -> {
+                    Toast.makeText(
+                        this@ProcedureContentActivity,
+                        "과정 이름은 30자이내로 적어주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
-                else -> {}
+                procedureTimeTextview.text.toString() == "시간과 날짜를 입력해 주세요" -> {
+                    Toast.makeText(
+                        this@ProcedureContentActivity,
+                        "시간을 확인해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                procedureCategorySpinner.selectedItemPosition == 0 -> {
+                    Toast.makeText(
+                        this@ProcedureContentActivity,
+                        "카테고리를 선택해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                procedureMoneyEdittext.text.isNullOrBlank() -> {
+                    Toast.makeText(
+                        this@ProcedureContentActivity,
+                        "금액이 비어있습니다. 확인해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+
+                else -> {
+                    /*val procedure = Procedure(
+                        categoryNum = arrayAdapter.getItem(procedureCategorySpinner.selectedItemPosition).num!!,
+                        name = procedureNameEdittext.text.toString(),
+                        description = procedureMemoEdittext.text.toString(),
+                        money = ,
+                        time = procedureTimeTextview.text.toString()
+                    )*/
+                    when (entryType) {
+                        ProcedureContentType.ADD -> {
+                           //procedureContentViewModel.inserProcedure(procedure)
+                        }
+                        ProcedureContentType.EDIT -> {
+                            //procedureContentViewModel.inserProcedure(procedure.copy(num = procedureNum))
+                        }
+
+                        else -> {}
+                    }
+                    finish()
+                }
             }
-            finish()
         }
     }
 
