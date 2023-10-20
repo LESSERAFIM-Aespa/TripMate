@@ -13,21 +13,29 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapEntity
-import kr.sparta.tripmate.domain.model.scrap.toScrapModel
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
+import kr.sparta.tripmate.domain.usecase.RemoveFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.SaveFirebaseScrapData
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
-class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel() {
+class ScrapViewModel(
+    private val searchBlog: GetSearchBlogUseCase,
+    private val saveFirebaseScrapData: SaveFirebaseScrapData,
+    private val removeFirebaseScrapData: RemoveFirebaseScrapData
+) : ViewModel() {
     private val _scrapResult = MutableLiveData<List<ScrapEntity>>()
     val scrapResult: LiveData<List<ScrapEntity>> get() = _scrapResult
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    fun ScrapServerResults(q: String, context: Context) = viewModelScope.launch {
+    /**
+     * 작성자: 박성수
+     * 내용: 네이버 API로 블로그 검색한 결과를 받아옴
+     * */
+    fun searchAPIResult(q: String, context: Context) = viewModelScope.launch {
         kotlin.runCatching {
             // loading start
             _isLoading.value = true
@@ -38,9 +46,9 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
                 for (i in it.indices) {
                     scrapItems.add(it[i].toScrapEntity())
                 }
-                // 검색데이터와 저장된데이터를 비교해서 검색했을때 북마크 추가된 데이터들을 체크표시 해줍니다.
-                scrapFef(context) { getScrapList ->
-                    DupScrap(scrapItems, getScrapList)
+
+                updateBookmarkedScrapData(context) { getScrapList ->
+                    checkIsBookmarkedScrapData(scrapItems, getScrapList)
                     _scrapResult.value = scrapItems
                 }
                 // loading end
@@ -52,7 +60,12 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
         }
     }
 
-    private fun scrapFef(
+    /**
+     * 작성자: 박성수
+     * 내용:검색데이터와 저장된데이터를 비교해서
+     * 검색했을때 북마크 추가된 데이터들을 체크표시 해줍니다.
+     * */
+    private fun updateBookmarkedScrapData(
         context: Context,
         onSuccess: (List<ScrapEntity>) -> Unit
     ) {
@@ -76,7 +89,13 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
             }
         })
     }
-    private fun DupScrap(scrapItems: List<ScrapEntity>, getScrapList: List<ScrapEntity>) {
+
+    /**
+     * 작성자: 박성수
+     * 내용: Firebase RDB에서 가져온 Scrap목록을 기준으로
+     * 북마크된 item들을 찾아줍니다
+     * */
+    private fun checkIsBookmarkedScrapData(scrapItems: List<ScrapEntity>, getScrapList: List<ScrapEntity>) {
         for (i in 0 until scrapItems.size) {
             val isDuplicate = getScrapList.any { it.url == scrapItems[i].url }
             if (isDuplicate) {
@@ -85,6 +104,18 @@ class ScrapViewModel(private val searchBlog: GetSearchBlogUseCase) : ViewModel()
             }
         }
     }
+
+    /**
+     * 작성자: 서정한
+     * 내용: 선택한 스크랩 item을 Firebase RDB에 저장합니다.
+     * */
+    fun saveScrap(uid: String, model: ScrapEntity) = saveFirebaseScrapData.invoke(uid, model)
+
+    /**
+     * 작성자: 서정한
+     * 내용: Firebase RDB에 저장된 아이템에서 선택한 스크랩 item을 찾아 삭제합니다.
+     * */
+    fun removeScrap(uid:String, model: ScrapEntity) = removeFirebaseScrapData.invoke(uid, model)
 
     fun updateIsLike(model: ScrapEntity, position: Int) {
         //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
