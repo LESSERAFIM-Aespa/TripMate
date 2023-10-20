@@ -129,16 +129,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/procedure_time_textview" />
 
-            <Spinner
-                android:id="@+id/procedure_category_spinner"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/spinner_cardview"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_budget_view_type1"
-                android:gravity="center"
-                android:paddingVertical="10dp"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:cardCornerRadius="30dp"
+                android:elevation="0dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/procedure_category_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_budget_view_type1"
+                    android:gravity="center"
+                    android:textAlignment="center" />
+            </androidx.cardview.widget.CardView>
+
 
 
             <TextView
@@ -152,7 +161,7 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/procedure_category_spinner" />
+                app:layout_constraintTop_toBottomOf="@id/spinner_cardview" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/procedure_memo_inputlayout"
