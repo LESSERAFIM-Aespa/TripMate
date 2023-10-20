@@ -17,6 +17,7 @@ on:
       - feat/budgetlist
       - feat/budgetdetail
       - refector/home
+      - feat/procedure
   pull_request:
     branches: 
       - feat/main
@@ -33,7 +34,7 @@ on:
       - feat/budgetlist
       - feat/budgetdetail
       - refector/home
-
+      - feat/procedure
 jobs:
   build:
 
