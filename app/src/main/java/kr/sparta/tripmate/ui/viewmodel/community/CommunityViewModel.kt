@@ -46,13 +46,13 @@ class CommunityViewModel : ViewModel() {
                 val allCommunityData = mutableListOf<CommunityModel>()
 
                 for (userPostSnapshot in snapshot.children) {
-                    for (postSnapshot in userPostSnapshot.children) {
-                        val postId = postSnapshot.key
-                        val postModel = postSnapshot.getValue(CommunityModel::class.java)
-                        if (postId != null && postModel != null) {
+
+//                        val postId = postSnapshot.key
+                        val postModel = userPostSnapshot.getValue(CommunityModel::class.java)
+                        if ( postModel != null) {
                             allCommunityData.add(postModel)
                         }
-                    }
+
                 }
                 if (!allCommunityData.isNullOrEmpty()) {
                     _dataModelList.value = allCommunityData     //5. 데이터베이스에서 받아온 데이터를 넣어줌
@@ -93,10 +93,11 @@ class CommunityViewModel : ViewModel() {
         list?.let {
             updateList.addAll(it)
         }
-        for (modelItem in updateList){
-            val modelId = modelItem.id
-            val commuRef = commuDatabase.getReference("CommunityData").child(modelId)
-            commuRef.setValue(updateList)
-        }
+        val commuRef = commuDatabase.getReference("CommunityData")
+        commuRef.setValue(updateList)
+//        for (modelItem in updateList){
+//            val modelId = modelItem.id
+//
+//        }
     }
 }
