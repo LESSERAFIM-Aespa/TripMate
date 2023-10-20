@@ -46,6 +46,7 @@ class CommunityFragment : Fragment() {
                         commuIsLike = !model.commuIsLike
                     ), position
                 )
+                (requireContext() as MainActivity).moveTabFragment(R.string.main_tab_title_mypage)
             })
     }
 
@@ -64,6 +65,43 @@ class CommunityFragment : Fragment() {
         commuFloatBtn()     //2. 플로팅버튼
         initView()          //3. 어댑터 관리
         initViewModel()     //4. 뷰모델 관리
+//        // Firebase에서 데이터를 가져오고 RecyclerView 어댑터를 업데이트
+//        val database = Firebase.database
+//        val myRef = database.getReference("CommunityData")
+//
+//        myRef.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val allCommunityData = mutableListOf<CommunityModel>()
+//
+//                for (userPostSnapshot in snapshot.children) {
+//                    for (postSnapshot in userPostSnapshot.children) {
+//                        val postId = postSnapshot.key
+//                        val postModel = postSnapshot.getValue(CommunityModel::class.java)
+//                        if (postId != null && postModel != null) {
+//                            allCommunityData.add(postModel)
+//                        }
+//                    }
+//                }
+//
+//
+//                // 가져온 데이터를 ViewModel을 통해 업데이트
+//                viewModel.updateDataModelList(allCommunityData)
+//                // RecyclerView 어댑터 업데이트
+//                adapter.submitList(allCommunityData)
+//
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                // 오류 처리
+//            }
+//        })
+
+
+//버튼이 중복됩니다.
+//        binding.writeBtn.setOnClickListener {
+//            val intent = Intent(context, CommunityWriteActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun initViewModel() {
@@ -97,4 +135,5 @@ class CommunityFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
