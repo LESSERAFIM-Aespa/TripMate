@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.bumptech.glide.Glide
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
@@ -24,6 +25,9 @@ class HomeFragment : Fragment() {
     companion object {
         fun newInstance(): HomeFragment = HomeFragment()
     }
+
+    private lateinit var homeContext: Context
+    private lateinit var activity: MainActivity
 
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private val homeScrapViewModel: HomeScrapViewModel by viewModels() {
@@ -42,6 +46,8 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        homeContext = context
+        activity = requireActivity() as MainActivity
     }
 
     override fun onCreateView(
@@ -62,26 +68,24 @@ class HomeFragment : Fragment() {
      * 내용: Home에서 다른 Fragment로 이동하는 로직
      * */
     private fun initRoute() = with(binding) {
-        val mainActivity = requireActivity() as MainActivity
-
         // 프로필
         homeProfileImage.setOnClickListener {
-            mainActivity.moveTabFragment(R.string.main_tab_title_mypage)
+            activity.moveTabFragment(R.string.main_tab_title_mypage)
         }
 
         // 스크랩
         homeArrow1.setOnClickListener {
-            mainActivity.moveTabFragment(R.string.main_tab_title_scrap)
+            activity.moveTabFragment(R.string.main_tab_title_scrap)
         }
 
         // 커뮤니티
         homeArrow2.setOnClickListener {
-            mainActivity.moveTabFragment(R.string.main_tab_title_community)
+            activity.moveTabFragment(R.string.main_tab_title_community)
         }
 
         // 가계부
         homeArrow3.setOnClickListener {
-            mainActivity.moveTabFragment(R.string.main_tab_title_budget)
+            activity.moveTabFragment(R.string.main_tab_title_budget)
         }
 
     }
@@ -116,14 +120,14 @@ class HomeFragment : Fragment() {
 
     private fun inputToolBar() {
         binding.homeProfileTitle.text = "${SharedPreferences.getNickName(requireContext())} 님"
-        Glide.with(requireContext())
-            .load(SharedPreferences.getProfile(requireContext()))
-            .into(binding.homeProfileImage)
+        binding.homeProfileImage.load(
+            SharedPreferences.getProfile(homeContext)
+        )
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         // 사용자가 저장한 Scrap목록을 Firebase에서 가져와 적용
-        homeScrapViewModel.updateScrapData(requireContext())
+        homeScrapViewModel.updateScrapData(homeContext)
     }
 }
