@@ -7,22 +7,25 @@ import android.content.Intent
 import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
-import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
-import kr.sparta.tripmate.ui.budget.BudgetContentActivity.Companion.EXTRA_BUDGET_ENTRY_TYPE
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModelFactory
 import kr.sparta.tripmate.util.method.toTimeFormat
-import java.util.Calendar
 
 class ProcedureContentActivity : AppCompatActivity() {
     companion object {
+        private const val TAG = "ProcedureContentActivit"
         const val EXTRA_PROCEDURE_ENTRY_TYPE = "extra_procedure_entry_type"
         const val EXTRA_BUDGET_NUM = "extra_procedure_num"
         const val EXTRA_PROCEDURE_NUM = "extra_procedure_num"
@@ -59,6 +62,7 @@ class ProcedureContentActivity : AppCompatActivity() {
     private lateinit var startDate: String
     private lateinit var endDate: String
 
+
     private val procedureContentViewModel: ProcedureContentViewModel by viewModels {
         ProcedureContentViewModelFactory(
             BudgetRepositoryImpl(this),
@@ -77,6 +81,28 @@ class ProcedureContentActivity : AppCompatActivity() {
     }
 
     private fun initViewModels() {
+        val arrayAdapter = object : ArrayAdapter<Category>(this, R.layout.itme_spinner) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                with(view) {
+                    findViewById<TextView>(R.id.spinner_textview).text = getItem(position)?.name
+                }
+                return view
+            }
+
+            override fun getDropDownView(
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup,
+            ): View {
+                val view = super.getDropDownView(position, convertView, parent)
+                with(view) {
+                    findViewById<TextView>(R.id.spinner_textview).text = getItem(position)?.name
+                }
+                return view
+            }
+
+        }
         with(procedureContentViewModel) {
             budgetCategories.observe(this@ProcedureContentActivity) { list ->
                 val budgetCategories = list.orEmpty().first()
@@ -85,6 +111,12 @@ class ProcedureContentActivity : AppCompatActivity() {
                 startDate = budget.startDate
                 endDate = budget.endDate
                 val categories = budgetCategories.categories.orEmpty()
+                arrayAdapter.addAll(Category(0, "카테고리를 정해 주세요", "", 0))
+                arrayAdapter.addAll(categories)
+
+                binding.procedureCategorySpinner.apply {
+                    adapter = arrayAdapter
+                }
             }
             if (entryType == ProcedureContentType.EDIT) {
                 procedures.observe(this@ProcedureContentActivity) { list ->
@@ -92,6 +124,13 @@ class ProcedureContentActivity : AppCompatActivity() {
                     binding.procedureNameEdittext.setText(procedure.name)
                     binding.procedureTimeTextview.text = procedure.time
                     binding.procedureMemoEdittext.setText(procedure.description)
+                    loop@ for (i in 0 until arrayAdapter.count) {
+                        val category = arrayAdapter.getItem(i)
+                        if (category?.num == procedure.categoryNum) {
+                            binding.procedureCategorySpinner.setSelection(i)
+                            break@loop
+                        }
+                    }
                 }
             }
         }
@@ -111,6 +150,7 @@ class ProcedureContentActivity : AppCompatActivity() {
             finish()
         }
         procedureSaveButton.setOnClickListener {
+
             when (entryType) {
                 ProcedureContentType.ADD -> {
 
