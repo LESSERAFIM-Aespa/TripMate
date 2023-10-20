@@ -2,11 +2,19 @@ package kr.sparta.tripmate.ui.budget
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
+import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModelFactory
+import kr.sparta.tripmate.util.method.toMoneyFormat
+import kotlin.math.abs
 
 class ProcedureDetailActivity : AppCompatActivity() {
     companion object {
@@ -30,11 +38,46 @@ class ProcedureDetailActivity : AppCompatActivity() {
         intent.getIntExtra(EXTRA_PROCEDURE_NUM, 0)
     }
 
+    private val procedureDetailViewModel: ProcedureDetailViewModel by viewModels {
+        ProcedureDetailViewModelFactory(
+            BudgetRepositoryImpl(this@ProcedureDetailActivity),
+            budgetNum,
+            procedureNum
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initViews()
+        initViewModels()
+    }
+
+    private fun initViewModels() {
+        with(procedureDetailViewModel) {
+            procedure.observe(this@ProcedureDetailActivity) { list ->
+                val categories = categories.value.orEmpty()
+                val procedure = list.orEmpty().first()
+
+                binding.procedureDetailTitleTextview.text = procedure.name
+                categories.firstOrNull {
+                    it.num == procedure.categoryNum
+                }?.let { category ->
+                    binding.procedureCategoryName.text = category.name
+                    binding.procedureCategoryName.backgroundTintList =
+                        ColorStateList.valueOf(Color.parseColor(category.color))
+                }
+                binding.procedureTimeTextview.text = procedure.time
+                binding.procedureDescriptionTextview.text = procedure.description
+                if (procedure.money > 0){
+                    binding.procedureMoneyStateTextview.text = "지출"
+                }else{
+                    binding.procedureMoneyStateTextview.text = "수입"
+                }
+                binding.procedureMoneyTextview.text = abs(procedure.money).toMoneyFormat() + "원"
+            }
+        }
     }
 
     private fun initViews() = with(binding) {
@@ -45,7 +88,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
         procedureDetailEditImageview.setOnClickListener {
             startActivity(
                 ProcedureContentActivity.newIntentForEdit(
-                    this@ProcedureDetailActivity, budgetNum , procedureNum
+                    this@ProcedureDetailActivity, budgetNum, procedureNum
                 )
             )
         }
