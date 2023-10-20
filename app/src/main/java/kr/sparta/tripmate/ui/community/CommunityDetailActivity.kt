@@ -26,8 +26,8 @@ class CommunityDetailActivity : AppCompatActivity() {
     }
     private fun setupViews() {
         binding.communityUserprofile.load(writeItem.profileThumbnail)
-        binding.communityDetailTitle.text = writeItem.title
-        binding.communityDetailDescription.text = writeItem.body
-        binding.communityDetailUsername.text = writeItem.profileNickname
+        binding.communityTvDetailTitle.text = writeItem.title
+        binding.communityTvDetailDescription.text = writeItem.body
+        binding.communityTvDetailUsername.text = writeItem.profileNickname
     }
 }
