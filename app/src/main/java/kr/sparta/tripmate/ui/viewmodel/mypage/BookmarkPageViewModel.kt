@@ -9,7 +9,7 @@ import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class BookmarkPageViewModel(private val getFirebaseScrapData: GetFirebaseScrapData): ViewModel() {
     // 내정보 스크랩 LiveData
-    private val _mypageScraps : MutableLiveData<List<ScrapEntity>> = MutableLiveData()
+    private val _mypageScraps : MutableLiveData<List<ScrapEntity?>> = MutableLiveData()
     val myPageList get() = _mypageScraps
 //    private val _mypagePosts : MutableLiveData<List<BoardModel>> = MutableLiveData()
 //    val mypagePosts get() = _mypagePosts
