@@ -47,3 +47,13 @@ fun ScrapItemsEntity.toScrapEntity(): ScrapEntity = ScrapEntity(
     bloggerlink = bloggerlink.orEmpty(),
     postdate = postdate.orEmpty(),
 )
+
+fun ScrapEntity.toScrapModel() : ScrapModel = ScrapModel(
+    title = title.orEmpty(),
+    url = url.orEmpty(),
+    description = description.orEmpty(),
+    bloggername = bloggername.orEmpty(),
+    bloggerlink = bloggerlink.orEmpty(),
+    postdate = postdate.orEmpty(),
+    isLike = isLike,
+)

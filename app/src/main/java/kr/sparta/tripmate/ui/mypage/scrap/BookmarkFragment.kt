@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.mypage.scrap
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,17 +25,23 @@ class BookmarkFragment : Fragment() {
         if(it.resultCode == AppCompatActivity.RESULT_OK){}
     }
 
+    private lateinit var bookmarkContext: Context
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
     private val bookmarkAdapter by lazy {
         BookmarkListAdapter(
             onItemClick = { model, position ->
-                bookmarkResults.launch(ScrapDetail.newIntentForScrap(requireContext(), model))
+                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
             }
         )
     }
     private val viewModel: BookmarkPageViewModel by viewModels() {
         BookmarkPageFactory()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        bookmarkContext = context
     }
 
     override fun onCreateView(
@@ -68,8 +75,9 @@ class BookmarkFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
+        // 사용자가 저장한 Scrap목록을 Firebase에서 가져와 적용
         viewModel.updateScrapData(requireContext())
     }
 }

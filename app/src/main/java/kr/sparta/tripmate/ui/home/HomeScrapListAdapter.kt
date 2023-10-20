@@ -10,11 +10,10 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
 import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
-class HomeFirstAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
+class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
     ListAdapter<ScrapEntity,
             RecyclerView.ViewHolder>(
         object : DiffUtil.ItemCallback<ScrapEntity>() {
