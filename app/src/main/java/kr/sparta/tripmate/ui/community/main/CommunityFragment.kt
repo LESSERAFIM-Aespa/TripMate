@@ -21,6 +21,7 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
+import kr.sparta.tripmate.ui.viewmodel.community.CommunityBoardViewModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 import kotlin.math.log
 
@@ -46,20 +47,20 @@ class CommunityFragment : Fragment() {
             },
             onThumbnailClicked =
             { model, position ->
-                (mcontext).moveTabFragment(R.string.main_tab_title_mypage)
+                (activity).moveTabFragment(R.string.main_tab_title_mypage)
             },
             onLikeClicked = { model, position ->
                 commuViewModel.updateCommuIsLike(
                     model = model.copy(
                         commuIsLike = !model.commuIsLike
-                    ), position,mcontext
+                    ), position,communityContext
                 )
             },
             onItemLongClicked = { model, position ->
                 boardViewModel.savedBoard(
                     model = model.copy(
                         boardLike = !model.boardLike
-                    ), position, mcontext
+                    ), position, communityContext
                 )
             })
     }
@@ -76,54 +77,17 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        commuFloatBtn()     //2. 플로팅버튼
-        initView()          //3. 어댑터 관리
-        initViewModel()     //4. 뷰모델 관리
-//        // Firebase에서 데이터를 가져오고 RecyclerView 어댑터를 업데이트
-//        val database = Firebase.database
-//        val myRef = database.getReference("CommunityData")
-//
-//        myRef.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                val allCommunityData = mutableListOf<CommunityModel>()
-//
-//                for (userPostSnapshot in snapshot.children) {
-//                    for (postSnapshot in userPostSnapshot.children) {
-//                        val postId = postSnapshot.key
-//                        val postModel = postSnapshot.getValue(CommunityModel::class.java)
-//                        if (postId != null && postModel != null) {
-//                            allCommunityData.add(postModel)
-//                        }
-//                    }
-//                }
-//
-//
-//                // 가져온 데이터를 ViewModel을 통해 업데이트
-//                viewModel.updateDataModelList(allCommunityData)
-//                // RecyclerView 어댑터 업데이트
-//                adapter.submitList(allCommunityData)
-//
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                // 오류 처리
-//            }
-//        })
-
-
-//버튼이 중복됩니다.
-//        binding.writeBtn.setOnClickListener {
-//            val intent = Intent(context, CommunityWriteActivity::class.java)
-//            startActivity(intent)
-//        }
+        commuFloatBtn()
+        initView()
+        initViewModel()
     }
 
     private fun initViewModel() {
-        viewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
+        commuViewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
             Log.d("TripMates", "커뮤데이터 :${it[0].views}")
             commuAdapter.submitList(it)
         }
-        viewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
+        commuViewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
@@ -136,18 +100,16 @@ class CommunityFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
-        communityMainRecyclerView.apply {       //7. 어댑터를 관리합니다.
+        communityMainRecyclerView.apply {
             adapter = commuAdapter
             communityMainRecyclerView.setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
-        viewModel.updateDataModelList()                 //8. 뷰모델의 함수를 호출합니다.
-
+        commuViewModel.updateDataModelList()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

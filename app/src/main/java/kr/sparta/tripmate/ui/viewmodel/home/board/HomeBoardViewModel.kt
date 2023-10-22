@@ -1,47 +1,4 @@
 package kr.sparta.tripmate.ui.viewmodel.home.board
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import kr.sparta.tripmate.ui.community.main.CommunityModel
-import kr.sparta.tripmate.util.method.shortToast
-
-class CommunityBoardViewModel : ViewModel(){
-    private val _boardResult = MutableLiveData<MutableList<CommunityModel>>()
-    val boardResult: LiveData<MutableList<CommunityModel>> get() = _boardResult
-
-    fun savedBoard(model: CommunityModel, position: Int, context: Context) {
-
-        val commuDatabase = Firebase.database
-        val boardRef = commuDatabase.getReference("BoardData")
-        boardRef.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val boardList = arrayListOf<CommunityModel>()
-
-                for(item in snapshot.children){
-                    val getBordList = item.getValue(CommunityModel::class.java)
-                    getBordList?.let{
-                        boardList.add(it)
-                    }
-                }
-                val isDuplicate = boardList.any { it.key == model.key }
-                if(!isDuplicate){
-                    boardList.add(model)
-                    boardRef.setValue(boardList)
-                } else context.shortToast("이미 북마크에 추가 된 목록입니다.")
-                _boardResult.value = boardList
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        } )
-    }
+class HomeBoardViewModel {
 }
