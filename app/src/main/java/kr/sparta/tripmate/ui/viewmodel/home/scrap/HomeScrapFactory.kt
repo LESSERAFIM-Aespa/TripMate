@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.viewmodel.home
+package kr.sparta.tripmate.ui.viewmodel.home.scrap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
