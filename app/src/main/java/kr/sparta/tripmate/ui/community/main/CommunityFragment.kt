@@ -8,22 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.auth.FirebaseAuth
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityBoardViewModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
-import kotlin.math.log
 
 class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
@@ -105,7 +97,7 @@ class CommunityFragment : Fragment() {
             communityMainRecyclerView.setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
-        commuViewModel.updateDataModelList()
+        commuViewModel.updateDataModelList(communityContext)
     }
 
     override fun onDestroyView() {
