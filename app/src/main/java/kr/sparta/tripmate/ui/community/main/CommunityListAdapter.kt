@@ -57,8 +57,8 @@ class CommunityListAdapter(
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
             communityMainThumbnail.setOnClickListener {
-                val intent = Intent(itemView.context,CommunityDetailActivity::class.java)
-                intent.putExtra("Data",item)
+                val intent = Intent(itemView.context, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", item)
                 itemView.context.startActivity(intent)
                 onProfileClicked(item, bindingAdapterPosition)
             }
@@ -71,7 +71,7 @@ class CommunityListAdapter(
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
             communityMainLikesButton.setOnClickListener {
-                onLikeClicked(item,bindingAdapterPosition)
+                onLikeClicked(item, bindingAdapterPosition)
             }
             if (item.commuIsLike) {
                 communityMainLikesButton.setBackgroundResource(R.drawable.paintedlove)
