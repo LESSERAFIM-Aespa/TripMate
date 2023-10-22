@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.community.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -23,16 +24,19 @@ import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 import kotlin.math.log
 
-/**
- *
- * 1~8번까지 확인하시고 이상한거 있으면 말씀해주세요
- * 기존의 코드는 주석처리해놨습니다. 확인하시고 말씀해주시면 삭제하겠습니다.
- */
 class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CommunityViewModel by viewModels()
+
+    lateinit var activity: MainActivity
+    lateinit var communityContext: Context
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        communityContext = context
+        activity = requireActivity() as MainActivity
+    }
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
