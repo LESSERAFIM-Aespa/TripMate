@@ -13,12 +13,10 @@ import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(
-    private val
-    onProfileClicked: (CommunityModel, Int) -> Unit,
-    private val
-    onLikeClicked: (CommunityModel, Int) -> Unit,
-    private val
-    onThumbnailClicked: (CommunityModel, Int) -> Unit
+    private val onProfileClicked: (CommunityModel, Int) -> Unit,
+    private val onLikeClicked: (CommunityModel, Int) -> Unit,
+    private val onThumbnailClicked: (CommunityModel, Int) -> Unit,
+    private val onItemLongClicked: (CommunityModel, Int) -> Unit
 ) :
     ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
         object : DiffUtil.ItemCallback<CommunityModel>() {
@@ -62,7 +60,7 @@ class CommunityListAdapter(
                 val intent = Intent(itemView.context,CommunityDetailActivity::class.java)
                 intent.putExtra("Data",item)
                 itemView.context.startActivity(intent)
-
+                onProfileClicked(item, bindingAdapterPosition)
             }
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
@@ -76,12 +74,14 @@ class CommunityListAdapter(
                     onLikeClicked(item,bindingAdapterPosition)
             }
             if (item.commuIsLike) {
-                communityMainLikesButton.setBackgroundResource(R.drawable.paintedstar)
+                communityMainLikesButton.setBackgroundResource(R.drawable.paintedlove)
             } else {
-                communityMainLikesButton.setBackgroundResource(R.drawable.hollowstar)
+                communityMainLikesButton.setBackgroundResource(R.drawable.love)
             }
-
-
+            itemView.setOnLongClickListener {
+                onItemLongClicked(item, bindingAdapterPosition)
+                true
+            }
         }
     }
 }
