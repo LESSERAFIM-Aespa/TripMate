@@ -2,7 +2,6 @@ package kr.sparta.tripmate.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import com.bumptech.glide.Glide
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.scrap.ScrapDetail
-import kr.sparta.tripmate.ui.viewmodel.home.HomeScrapFactory
-import kr.sparta.tripmate.ui.viewmodel.home.HomeScrapViewModel
+import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapFactory
+import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeFragment : Fragment() {
@@ -93,7 +91,7 @@ class HomeFragment : Fragment() {
     private fun homeView() {
         homeScrapListAdapter = HomeScrapListAdapter(
             onItemClick = { model, position ->
-                val intent = ScrapDetail.newIntentForScrap(requireContext(), model)
+                val intent = ScrapDetail.newIntentForScrap(homeContext, model)
                 homeResults.launch(intent)
             }
         )
@@ -119,7 +117,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun inputToolBar() {
-        binding.homeProfileTitle.text = "${SharedPreferences.getNickName(requireContext())} 님"
+        binding.homeProfileTitle.text = "${SharedPreferences.getNickName(homeContext)} 님"
         binding.homeProfileImage.load(
             SharedPreferences.getProfile(homeContext)
         )
