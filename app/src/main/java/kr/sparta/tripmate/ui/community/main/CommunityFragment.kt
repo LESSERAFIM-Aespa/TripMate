@@ -28,7 +28,8 @@ class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CommunityViewModel by viewModels()
+    private val commuViewModel: CommunityViewModel by viewModels()
+    private val boardViewModel: CommunityBoardViewModel by viewModels()
 
     lateinit var activity: MainActivity
     lateinit var communityContext: Context
@@ -40,16 +41,25 @@ class CommunityFragment : Fragment() {
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
+            onProfileClicked ={model, position ->
+                commuViewModel.updateCommuView(model.copy(),position)
+            },
             onThumbnailClicked =
             { model, position ->
-                (requireContext() as MainActivity).moveTabFragment(R.string.main_tab_title_mypage)
-            }, onProfileClicked = { model, position ->
-
-            }, onLikeClicked = { model, position ->
-                viewModel.updateCommuIsLike(
+                (mcontext).moveTabFragment(R.string.main_tab_title_mypage)
+            },
+            onLikeClicked = { model, position ->
+                commuViewModel.updateCommuIsLike(
                     model = model.copy(
                         commuIsLike = !model.commuIsLike
-                    ), position
+                    ), position,mcontext
+                )
+            },
+            onItemLongClicked = { model, position ->
+                boardViewModel.savedBoard(
+                    model = model.copy(
+                        boardLike = !model.boardLike
+                    ), position, mcontext
                 )
             })
     }
