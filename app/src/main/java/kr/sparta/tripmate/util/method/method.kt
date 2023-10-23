@@ -27,3 +27,4 @@ fun removeHtmlTags(input: String): String {
 
 fun Int.toMoneyFormat(): String = DecimalFormat("#,###").format(this)
 fun Int.toTimeFormat(): String = DecimalFormat("00").format(this)
+

@@ -5,6 +5,7 @@ import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.data.model.scrap.ScrapServerData
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
+
 fun ScrapServerData.toEntity(): ScrapServerDataEntity = ScrapServerDataEntity(
     lastBuildDate = lastBuildDate,
     total = total,

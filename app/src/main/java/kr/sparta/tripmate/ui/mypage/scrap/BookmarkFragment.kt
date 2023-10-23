@@ -60,11 +60,11 @@ class BookmarkFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
-      bookmarkRecyclerview.apply {
-          layoutManager = GridLayoutManager(requireContext(),2)
-          adapter = bookmarkAdapter
-          setHasFixedSize(true)
-      }
+        bookmarkRecyclerview.apply {
+            layoutManager = GridLayoutManager(requireContext(),2)
+            adapter = bookmarkAdapter
+            setHasFixedSize(true)
+        }
     }
 
     private fun initViewModel() {

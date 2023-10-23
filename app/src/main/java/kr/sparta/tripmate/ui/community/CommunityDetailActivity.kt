@@ -24,9 +24,9 @@ class CommunityDetailActivity : AppCompatActivity() {
         Log.d("CommunityDetailfxxk",writeItem.addedImage.toString())
         if (!writeItem.addedImage.isNullOrBlank()) {
             binding.communityIvAddImage.visibility = View.VISIBLE
-           setupViews()
+            setupViews()
         } else {
-                binding.communityIvAddImage.visibility = View.GONE
+            binding.communityIvAddImage.visibility = View.GONE
             setupViews()
         }
 

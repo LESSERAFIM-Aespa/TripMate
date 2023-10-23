@@ -20,7 +20,7 @@
         android:id="@+id/community_write_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_margin="20dp"
+        android:layout_margin="20dp"
         android:hint="@string/pleaseentertitle"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/communitiy_write_addimage"

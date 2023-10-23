@@ -1,17 +1,19 @@
-package kr.sparta.tripmate.ui.budget
-
+package kr.sparta.tripmate.ui.budget.detail.statistics
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatusBinding
+import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 
+class BudgetDetailStatisticsFragment : Fragment() {
+    companion object {
+        fun newInstance() = BudgetDetailStatisticsFragment()
+    }
 
-class BudgetDetailStatusFragment : Fragment() {
-    private var _binding: FragmentBudgetDetailStatusBinding? = null
-    private val binding: FragmentBudgetDetailStatusBinding
+    private var _binding: FragmentBudgetDetailStatisticsBinding? = null
+    private val binding: FragmentBudgetDetailStatisticsBinding
         get() = _binding!!
 
     override fun onCreateView(
@@ -19,7 +21,7 @@ class BudgetDetailStatusFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentBudgetDetailStatusBinding.inflate(inflater, container, false)
+        _binding = FragmentBudgetDetailStatisticsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,7 +35,9 @@ class BudgetDetailStatusFragment : Fragment() {
 
     }
 
-    companion object {
-        fun newInstance() = BudgetDetailStatusFragment()
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
+
 }
