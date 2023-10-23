@@ -43,6 +43,6 @@
         android:layout_gravity="center_horizontal"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/black"
+        android:textColor="@color/Gray600"
         android:textSize="12sp" />
 </LinearLayout>

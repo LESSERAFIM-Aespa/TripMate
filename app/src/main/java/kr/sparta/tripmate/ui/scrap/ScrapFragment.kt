@@ -32,7 +32,8 @@ class ScrapFragment : Fragment() {
         fun newInstance(): ScrapFragment = ScrapFragment()
     }
 
-    private lateinit var scrapContext : Context
+    var searchLoading = false
+    private lateinit var scrapContext: Context
     private val binding by lazy { FragmentScrapBinding.inflate(layoutInflater) }
 
     private lateinit var scrapAdapter: ScrapAdapter
@@ -69,7 +70,7 @@ class ScrapFragment : Fragment() {
 
     private fun observeViewModel() = with(scrapViewModel) {
         scrapResult.observe(viewLifecycleOwner) {
-            Log.d("TripMates", "어댑터에들어갈 isLike ${it[0].isLike} ${it[1].isLike}")
+
             scrapAdapter.submitList(it)
 
             isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -102,6 +103,12 @@ class ScrapFragment : Fragment() {
         binding.scrapRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = scrapAdapter
+            binding.scrapRecyclerView.addOnScrollListener(
+                SearchScrollListener(
+                    scrapViewModel,
+                    this@ScrapFragment, scrapContext
+                )
+            )
             setHasFixedSize(true)
         }
     }
@@ -115,6 +122,7 @@ class ScrapFragment : Fragment() {
                         searchQuery = it.trim()
                         Log.d("TripMates", "검색어 : $searchQuery")
                         setupListeners()
+                        searchLoading = !searchLoading
                     }
                     return false
                 }
