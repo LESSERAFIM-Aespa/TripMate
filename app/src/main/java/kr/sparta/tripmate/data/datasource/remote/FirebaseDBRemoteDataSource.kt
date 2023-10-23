@@ -250,4 +250,28 @@ class FirebaseDBRemoteDataSource {
         commuRef.setValue(updateList)
         commuLiveData.postValue(list)
     }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 게시판을 클릭했을때 해당 게시판으니 조회수가 1증가합니다.
+     * 라이브데이터에 업데이트하고 RDB에 저장합니다.
+     */
+    fun updateCommuView(model: CommunityModel, position: Int,commuLiveData:
+    MutableLiveData<List<CommunityModelEntity?>>) {
+        val list = commuLiveData.value.orEmpty().toMutableList()
+        val selectedItem = list.find { it?.key == model.key } ?: return
+        list[position] = model.toEntity()
+        val currentViews = selectedItem.views?.toIntOrNull() ?: 0
+        val newViews = currentViews + 1
+
+        list[position]?.views = newViews.toString()
+        val commuRef = database.getReference("CommunityData")
+        val updateList = arrayListOf<CommunityModel>()
+        list.forEach {
+            val updatedModel = it?.copy()
+            updateList.add(updatedModel!!.toCommunity())
+        }
+        commuRef.setValue(updateList)
+        commuLiveData.postValue(list)
+    }
 }
