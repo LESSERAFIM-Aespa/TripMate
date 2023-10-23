@@ -74,9 +74,9 @@ class CommunityListAdapter(
                 onLikeClicked(item, bindingAdapterPosition)
             }
             if (item.commuIsLike) {
-                communityMainLikesButton.setBackgroundResource(R.drawable.paintedlove)
+                communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
-                communityMainLikesButton.setBackgroundResource(R.drawable.love)
+                communityMainLikesButton.setBackgroundResource(R.drawable.heart)
             }
             itemView.setOnLongClickListener {
                 onItemLongClicked(item, bindingAdapterPosition)
