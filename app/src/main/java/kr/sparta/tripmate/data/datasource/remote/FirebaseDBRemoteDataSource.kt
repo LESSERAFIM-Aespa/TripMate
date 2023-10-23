@@ -160,6 +160,10 @@ class FirebaseDBRemoteDataSource {
         })
     }
 
+    /**
+     * 작성자 : 박성수
+     * 내용 : 북마크관련 식별하기위해 키 업데이트& 저장
+     */
     private fun myBoardLoadCommunity(
         allCommunityData: ArrayList<CommunityModel>,
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>,
@@ -167,20 +171,20 @@ class FirebaseDBRemoteDataSource {
         : MutableLiveData<List<BoardKeyModelEntity?>>, uid: String
     ) {
         val mycommuRef = fireDatabase.getReference("MyBoardKey").child(uid)
-        mycommuRef.addValueEventListener(object : ValueEventListener{
+        mycommuRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val myKeyDateModels = arrayListOf<BoardKeyModel>()
-                for(item in snapshot.children){
+                for (item in snapshot.children) {
                     val getMyKeyModel = item.getValue(BoardKeyModel::class.java)
                     getMyKeyModel?.let {
                         myKeyDateModels.add(it)
                     }
                 }
-                if(!myKeyDateModels.isNullOrEmpty()){
-                    val updatedCommunityData = allCommunityData.map{
+                if (!myKeyDateModels.isNullOrEmpty()) {
+                    val updatedCommunityData = allCommunityData.map {
                         val updateModel = it.copy()
-                        for(myItem in myKeyDateModels){
-                            if(it.id == myItem.uid && it.key == myItem.key){
+                        for (myItem in myKeyDateModels) {
+                            if (it.id == myItem.uid && it.key == myItem.key) {
                                 updateModel.boardIsLike = myItem.myBoardIsLike
                             }
                         }
@@ -188,7 +192,7 @@ class FirebaseDBRemoteDataSource {
                     }
                     commuLiveData.postValue(updatedCommunityData.toEntity())
                     boardKeyLiveData.postValue(myKeyDateModels.toEntity())
-                }else {
+                } else {
                     commuLiveData.postValue(allCommunityData.toEntity())
                     boardKeyLiveData.postValue(myKeyDateModels.toEntity())
                 }
@@ -248,6 +252,38 @@ class FirebaseDBRemoteDataSource {
             }
         })
     }
+    fun updateCommuBoard(
+        model : CommunityModel, position: Int, communityLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
+        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String
+    ){
+        val list = communityLiveData.value.orEmpty().toMutableList()
+        list.find { it?.key == model.key } ?: return
+
+        val selectedList = model.toEntity()
+
+        val myCommuRef = fireDatabase.getReference("MyBoardKey").child(uid)
+        val myBoardKeyModel = BoardKeyModel(selectedList.id, selectedList.key, selectedList.commuIsLike)
+        val myBoardKeyList = boardKeyLiveData.value.orEmpty().toMutableList()
+        val selectedBoardKey = myBoardKeyList.find { it?.key == myBoardKeyModel.key }
+        if(selectedBoardKey !=null){
+            selectedBoardKey.myBoardIsLike = myBoardKeyModel.myBoardIsLike
+        } else {
+            myBoardKeyList.add(myBoardKeyModel.toEntity())
+        }
+        myCommuRef.setValue(myBoardKeyList)
+        boardKeyLiveData.postValue(myBoardKeyList)
+
+        val commuRef = fireDatabase.getReference("CommunityData")
+        val updateList = arrayListOf<CommunityModel>()
+        list.forEach {
+            val updatedModel = it?.copy()
+            updatedModel?.boardIsLike = false
+            updateList.add(updatedModel!!.toCommunity())
+        }
+        commuRef.setValue(updateList)
+        communityLiveData.postValue(list)
+    }
 
     /**
      * 작성자 : 박성수
@@ -278,14 +314,14 @@ class FirebaseDBRemoteDataSource {
             }
         }
         val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
-        val myKeyModelModel =
+        val myKeyModel =
             KeyModel(list[position]!!.id, list[position]!!.key, list[position]!!.commuIsLike)
         val myKeyList = keyLiveData.value.orEmpty().toMutableList()
-        val selectedKey = myKeyList.find { it?.key == myKeyModelModel.key }
+        val selectedKey = myKeyList.find { it?.key == myKeyModel.key }
         if (selectedKey != null) {
-            selectedKey.myCommuIsLike = myKeyModelModel.myCommuIsLike
+            selectedKey.myCommuIsLike = myKeyModel.myCommuIsLike
         } else {
-            myKeyList.add(myKeyModelModel.toEntity())
+            myKeyList.add(myKeyModel.toEntity())
         }
         mycommuRef.setValue(myKeyList)
         keyLiveData.postValue(myKeyList)
