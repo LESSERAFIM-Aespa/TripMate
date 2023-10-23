@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.data.model.board
+package kr.sparta.tripmate.data.model.community
 
 data class KeyModel(
     val uid: String?,
