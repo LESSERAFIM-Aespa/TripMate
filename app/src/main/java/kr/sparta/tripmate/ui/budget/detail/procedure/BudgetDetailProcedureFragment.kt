@@ -1,27 +1,18 @@
 package kr.sparta.tripmate.ui.budget.detail.procedure
 
 
-<<<<<<< HEAD
 import android.content.Context
-=======
->>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-<<<<<<< HEAD
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
 import kr.sparta.tripmate.util.method.setCommaForMoneeyText
-=======
-import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
->>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
 
 
 /**
@@ -33,12 +24,9 @@ class BudgetDetailProcedureFragment : Fragment() {
         fun newInstance() = BudgetDetailProcedureFragment()
     }
 
-<<<<<<< HEAD
     private lateinit var procedureContext: Context
     private lateinit var activity: BudgetDetailActivity
 
-=======
->>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
     private var _binding: FragmentBudgetDetailProcedureBinding? = null
     private val binding: FragmentBudgetDetailProcedureBinding
         get() = _binding!!
@@ -47,7 +35,6 @@ class BudgetDetailProcedureFragment : Fragment() {
         BudgetDetailProcedureListAdapter()
     }
 
-<<<<<<< HEAD
     private val viewModel: BudgetProcedureViewModel by viewModels() {
         BudgetProcedureFactory()
     }
@@ -58,8 +45,6 @@ class BudgetDetailProcedureFragment : Fragment() {
         activity = context as BudgetDetailActivity
     }
 
-=======
->>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -73,7 +58,6 @@ class BudgetDetailProcedureFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
-<<<<<<< HEAD
         initViewModel()
     }
 
@@ -83,6 +67,28 @@ class BudgetDetailProcedureFragment : Fragment() {
          * 내용: 과정 데이터 init
          * */
         fun initProcedureData() {
+            /**
+             * 작성자: 서정한
+             * 내용: 금액에 콤마 추가
+             * */
+            fun setCommaForMoneeyText(money: String): String {
+                val commaCount = if (money.length % 3 == 0) {
+                    (money.length / 3) - 1
+                } else {
+                    money.length / 3
+                }
+                var commaStartIndex = money.length % 3
+                val comma = ','
+                val stringBuilder = StringBuilder()
+                stringBuilder.append(money)
+
+                for (i in 0 until commaCount) {
+                    stringBuilder.insert(commaStartIndex, comma)
+                    commaStartIndex += 4
+                }
+
+                return "${stringBuilder}원"
+            }
 
             activity.budget?.let {
                 // 원금
@@ -106,20 +112,11 @@ class BudgetDetailProcedureFragment : Fragment() {
 
             // 잔액 업데이트
             if (list.isNotEmpty()) {
-                binding.budgetDetailStatusBalanceTextview.text = setCommaForMoneeyText(list.last().totalAmount.toString())
+                binding.budgetDetailStatusBalanceTextview.text = list.last().totalAmount.toString()
             }
         }
     }
 
-
-=======
-    }
-
-    private fun initViews() = with(binding) {
-        budgetDetailProcedureRecyclerview.adapter = adapter
-    }
-
->>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
