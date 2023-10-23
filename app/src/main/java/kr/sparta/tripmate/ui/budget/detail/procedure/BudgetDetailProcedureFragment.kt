@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.detail.procedure
 
 
 import android.os.Bundle
@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
-import kr.sparta.tripmate.ui.budget.detail.procedure.BudgetDetailProcedureListAdapter
 
 
 /**

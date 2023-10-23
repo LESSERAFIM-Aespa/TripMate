@@ -22,7 +22,7 @@
             android:name=".ui.budget.ProcedureDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.budget.BudgetDetailActivity"
+            android:name=".ui.budget.detail.main.BudgetDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.budget.BudgetContentActivity"
