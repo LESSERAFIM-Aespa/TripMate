@@ -9,6 +9,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.firebase.toEntity
@@ -19,7 +21,7 @@ import kr.sparta.tripmate.domain.model.firebase.toEntity
  * 요청하고 응답받는 DataSource Class
  * */
 class FirebaseDBRemoteDataSource {
-
+    private val fireDatabase = Firebase.database
     fun getScrapedData(uid: String, liveData: MutableLiveData<List<ScrapEntity?>>) {
         val database = FirebaseDatabase.getInstance().reference
         database.child("scrapData").child(uid).get()
@@ -114,5 +116,37 @@ class FirebaseDBRemoteDataSource {
                     }
                 }
             }
+    }
+    /**
+     *  작성자: 박성수
+     *  내용 : Firebase RDB에서 받아온 Community의 공용데이터를
+     *  allCommunityData리스트에 담아서 라이브데이터와 ui를 함께
+     *  myLoadCommunity함수로 넘깁니다.
+     */
+    fun getCommunityData(
+        uid: String, commuLiveData: MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
+        : MutableLiveData<List<KeyModelEntity?>>
+    ) {
+        Log.d("TripMates", "getCommunityData호출은 되냐?")
+        val comuRef = fireDatabase.getReference("CommunityData")
+        comuRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val allCommunityData = arrayListOf<CommunityModel>()
+
+                for (userPostSnapshot in snapshot.children) {
+                    val postModel = userPostSnapshot.getValue(CommunityModel::class.java)
+                    if (postModel != null) {
+                        allCommunityData.add(postModel)
+                    }
+                }
+                if (!allCommunityData.isNullOrEmpty()) {
+                    myLoadCommunity(allCommunityData, commuLiveData, keyLiveData, uid)
+                }
+                Log.d("TripMates","getCommunityData의 allCommunityData ${allCommunityData}")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
     }
 }
