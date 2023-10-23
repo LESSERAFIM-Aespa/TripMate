@@ -67,13 +67,15 @@ class CommunityViewModel(
         }
     }
 
-    fun updateCommuBoard(model: CommunityModelEntity, position: Int, uid: String) = viewModelScope
+    fun updateCommuBoard(model: CommunityModelEntity, position: Int, context: Context) = viewModelScope
         .launch {
             kotlin.runCatching {
+                val uid = SharedPreferences.getUid(context)
                 updateCommuBoard.invoke(
                     model.toCommunity(), position, _dataModelList,
                     _boardKeyModelList, uid
                 )
+                Log.d("TripMates", "뷰모델 :${model.boardIsLike}")
             }
         }
 }

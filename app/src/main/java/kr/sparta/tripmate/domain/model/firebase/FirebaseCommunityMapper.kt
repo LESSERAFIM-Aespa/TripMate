@@ -14,7 +14,7 @@ fun CommunityModel.toEntity() = CommunityModelEntity(
     key = key,
     addedImage = addedImage,
     commuIsLike = commuIsLike,
-    boardLike = boardLike
+    boardIsLike = boardIsLike
 )
 fun List<CommunityModel>.toEntity() : List<CommunityModelEntity>{
     val list = ArrayList<CommunityModelEntity>()
@@ -36,5 +36,5 @@ fun CommunityModelEntity.toCommunity() = CommunityModel(
     key = key,
     addedImage = addedImage,
     commuIsLike = commuIsLike,
-    boardLike = boardLike
+    boardIsLike = boardIsLike
 )
