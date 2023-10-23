@@ -11,8 +11,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.data.model.community.KeyModel
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.domain.model.firebase.toCommunity
 import kr.sparta.tripmate.domain.model.firebase.toEntity
 
 /**
@@ -225,7 +230,7 @@ class FirebaseDBRemoteDataSource {
                 currentLikes
             }
         }
-        val mycommuRef = database.getReference("MyKey").child(uid)
+        val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
         val myKeyModelModel =
             KeyModel(list[position]!!.id, list[position]!!.key, list[position]!!.commuIsLike)
         val myKeyList = keyLiveData.value.orEmpty().toMutableList()
@@ -240,7 +245,7 @@ class FirebaseDBRemoteDataSource {
 
         list[position]!!.likes = newLikes.toString()
 
-        val commuRef = database.getReference("CommunityData")
+        val commuRef = fireDatabase.getReference("CommunityData")
         val updateList = arrayListOf<CommunityModel>()
         list.forEach {
             val updatedModel = it?.copy()
@@ -265,7 +270,7 @@ class FirebaseDBRemoteDataSource {
         val newViews = currentViews + 1
 
         list[position]?.views = newViews.toString()
-        val commuRef = database.getReference("CommunityData")
+        val commuRef = fireDatabase.getReference("CommunityData")
         val updateList = arrayListOf<CommunityModel>()
         list.forEach {
             val updatedModel = it?.copy()

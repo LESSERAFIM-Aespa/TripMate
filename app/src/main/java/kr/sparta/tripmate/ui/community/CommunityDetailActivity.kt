@@ -1,14 +1,12 @@
 package kr.sparta.tripmate.ui.community
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import coil.load
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
-import kr.sparta.tripmate.ui.community.main.CommunityModel
+import kr.sparta.tripmate.data.model.community.CommunityModel
 
 class CommunityDetailActivity : AppCompatActivity() {
 

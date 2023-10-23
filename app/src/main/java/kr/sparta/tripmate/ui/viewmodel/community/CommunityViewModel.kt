@@ -6,16 +6,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
-import kr.sparta.tripmate.ui.community.main.CommunityModel
-import kr.sparta.tripmate.ui.community.main.CommunityMyModel
+import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.data.model.community.KeyModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityViewModel : ViewModel() {
@@ -23,8 +21,8 @@ class CommunityViewModel : ViewModel() {
     val dataModelList: LiveData<MutableList<CommunityModel>> get() = _dataModelList
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-    private val _keyList = MutableLiveData<MutableList<CommunityMyModel>>()
-    val keyList: LiveData<MutableList<CommunityMyModel>> get() = _keyList
+    private val _keyList = MutableLiveData<MutableList<KeyModel>>()
+    val keyList: LiveData<MutableList<KeyModel>> get() = _keyList
     private val database = Firebase.database
     fun updateDataModelList(context: Context) = viewModelScope.launch {
         kotlin.runCatching {
@@ -59,10 +57,10 @@ class CommunityViewModel : ViewModel() {
         val mycommuRef = database.getReference("MyKey").child(SharedPreferences.getUid(context))
         mycommuRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val myKeyData = arrayListOf<CommunityMyModel>()
+                val myKeyData = arrayListOf<KeyModel>()
 
                 for (item in snapshot.children) {
-                    val getMyKey = item.getValue(CommunityMyModel::class.java)
+                    val getMyKey = item.getValue(KeyModel::class.java)
                     if (getMyKey != null) {
                         myKeyData.add(getMyKey)
                     }
@@ -137,7 +135,7 @@ class CommunityViewModel : ViewModel() {
         }
         val mycommuRef = database.getReference("MyKey").child(SharedPreferences.getUid(context))
         val myKeyModel =
-            CommunityMyModel(list[position].id, list[position].key, list[position].commuIsLike)
+            KeyModel(list[position].id, list[position].key, list[position].commuIsLike)
         val myKeyList = keyList.value.orEmpty().toMutableList()
         val selectedKey = myKeyList.find { it.key == myKeyModel.key }
         if (selectedKey != null) {

@@ -1,5 +1,8 @@
 import androidx.lifecycle.MutableLiveData
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
+import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 
 class FirebaseCommunityRepositoryImpl(
     private val

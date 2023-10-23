@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(
     private val onProfileClicked: (CommunityModel, Int) -> Unit,

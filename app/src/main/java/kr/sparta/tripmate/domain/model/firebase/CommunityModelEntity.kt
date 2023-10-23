@@ -1,10 +1,9 @@
-package kr.sparta.tripmate.ui.community.main
+package kr.sparta.tripmate.domain.model.firebase
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-
 @Parcelize
-data class CommunityModel(
+data class CommunityModelEntity (
     val id: String, // 게시글 id
     val thumbnail: String?, // 이미지
     val title: String?, // 제목
