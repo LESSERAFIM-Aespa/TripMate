@@ -1,11 +1,10 @@
 package kr.sparta.tripmate.data.datasource.remote
 
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -258,21 +257,24 @@ class FirebaseDBRemoteDataSource {
      * 라이브데이터로 저장하고,
      */
     fun updateCommuBoard(
-        model : CommunityModel, position: Int, communityLiveData:
+        model: CommunityModel, position: Int, communityLiveData:
         MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
-        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String
-    ){
+        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
+    ) {
         val list = communityLiveData.value.orEmpty().toMutableList()
         list.find { it?.key == model.key } ?: return
         list[position] = model.toEntity()
 
         val myCommuRef = fireDatabase.getReference("MyBoardKey").child(uid)
-        val myBoardKeyModel = BoardKeyModel( list[position]!!.id,  list[position]!!.key,
-            list[position]!!.boardIsLike)
+        val myBoardKeyModel = BoardKeyModel(
+            list[position]!!.id, list[position]!!.key,
+            list[position]!!.boardIsLike
+        )
         val myBoardKeyList = boardKeyLiveData.value.orEmpty().toMutableList()
         val selectedBoardKey = myBoardKeyList.find { it?.key == myBoardKeyModel.key }
-        if(selectedBoardKey !=null){
+        if (selectedBoardKey != null) {
             selectedBoardKey.myBoardIsLike = myBoardKeyModel.myBoardIsLike
+            bookMarkToast(context, selectedBoardKey.myBoardIsLike)
         } else {
             myBoardKeyList.add(myBoardKeyModel.toEntity())
         }
@@ -289,44 +291,46 @@ class FirebaseDBRemoteDataSource {
      * 라이브데이터를 업데이트하고 RDB에 저장합니다.
      */
     fun updateCommuIsLike(
-            model: CommunityModel, position: Int, commuLiveData:
-            MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
-            : MutableLiveData<List<KeyModelEntity?>>, uid: String
-        ) {
-            //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
-            val list = commuLiveData.value.orEmpty().toMutableList()
-            list.find { it?.key == model.key } ?: return
+        model: CommunityModel, position: Int, commuLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
+        : MutableLiveData<List<KeyModelEntity?>>, uid: String
+    ) {
+        //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
+        val list = commuLiveData.value.orEmpty().toMutableList()
+        list.find { it?.key == model.key } ?: return
 
-            list[position] = model.toEntity()
+        list[position] = model.toEntity()
 
-            val currentLikes = list[position]!!.likes?.toIntOrNull() ?: 0
-            val newLikes = if (list[position]!!.commuIsLike) {
-                currentLikes + 1
+        val currentLikes = list[position]!!.likes?.toIntOrNull() ?: 0
+        val newLikes = if (list[position]!!.commuIsLike) {
+            currentLikes + 1
+        } else {
+            if (currentLikes >= 1) {
+                currentLikes - 1
             } else {
-                if (currentLikes >= 1) {
-                    currentLikes - 1
-                } else {
-                    currentLikes
-                }
+                currentLikes
             }
-            list[position]!!.likes = newLikes.toString()
+        }
+        list[position]!!.likes = newLikes.toString()
 
-            val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
-            val myKeyModel =
-                KeyModel(list[position]!!.id, list[position]!!.key,
-                    list[position]!!.commuIsLike)
-            val myKeyList = keyLiveData.value.orEmpty().toMutableList()
-            val selectedKey = myKeyList.find { it?.key == myKeyModel.key }
-            if (selectedKey != null) {
-                selectedKey.myCommuIsLike = myKeyModel.myCommuIsLike
-            } else {
-                myKeyList.add(myKeyModel.toEntity())
-            }
-            mycommuRef.setValue(myKeyList)
-            keyLiveData.postValue(myKeyList)
+        val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
+        val myKeyModel =
+            KeyModel(
+                list[position]!!.id, list[position]!!.key,
+                list[position]!!.commuIsLike
+            )
+        val myKeyList = keyLiveData.value.orEmpty().toMutableList()
+        val selectedKey = myKeyList.find { it?.key == myKeyModel.key }
+        if (selectedKey != null) {
+            selectedKey.myCommuIsLike = myKeyModel.myCommuIsLike
+        } else {
+            myKeyList.add(myKeyModel.toEntity())
+        }
+        mycommuRef.setValue(myKeyList)
+        keyLiveData.postValue(myKeyList)
 
-            val commuRef = fireDatabase.getReference("CommunityData")
-            val updateList = arrayListOf<CommunityModel>()
+        val commuRef = fireDatabase.getReference("CommunityData")
+        val updateList = arrayListOf<CommunityModel>()
         list.forEach {
             val updatedModel = it?.copy()
             updatedModel?.commuIsLike = false
@@ -360,5 +364,11 @@ class FirebaseDBRemoteDataSource {
         }
         commuRef.setValue(updateList)
         commuLiveData.postValue(list)
+    }
+
+    private fun bookMarkToast(context: Context, selectedBoardKey: Boolean) {
+        if (selectedBoardKey) {
+            context.shortToast("북마크에 추가 되었습니다.")
+        } else context.shortToast("이미 북마크된 목록 입니다.")
     }
 }

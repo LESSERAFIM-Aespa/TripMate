@@ -1,3 +1,4 @@
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.model.community.CommunityModel
@@ -42,8 +43,11 @@ class FirebaseCommunityRepositoryImpl(
         position: Int,
         communityLiveData: MutableLiveData<List<CommunityModelEntity?>>,
         boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>,
-        uid: String
+        uid: String, context: Context
     ) {
-        remoteSource.updateCommuBoard(model, position, communityLiveData, boardKeyLiveData, uid)
+        remoteSource.updateCommuBoard(
+            model, position, communityLiveData, boardKeyLiveData, uid,
+            context
+        )
     }
 }
