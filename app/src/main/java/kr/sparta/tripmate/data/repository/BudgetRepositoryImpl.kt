@@ -1,6 +1,8 @@
 package kr.sparta.tripmate.data.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -137,4 +139,5 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
     override suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category> {
         return categoryDao.getAllCategoriesWithBudgetNum(budgetNum)
     }
+    override suspend fun getAllCategoriesForNum(num: Int): List<Category> = categoryDao.getAllCategoriesWithNum(num)
 }
