@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.data.model.community.KeyModel
+import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.toCommunity
@@ -34,11 +35,12 @@ class CommunityViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
     private val _keyModelList: MutableLiveData<List<KeyModelEntity?>> = MutableLiveData()
+    private val _boardKeyModelList : MutableLiveData<List<BoardKeyModelEntity?>> = MutableLiveData()
     fun updateDataModelList(context: Context) = viewModelScope.launch {
         kotlin.runCatching {
             val uid = SharedPreferences.getUid(context)
             _isLoading.value = true
-            getFirebaseCommunityData.invoke(uid, _dataModelList, _keyModelList)
+            getFirebaseCommunityData.invoke(uid, _dataModelList, _keyModelList,_boardKeyModelList)
             _isLoading.value = false
         }
     }

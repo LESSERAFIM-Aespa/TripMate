@@ -9,7 +9,7 @@ import kr.sparta.tripmate.domain.repository.FirebaseCommunityRepository
 class GetFirebaseCommunityData(private val repository: FirebaseCommunityRepository) {
     operator fun invoke(
         uid: String, commuLiveData: MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
-        : MutableLiveData<List<KeyModelEntity?>>, boardKeyLiveData :
+        : MutableLiveData<List<KeyModelEntity?>>, boardKeyLiveData:
         MutableLiveData<List<BoardKeyModelEntity?>>
-    ) = repository.getCommunityData(uid, commuLiveData, keyLiveData)
+    ) = repository.getCommunityData(uid, commuLiveData, keyLiveData, boardKeyLiveData)
 }

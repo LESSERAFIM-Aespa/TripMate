@@ -50,11 +50,9 @@ class CommunityFragment : Fragment() {
                 )
             },
             onItemLongClicked = { model, position ->
-//                boardViewModel.savedBoard(
-//                    model = model.copy(
-//                        boardLike = !model.boardLike
-//                    ), position, communityContext
-//                )
+                boardViewModel.savedBoard(
+                    model = model.copy(boardLike = !model.boardLike), position, communityContext
+                )
             })
     }
 
