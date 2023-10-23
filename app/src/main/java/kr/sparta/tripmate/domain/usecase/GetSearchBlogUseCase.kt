@@ -4,12 +4,12 @@ import kr.sparta.tripmate.domain.model.scrap.ScrapServerDataEntity
 import kr.sparta.tripmate.domain.repository.ScrapRepository
 
 class GetSearchBlogUseCase(
-    private val repository: ScrapRepository
+    private val repository: ScrapRepository,
 ) {
     suspend operator fun invoke(
         query: String,
+        display: Int,
         sort: String = "sim",
-        display: Int = 10,
     ): ScrapServerDataEntity = repository.getSearchBlog(
         query,
         sort,
