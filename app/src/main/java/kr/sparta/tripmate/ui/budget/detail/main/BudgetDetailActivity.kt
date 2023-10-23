@@ -1,13 +1,21 @@
 package kr.sparta.tripmate.ui.budget.detail.main
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.tabs.TabLayoutMediator
+import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
 import kr.sparta.tripmate.ui.budget.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
+import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureViewModel
 
 /**
  * 작성자: 서정한
@@ -16,13 +24,11 @@ import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
 class BudgetDetailActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_BUDGET_NUM = "extra_budget_num"
-        //test 용,이동 확인후 삭제할것
-        fun newIntent(context: Context) = Intent(context, BudgetDetailActivity::class.java)
+        const val EXTRA_BUDGET= "extra_budget"
 
-        fun newIntent(context: Context, budgetNum: Int) =
+        fun newIntentForBudget(context: Context, model: Budget) =
             Intent(context, BudgetDetailActivity::class.java).apply {
-                putExtra(EXTRA_BUDGET_NUM, budgetNum)
+                putExtra(EXTRA_BUDGET, model)
             }
     }
 
@@ -34,8 +40,14 @@ class BudgetDetailActivity : AppCompatActivity() {
         BudgetDetailViewPagerAdapter(this@BudgetDetailActivity)
     }
 
-    private val budgetNum by lazy {
-        intent.getIntExtra(EXTRA_BUDGET_NUM, 0)
+
+
+    val budget by lazy {
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(EXTRA_BUDGET, Budget::class.java)
+        } else {
+            intent.getParcelableExtra(EXTRA_BUDGET )
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +73,8 @@ class BudgetDetailActivity : AppCompatActivity() {
         budgetDetailEditImageview.setOnClickListener {
             startActivity(
                 BudgetContentActivity.newIntentForEdit(
-                    this@BudgetDetailActivity,
-                    budgetNum
+                    context = this@BudgetDetailActivity,
+                    budgetNum = budget?.num ?: 0
                 )
             )
         }
@@ -80,6 +92,23 @@ class BudgetDetailActivity : AppCompatActivity() {
     }
 
     private fun showDeleteBudgetDialog() {
+        var builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.budget_detail_dialog_title))
+        builder.setMessage(getString(R.string.budget_detail_dialog_message))
 
+        // 버튼 클릭시에 무슨 작업을 할 것인가!
+        val listener = object : DialogInterface.OnClickListener {
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+                when (p1) {
+                    DialogInterface.BUTTON_POSITIVE -> {}
+                    DialogInterface.BUTTON_NEGATIVE -> {}
+                }
+            }
+        }
+
+        builder.setPositiveButton(getString(R.string.budget_detail_dialog_positive_text), listener)
+        builder.setNegativeButton(getString(R.string.budget_detail_dialog_negative_text), listener)
+
+        builder.show()
     }
 }
