@@ -1,12 +1,16 @@
 package kr.sparta.tripmate.ui.budget.detail.procedure
 
 
+<<<<<<< HEAD
 import android.content.Context
+=======
+>>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+<<<<<<< HEAD
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
@@ -15,6 +19,9 @@ import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
 import kr.sparta.tripmate.util.method.setCommaForMoneeyText
+=======
+import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
+>>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
 
 
 /**
@@ -26,9 +33,12 @@ class BudgetDetailProcedureFragment : Fragment() {
         fun newInstance() = BudgetDetailProcedureFragment()
     }
 
+<<<<<<< HEAD
     private lateinit var procedureContext: Context
     private lateinit var activity: BudgetDetailActivity
 
+=======
+>>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
     private var _binding: FragmentBudgetDetailProcedureBinding? = null
     private val binding: FragmentBudgetDetailProcedureBinding
         get() = _binding!!
@@ -37,6 +47,7 @@ class BudgetDetailProcedureFragment : Fragment() {
         BudgetDetailProcedureListAdapter()
     }
 
+<<<<<<< HEAD
     private val viewModel: BudgetProcedureViewModel by viewModels() {
         BudgetProcedureFactory()
     }
@@ -47,6 +58,8 @@ class BudgetDetailProcedureFragment : Fragment() {
         activity = context as BudgetDetailActivity
     }
 
+=======
+>>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -60,6 +73,7 @@ class BudgetDetailProcedureFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews()
+<<<<<<< HEAD
         initViewModel()
     }
 
@@ -98,6 +112,14 @@ class BudgetDetailProcedureFragment : Fragment() {
     }
 
 
+=======
+    }
+
+    private fun initViews() = with(binding) {
+        budgetDetailProcedureRecyclerview.adapter = adapter
+    }
+
+>>>>>>> c8f940e ([Refector] : 가계부 상세페이지 폴더정리)
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
