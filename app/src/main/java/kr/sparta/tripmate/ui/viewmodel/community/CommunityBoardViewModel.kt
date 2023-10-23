@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kr.sparta.tripmate.ui.community.main.CommunityModel
+import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.util.method.shortToast
 
 class CommunityBoardViewModel : ViewModel(){

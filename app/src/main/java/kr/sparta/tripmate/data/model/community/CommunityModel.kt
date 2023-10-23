@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.community.main
+package kr.sparta.tripmate.data.model.community
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

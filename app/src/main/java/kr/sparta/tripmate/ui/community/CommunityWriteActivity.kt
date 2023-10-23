@@ -7,9 +7,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.viewModels
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
-import kr.sparta.tripmate.ui.community.main.CommunityModel
+import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences

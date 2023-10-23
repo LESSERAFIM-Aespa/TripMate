@@ -8,28 +8,29 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(
-    private val onProfileClicked: (CommunityModel, Int) -> Unit,
-    private val onLikeClicked: (CommunityModel, Int) -> Unit,
-    private val onThumbnailClicked: (CommunityModel, Int) -> Unit,
-    private val onItemLongClicked: (CommunityModel, Int) -> Unit
+    private val onProfileClicked: (CommunityModelEntity, Int) -> Unit,
+    private val onLikeClicked: (CommunityModelEntity, Int) -> Unit,
+    private val onThumbnailClicked: (CommunityModelEntity, Int) -> Unit,
+    private val onItemLongClicked: (CommunityModelEntity, Int) -> Unit
 ) :
-    ListAdapter<CommunityModel, CommunityListAdapter.CommunityHolder>(
-        object : DiffUtil.ItemCallback<CommunityModel>() {
+    ListAdapter<CommunityModelEntity, CommunityListAdapter.CommunityHolder>(
+        object : DiffUtil.ItemCallback<CommunityModelEntity>() {
             override fun areItemsTheSame(
-                oldItem: CommunityModel,
-                newItem: CommunityModel
+                oldItem: CommunityModelEntity,
+                newItem: CommunityModelEntity
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityModel,
-                newItem: CommunityModel
+                oldItem: CommunityModelEntity,
+                newItem: CommunityModelEntity
             ): Boolean {
                 return oldItem == newItem
             }
@@ -52,7 +53,7 @@ class CommunityListAdapter(
     inner class CommunityHolder(private val binding: FragmentCommunityMainItemBinding) :
         RecyclerView
         .ViewHolder(binding.root) {
-        fun bind(item: CommunityModel) = with(binding) {
+        fun bind(item: CommunityModelEntity) = with(binding) {
             if (!item.thumbnail.isNullOrEmpty()) communityMainThumbnail.setImageResource(item.thumbnail.toInt())
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
