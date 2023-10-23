@@ -75,7 +75,7 @@ class CommunityFragment : Fragment() {
 
     private fun initViewModel() {
         commuViewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
-           commuAdapter.submitList(it)
+            commuAdapter.submitList(it)
         }
         commuViewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE

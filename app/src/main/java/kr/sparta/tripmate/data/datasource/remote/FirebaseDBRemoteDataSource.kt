@@ -142,7 +142,7 @@ class FirebaseDBRemoteDataSource {
         comuRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val allCommunityData = arrayListOf<CommunityModel>()
-
+                val myCommunityData = arrayListOf<CommunityModel>()
                 for (userPostSnapshot in snapshot.children) {
                     val postModel = userPostSnapshot.getValue(CommunityModel::class.java)
                     if (postModel != null) {
@@ -364,6 +364,41 @@ class FirebaseDBRemoteDataSource {
         }
         commuRef.setValue(updateList)
         commuLiveData.postValue(list)
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : RDB에 저장된 Community데이터중에
+     * 내가 게시판에 작성한 목록만 리스트에 담습니다.
+     *
+     */
+    fun getFirebaseBoardData(
+        uid: String,
+        boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
+    ) {
+        val boardRef = fireDatabase.getReference("CommunityData")
+        val boardList = arrayListOf<CommunityModel>()
+        boardRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (item in snapshot.children) {
+                    val getBoardList = item.getValue(CommunityModel::class.java)
+                    if (getBoardList != null && getBoardList.id == uid) {
+
+                        boardList.add(getBoardList)
+                    }
+                }
+                if (!boardList.isNullOrEmpty()) {
+                    boardLiveData.postValue(boardList.toEntity())
+                } else {
+                    boardLiveData.postValue(listOf())
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
     }
 
     private fun bookMarkToast(context: Context, selectedBoardKey: Boolean) {
