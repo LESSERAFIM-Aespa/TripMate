@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.domain.repository
 
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
@@ -56,4 +57,5 @@ interface BudgetRepository {
     fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>>
 
     suspend fun getAllCategoriesWithBudgetNum(budgetNum:Int):List<Category>
+    suspend fun getAllCategoriesForNum(num: Int) : List<Category>
 }
