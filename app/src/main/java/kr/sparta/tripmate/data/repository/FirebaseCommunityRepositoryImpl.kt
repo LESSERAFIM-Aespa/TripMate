@@ -36,4 +36,14 @@ class FirebaseCommunityRepositoryImpl(
     ) {
         remoteSource.updateCommuView(model, position, commuLiveData)
     }
+
+    override fun updateCommuBoard(
+        model: CommunityModel,
+        position: Int,
+        communityLiveData: MutableLiveData<List<CommunityModelEntity?>>,
+        boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>,
+        uid: String
+    ) {
+        remoteSource.updateCommuBoard(model, position, communityLiveData, boardKeyLiveData, uid)
+    }
 }
