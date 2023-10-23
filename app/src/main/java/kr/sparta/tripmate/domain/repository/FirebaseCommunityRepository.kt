@@ -20,4 +20,10 @@ interface FirebaseCommunityRepository {
     )
     fun updateCommuView(model: CommunityModel, position: Int,commuLiveData:
     MutableLiveData<List<CommunityModelEntity?>>)
+
+    fun updateCommuBoard(
+        model: CommunityModel, position: Int, communityLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
+        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String
+    )
 }
