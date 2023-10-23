@@ -120,7 +120,7 @@ class FirebaseDBRemoteDataSource {
     /**
      *  작성자: 박성수
      *  내용 : Firebase RDB에서 받아온 Community의 공용데이터를
-     *  allCommunityData리스트에 담아서 라이브데이터와 ui를 함께
+     *  allCommunityData리스트에 담아서 라이브데이터(데이터+키)와 ui를 함께
      *  myLoadCommunity함수로 넘깁니다.
      */
     fun getCommunityData(
@@ -146,6 +146,55 @@ class FirebaseDBRemoteDataSource {
             }
 
             override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 :  Firebase RDB에서 키 데이터(내가 좋아요를 추가한 데이터를 공용데이터에서 식별하기 위한 키)를 받아옵니다.
+     * 키를 이용해서 공용데이터에서 내가 좋아요를 추가한 데이터를 식별해서 해당 데이터의 좋아요 버튼을 true로 바꿔줍니다.
+     * 커뮤니티 공용데이터와 라이브데이터(데이터+키)를 getCommunityData에서 넘겨받아와서 업데이트된 데이터와 키를 저장해줍니다.
+     *
+     */
+    private fun myLoadCommunity(
+        allCommunityData: ArrayList<CommunityModel>,
+        commuLiveData: MutableLiveData<List<CommunityModelEntity?>>,
+        keyLiveData
+        : MutableLiveData<List<KeyModelEntity?>>, uid: String
+    ) {
+        val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
+        mycommuRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val myKeyDatumModels = arrayListOf<KeyModel>()
+
+                for (item in snapshot.children) {
+                    val getMyKeyModel = item.getValue(KeyModel::class.java)
+                    if (getMyKeyModel != null) {
+                        myKeyDatumModels.add(getMyKeyModel)
+                    }
+                }
+                Log.d("TripMates","myKeyDatumModels:${myKeyDatumModels}")
+                if (!myKeyDatumModels.isNullOrEmpty()) {
+                    val updatedCommunityData = allCommunityData.map { communityModel ->
+                        val updatedModel = communityModel.copy()
+                        for (myItem in myKeyDatumModels) {
+                            if (communityModel.id == myItem.uid && communityModel.key == myItem.key) {
+                                updatedModel.commuIsLike = myItem.myCommuIsLike
+                            }
+                        }
+                        updatedModel
+                    }
+                    commuLiveData.postValue(updatedCommunityData.toEntity())
+                    keyLiveData.postValue(myKeyDatumModels.toEntity())
+                }else {
+                    commuLiveData.postValue(allCommunityData.toEntity())
+                    keyLiveData.postValue(myKeyDatumModels.toEntity())
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
             }
         })
     }
