@@ -1,6 +1,8 @@
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.repository.FirebaseCommunityRepository
@@ -12,9 +14,10 @@ class FirebaseCommunityRepositoryImpl(
     override fun getCommunityData(
         uid: String,
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>,
-        keyLiveData: MutableLiveData<List<KeyModelEntity?>>
+        keyLiveData: MutableLiveData<List<KeyModelEntity?>>,
+        boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>
     ) {
-        remoteSource.getCommunityData(uid, commuLiveData, keyLiveData)
+        remoteSource.getCommunityData(uid, commuLiveData, keyLiveData, boardKeyLiveData)
     }
 
     override fun updateCommuIsLike(
@@ -33,5 +36,18 @@ class FirebaseCommunityRepositoryImpl(
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
         remoteSource.updateCommuView(model, position, commuLiveData)
+    }
+
+    override fun updateCommuBoard(
+        model: CommunityModel,
+        position: Int,
+        communityLiveData: MutableLiveData<List<CommunityModelEntity?>>,
+        boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>,
+        uid: String, context: Context
+    ) {
+        remoteSource.updateCommuBoard(
+            model, position, communityLiveData, boardKeyLiveData, uid,
+            context
+        )
     }
 }

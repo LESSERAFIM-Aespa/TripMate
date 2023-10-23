@@ -1,24 +1,27 @@
 package kr.sparta.tripmate.data.datasource.remote
 
+import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kr.sparta.tripmate.data.model.community.BoardKeyModel
 import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.data.model.community.KeyModel
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
+import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.firebase.toCommunity
 import kr.sparta.tripmate.domain.model.firebase.toEntity
+import kr.sparta.tripmate.util.method.shortToast
 
 /**
  * 작성자: 서정한
@@ -36,7 +39,7 @@ class FirebaseDBRemoteDataSource {
                         it.getValue(ScrapModel::class.java)
                     }
                     liveData.postValue(list.toList().toEntity())
-                }else {
+                } else {
                     liveData.postValue(listOf())
                 }
             }
@@ -122,6 +125,7 @@ class FirebaseDBRemoteDataSource {
                 }
             }
     }
+
     /**
      *  작성자: 박성수
      *  내용 : Firebase RDB에서 받아온 Community의 공용데이터를
@@ -130,7 +134,8 @@ class FirebaseDBRemoteDataSource {
      */
     fun getCommunityData(
         uid: String, commuLiveData: MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
-        : MutableLiveData<List<KeyModelEntity?>>
+        : MutableLiveData<List<KeyModelEntity?>>, boardKeyLiveData:
+        MutableLiveData<List<BoardKeyModelEntity?>>
     ) {
         Log.d("TripMates", "getCommunityData호출은 되냐?")
         val comuRef = fireDatabase.getReference("CommunityData")
@@ -146,12 +151,55 @@ class FirebaseDBRemoteDataSource {
                 }
                 if (!allCommunityData.isNullOrEmpty()) {
                     myLoadCommunity(allCommunityData, commuLiveData, keyLiveData, uid)
+                    myBoardLoadCommunity(allCommunityData, commuLiveData, boardKeyLiveData, uid)
                 }
-                Log.d("TripMates","getCommunityData의 allCommunityData ${allCommunityData}")
             }
 
             override fun onCancelled(error: DatabaseError) {
             }
+        })
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 북마크관련 식별하기위해 키 업데이트& 저장
+     */
+    private fun myBoardLoadCommunity(
+        allCommunityData: ArrayList<CommunityModel>,
+        commuLiveData: MutableLiveData<List<CommunityModelEntity?>>,
+        boardKeyLiveData
+        : MutableLiveData<List<BoardKeyModelEntity?>>, uid: String
+    ) {
+        val mycommuRef = fireDatabase.getReference("MyBoardKey").child(uid)
+        mycommuRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val myKeyDateModels = arrayListOf<BoardKeyModel>()
+                for (item in snapshot.children) {
+                    val getMyKeyModel = item.getValue(BoardKeyModel::class.java)
+                    getMyKeyModel?.let {
+                        myKeyDateModels.add(it)
+                    }
+                }
+                if (!myKeyDateModels.isNullOrEmpty()) {
+                    val updatedCommunityData = allCommunityData.map {
+                        val updateModel = it.copy()
+                        for (myItem in myKeyDateModels) {
+                            if (it.id == myItem.uid && it.key == myItem.key) {
+                                updateModel.boardIsLike = myItem.myBoardIsLike
+                            }
+                        }
+                        updateModel
+                    }
+                    boardKeyLiveData.postValue(myKeyDateModels.toEntity())
+                } else {
+                    boardKeyLiveData.postValue(myKeyDateModels.toEntity())
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
         })
     }
 
@@ -171,19 +219,18 @@ class FirebaseDBRemoteDataSource {
         val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
         mycommuRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val myKeyDatumModels = arrayListOf<KeyModel>()
+                val myKeyDateModels = arrayListOf<KeyModel>()
 
                 for (item in snapshot.children) {
                     val getMyKeyModel = item.getValue(KeyModel::class.java)
                     if (getMyKeyModel != null) {
-                        myKeyDatumModels.add(getMyKeyModel)
+                        myKeyDateModels.add(getMyKeyModel)
                     }
                 }
-                Log.d("TripMates","myKeyDatumModels:${myKeyDatumModels}")
-                if (!myKeyDatumModels.isNullOrEmpty()) {
+                if (!myKeyDateModels.isNullOrEmpty()) {
                     val updatedCommunityData = allCommunityData.map { communityModel ->
                         val updatedModel = communityModel.copy()
-                        for (myItem in myKeyDatumModels) {
+                        for (myItem in myKeyDateModels) {
                             if (communityModel.id == myItem.uid && communityModel.key == myItem.key) {
                                 updatedModel.commuIsLike = myItem.myCommuIsLike
                             }
@@ -191,10 +238,10 @@ class FirebaseDBRemoteDataSource {
                         updatedModel
                     }
                     commuLiveData.postValue(updatedCommunityData.toEntity())
-                    keyLiveData.postValue(myKeyDatumModels.toEntity())
-                }else {
+                    keyLiveData.postValue(myKeyDateModels.toEntity())
+                } else {
                     commuLiveData.postValue(allCommunityData.toEntity())
-                    keyLiveData.postValue(myKeyDatumModels.toEntity())
+                    keyLiveData.postValue(myKeyDateModels.toEntity())
                 }
             }
 
@@ -206,14 +253,48 @@ class FirebaseDBRemoteDataSource {
 
     /**
      * 작성자 : 박성수
+     * 내용 : 북마크된 데이터를 식별합니다.
+     * 라이브데이터로 저장하고,
+     */
+    fun updateCommuBoard(
+        model: CommunityModel, position: Int, communityLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
+        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
+    ) {
+        val list = communityLiveData.value.orEmpty().toMutableList()
+        list.find { it?.key == model.key } ?: return
+        list[position] = model.toEntity()
+
+        val myCommuRef = fireDatabase.getReference("MyBoardKey").child(uid)
+        val myBoardKeyModel = BoardKeyModel(
+            list[position]!!.id, list[position]!!.key,
+            list[position]!!.boardIsLike
+        )
+        val myBoardKeyList = boardKeyLiveData.value.orEmpty().toMutableList()
+        val selectedBoardKey = myBoardKeyList.find { it?.key == myBoardKeyModel.key }
+        if (selectedBoardKey != null) {
+            selectedBoardKey.myBoardIsLike = myBoardKeyModel.myBoardIsLike
+            bookMarkToast(context, selectedBoardKey.myBoardIsLike)
+        } else {
+            myBoardKeyList.add(myBoardKeyModel.toEntity())
+        }
+        myCommuRef.setValue(myBoardKeyList)
+        boardKeyLiveData.postValue(myBoardKeyList)
+        communityLiveData.postValue(list)
+    }
+
+    /**
+     * 작성자 : 박성수
      * 내용 : 위에서 업데이트된 라이브데이터를 이용해서 내가 좋아요버튼을 눌렀을때 좋아요횟수를 1추가시킵니다.
      * 내가 좋아요 버튼을 누른 데이터를 식별할 키를 저장합니다.
      * 모든 데이터의 좋아요버튼을 false로 저장합니다.
      * 라이브데이터를 업데이트하고 RDB에 저장합니다.
      */
-    fun updateCommuIsLike(model: CommunityModel, position: Int,commuLiveData:
-    MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
-                          : MutableLiveData<List<KeyModelEntity?>>, uid: String) {
+    fun updateCommuIsLike(
+        model: CommunityModel, position: Int, commuLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
+        : MutableLiveData<List<KeyModelEntity?>>, uid: String
+    ) {
         //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
         val list = commuLiveData.value.orEmpty().toMutableList()
         list.find { it?.key == model.key } ?: return
@@ -230,20 +311,23 @@ class FirebaseDBRemoteDataSource {
                 currentLikes
             }
         }
+        list[position]!!.likes = newLikes.toString()
+
         val mycommuRef = fireDatabase.getReference("MyKey").child(uid)
-        val myKeyModelModel =
-            KeyModel(list[position]!!.id, list[position]!!.key, list[position]!!.commuIsLike)
+        val myKeyModel =
+            KeyModel(
+                list[position]!!.id, list[position]!!.key,
+                list[position]!!.commuIsLike
+            )
         val myKeyList = keyLiveData.value.orEmpty().toMutableList()
-        val selectedKey = myKeyList.find { it?.key == myKeyModelModel.key }
+        val selectedKey = myKeyList.find { it?.key == myKeyModel.key }
         if (selectedKey != null) {
-            selectedKey.myCommuIsLike = myKeyModelModel.myCommuIsLike
+            selectedKey.myCommuIsLike = myKeyModel.myCommuIsLike
         } else {
-            myKeyList.add(myKeyModelModel.toEntity())
+            myKeyList.add(myKeyModel.toEntity())
         }
         mycommuRef.setValue(myKeyList)
         keyLiveData.postValue(myKeyList)
-
-        list[position]!!.likes = newLikes.toString()
 
         val commuRef = fireDatabase.getReference("CommunityData")
         val updateList = arrayListOf<CommunityModel>()
@@ -261,8 +345,10 @@ class FirebaseDBRemoteDataSource {
      * 내용 : 게시판을 클릭했을때 해당 게시판으니 조회수가 1증가합니다.
      * 라이브데이터에 업데이트하고 RDB에 저장합니다.
      */
-    fun updateCommuView(model: CommunityModel, position: Int,commuLiveData:
-    MutableLiveData<List<CommunityModelEntity?>>) {
+    fun updateCommuView(
+        model: CommunityModel, position: Int, commuLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>
+    ) {
         val list = commuLiveData.value.orEmpty().toMutableList()
         val selectedItem = list.find { it?.key == model.key } ?: return
         list[position] = model.toEntity()
@@ -278,5 +364,11 @@ class FirebaseDBRemoteDataSource {
         }
         commuRef.setValue(updateList)
         commuLiveData.postValue(list)
+    }
+
+    private fun bookMarkToast(context: Context, selectedBoardKey: Boolean) {
+        if (selectedBoardKey) {
+            context.shortToast("북마크에 추가 되었습니다.")
+        } else context.shortToast("이미 북마크된 목록 입니다.")
     }
 }
