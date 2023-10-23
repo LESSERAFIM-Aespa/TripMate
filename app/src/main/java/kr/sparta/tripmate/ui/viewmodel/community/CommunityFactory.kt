@@ -8,6 +8,7 @@ import kr.sparta.tripmate.domain.repository.FirebaseCommunityRepository
 import kr.sparta.tripmate.domain.usecase.GetFirebaseCommunityData
 import kr.sparta.tripmate.domain.usecase.IsLikeFirebaseCommunityData
 import kr.sparta.tripmate.domain.usecase.IsViewsFirebaseCommunityData
+import kr.sparta.tripmate.domain.usecase.UpdateCommuBoard
 
 class CommunityFactory : ViewModelProvider.Factory {
     private val repository: FirebaseCommunityRepository by lazy {
@@ -19,7 +20,8 @@ class CommunityFactory : ViewModelProvider.Factory {
             return CommunityViewModel(
                 GetFirebaseCommunityData(repository),
                 IsLikeFirebaseCommunityData(repository),
-                IsViewsFirebaseCommunityData(repository)
+                IsViewsFirebaseCommunityData(repository),
+                UpdateCommuBoard(repository)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
