@@ -198,4 +198,56 @@ class FirebaseDBRemoteDataSource {
             }
         })
     }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 위에서 업데이트된 라이브데이터를 이용해서 내가 좋아요버튼을 눌렀을때 좋아요횟수를 1추가시킵니다.
+     * 내가 좋아요 버튼을 누른 데이터를 식별할 키를 저장합니다.
+     * 모든 데이터의 좋아요버튼을 false로 저장합니다.
+     * 라이브데이터를 업데이트하고 RDB에 저장합니다.
+     */
+    fun updateCommuIsLike(model: CommunityModel, position: Int,commuLiveData:
+    MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
+                          : MutableLiveData<List<KeyModelEntity?>>, uid: String) {
+        //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.
+        val list = commuLiveData.value.orEmpty().toMutableList()
+        list.find { it?.key == model.key } ?: return
+
+        list[position] = model.toEntity()
+
+        val currentLikes = list[position]!!.likes?.toIntOrNull() ?: 0
+        val newLikes = if (list[position]!!.commuIsLike) {
+            currentLikes + 1
+        } else {
+            if (currentLikes >= 1) {
+                currentLikes - 1
+            } else {
+                currentLikes
+            }
+        }
+        val mycommuRef = database.getReference("MyKey").child(uid)
+        val myKeyModelModel =
+            KeyModel(list[position]!!.id, list[position]!!.key, list[position]!!.commuIsLike)
+        val myKeyList = keyLiveData.value.orEmpty().toMutableList()
+        val selectedKey = myKeyList.find { it?.key == myKeyModelModel.key }
+        if (selectedKey != null) {
+            selectedKey.myCommuIsLike = myKeyModelModel.myCommuIsLike
+        } else {
+            myKeyList.add(myKeyModelModel.toEntity())
+        }
+        mycommuRef.setValue(myKeyList)
+        keyLiveData.postValue(myKeyList)
+
+        list[position]!!.likes = newLikes.toString()
+
+        val commuRef = database.getReference("CommunityData")
+        val updateList = arrayListOf<CommunityModel>()
+        list.forEach {
+            val updatedModel = it?.copy()
+            updatedModel?.commuIsLike = false
+            updateList.add(updatedModel!!.toCommunity())
+        }
+        commuRef.setValue(updateList)
+        commuLiveData.postValue(list)
+    }
 }
