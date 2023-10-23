@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.detail.main
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
-import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailViewPagerAdapter
+import kr.sparta.tripmate.ui.budget.BudgetContentActivity
+import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
 
 /**
  * 작성자: 서정한
