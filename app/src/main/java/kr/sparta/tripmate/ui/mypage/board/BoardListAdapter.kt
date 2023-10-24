@@ -59,9 +59,9 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
             if (item.commuIsLike) {
-                communityMainLikesButton.setBackgroundResource(R.drawable.paintedlove)
+                communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
-                communityMainLikesButton.setBackgroundResource(R.drawable.love)
+                communityMainLikesButton.setBackgroundResource(R.drawable.heart)
             }
         }
     }
