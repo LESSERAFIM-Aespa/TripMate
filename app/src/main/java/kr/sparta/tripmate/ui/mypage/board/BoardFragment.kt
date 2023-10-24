@@ -42,6 +42,7 @@ class BoardFragment : Fragment() {
                 val intent = Intent(boardContext, CommunityDetailActivity::class.java)
                 intent.putExtra("Data", model)
                 boardResurlts.launch(intent)
+                boardViewModel.viewMyPageBoardData(model,position)
             }
         )
     }
