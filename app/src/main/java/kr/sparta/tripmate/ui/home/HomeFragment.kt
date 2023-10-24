@@ -130,10 +130,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
-        playViewModel()
     }
 
-    private fun playViewModel() {
+    override fun onResume() {
+        super.onResume()
         val uid = SharedPreferences.getUid(homeContext)
         homeScrapViewModel.updateScrapData(homeContext)
         homeBoardViewModel.getHomeBoardData(uid)
