@@ -29,29 +29,19 @@ class BudgetProcedureViewModel(private val repository: BudgetRepository) : ViewM
     fun getAllProcedures(model: Budget) {
         /**
          * 작성자: 서정한
-         * 내용: 카테고리 item의 Color값을 Int로 불러옴
-         * */
-        fun getColorForCategory(category: Category?): Int =
-            category?.let { model -> Color.parseColor(model.color) } ?: R.color.Gray
-
-        /**
-         * 작성자: 서정한
          * 내용: 카테고리 item의 이름을 불러옴
          * */
         fun getNameForCategory(category: Category?): String = category?.name ?: "기타"
 
-        viewModelScope.launch {
-            kotlin.runCatching {
+        kotlin.runCatching {
+            viewModelScope.launch {
                 // 과정의 모든 데이터를 불러오기
                 val procedures =
                     repository.getAllProceduresToFlowWhenProccessChangedWithBudgetNum(model.num)
-                        .asLiveData().value
-
                 // 과정데이터를 View에서 사용하는 Model로 변환
-                val list = procedures?.map {
+                val list = procedures.map {
                     val category: Category? =
                         repository.getAllCategoriesForNum(it.categoryNum).firstOrNull()
-                    val color = getColorForCategory(category)
                     val name = getNameForCategory(category)
 
                     // 직전 총액
@@ -60,6 +50,7 @@ class BudgetProcedureViewModel(private val repository: BudgetRepository) : ViewM
                     val totalAmount: Int = beforeMoney - it.money
                     // 현재 총액 업데이트
                     beforeMoney = totalAmount
+
                     it.toModel(
                         ProcedureModel(
                             num = it.num,
@@ -68,16 +59,16 @@ class BudgetProcedureViewModel(private val repository: BudgetRepository) : ViewM
                             beforeMoney = totalAmount + it.money,
                             totalAmount = totalAmount,
                             time = it.time,
-                            categoryColor = color,
+                            categoryColor = category?.color ?: "#f8f8f8", // gray
                             categoryName = name,
                         )
                     )
                 }?.toList()
                 _procedureList.value = list.orEmpty()
             }
-                .onFailure {
-                    Log.e("TripMate", "error: $it")
-                }
         }
+            .onFailure {
+                Log.e("TripMate", "error: $it")
+            }
     }
 }
