@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityBoardViewModel
@@ -22,7 +23,7 @@ class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
-    private val commuViewModel: CommunityViewModel by viewModels{ CommunityFactory() }
+    private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
     private val boardViewModel: CommunityBoardViewModel by viewModels()
 
     lateinit var activity: MainActivity
@@ -35,8 +36,11 @@ class CommunityFragment : Fragment() {
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
-            onProfileClicked ={model, position ->
-                commuViewModel.updateCommuView(model.copy(),position)
+            onProfileClicked = { model, position ->
+                commuViewModel.updateCommuView(model.copy(), position)
+                val intent = Intent(communityContext, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", model)
+                startActivity(intent)
             },
             onThumbnailClicked =
             { model, position ->
@@ -46,7 +50,7 @@ class CommunityFragment : Fragment() {
                 commuViewModel.updateCommuIsLike(
                     model = model.copy(
                         commuIsLike = !model.commuIsLike
-                    ), position,communityContext
+                    ), position, communityContext
                 )
             },
             onItemLongClicked = { model, position ->

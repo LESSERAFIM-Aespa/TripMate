@@ -7,22 +7,35 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
+import kr.sparta.tripmate.R
+import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 import kr.sparta.tripmate.databinding.FragmentMypageBoardItemBinding
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 
-class BoardListAdapter:ListAdapter<CommunityModelEntity, BoardListAdapter.Holder>(object: DiffUtil
+class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int) -> Unit) :
+    ListAdapter<CommunityModelEntity, BoardListAdapter.Holder>(object : DiffUtil
     .ItemCallback<CommunityModelEntity>() {
-    override fun areItemsTheSame(oldItem: CommunityModelEntity, newItem: CommunityModelEntity): Boolean {
-        return oldItem.id == newItem.id
-    }
+        override fun areItemsTheSame(
+            oldItem: CommunityModelEntity,
+            newItem: CommunityModelEntity
+        ): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    override fun areContentsTheSame(oldItem: CommunityModelEntity, newItem: CommunityModelEntity): Boolean {
-        return oldItem == newItem
-    }
+        override fun areContentsTheSame(
+            oldItem: CommunityModelEntity,
+            newItem: CommunityModelEntity
+        ): Boolean {
+            return oldItem == newItem
+        }
 
-}) {
+    }) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = FragmentMypageBoardItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view = FragmentCommunityMainItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return Holder(view)
     }
 
@@ -30,16 +43,26 @@ class BoardListAdapter:ListAdapter<CommunityModelEntity, BoardListAdapter.Holder
         return holder.bind(getItem(position))
     }
 
-    class Holder(private val binding: FragmentMypageBoardItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item : CommunityModelEntity)=with(binding) {
-            boardThumbnail.load(item.thumbnail){
-                transformations(CircleCropTransformation())
+    inner class Holder(private val binding: FragmentCommunityMainItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: CommunityModelEntity) = with(binding) {
+            communityMainTitle.text = item.title
+            communityMainProfileNickname.text = item.profileNickname
+            communityMainThumbnail.apply {
+                if (!item.addedImage.isNullOrEmpty()){
+                    communityMainThumbnail.load(item.addedImage)
+                } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
+                setOnClickListener {
+                    onProfileClicked(item, bindingAdapterPosition)
+                }
             }
-            boardTitle.text = item.title
-            boardProfileNickname.text = item.profileNickname
-            boardProfileThumbnail.load(item.profileThumbnail)
-            boardViews.text = item.views
-            boardLikes.text = item.likes
+            communityMainViews.text = item.views
+            communityMainLikes.text = item.likes
+            if (item.commuIsLike) {
+                communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
+            } else {
+                communityMainLikesButton.setBackgroundResource(R.drawable.heart)
+            }
         }
     }
 }
