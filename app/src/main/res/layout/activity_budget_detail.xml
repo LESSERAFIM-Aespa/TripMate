@@ -6,36 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ui.budget.detail.main.BudgetDetailActivity">
 
-
-    <ImageView
-        android:id="@+id/budget_detail_edit_imageview"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/ic_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/budget_detail_toolbar"
-        app:layout_constraintEnd_toStartOf="@id/budget_detail_delete_imageview"
-        app:layout_constraintTop_toTopOf="@+id/budget_detail_toolbar" />
-
-    <ImageView
-        android:id="@+id/budget_detail_delete_imageview"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintBottom_toBottomOf="@+id/budget_detail_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/budget_detail_toolbar" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/budget_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/arrow_left"
-        tools:title="일본 여행 가계부" />
+        tools:title="일본 여행 가계부">
+
+        <ImageView
+            android:id="@+id/budget_detail_delete_imageview"
+            android:layout_gravity="end"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="@+id/budget_detail_toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/budget_detail_toolbar" />
+
+        <ImageView
+            android:id="@+id/budget_detail_edit_imageview"
+            android:layout_gravity="end"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@+id/budget_detail_toolbar"
+            app:layout_constraintEnd_toStartOf="@id/budget_detail_delete_imageview"
+            app:layout_constraintTop_toTopOf="@+id/budget_detail_toolbar" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/budget_detail_tablayout"
