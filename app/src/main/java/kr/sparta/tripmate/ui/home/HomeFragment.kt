@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import kr.sparta.tripmate.R
@@ -75,11 +76,13 @@ class HomeFragment : Fragment() {
         val uid = SharedPreferences.getUid(homeContext)
         homeBoardListAdapter = HomeBoardListAdapter(
             onItemClick = { model, position ->
-
+                val intent = Intent(homeContext, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", model)
+                homeResults.launch(intent)
             }
         )
         binding.homeRecyclerView2.apply {
-            layoutManager = LinearLayoutManager(homeContext, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(context,2,GridLayoutManager.HORIZONTAL,false)
             adapter = homeBoardListAdapter
             setHasFixedSize(true)
         }

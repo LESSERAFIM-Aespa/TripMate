@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.ui.community.main
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -56,14 +57,12 @@ class CommunityListAdapter(
         fun bind(item: CommunityModelEntity) = with(binding) {
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
-            communityMainThumbnail.apply {
-                setOnClickListener {
+            communityMainThumbnail.setOnClickListener {
                     onProfileClicked(item, bindingAdapterPosition)
                 }
-                if (!item.addedImage.isNullOrEmpty()){
-                    communityMainThumbnail.load(item.addedImage)
-                } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
-            }
+            if (!item.addedImage.isNullOrEmpty()){
+                communityMainThumbnail.load(item.addedImage)
+            } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
                 setOnClickListener {
