@@ -142,7 +142,6 @@ class FirebaseDBRemoteDataSource {
         comuRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val allCommunityData = arrayListOf<CommunityModel>()
-                val myCommunityData = arrayListOf<CommunityModel>()
                 for (userPostSnapshot in snapshot.children) {
                     val postModel = userPostSnapshot.getValue(CommunityModel::class.java)
                     if (postModel != null) {
@@ -382,8 +381,7 @@ class FirebaseDBRemoteDataSource {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in snapshot.children) {
                     val getBoardList = item.getValue(CommunityModel::class.java)
-                    if (getBoardList != null && getBoardList.id == uid) {
-
+                    if (getBoardList != null) {
                         boardList.add(getBoardList)
                     }
                 }
