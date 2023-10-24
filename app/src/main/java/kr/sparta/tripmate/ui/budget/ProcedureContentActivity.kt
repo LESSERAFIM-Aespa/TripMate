@@ -33,10 +33,6 @@ class ProcedureContentActivity : AppCompatActivity() {
         const val EXTRA_BUDGET_NUM = "extra_budget_num"
         const val EXTRA_PROCEDURE_NUM = "extra_procedure_num"
 
-        //이건 쓰면 안되요
-        fun newIntentForAdd(context: Context) =
-            Intent(context, ProcedureContentActivity::class.java)
-
         fun newIntentForAdd(context: Context, budgetNum: Int) =
             Intent(context, ProcedureContentActivity::class.java).apply {
                 putExtra(EXTRA_PROCEDURE_ENTRY_TYPE, ProcedureContentType.ADD.name)

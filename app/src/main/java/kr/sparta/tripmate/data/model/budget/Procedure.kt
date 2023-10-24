@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kr.sparta.tripmate.ui.budget.detail.procedure.ProcedureModel
 
 /**
  * 작성자 : 김성환
@@ -21,7 +22,7 @@ import androidx.room.PrimaryKey
             entity = Category::class,
             parentColumns = ["NUM"],
             childColumns = ["CATEGORY_NUM"],
-            onDelete =  ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE
         )
     ]
 
@@ -48,4 +49,19 @@ data class Procedure(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "NUM")
     val num: Int = 0,
+)
+
+/**
+ * 작성자: 서정한
+ * 내용: view에서 사용하기위해 ProcedureModel로 변환
+ * */
+fun Procedure.toModel(model: ProcedureModel) = ProcedureModel(
+    num = model.num,
+    title = model.title,
+    price = model.price,
+    beforeMoney = model.beforeMoney,
+    totalAmount = model.totalAmount,
+    time = model.time,
+    categoryColor = model.categoryColor,
+    categoryName = model.categoryName,
 )

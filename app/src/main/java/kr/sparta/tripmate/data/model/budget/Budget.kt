@@ -1,9 +1,11 @@
 package kr.sparta.tripmate.data.model.budget
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 /**
  * 작성자 : 김성환
@@ -13,6 +15,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "BUDGET",
 )
+@Parcelize
 data class Budget(
     @ColumnInfo(name = "NAME")
     val name: String,
@@ -34,7 +37,7 @@ data class Budget(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "NUM")
     val num: Int = 0,
-) {
+): Parcelable {
     /**
      * 가계부의 모든 과정이후 남은 돈을 넣어주면됩니다.
      * 테이블에 등록되지는 않습니다.

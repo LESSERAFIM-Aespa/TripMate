@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.domain.repository
 
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
@@ -47,7 +48,8 @@ interface BudgetRepository {
      * 최종적으로 해당값(num)을 부모로 가지는 과정들을 가져옴
      * 과정(Procedure)테이블이 바뀌때마다 가져옴
      * */
-    fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<List<Procedure>>
+//    fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<List<Procedure>>
+    suspend fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): List<Procedure>
 
     suspend fun getBudgetCategories(num: Int) : List<BudgetCategories>
     suspend fun getLastBudget() : List<Budget>
@@ -56,4 +58,5 @@ interface BudgetRepository {
     fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>>
 
     suspend fun getAllCategoriesWithBudgetNum(budgetNum:Int):List<Category>
+    suspend fun getAllCategoriesForNum(num: Int) : List<Category>
 }
