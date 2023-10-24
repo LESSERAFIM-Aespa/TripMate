@@ -6,18 +6,18 @@ import android.util.Log
 import android.view.View
 import coil.load
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
-import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 
 class CommunityDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCommunityDetailBinding
-    private lateinit var writeItem: CommunityModel
+    private lateinit var writeItem: CommunityModelEntity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCommunityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //데이터를 받는 부분
-        writeItem = intent.getParcelableExtra<CommunityModel>("Data")!!
+        writeItem = intent.getParcelableExtra<CommunityModelEntity>("Data")!!
 
         Log.d("CommunityDetailfxxk",writeItem.addedImage.toString())
         if (!writeItem.addedImage.isNullOrBlank()) {
