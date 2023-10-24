@@ -48,7 +48,8 @@ interface BudgetRepository {
      * 최종적으로 해당값(num)을 부모로 가지는 과정들을 가져옴
      * 과정(Procedure)테이블이 바뀌때마다 가져옴
      * */
-    fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<List<Procedure>>
+//    fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<List<Procedure>>
+    suspend fun getAllProceduresToFlowWhenProccessChangedWithBudgetNum(num: Int): List<Procedure>
 
     suspend fun getBudgetCategories(num: Int) : List<BudgetCategories>
     suspend fun getLastBudget() : List<Budget>
