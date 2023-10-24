@@ -7,9 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
+import kr.sparta.tripmate.databinding.HomeSecondItemsBinding
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.util.method.removeHtmlTags
 
 class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) -> Unit) :
     ListAdapter<CommunityModelEntity, HomeBoardListAdapter.Holder>(object : DiffUtil
@@ -29,14 +28,14 @@ class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) 
         }
 
     }) {
-    inner class Holder(private val binding: HomeFirstItemsBinding) : RecyclerView
+    inner class Holder(private val binding: HomeSecondItemsBinding) : RecyclerView
     .ViewHolder(binding.root) {
         fun bind(item: CommunityModelEntity) = with(binding) {
 
-            homeFirstTitle.text = item.title
+            homeSecondTitle.text = item.title
             if(!item.addedImage.isNullOrEmpty()){
-                homeFirstImage.load(item.addedImage)
-            }else homeFirstImage.setImageResource(R.drawable.emptycommu)
+                homeSecondImage.load(item.addedImage)
+            }else homeSecondImage.setImageResource(R.drawable.emptycommu)
             itemView.setOnClickListener {
                 onItemClick(item, bindingAdapterPosition)
             }
@@ -45,7 +44,7 @@ class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = HomeFirstItemsBinding.inflate(
+        val view = HomeSecondItemsBinding.inflate(
             LayoutInflater.from(parent.context),
             parent, false
         )
