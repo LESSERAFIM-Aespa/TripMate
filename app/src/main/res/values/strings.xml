@@ -71,4 +71,10 @@
     <string name="budget_detail_dialog_negative_text">취소</string>
     <string name="user_profile_toolbar_title">프로필</string>
     <string name="user_profile_tab_title">작성한 글 목록</string>
+
+    <string name="facebook_app_id">169352552917548</string>
+    <string name="fb_login_protocol_scheme">fb169352552917548</string>
+    <string name="facebook_client_token">95d873d79949386f10e429c73920d820</string>
+
+
 </resources>

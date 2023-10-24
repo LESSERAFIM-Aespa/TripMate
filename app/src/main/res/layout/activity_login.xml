@@ -50,6 +50,12 @@
                 app:layout_constraintEnd_toEndOf="@id/login_center_constraint"
                 app:layout_constraintStart_toStartOf="@id/login_center_constraint"
                 />
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/login_google"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
