@@ -7,11 +7,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.FacebookSdk
+import com.facebook.GraphRequest
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
@@ -24,6 +32,7 @@ import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
+import org.json.JSONException
 
 class LoginActivity : AppCompatActivity() {
     companion object {
@@ -32,6 +41,11 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var login_Database: DatabaseReference
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var callbackManager : CallbackManager
+
+
+
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     private var isLogin = false
     private val googleLogin: ActivityResultLauncher<Intent> =
@@ -49,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         auth = FirebaseAuth.getInstance()
         login_Database = Firebase.database.reference
 
@@ -65,7 +80,21 @@ class LoginActivity : AppCompatActivity() {
         binding.loginGoogle.setOnClickListener {
             signIn()
         }
+
+        //FacebookLogin
+        callbackManager = CallbackManager.Factory.create()
+        binding.loginFacebook.setOnClickListener{
+            fbsignIn()
+        }
+
+
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode,resultCode,data)
+    }
+
+
 
     private fun signIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)  //기본 구글 로그인 옵션
@@ -76,6 +105,56 @@ class LoginActivity : AppCompatActivity() {
         val googleSignInClient = GoogleSignIn.getClient(this, gso)  //구글 로그인 클라이언트
         val signInIntent = googleSignInClient.signInIntent  //구글 로그인 클라이언트를 인텐트에 할당한다.
         googleLogin.launch(signInIntent)    //할당된 인텐트를 이용해서 구글 로그인 액티비티를 시작한다.
+    }
+    private fun fbsignIn() {
+        val facebookLoginButton = binding.loginFacebook
+        facebookLoginButton.setPermissions("email","public_profile")
+        facebookLoginButton.registerCallback(callbackManager,object: FacebookCallback<LoginResult> {
+            override fun onCancel() {
+            }
+
+            override fun onError(error: FacebookException) {
+                Toast.makeText(this@LoginActivity,"로그인에 실패하였습니다.",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onSuccess(result: LoginResult) {
+                val request = GraphRequest.newMeRequest(
+                    result.accessToken
+                ) { jsonObject, _ ->
+                    try {
+                        val userId = jsonObject?.getString("id")
+                        val profilePictureUrl = "https://graph.facebook.com/$userId/picture?type=large"
+
+                        // 프로필 이미지 URL을 사용하여 프로필 이미지 설정
+                        // 여기서는 단순히 URL을 출력합니다.
+                        // 실제 앱에서는 이 URL을 사용하여 이미지 뷰에 이미지를 표시하거나 Firebase와 같은 데이터베이스에 저장할 수 있습니다.
+                        Log.d("FacebookLogin", "User ID: $userId")
+                        Log.d("FacebookLogin", "Profile Picture URL: $profilePictureUrl")
+
+                    } catch (e: JSONException) {
+                        Log.e("FacebookLogin", "Error parsing JSON", e)
+                    }
+                }
+
+                val parameters = Bundle()
+                parameters.putString("fields", "id,name,email,gender")
+                request.parameters = parameters
+                request.executeAsync()
+
+                val credential = FacebookAuthProvider.getCredential(result.accessToken.token)
+                auth.signInWithCredential(credential)
+                    .addOnCompleteListener { task ->task.exception?.let {
+                        Log.e("FirebaseAuthError", it.message ?: "Unknown error")
+                    }
+                        if(task.isSuccessful) {
+                            SuccessLogin()
+                        }else {
+                            FailLogin()
+                            Toast.makeText(this@LoginActivity,"onSuccess의 else 부분이 불렸습니다",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
+        })
     }
 
 
@@ -166,3 +245,4 @@ class LoginActivity : AppCompatActivity() {
     }
 
 }
+

@@ -78,6 +78,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.github.skydoves:powerspinner:1.2.7")
+    implementation ("com.facebook.android:facebook-login:latest.release")
 
     //use room
     val room_version = "2.5.2"
