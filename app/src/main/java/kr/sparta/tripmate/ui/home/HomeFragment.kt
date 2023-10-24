@@ -79,6 +79,7 @@ class HomeFragment : Fragment() {
                 val intent = Intent(homeContext, CommunityDetailActivity::class.java)
                 intent.putExtra("Data", model)
                 homeResults.launch(intent)
+                homeBoardViewModel.viewHomeBoardData(model,position)
             }
         )
         binding.homeRecyclerView2.apply {
@@ -140,6 +141,7 @@ class HomeFragment : Fragment() {
         val uid = SharedPreferences.getUid(homeContext)
         homeScrapViewModel.updateScrapData(homeContext)
         homeBoardViewModel.getHomeBoardData(uid)
+
     }
 
     private fun observeViewModel() {
