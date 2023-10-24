@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
+import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureViewModel
+import kr.sparta.tripmate.util.method.setCommaForMoneeyText
 
 
 /**
@@ -67,28 +69,6 @@ class BudgetDetailProcedureFragment : Fragment() {
          * 내용: 과정 데이터 init
          * */
         fun initProcedureData() {
-            /**
-             * 작성자: 서정한
-             * 내용: 금액에 콤마 추가
-             * */
-            fun setCommaForMoneeyText(money: String): String {
-                val commaCount = if (money.length % 3 == 0) {
-                    (money.length / 3) - 1
-                } else {
-                    money.length / 3
-                }
-                var commaStartIndex = money.length % 3
-                val comma = ','
-                val stringBuilder = StringBuilder()
-                stringBuilder.append(money)
-
-                for (i in 0 until commaCount) {
-                    stringBuilder.insert(commaStartIndex, comma)
-                    commaStartIndex += 4
-                }
-
-                return "${stringBuilder}원"
-            }
 
             activity.budget?.let {
                 // 원금
@@ -112,10 +92,11 @@ class BudgetDetailProcedureFragment : Fragment() {
 
             // 잔액 업데이트
             if (list.isNotEmpty()) {
-                binding.budgetDetailStatusBalanceTextview.text = list.last().totalAmount.toString()
+                binding.budgetDetailStatusBalanceTextview.text = setCommaForMoneeyText(list.last().totalAmount.toString())
             }
         }
     }
+
 
     override fun onDestroy() {
         _binding = null
