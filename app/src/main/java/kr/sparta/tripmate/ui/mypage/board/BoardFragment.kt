@@ -1,16 +1,21 @@
 package kr.sparta.tripmate.ui.mypage.board
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentBoardBinding
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.ui.scrap.ScrapDetail
 import kr.sparta.tripmate.ui.viewmodel.mypage.BoardFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.BoardViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -20,12 +25,25 @@ class BoardFragment : Fragment() {
         fun newInstance(): BoardFragment = BoardFragment()
     }
 
-    private lateinit var boardContext :Context
+    private lateinit var boardContext: Context
     private var _binding: FragmentBoardBinding? = null
     private val binding get() = _binding!!
     private val boardViewModel: BoardViewModel by viewModels { BoardFactory() }
+    private val boardResurlts = registerForActivityResult(
+        ActivityResultContracts
+            .StartActivityForResult()
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+        }
+    }
     private val boardAdapter by lazy {
-        BoardListAdapter()
+        BoardListAdapter(
+            onProfileClicked = { model, position ->
+                val intent = Intent(boardContext, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", model)
+                boardResurlts.launch(intent)
+            }
+        )
     }
 
     override fun onAttach(context: Context) {
@@ -49,8 +67,8 @@ class BoardFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        with(boardViewModel){
-            myPage.observe(viewLifecycleOwner){
+        with(boardViewModel) {
+            myPage.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "size: ${it.size}")
                 boardAdapter.submitList(it)
             }
@@ -64,7 +82,8 @@ class BoardFragment : Fragment() {
             setHasFixedSize(true)
         }
     }
-    fun updateBoard(){
+
+    fun updateBoard() {
         val uid = SharedPreferences.getUid(boardContext)
         boardViewModel.getBoardData(uid)
     }
