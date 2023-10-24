@@ -32,7 +32,6 @@ class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) 
         fun bind(items: ScrapEntity) = with(binding) {
             Log.d("TripMates", "뷰홀더에 항목${items}")
             homeFirstTitle.text = removeHtmlTags(items.title)
-            homeFirstContent.text = removeHtmlTags(items.description)
             homeFirstImage.setImageResource(R.drawable.blogimage)
 
             itemView.setOnClickListener {
