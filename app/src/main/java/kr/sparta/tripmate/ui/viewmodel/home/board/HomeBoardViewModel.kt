@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.toCommunity
 import kr.sparta.tripmate.domain.usecase.GetFirebaseBoardData
-import kr.sparta.tripmate.domain.usecase.IsFirebaseBoardViews
+import kr.sparta.tripmate.domain.usecase.IsViewsFirebaseBoardData
 
 class HomeBoardViewModel(private val getFirebaseBoardData: GetFirebaseBoardData, private val
-isFirebaseBoardViews: IsFirebaseBoardViews
+isViewsFirebaseBoardData: IsViewsFirebaseBoardData
 ) :
     ViewModel
     () {
@@ -19,6 +19,6 @@ isFirebaseBoardViews: IsFirebaseBoardViews
         getFirebaseBoardData.invoke(uid, _homeBoard)
     }
     fun viewHomeBoardData(model:CommunityModelEntity,position:Int){
-        isFirebaseBoardViews.invoke(model.toCommunity(), position,_homeBoard)
+        isViewsFirebaseBoardData.invoke(model.toCommunity(), position,_homeBoard)
     }
 }

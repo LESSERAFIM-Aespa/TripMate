@@ -6,7 +6,7 @@ import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseBoardRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
 import kr.sparta.tripmate.domain.usecase.GetFirebaseBoardData
-import kr.sparta.tripmate.domain.usecase.IsFirebaseBoardViews
+import kr.sparta.tripmate.domain.usecase.IsViewsFirebaseBoardData
 
 class HomeBoardFactory : ViewModelProvider.Factory {
     private val repository: FirebaseBoardRepository by lazy {
@@ -19,7 +19,7 @@ class HomeBoardFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(HomeBoardViewModel::class.java)) {
             return HomeBoardViewModel(
                 GetFirebaseBoardData(repository),
-                IsFirebaseBoardViews(repository)
+                IsViewsFirebaseBoardData(repository)
             ) as T
         }
         throw IllegalArgumentException("에러")
