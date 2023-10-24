@@ -49,7 +49,9 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
             communityMainThumbnail.apply {
-                load(item.thumbnail)
+                if (!item.addedImage.isNullOrEmpty()){
+                    communityMainThumbnail.load(item.addedImage)
+                } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
                 setOnClickListener {
                     onProfileClicked(item, bindingAdapterPosition)
                 }
