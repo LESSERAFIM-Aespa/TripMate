@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
@@ -33,11 +34,13 @@ class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) 
         fun bind(item: CommunityModelEntity) = with(binding) {
 
             homeFirstTitle.text = item.title
-            homeFirstImage.load(item.addedImage)
-
+            if(!item.addedImage.isNullOrEmpty()){
+                homeFirstImage.load(item.addedImage)
+            }else homeFirstImage.setImageResource(R.drawable.emptycommu)
             itemView.setOnClickListener {
                 onItemClick(item, bindingAdapterPosition)
             }
+
         }
     }
 

@@ -3,7 +3,6 @@ package kr.sparta.tripmate.ui.community.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityBoardViewModel
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 
@@ -24,7 +22,6 @@ class CommunityFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
-    private val boardViewModel: CommunityBoardViewModel by viewModels()
 
     lateinit var activity: MainActivity
     lateinit var communityContext: Context

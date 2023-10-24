@@ -31,8 +31,6 @@ import java.io.ByteArrayOutputStream
  */
 class CommunityWriteActivity : AppCompatActivity() {
 
-    private val viewModel: CommunityViewModel by viewModels()
-    private var commuThumbnail = R.drawable.emptycommu
     private lateinit var binding: ActivityCommunityWriteBinding
     private lateinit var commu_Database: DatabaseReference         //1. 데이터베이스 객체 생성
     private val storage = Firebase.storage
@@ -118,12 +116,12 @@ class CommunityWriteActivity : AppCompatActivity() {
     ) {
         val writeModel = CommunityModel(
             uid,
-            commuThumbnail.toString(),
+            "",
             titleWrite,
             bodyWrite,
             nickName,
             profile,
-            "",
+            "0",
             "0",
             key.toString(),
             imageUrl
@@ -160,7 +158,7 @@ class CommunityWriteActivity : AppCompatActivity() {
 
     private fun communityAddImage() {
         binding.communitiyWriteAddimage.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            val gallery = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             startActivityForResult(gallery, 100)
 
         }
