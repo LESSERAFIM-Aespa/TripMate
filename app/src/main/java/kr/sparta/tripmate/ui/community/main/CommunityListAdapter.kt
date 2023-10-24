@@ -54,14 +54,15 @@ class CommunityListAdapter(
         RecyclerView
         .ViewHolder(binding.root) {
         fun bind(item: CommunityModelEntity) = with(binding) {
-            if (!item.thumbnail.isNullOrEmpty()) communityMainThumbnail.setImageResource(item.thumbnail.toInt())
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
-            communityMainThumbnail.setOnClickListener {
-                val intent = Intent(itemView.context, CommunityDetailActivity::class.java)
-                intent.putExtra("Data", item)
-                itemView.context.startActivity(intent)
-                onProfileClicked(item, bindingAdapterPosition)
+            communityMainThumbnail.apply {
+                setOnClickListener {
+                    onProfileClicked(item, bindingAdapterPosition)
+                }
+                if (!item.addedImage.isNullOrEmpty()){
+                    communityMainThumbnail.load(item.addedImage)
+                } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
             }
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
@@ -75,9 +76,9 @@ class CommunityListAdapter(
                 onLikeClicked(item, bindingAdapterPosition)
             }
             if (item.commuIsLike) {
-                communityMainLikesButton.setBackgroundResource(R.drawable.paintedlove)
+                communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
-                communityMainLikesButton.setBackgroundResource(R.drawable.love)
+                communityMainLikesButton.setBackgroundResource(R.drawable.heart)
             }
             itemView.setOnLongClickListener {
                 onItemLongClicked(item, bindingAdapterPosition)
