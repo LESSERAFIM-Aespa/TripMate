@@ -9,7 +9,6 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
-import kr.sparta.tripmate.databinding.FragmentMypageBoardItemBinding
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 
 class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int) -> Unit) :

@@ -92,10 +92,10 @@
 
             <ImageView
                 android:id="@+id/community_iv_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="start"
-                app:srcCompat="@drawable/star" />
+                app:srcCompat="@drawable/paintedheart" />
 
             <TextView
                 android:id="@+id/community_detail_likecount"
@@ -106,12 +106,20 @@
                 android:text="@string/community_detail_likecount"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/community_iv_view"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                android:layout_gravity="start"
+                app:srcCompat="@drawable/witness" />
+
             <TextView
                 android:id="@+id/community_tv_detail_viewcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="27dp"
+                android:layout_marginStart="3dp"
                 android:text="@string/community_detail_viewcount"
                 android:textStyle="bold" />
 
