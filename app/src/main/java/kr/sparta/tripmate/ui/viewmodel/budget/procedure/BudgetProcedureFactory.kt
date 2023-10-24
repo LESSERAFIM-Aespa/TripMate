@@ -10,7 +10,7 @@ import kr.sparta.tripmate.domain.repository.ScrapRepository
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.util.TripMateApp
 
-class BudgetProcedureFactory: ViewModelProvider.Factory {
+class BudgetProcedureFactory(): ViewModelProvider.Factory {
     private val repository by lazy {
         BudgetRepositoryImpl(TripMateApp.getApp().applicationContext)
     }

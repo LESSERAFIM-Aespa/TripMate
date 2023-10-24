@@ -24,7 +24,7 @@ import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureViewModel
 class BudgetDetailActivity : AppCompatActivity() {
 
     companion object {
-        const val EXTRA_BUDGET= "extra_budget"
+        const val EXTRA_BUDGET = "extra_budget"
 
         fun newIntentForBudget(context: Context, model: Budget) =
             Intent(context, BudgetDetailActivity::class.java).apply {
@@ -41,12 +41,11 @@ class BudgetDetailActivity : AppCompatActivity() {
     }
 
 
-
     val budget by lazy {
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(EXTRA_BUDGET, Budget::class.java)
         } else {
-            intent.getParcelableExtra(EXTRA_BUDGET )
+            intent.getParcelableExtra(EXTRA_BUDGET)
         }
     }
 
@@ -66,7 +65,12 @@ class BudgetDetailActivity : AppCompatActivity() {
 
         // 추가하기 FAB
         budgetDetailFloatingactionbutton.setOnClickListener {
-            startActivity(ProcedureContentActivity.newIntentForAdd(this@BudgetDetailActivity))
+            startActivity(
+                ProcedureContentActivity.newIntentForAdd(
+                    this@BudgetDetailActivity,
+                    budget?.num ?: 0
+                )
+            )
         }
 
         // 수정 아이콘

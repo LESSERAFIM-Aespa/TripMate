@@ -15,5 +15,5 @@ data class ProcedureModel(
     val totalAmount: Int, // 현재 총 금액 (사용전 남은금액 - 사용금액)
     val time: String, // 작성 시간
     val categoryName: String, // 카테고리명
-    val categoryColor: Int, // 카테고리 색상
+    val categoryColor: String, // 카테고리 색상
 )
