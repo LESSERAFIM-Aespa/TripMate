@@ -38,5 +38,7 @@ class CommunityDetailActivity : AppCompatActivity() {
         binding.communityTvDetailDescription.text = writeItem.body
         binding.communityTvDetailUsername.text = writeItem.profileNickname
         binding.communityIvAddImage.load(writeItem.addedImage)
+        binding.communityDetailLikecount.text = writeItem.likes
+        binding.communityTvDetailViewcount.text = writeItem.views
     }
 }
