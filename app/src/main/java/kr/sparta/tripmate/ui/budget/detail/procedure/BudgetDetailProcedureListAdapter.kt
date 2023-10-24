@@ -1,11 +1,22 @@
 package kr.sparta.tripmate.ui.budget.detail.procedure
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemProcedureBinding
+import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.util.method.setCommaForMoneeyText
 
 /**
  * 작성자: 서정한
@@ -46,14 +57,13 @@ class BudgetDetailProcedureListAdapter :
     class ProcedureHolder(private val binding: ItemProcedureBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProcedureModel) = with(binding) {
-            budgetProcedureBeforeMoneyTextview.setText(item.beforeMoney)
-            budgetProcedurePriceTextview.setText(item.price)
-            budgetProcedureTotalAmountTextview.setText(item.totalAmount)
+            budgetProcedureBeforeMoneyTextview.text = setCommaForMoneeyText(item.beforeMoney.toString())
+            budgetProcedurePriceTextview.text = setCommaForMoneeyText(item.price.toString())
+            budgetProcedureTotalAmountTextview.text = setCommaForMoneeyText(item.totalAmount.toString())
             budgetProcedureTitleTextview.text = item.title
             budgetProcedureTimeTextview.text = item.time
-            budgetProcedureCategoryTextview.setText(item.categoryName)
-            // TODO 카테고리 컬러값 어떻게 구현할지 방법찾아보기!
-            // TODO DB에서 가져온 Procedure item들 ProcedureModel에 넣어서 사용하기
+            budgetProcedureCategoryTextview.text = item.categoryName
+            budgetProcedureCategoryTextview.backgroundTintList = ColorStateList.valueOf(Color.parseColor(item.categoryColor))
         }
     }
 }
