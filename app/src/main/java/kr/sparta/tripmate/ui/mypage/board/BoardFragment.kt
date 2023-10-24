@@ -67,10 +67,11 @@ class BoardFragment : Fragment() {
     }
 
     private fun initViewModel() {
+        val uid = SharedPreferences.getUid(boardContext)
         with(boardViewModel) {
             myPage.observe(viewLifecycleOwner) {
-                Log.d("TripMates", "size: ${it.size}")
-                boardAdapter.submitList(it)
+                val filteredList = it.filter { it?.id == uid }
+                boardAdapter.submitList(filteredList)
             }
         }
     }
