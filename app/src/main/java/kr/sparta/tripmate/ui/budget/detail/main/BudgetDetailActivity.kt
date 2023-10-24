@@ -14,8 +14,10 @@ import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
 import kr.sparta.tripmate.ui.budget.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureFactory
-import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.main.BudgetDetailFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.main.BudgetDetailViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
 
 /**
  * 작성자: 서정한
@@ -40,6 +42,9 @@ class BudgetDetailActivity : AppCompatActivity() {
         BudgetDetailViewPagerAdapter(this@BudgetDetailActivity)
     }
 
+    private val viewModel: BudgetDetailViewModel by viewModels() {
+        BudgetDetailFactory()
+    }
 
     val budget by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
@@ -104,7 +109,13 @@ class BudgetDetailActivity : AppCompatActivity() {
         val listener = object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface?, p1: Int) {
                 when (p1) {
-                    DialogInterface.BUTTON_POSITIVE -> {}
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        budget?.let {
+                            viewModel.deleteBudget(it)
+                            finish()
+                        }
+                    }
+
                     DialogInterface.BUTTON_NEGATIVE -> {}
                 }
             }

@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureFactory
-import kr.sparta.tripmate.ui.viewmodel.budget.procedure.BudgetProcedureViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
 import kr.sparta.tripmate.util.method.setCommaForMoneeyText
 
 
