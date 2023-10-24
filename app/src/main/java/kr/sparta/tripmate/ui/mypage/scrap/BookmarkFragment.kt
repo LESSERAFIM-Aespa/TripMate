@@ -75,6 +75,6 @@ class BookmarkFragment : Fragment() {
         }
     }
     fun updateScrap (){
-        viewModel.updateScrapData(requireContext())
+        viewModel.updateScrapData(bookmarkContext)
     }
 }
