@@ -75,7 +75,9 @@ class HomeFragment : Fragment() {
         val uid = SharedPreferences.getUid(homeContext)
         homeBoardListAdapter = HomeBoardListAdapter(
             onItemClick = { model, position ->
-
+                val intent = Intent(homeContext, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", model)
+                homeResults.launch(intent)
             }
         )
         binding.homeRecyclerView2.apply {
