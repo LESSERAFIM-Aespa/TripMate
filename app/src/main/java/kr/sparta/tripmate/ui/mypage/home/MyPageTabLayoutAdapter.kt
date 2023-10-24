@@ -14,8 +14,8 @@ class MyPageTabLayoutAdapter(fragment: FragmentActivity) : FragmentStateAdapter(
     init {
         fragments.add(
             MyPageTab(
-                fragment=BoardFragment.newInstance(),
-                title= R.string.mypage_tab_board,
+                fragment = BoardFragment.newInstance(),
+                title = R.string.mypage_tab_board,
             ),
         )
         fragments.add(
@@ -31,4 +31,8 @@ class MyPageTabLayoutAdapter(fragment: FragmentActivity) : FragmentStateAdapter(
     override fun getItemCount(): Int = fragments.size
 
     override fun createFragment(position: Int): Fragment = fragments[position].fragment
+
+    fun updateScrap(): Fragment {
+        return fragments[1].fragment
+    }
 }
