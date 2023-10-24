@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import kr.sparta.tripmate.databinding.FragmentMypageBoardItemBinding
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 
-class BoardListAdapter:ListAdapter<BoardModel, BoardListAdapter.Holder>(object: DiffUtil.ItemCallback<BoardModel>() {
-    override fun areItemsTheSame(oldItem: BoardModel, newItem: BoardModel): Boolean {
+class BoardListAdapter:ListAdapter<CommunityModelEntity, BoardListAdapter.Holder>(object: DiffUtil
+    .ItemCallback<CommunityModelEntity>() {
+    override fun areItemsTheSame(oldItem: CommunityModelEntity, newItem: CommunityModelEntity): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: BoardModel, newItem: BoardModel): Boolean {
+    override fun areContentsTheSame(oldItem: CommunityModelEntity, newItem: CommunityModelEntity): Boolean {
         return oldItem == newItem
     }
 
@@ -29,7 +31,7 @@ class BoardListAdapter:ListAdapter<BoardModel, BoardListAdapter.Holder>(object: 
     }
 
     class Holder(private val binding: FragmentMypageBoardItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(item : BoardModel)=with(binding) {
+        fun bind(item : CommunityModelEntity)=with(binding) {
             boardThumbnail.load(item.thumbnail){
                 transformations(CircleCropTransformation())
             }
