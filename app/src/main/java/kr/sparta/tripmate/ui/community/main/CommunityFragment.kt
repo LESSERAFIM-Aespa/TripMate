@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.community.main
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.crashlytics.internal.common.CommonUtils
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
@@ -18,13 +21,30 @@ import kr.sparta.tripmate.ui.viewmodel.community.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 
 class CommunityFragment : Fragment() {
+    companion object{
+        fun newInstance() : CommunityFragment = CommunityFragment()
+    }
+
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
     private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
 
-    lateinit var activity: MainActivity
-    lateinit var communityContext: Context
+    private lateinit var activity: MainActivity
+    private lateinit var communityContext: Context
+
+    private val writeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
+        if(result.resultCode == Activity.RESULT_OK) {
+
+        }
+    }
+
+    private val detailLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
+        if(result.resultCode == Activity.RESULT_OK) {
+
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         communityContext = context
@@ -33,11 +53,10 @@ class CommunityFragment : Fragment() {
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
-            onProfileClicked = { model, position ->
+            onBoardClicked = { model, position ->
                 commuViewModel.updateCommuView(model.copy(), position)
-                val intent = Intent(communityContext, CommunityDetailActivity::class.java)
-                intent.putExtra("Data", model)
-                startActivity(intent)
+                val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
+                detailLauncher.launch(intent)
             },
             onThumbnailClicked =
             { model, position ->
@@ -69,24 +88,25 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // FAB Click Event
         commuFloatBtn()
         initView()
         initViewModel()
     }
 
     private fun initViewModel() {
-        commuViewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
+        commuViewModel.dataModelList.observe(viewLifecycleOwner) {
             commuAdapter.submitList(it)
         }
-        commuViewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
+        commuViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 
     private fun commuFloatBtn() {
         binding.writeBtn.setOnClickListener {
-            val intent = Intent(context, CommunityWriteActivity::class.java)
-            startActivity(intent)
+            val intent = CommunityWriteActivity.newIntentForWrite(communityContext)
+            writeLauncher.launch(intent)
         }
     }
 
