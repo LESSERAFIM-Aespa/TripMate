@@ -1,9 +1,12 @@
 package kr.sparta.tripmate.ui.viewmodel.budget
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
@@ -16,6 +19,10 @@ class BudgetContentViewModel(
     private val repository: BudgetRepository,
     private val budgetNum: Int = 0,
 ) : ViewModel() {
+    companion object{
+        private const val TAG = "BudgetContentViewModel"
+    }
+
     private val _budgetCategories: MutableLiveData<List<BudgetCategories>> = MutableLiveData()
     val budgetCategories: LiveData<List<BudgetCategories>>
         get() = _budgetCategories
@@ -63,11 +70,11 @@ class BudgetContentViewModel(
             checkedArr.forEachIndexed { index, b ->
                 if (!b){
                     val currentCategory = beforeCategories[index]
-                    val procedures = repository.getProceduresWithNum(currentCategory.num).map { it.copy(categoryNum = etcNum) }.toTypedArray()
+                    val procedures = repository.getPrcedouresWithCategoryNum(currentCategory.num)
+                        .map { it.copy(categoryNum = etcNum) }.toTypedArray()
                     repository.updateProcedures(*procedures)
                     repository.deleteCategories(currentCategory)
                 }
             }
         }
-
 }
