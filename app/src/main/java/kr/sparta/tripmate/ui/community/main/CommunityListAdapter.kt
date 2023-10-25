@@ -1,7 +1,5 @@
 package kr.sparta.tripmate.ui.community.main
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,13 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 
 class CommunityListAdapter(
-    private val onProfileClicked: (CommunityModelEntity, Int) -> Unit,
+    private val onBoardClicked: (CommunityModelEntity, Int) -> Unit,
     private val onLikeClicked: (CommunityModelEntity, Int) -> Unit,
     private val onThumbnailClicked: (CommunityModelEntity, Int) -> Unit,
     private val onItemLongClicked: (CommunityModelEntity, Int) -> Unit
@@ -55,34 +51,63 @@ class CommunityListAdapter(
         RecyclerView
         .ViewHolder(binding.root) {
         fun bind(item: CommunityModelEntity) = with(binding) {
+            /**
+             * 작성자: 서정한
+             * 내용: url의 이미지가 없을경우 기본이미지로 보여준다.
+             * */
+            fun setUrlImageOrDefault() {
+                item.addedImage?.let {
+                    if (it.isNotEmpty()) {
+                        communityMainThumbnail.load(item.addedImage)
+                    } else {
+                        communityMainThumbnail.setImageResource(R.drawable.emptycommu)
+                    }
+                }
+            }
+
+            /**
+             * 작성자: 서정한
+             * 내용: 좋아요버튼 클릭에따른 토글처리
+             * */
+            fun toggleisLikeIcon() {
+                if (item.commuIsLike) {
+                    communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
+                } else {
+                    communityMainLikesButton.setBackgroundResource(R.drawable.heart)
+                }
+            }
+
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
-            communityMainThumbnail.setOnClickListener {
-                    onProfileClicked(item, bindingAdapterPosition)
-                }
-            if (!item.addedImage.isNullOrEmpty()){
-                communityMainThumbnail.load(item.addedImage)
-            } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
+            communityMainViews.text = item.views
+            communityMainLikes.text = item.likes
+
+            toggleisLikeIcon()
+            setUrlImageOrDefault()
+            // 좋아요 버튼클릭
+            communityMainLikesButton.setOnClickListener {
+                onLikeClicked(item, bindingAdapterPosition)
+            }
+
+            // 게시물 클릭시 상세페이지로 이동
+            itemView.setOnClickListener{
+                onBoardClicked(item, bindingAdapterPosition)
+            }
+
+            // 게시글 작성유저 클릭시
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
                 setOnClickListener {
                     onThumbnailClicked(item, bindingAdapterPosition)
                 }
             }
-            communityMainViews.text = item.views
-            communityMainLikes.text = item.likes
-            communityMainLikesButton.setOnClickListener {
-                onLikeClicked(item, bindingAdapterPosition)
-            }
-            if (item.commuIsLike) {
-                communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
-            } else {
-                communityMainLikesButton.setBackgroundResource(R.drawable.heart)
-            }
+
+            // 게시물 스크랩
             itemView.setOnLongClickListener {
                 onItemLongClicked(item, bindingAdapterPosition)
                 true
             }
+
         }
     }
 }
