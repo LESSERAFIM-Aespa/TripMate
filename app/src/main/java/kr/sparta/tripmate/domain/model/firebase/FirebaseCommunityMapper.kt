@@ -5,7 +5,7 @@ import kr.sparta.tripmate.data.model.community.CommunityModel
 fun CommunityModel.toEntity() = CommunityModelEntity(
     id = id,
     title = title,
-    body = body,
+    description = body,
     profileNickname = profileNickname,
     profileThumbnail = profileThumbnail,
     views = views,
@@ -26,7 +26,7 @@ fun List<CommunityModel>.toEntity() : List<CommunityModelEntity>{
 fun CommunityModelEntity.toCommunity() = CommunityModel(
     id = id,
     title = title,
-    body = body,
+    body = description,
     profileNickname = profileNickname,
     profileThumbnail = profileThumbnail,
     views = views,
