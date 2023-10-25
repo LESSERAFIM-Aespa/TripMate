@@ -240,7 +240,7 @@ class BudgetContentActivity : AppCompatActivity() {
                         }
 
                         BudgetContentType.EDIT -> {
-                             {
+                            lifecycleScope.launch {
                                 contentViewModel.updateBudgetAndCategories(budget.copy(num = budgetNum), categories)
                                 finish()
                             }
