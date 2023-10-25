@@ -141,4 +141,8 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
     override suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category> {
         return categoryDao.getAllCategoriesWithBudgetNum(budgetNum)
     }
+
+    override suspend fun getAllProceuduresWithCategoryNums(nums : List<Int>) : List<Procedure>{
+        return proceduresDao.getAllProceduresWithCategoryNums(nums)
+    }
 }

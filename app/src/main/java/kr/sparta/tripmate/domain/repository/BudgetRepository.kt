@@ -55,6 +55,8 @@ interface BudgetRepository {
 
     suspend fun getPrcedouresWithCategoryNum(num: Int) : List<Procedure>
 
+    suspend fun getAllProceuduresWithCategoryNums(nums : List<Int>) : List<Procedure>
+
     fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>>
 
     suspend fun getAllCategoriesWithBudgetNum(budgetNum:Int):List<Category>
