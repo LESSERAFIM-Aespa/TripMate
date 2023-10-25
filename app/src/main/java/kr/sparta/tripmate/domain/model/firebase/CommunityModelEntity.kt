@@ -8,7 +8,7 @@ import kr.sparta.tripmate.util.ScrapInterface
 data class CommunityModelEntity(
     val id: String, // 게시글 id
     val title: String?, // 제목
-    val body: String?, // 게시글 내용
+    val description: String?, // 게시글 내용
     val profileNickname: String?, // 프로필 닉네임
     val profileThumbnail: String?, // 프로필 이미지
     var views: String?, // 조회수
