@@ -2,6 +2,7 @@ package kr.sparta.tripmate.domain.repository
 
 import androidx.lifecycle.MutableLiveData
 import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 
@@ -22,10 +23,16 @@ interface FirebaseScrapRepository {
      * updateCommuIsView : 커뮤니티 게시판 조회수가 업데이트 됩니다.
      */
     fun getFirebaseBoardData(
-        boardLiveData : MutableLiveData<List<CommunityModelEntity?>>
+        boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
     )
+
     fun updateCommuIsView(
         model: CommunityModel, position: Int, commuLiveData:
         MutableLiveData<List<CommunityModelEntity?>>
+    )
+
+    fun getFirebaseBoardKeyData(
+        uid: String,
+        boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>
     )
 }
