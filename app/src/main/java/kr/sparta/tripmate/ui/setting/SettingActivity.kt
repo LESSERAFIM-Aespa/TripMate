@@ -5,12 +5,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
+import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.ActivitySettingBinding
+import kr.sparta.tripmate.domain.model.login.UserDataEntity
 import kr.sparta.tripmate.ui.login.LoginActivity
+import kr.sparta.tripmate.ui.viewmodel.setting.SettingFactory
+import kr.sparta.tripmate.ui.viewmodel.setting.SettingViewModel
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
@@ -19,6 +24,7 @@ class SettingActivity : AppCompatActivity() {
         fun newIntent(context: Context): Intent = Intent(context, SettingActivity::class.java)
     }
 
+    private val settingViewModel: SettingViewModel by viewModels { SettingFactory() }
     private lateinit var setting_Database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private val binding by lazy {
@@ -32,45 +38,52 @@ class SettingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initview()
+        initViewModel()
+
+    }
+    private fun initViewModel() {
+        settingViewModel.settingUserData.observe(this) {
+            setUpView(it)   //레이아웃에 데이터를 넣어줍니다.
+
+            deleteBtn()     //회원탈퇴 버튼입니다.
+        }
+    }
+    //레이아웃에 데이터를 넣어줍니다.
+    private fun setUpView(it: UserDataEntity?) {
+        binding.settingProfileImage.load(it?.login_profile)
+        binding.settingLoginType.text = it?.login_type
+        binding.settingId.text = it?.login_Id
     }
 
     private fun initview() = with(binding) {
-        // 뒤로가기
+        //뷰모델 데이터를 가져옵니다.
+        val uid = SharedPreferences.getUid(this@SettingActivity)
+        settingViewModel.updateUserData(uid)
+
+        // 뒤로가기 버튼 입니다.
         settingToolbar.setNavigationOnClickListener {
             finish()
         }
 
-        // 로그아웃
+        // 로그아웃 버튼입니다.
         settingLogout.setOnClickListener {
             auth.signOut()
             shortToast("로그아웃 되었습니다.")
             moveLogin()
         }
-
-        //회원탈퇴
-        settingWithdrawal.setOnClickListener {
-            deleteSettingFirebase()
-            auth.signOut()
-            moveLogin()
+    }
+    // 회원탈퇴 버튼입니다.
+    private fun deleteBtn() {
+        binding.settingWithdrawal.setOnClickListener {
+            settingViewModel.removeUserData(this)
+            auth.signOut()  //로그아웃 됩니다.
+            moveLogin()     //회원탈퇴 후 로그인화면으로 이동됩니다.
         }
     }
 
-    private fun deleteSettingFirebase() {
-        val uid = SharedPreferences.getUid(this)
-        val settingRef = SettingRef()
-
-        settingRef.child(uid).removeValue().addOnSuccessListener {
-            shortToast("정상적으로 탈퇴 되었습니다.")
-        }
-            .addOnFailureListener {
-                Log.d("TripMates", "에러 : $it")
-            }
-    }
-
-    private fun SettingRef(): DatabaseReference {
-        return setting_Database.child("UserData")
-    }
-
+    /**
+     * 로그아웃 & 회원탈퇴 후 LoginActivity로 넘어갑니다.
+     */
     private fun moveLogin() {
         val intent = LoginActivity.newIntent(this@SettingActivity).apply {
             addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
