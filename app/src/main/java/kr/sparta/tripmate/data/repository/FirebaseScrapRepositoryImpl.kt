@@ -65,19 +65,4 @@ class FirebaseScrapRepositoryImpl(private val remoteSource: FirebaseDBRemoteData
     ) {
         remoteSource.getFirebaseBoardKeyData(uid, boardKeyLiveData)
     }
-
-    override fun updateUserData(
-        uid: String, userLiveData:
-        MutableLiveData<UserDataEntity?>
-    ) {
-        remoteSource.updateUserData(uid, userLiveData)
-    }
-
-    override fun saveUserData(
-        model: UserDataEntity,
-        userLiveData: MutableLiveData<UserDataEntity?>
-    ) {
-        remoteSource.saveUserData(model, userLiveData)
-    }
-
 }

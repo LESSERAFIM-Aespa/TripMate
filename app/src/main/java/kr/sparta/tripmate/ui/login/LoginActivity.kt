@@ -110,6 +110,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun savedLogin(
+        type: String,
         id: String,
         nickName: String,
         photoUrl: String,
@@ -120,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d("TripMates", "닉넴 : ${nickName}")
         login_Database.child("UserData").child(uid).setValue(
             UserDataEntity(
-                id, nickName, photoUrl,
+                type, id, nickName, photoUrl,
                 uid, coment
             )
         )
@@ -155,7 +156,7 @@ class LoginActivity : AppCompatActivity() {
             val input_nickName = binding.nickEdit.text.toString()
             longToast("${input_nickName}의 계정으로 로그인 되었습니다.")
             savedLogin(                                     //저장할 데이터들 함수로 보냄
-                user?.email.toString(), input_nickName,
+                "Google",user?.email.toString(), input_nickName,
                 user?.photoUrl?.toString() ?: "", user?.uid!!, ""
             )
         }

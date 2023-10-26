@@ -4,14 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseScrapRepositoryImpl
+import kr.sparta.tripmate.data.repository.FirebaseUserRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.SaveUserData
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateUserData
-import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapViewModel
+import kr.sparta.tripmate.domain.repository.FirebaseUserRepository
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserData
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserData
 
 class MyPageFactory : ViewModelProvider.Factory {
-    private val repository : FirebaseScrapRepository by lazy {
-        FirebaseScrapRepositoryImpl(FirebaseDBRemoteDataSource())
+    private val repository : FirebaseUserRepository by lazy {
+        FirebaseUserRepositoryImpl(FirebaseDBRemoteDataSource())
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
