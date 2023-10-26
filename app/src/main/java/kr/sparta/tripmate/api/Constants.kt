@@ -7,5 +7,5 @@ object Constants {
 
     var EMPTYTYPE = 0
     var SCRAPTYPE = 1
-
+    var COMMUNITYTYPE = 2
 }
