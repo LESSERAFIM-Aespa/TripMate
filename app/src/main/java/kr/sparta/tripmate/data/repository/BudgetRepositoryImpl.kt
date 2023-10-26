@@ -142,20 +142,21 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
         }
     }
 
-    override suspend fun getBudgetCategories(num: Int) =
-        budgetCategoriesDao.getAllBudgetCategories(num)
-
+    override suspend fun getBudgetCategories(num: Int) = budgetCategoriesDao.getAllBudgetCategories(num)
     override suspend fun getLastBudget(): List<Budget> = budgetDao.getLastBudget()
-    override suspend fun getProceduresWithNum(num: Int): List<Procedure> =
-        proceduresDao.getAllProceduresWithNum(num)
+    override suspend fun getProceduresWithNum(num: Int): List<Procedure> = proceduresDao.getAllProceduresWithNum(num)
+    override suspend fun getPrcedouresWithCategoryNum(num: Int): List<Procedure> {
+        return proceduresDao.getAllProceduresWithCategoryNum(num)
+    }
 
-    override fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>> =
-        proceduresDao.getAllProceduresWithNumToFlow(num)
-
+    override fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>> = proceduresDao.getAllProceduresWithNumToFlow(num)
     override suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category> {
         return categoryDao.getAllCategoriesWithBudgetNum(budgetNum)
     }
-
     override suspend fun getAllCategoriesForNum(num: Int): List<Category> =
         categoryDao.getAllCategoriesWithNum(num)
+
+    override suspend fun getAllProceuduresWithCategoryNums(nums : List<Int>) : List<Procedure>{
+        return proceduresDao.getAllProceduresWithCategoryNums(nums)
+    }
 }
