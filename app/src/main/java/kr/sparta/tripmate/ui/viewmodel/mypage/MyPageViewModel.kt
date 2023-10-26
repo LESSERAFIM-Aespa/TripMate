@@ -1,10 +1,11 @@
 package kr.sparta.tripmate.ui.viewmodel.mypage
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.login.UserDataEntity
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.SaveUserData
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateUserData
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserData
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserData
 
 class MyPageViewModel(
     private val updateUserData: UpdateUserData,
@@ -16,7 +17,8 @@ class MyPageViewModel(
     fun updateUserData(uid: String) {
         updateUserData(uid, _userData)
     }
-    fun saveUserData(model:UserDataEntity){
-        saveUserData(model, _userData)
+
+    fun saveUserData(context: Context, model: UserDataEntity) {
+        saveUserData(model, context, _userData)
     }
 }

@@ -36,12 +36,4 @@ interface FirebaseScrapRepository {
         uid: String,
         boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>
     )
-
-    fun updateUserData(
-        uid: String, userLiveData: MutableLiveData<UserDataEntity?>
-    )
-
-    fun saveUserData(
-        model: UserDataEntity, userLiveData: MutableLiveData<UserDataEntity?>
-    )
 }

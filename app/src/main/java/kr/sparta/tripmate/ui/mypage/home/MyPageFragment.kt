@@ -33,6 +33,7 @@ class MyPageFragment : Fragment() {
     companion object {
         fun newInstance(): MyPageFragment = MyPageFragment()
     }
+
     private lateinit var auth: FirebaseAuth
     private val myPageViewModel: MyPageViewModel by viewModels {
         MyPageFactory()
@@ -67,7 +68,8 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        myPageViewModel.updateUserData(  SharedPreferences.getUid(myPageContext)
+        myPageViewModel.updateUserData(
+            SharedPreferences.getUid(myPageContext)
 
 
         )
@@ -77,9 +79,9 @@ class MyPageFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        with(myPageViewModel){
-            userData.observe(viewLifecycleOwner){
-                with(binding){
+        with(myPageViewModel) {
+            userData.observe(viewLifecycleOwner) {
+                with(binding) {
                     mypageProfileImageview.load(it?.login_profile)
                     mypageProfileNickTextview.text = it?.login_NickName
                     mypageProfileContentTextview.text = it?.login_coment
@@ -150,8 +152,12 @@ class MyPageFragment : Fragment() {
 
             val input_EditText = binding.mypageProfileContentEdittext.text.toString()
             myPageViewModel.saveUserData(
-                UserDataEntity(user?.email.toString(), nickName,
-                user?.photoUrl?.toString() ?: "", user?.uid!!, input_EditText)
+                myPageContext,
+                UserDataEntity(
+                    "Google",
+                    user?.email.toString(), nickName,
+                    user?.photoUrl?.toString() ?: "", user?.uid!!, input_EditText
+                )
             )
             updateEditType(false)
         }
