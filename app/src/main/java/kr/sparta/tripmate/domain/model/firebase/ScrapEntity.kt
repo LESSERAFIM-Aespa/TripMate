@@ -2,6 +2,7 @@ package kr.sparta.tripmate.domain.model.firebase
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kr.sparta.tripmate.util.ScrapInterface
 
 /**
  * 작성자: 서정한
@@ -9,13 +10,14 @@ import kotlinx.parcelize.Parcelize
  * */
 @Parcelize
 data class ScrapEntity(
-    val title: String,
-    val url: String,
-    val description: String,
-    val bloggername: String,
-    val bloggerlink: String,
-    val postdate: String,
-    var isLike: Boolean = false
-):Parcelable{
+    val title: String,      //게시글 제목
+    val url: String,        //게시글 url
+    val description: String,    //게시글 내용
+    val bloggername: String,    //작성자 이름
+    val bloggerlink: String,    //블로그 주소(사용안함)
+    val postdate: String,       //작성 날짜
+    var isLike: Boolean = false //좋아요 불리언값
+) : Parcelable, ScrapInterface {
     constructor() : this("", "", "", "", "", "", false)
+
 }
