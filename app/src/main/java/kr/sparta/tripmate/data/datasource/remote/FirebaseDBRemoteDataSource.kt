@@ -405,9 +405,7 @@ class FirebaseDBRemoteDataSource {
                     val getBoardKeyList = item.getValue(BoardKeyModel::class.java)
 
                     getBoardKeyList?.let {
-                        if(it.myBoardIsLike){
                             boardKeyList.add(it)
-                        }
                     }
                 }
                 if (!boardKeyList.isNullOrEmpty()){
