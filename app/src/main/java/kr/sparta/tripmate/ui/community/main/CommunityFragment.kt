@@ -2,7 +2,6 @@ package kr.sparta.tripmate.ui.community.main
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,14 +10,13 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.crashlytics.internal.common.CommonUtils
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityFactory
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
+import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
+import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
 
 class CommunityFragment : Fragment() {
     companion object{
