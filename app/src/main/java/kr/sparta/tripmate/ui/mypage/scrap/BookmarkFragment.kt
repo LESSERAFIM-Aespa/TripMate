@@ -2,6 +2,7 @@ package kr.sparta.tripmate.ui.mypage.scrap
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
-import kr.sparta.tripmate.ui.scrap.ScrapDetail
 import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -20,9 +20,13 @@ class BookmarkFragment : Fragment() {
     companion object {
         fun newInstance(): BookmarkFragment = BookmarkFragment()
     }
-    private val bookmarkResults = registerForActivityResult(ActivityResultContracts
-        .StartActivityForResult()){
-        if(it.resultCode == AppCompatActivity.RESULT_OK){}
+
+    private val bookmarkResults = registerForActivityResult(
+        ActivityResultContracts
+            .StartActivityForResult()
+    ) {
+        if (it.resultCode == AppCompatActivity.RESULT_OK) {
+        }
     }
 
     private lateinit var bookmarkContext: Context
@@ -31,7 +35,8 @@ class BookmarkFragment : Fragment() {
     private val bookmarkAdapter by lazy {
         BookmarkListAdapter(
             onItemClick = { model, position ->
-                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
+//                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
+//                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
             }
         )
     }
@@ -55,13 +60,14 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        updateScrap()
         initView()
         initViewModel()
     }
 
     private fun initView() = with(binding) {
         bookmarkRecyclerview.apply {
-            layoutManager = GridLayoutManager(requireContext(),2)
+            layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = bookmarkAdapter
             setHasFixedSize(true)
         }
@@ -69,12 +75,25 @@ class BookmarkFragment : Fragment() {
 
     private fun initViewModel() {
         with(viewModel) {
-            myPageList.observe(viewLifecycleOwner){
+            totalMyPage.observe(viewLifecycleOwner) {
                 bookmarkAdapter.submitList(it)
+                Log.d("TripMates", "List:${it}")
+            }
+            myPageList.observe(viewLifecycleOwner){
+                Log.d("TripMates", "List:${it}")
+                mergeScrapAndBoardData()
+            }
+            mypageBoard.observe(viewLifecycleOwner){
+                Log.d("TripMates", "board: ${it}")
+                mergeScrapAndBoardData()
             }
         }
     }
-    fun updateScrap (){
+
+    fun updateScrap() {
+        Log.d("TripMates", "호출되나?")
+        val uid = SharedPreferences.getUid(bookmarkContext)
         viewModel.updateScrapData(bookmarkContext)
+        viewModel.updateBoardData(uid)
     }
 }
