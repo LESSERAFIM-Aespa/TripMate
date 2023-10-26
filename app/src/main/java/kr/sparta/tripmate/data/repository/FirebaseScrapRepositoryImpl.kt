@@ -2,6 +2,8 @@ package kr.sparta.tripmate.data.repository
 
 import androidx.lifecycle.MutableLiveData
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
+import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapModel
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
@@ -27,4 +29,26 @@ class FirebaseScrapRepositoryImpl(private val remoteSource: FirebaseDBRemoteData
      * */
     override fun removeScrapData(uid: String, model: ScrapEntity) =
         remoteSource.removeScrap(uid, model)
+
+    /**
+     * 작성자 : 박성수
+     * 커뮤니티 게시글을 불러옵니다.
+     */
+    override fun getFirebaseBoardData(
+        boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
+    ) {
+        remoteSource.getFirebaseBoardData(boardLiveData)
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 커뮤니티 게시글 조회수를 증가시킵니다.
+     */
+    override fun updateCommuIsView(
+        model: CommunityModel,
+        position: Int,
+        commuLiveData: MutableLiveData<List<CommunityModelEntity?>>
+    ) {
+       remoteSource.updateCommuIsView(model,position,commuLiveData)
+    }
 }

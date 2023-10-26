@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapEntity
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
-import kr.sparta.tripmate.domain.usecase.RemoveFirebaseScrapData
-import kr.sparta.tripmate.domain.usecase.SaveFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.RemoveFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.SaveFirebaseScrapData
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class ScrapViewModel(

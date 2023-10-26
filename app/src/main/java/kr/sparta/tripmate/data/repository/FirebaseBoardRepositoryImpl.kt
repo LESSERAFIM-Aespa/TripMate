@@ -6,6 +6,11 @@ import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
 
+/**
+ * 작성자 : 박성수
+ * getFirebaseBoardData : 내가쓴글 목록을 불러옵니다.
+ * updateCommuIsView : 게시판을 클릭했을때 조회수가 업데이트 됩니다.
+ */
 class FirebaseBoardRepositoryImpl(
     private val
     remoteSource: FirebaseDBRemoteDataSource
@@ -14,14 +19,14 @@ class FirebaseBoardRepositoryImpl(
         uid: String,
         boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
-        remoteSource.getFirebaseBoardData(uid, boardLiveData)
+        remoteSource.getFirebaseBoardData(boardLiveData)
     }
 
-    override fun isCommuView(
+    override fun updateCommuIsView(
         model: CommunityModel,
         position: Int,
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
-        remoteSource.updateCommuView(model, position, commuLiveData)
+        remoteSource.updateCommuIsView(model, position, commuLiveData)
     }
 }

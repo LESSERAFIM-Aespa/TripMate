@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModelProvider
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseScrapRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
-import kr.sparta.tripmate.domain.usecase.GetFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseBoardDataFromScrapRepo
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateCommuIsViewFromScrapRepo
 
 class BookmarkPageFactory : ViewModelProvider.Factory {
     private val repository: FirebaseScrapRepository by lazy {
@@ -14,7 +16,11 @@ class BookmarkPageFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BookmarkPageViewModel::class.java)) {
-            return BookmarkPageViewModel(GetFirebaseScrapData(repository)) as T
+            return BookmarkPageViewModel(
+                GetFirebaseScrapData(repository),
+                GetFirebaseBoardDataFromScrapRepo(repository),
+                UpdateCommuIsViewFromScrapRepo(repository)
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
     }

@@ -9,8 +9,8 @@ import kr.sparta.tripmate.data.repository.ScrapRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
 import kr.sparta.tripmate.domain.repository.ScrapRepository
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
-import kr.sparta.tripmate.domain.usecase.RemoveFirebaseScrapData
-import kr.sparta.tripmate.domain.usecase.SaveFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.RemoveFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.SaveFirebaseScrapData
 
 class ScrapFactory : ViewModelProvider.Factory {
     private val repository: ScrapRepository = ScrapRepositoryImpl(
