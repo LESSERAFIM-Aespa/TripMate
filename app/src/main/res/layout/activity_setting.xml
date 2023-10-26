@@ -25,6 +25,16 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/setting_Profile_Image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginVertical="15dp"
+        app:layout_constraintBottom_toTopOf="@id/setting_loginType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setting_toolbar" />
+
     <TextView
         android:id="@+id/setting_loginType"
         android:layout_width="0dp"
@@ -37,7 +47,7 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/setting_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/setting_Profile_Image"
         />
 
     <TextView
