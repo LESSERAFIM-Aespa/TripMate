@@ -95,5 +95,6 @@ class BookmarkFragment : Fragment() {
         val uid = SharedPreferences.getUid(bookmarkContext)
         viewModel.updateScrapData(bookmarkContext)
         viewModel.updateBoardData(uid)
+        viewModel.getBoardKeyData(uid)
     }
 }

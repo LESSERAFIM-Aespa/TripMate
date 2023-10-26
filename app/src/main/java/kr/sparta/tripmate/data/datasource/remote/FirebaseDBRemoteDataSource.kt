@@ -394,7 +394,29 @@ class FirebaseDBRemoteDataSource {
                 TODO("Not yet implemented")
             }
         })
+    }
+    fun getFirebaseBoardKeyData(uid : String,
+                                boardKeyLiveData:MutableLiveData<List<BoardKeyModelEntity?>>){
+        val boardRef = fireDatabase.getReference("MyBoardKey").child(uid)
+        val boardKeyList = arrayListOf<BoardKeyModel>()
+        boardRef.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for(item in snapshot.children){
+                    val getBoardKeyList = item.getValue(BoardKeyModel::class.java)
 
+                    getBoardKeyList?.let {
+                            boardKeyList.add(it)
+                    }
+                }
+                if (!boardKeyList.isNullOrEmpty()){
+                    boardKeyLiveData.postValue(boardKeyList.toEntity())
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private fun bookMarkToast(context: Context, selectedBoardKey: Boolean) {
