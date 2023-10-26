@@ -43,7 +43,6 @@ class FirebaseDBRemoteDataSource {
                     liveData.postValue(listOf())
                 }
             }
-
     }
 
     /**
@@ -132,7 +131,7 @@ class FirebaseDBRemoteDataSource {
      *  allCommunityData리스트에 담아서 라이브데이터(데이터+키)와 ui를 함께
      *  myLoadCommunity함수로 넘깁니다.
      */
-    fun getCommunityData(
+    fun updateCommunityBaseData(
         uid: String, commuLiveData: MutableLiveData<List<CommunityModelEntity?>>, keyLiveData
         : MutableLiveData<List<KeyModelEntity?>>, boardKeyLiveData:
         MutableLiveData<List<BoardKeyModelEntity?>>
@@ -149,8 +148,8 @@ class FirebaseDBRemoteDataSource {
                     }
                 }
                 if (!allCommunityData.isNullOrEmpty()) {
-                    myLoadCommunity(allCommunityData, commuLiveData, keyLiveData, uid)
-                    myBoardLoadCommunity(allCommunityData, commuLiveData, boardKeyLiveData, uid)
+                    updateCommuLikeKey(allCommunityData, commuLiveData, keyLiveData, uid)
+                    updateCommuBookMarkKey(allCommunityData, commuLiveData, boardKeyLiveData, uid)
                 }
             }
 
@@ -161,9 +160,9 @@ class FirebaseDBRemoteDataSource {
 
     /**
      * 작성자 : 박성수
-     * 내용 : 북마크관련 식별하기위해 키 업데이트& 저장
+     * 내용 : 커뮤니티 북마크관련 식별하기위해 키 업데이트& 저장
      */
-    private fun myBoardLoadCommunity(
+    private fun updateCommuBookMarkKey(
         allCommunityData: ArrayList<CommunityModel>,
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>,
         boardKeyLiveData
@@ -172,26 +171,26 @@ class FirebaseDBRemoteDataSource {
         val mycommuRef = fireDatabase.getReference("MyBoardKey").child(uid)
         mycommuRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val myKeyDateModels = arrayListOf<BoardKeyModel>()
+                val myCommuBookMarkKeyList = arrayListOf<BoardKeyModel>()
                 for (item in snapshot.children) {
                     val getMyKeyModel = item.getValue(BoardKeyModel::class.java)
                     getMyKeyModel?.let {
-                        myKeyDateModels.add(it)
+                        myCommuBookMarkKeyList.add(it)
                     }
                 }
-                if (!myKeyDateModels.isNullOrEmpty()) {
-                    val updatedCommunityData = allCommunityData.map {
+                if (!myCommuBookMarkKeyList.isNullOrEmpty()) {
+                    allCommunityData.map {
                         val updateModel = it.copy()
-                        for (myItem in myKeyDateModels) {
+                        for (myItem in myCommuBookMarkKeyList) {
                             if (it.id == myItem.uid && it.key == myItem.key) {
                                 updateModel.boardIsLike = myItem.myBoardIsLike
                             }
                         }
                         updateModel
                     }
-                    boardKeyLiveData.postValue(myKeyDateModels.toEntity())
+                    boardKeyLiveData.postValue(myCommuBookMarkKeyList.toEntity())
                 } else {
-                    boardKeyLiveData.postValue(myKeyDateModels.toEntity())
+                    boardKeyLiveData.postValue(myCommuBookMarkKeyList.toEntity())
                 }
             }
 
@@ -209,7 +208,7 @@ class FirebaseDBRemoteDataSource {
      * 커뮤니티 공용데이터와 라이브데이터(데이터+키)를 getCommunityData에서 넘겨받아와서 업데이트된 데이터와 키를 저장해줍니다.
      *
      */
-    private fun myLoadCommunity(
+    private fun updateCommuLikeKey(
         allCommunityData: ArrayList<CommunityModel>,
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>,
         keyLiveData
@@ -253,9 +252,9 @@ class FirebaseDBRemoteDataSource {
     /**
      * 작성자 : 박성수
      * 내용 : 북마크된 데이터를 식별합니다.
-     * 라이브데이터로 저장하고,
+     * 키를 라이브데이터로 관리하고, RDB에 저장합니다.
      */
-    fun updateCommuBoard(
+    fun updateCommuBoardKey(
         model: CommunityModel, position: Int, communityLiveData:
         MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
         MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
@@ -344,7 +343,7 @@ class FirebaseDBRemoteDataSource {
      * 내용 : 게시판을 클릭했을때 해당 게시판으니 조회수가 1증가합니다.
      * 라이브데이터에 업데이트하고 RDB에 저장합니다.
      */
-    fun updateCommuView(
+    fun updateCommuIsView(
         model: CommunityModel, position: Int, commuLiveData:
         MutableLiveData<List<CommunityModelEntity?>>
     ) {
@@ -372,7 +371,6 @@ class FirebaseDBRemoteDataSource {
      *
      */
     fun getFirebaseBoardData(
-        uid: String,
         boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
         val boardRef = fireDatabase.getReference("CommunityData")
