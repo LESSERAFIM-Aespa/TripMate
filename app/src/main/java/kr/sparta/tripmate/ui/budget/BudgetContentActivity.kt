@@ -14,10 +14,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
@@ -238,8 +240,10 @@ class BudgetContentActivity : AppCompatActivity() {
                         }
 
                         BudgetContentType.EDIT -> {
-                            contentViewModel.updateBudgetAndCategories(budget.copy(num = budgetNum), categories)
-                            finish()
+                            lifecycleScope.launch {
+                                contentViewModel.updateBudgetAndCategories(budget.copy(num = budgetNum), categories)
+                                finish()
+                            }
                         }
 
                         else -> {}
