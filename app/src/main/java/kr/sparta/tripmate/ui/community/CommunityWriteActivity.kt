@@ -116,7 +116,6 @@ class CommunityWriteActivity : AppCompatActivity() {
     ) {
         val writeModel = CommunityModel(
             uid,
-            "",
             titleWrite,
             bodyWrite,
             nickName,

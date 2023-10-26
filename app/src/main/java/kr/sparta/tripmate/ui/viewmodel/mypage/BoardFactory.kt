@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseBoardRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
-import kr.sparta.tripmate.domain.usecase.GetFirebaseBoardData
-import kr.sparta.tripmate.domain.usecase.IsViewsFirebaseBoardData
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommuIsViewFromBoardRepo
 
 class BoardFactory : ViewModelProvider.Factory {
     private val repository : FirebaseBoardRepository by lazy {
@@ -15,8 +15,8 @@ class BoardFactory : ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>) :T{
         if(modelClass.isAssignableFrom(BoardViewModel::class.java)){
             return BoardViewModel(
-                GetFirebaseBoardData(repository),
-                IsViewsFirebaseBoardData(repository)
+                GetFirebaseBoardDataFromBoardRepo(repository),
+                UpdateCommuIsViewFromBoardRepo(repository)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")

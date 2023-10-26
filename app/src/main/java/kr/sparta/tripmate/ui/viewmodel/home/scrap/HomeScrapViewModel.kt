@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
-import kr.sparta.tripmate.domain.usecase.GetFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseScrapData
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeScrapViewModel(private val getFirebaseScrapData: GetFirebaseScrapData) : ViewModel() {

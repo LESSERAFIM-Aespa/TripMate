@@ -6,29 +6,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.data.model.community.CommunityModel
-import kr.sparta.tripmate.data.model.community.KeyModel
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.toCommunity
-import kr.sparta.tripmate.domain.usecase.GetFirebaseCommunityData
-import kr.sparta.tripmate.domain.usecase.IsLikeFirebaseCommunityData
-import kr.sparta.tripmate.domain.usecase.IsViewsFirebaseCommunityData
-import kr.sparta.tripmate.domain.usecase.UpdateCommuBoard
+import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommunityBaseData
+import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommuIsLike
+import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommuIsViewFromCommuRepo
+import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommuBoardKey
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityViewModel(
-    private val getFirebaseCommunityData: GetFirebaseCommunityData,
-    private val isLikeFirebaseCommunityData: IsLikeFirebaseCommunityData,
-    private val isViewsFirebaseCommunityData: IsViewsFirebaseCommunityData,
-    private val updateCommuBoard: UpdateCommuBoard
+    private val updateCommunityBaseData: UpdateCommunityBaseData,
+    private val updateCommuIsLike: UpdateCommuIsLike,
+    private val isViewsFirebaseCommunityData: UpdateCommuIsViewFromCommuRepo,
+    private val updateCommuBoardKey: UpdateCommuBoardKey
 ) :
     ViewModel() {
 
@@ -42,7 +35,7 @@ class CommunityViewModel(
         kotlin.runCatching {
             val uid = SharedPreferences.getUid(context)
             _isLoading.value = true
-            getFirebaseCommunityData.invoke(uid, _dataModelList, _keyModelList, _boardKeyModelList)
+            updateCommunityBaseData.invoke(uid, _dataModelList, _keyModelList, _boardKeyModelList)
             _isLoading.value = false
         }
     }
@@ -51,7 +44,7 @@ class CommunityViewModel(
         viewModelScope.launch {
             kotlin.runCatching {
                 val uid = SharedPreferences.getUid(context)
-                isLikeFirebaseCommunityData.invoke(
+                updateCommuIsLike.invoke(
                     model.toCommunity(),
                     position,
                     _dataModelList,
@@ -72,7 +65,7 @@ class CommunityViewModel(
             .launch {
                 kotlin.runCatching {
                     val uid = SharedPreferences.getUid(context)
-                    updateCommuBoard.invoke(
+                    updateCommuBoardKey.invoke(
                         model.toCommunity(), position, _dataModelList,
                         _boardKeyModelList, uid, context
                     )

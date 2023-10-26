@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseScrapRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
-import kr.sparta.tripmate.domain.usecase.GetFirebaseScrapData
+import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseScrapData
 
 class HomeScrapFactory: ViewModelProvider.Factory {
     private val repository: FirebaseScrapRepository by lazy {
