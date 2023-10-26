@@ -98,4 +98,7 @@ dependencies {
 
     // use colorpicker dialog
     implementation("com.github.Dhaval2404:ColorPicker:2.3")
+
+    // use chart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
