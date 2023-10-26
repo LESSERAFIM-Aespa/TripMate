@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.data.model.community.BoardKeyModel
 import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.data.model.community.KeyModel
+import kr.sparta.tripmate.data.model.community.UserData
 import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
@@ -21,6 +22,8 @@ import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.firebase.toCommunity
 import kr.sparta.tripmate.domain.model.firebase.toEntity
+import kr.sparta.tripmate.domain.model.login.UserDataEntity
+import kr.sparta.tripmate.domain.model.login.toEntity
 import kr.sparta.tripmate.util.method.shortToast
 
 /**
@@ -395,20 +398,29 @@ class FirebaseDBRemoteDataSource {
             }
         })
     }
-    fun getFirebaseBoardKeyData(uid : String,
-                                boardKeyLiveData:MutableLiveData<List<BoardKeyModelEntity?>>){
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : BoardKey를 이용해서 내가 북마크했던 아이템을 RDB에서 식별하고,
+     * 북마크 데이터만 골라냅니다.
+     */
+
+    fun getFirebaseBoardKeyData(
+        uid: String,
+        boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>
+    ) {
         val boardRef = fireDatabase.getReference("MyBoardKey").child(uid)
         val boardKeyList = arrayListOf<BoardKeyModel>()
-        boardRef.addValueEventListener(object : ValueEventListener{
+        boardRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for(item in snapshot.children){
+                for (item in snapshot.children) {
                     val getBoardKeyList = item.getValue(BoardKeyModel::class.java)
 
                     getBoardKeyList?.let {
-                            boardKeyList.add(it)
+                        boardKeyList.add(it)
                     }
                 }
-                if (!boardKeyList.isNullOrEmpty()){
+                if (!boardKeyList.isNullOrEmpty()) {
                     boardKeyLiveData.postValue(boardKeyList.toEntity())
                 }
             }
@@ -417,6 +429,34 @@ class FirebaseDBRemoteDataSource {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 원래 유저데이터랑 저장하는부분이랑 합치려고했는데,
+     * Login에서 쓸 꺼같애서 구분해놨습니다.
+     * RDB에서 USER데이터만 들고옵니다.
+     */
+    fun updateUserData(
+        uid: String,
+        userLiveData: MutableLiveData<UserDataEntity?>
+    ) {
+        val userRef = fireDatabase.getReference("UserData").child(uid)
+        userRef.get().addOnSuccessListener {
+            val getUser = it.getValue(UserData::class.java)
+            userLiveData.postValue(getUser?.toEntity())
+        }
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 자기소개를 수정하고 저장 후 업데이트 합니다.
+     * 추후 프로필 사진을 수정하거나 다른 데이터를 수정해도 재사용 가능합니다.
+     */
+    fun saveUserData(model: UserDataEntity, userLiveData: MutableLiveData<UserDataEntity?>) {
+        val userRef = fireDatabase.getReference("UserData").child(model.login_Uid!!)
+        userLiveData.postValue(model)
+        userRef.setValue(model)
     }
 
     private fun bookMarkToast(context: Context, selectedBoardKey: Boolean) {
