@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
             }
         )
         binding.homeRecyclerView1.apply {
-            layoutManager = GridLayoutManager(homeContext, 1, GridLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(homeContext, 2, GridLayoutManager.HORIZONTAL, false)
             adapter = homeScrapListAdapter
             setHasFixedSize(true)
         }
