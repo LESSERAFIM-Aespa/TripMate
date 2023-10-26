@@ -102,7 +102,7 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
                     bookmarkImage.load(item.addedImage)
                 } else bookmarkImage.setImageResource(R.drawable.emptycommu)
                 bookmarkTitle.text = item.title
-                bookmarkContent.text = item.body
+                bookmarkContent.text = item.description
             }
         }
     }
