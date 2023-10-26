@@ -14,7 +14,7 @@
     <string name="mypage_edit_submit">확인</string>
     <string name="mypage_edit_cancel">취소</string>
     <string name="mypage_edit_text">Edit</string>
-    <string name="scrap_toolbar_title">스크랩</string>
+    <string name="blog_toolbar_title">Blog</string>
     <string name="scrap_bg_content_description">BackgroundImage</string>
     <string name="community_bg_content_description">BackgroundImage</string>
     <string name="default_web_client_id">""</string>
