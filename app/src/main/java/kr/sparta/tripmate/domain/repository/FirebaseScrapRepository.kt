@@ -5,6 +5,7 @@ import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.domain.model.login.UserDataEntity
 
 /**
  * 작성자: 서정한
@@ -34,5 +35,13 @@ interface FirebaseScrapRepository {
     fun getFirebaseBoardKeyData(
         uid: String,
         boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>
+    )
+
+    fun updateUserData(
+        uid: String, userLiveData: MutableLiveData<UserDataEntity?>
+    )
+
+    fun saveUserData(
+        model: UserDataEntity, userLiveData: MutableLiveData<UserDataEntity?>
     )
 }
