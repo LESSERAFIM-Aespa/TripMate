@@ -6,6 +6,7 @@ import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.domain.model.login.UserDataEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapModel
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
 
@@ -64,4 +65,19 @@ class FirebaseScrapRepositoryImpl(private val remoteSource: FirebaseDBRemoteData
     ) {
         remoteSource.getFirebaseBoardKeyData(uid, boardKeyLiveData)
     }
+
+    override fun updateUserData(
+        uid: String, userLiveData:
+        MutableLiveData<UserDataEntity?>
+    ) {
+        remoteSource.updateUserData(uid, userLiveData)
+    }
+
+    override fun saveUserData(
+        model: UserDataEntity,
+        userLiveData: MutableLiveData<UserDataEntity?>
+    ) {
+        remoteSource.saveUserData(model, userLiveData)
+    }
+
 }
