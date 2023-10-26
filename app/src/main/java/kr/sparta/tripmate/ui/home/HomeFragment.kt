@@ -79,11 +79,11 @@ class HomeFragment : Fragment() {
                 val intent = Intent(homeContext, CommunityDetailActivity::class.java)
                 intent.putExtra("Data", model)
                 homeResults.launch(intent)
-                homeBoardViewModel.viewHomeBoardData(model,position)
+                homeBoardViewModel.viewHomeBoardData(model, position)
             }
         )
         binding.homeRecyclerView2.apply {
-            layoutManager = GridLayoutManager(context,2,GridLayoutManager.HORIZONTAL,false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
             adapter = homeBoardListAdapter
             setHasFixedSize(true)
         }
@@ -101,7 +101,7 @@ class HomeFragment : Fragment() {
 
         // 스크랩
         homeArrow1.setOnClickListener {
-            activity.moveTabFragment(R.string.main_tab_title_scrap)
+            activity.moveTabFragment(R.string.main_tab_title_blog)
         }
 
         // 커뮤니티
@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
             }
         )
         binding.homeRecyclerView1.apply {
-            layoutManager = LinearLayoutManager(homeContext, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(homeContext, 2, GridLayoutManager.HORIZONTAL, false)
             adapter = homeScrapListAdapter
             setHasFixedSize(true)
         }

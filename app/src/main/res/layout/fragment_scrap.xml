@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/scrap_toolbar_title"
+            android:text="@string/blog_toolbar_title"
             android:textColor="@color/white"
             android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"

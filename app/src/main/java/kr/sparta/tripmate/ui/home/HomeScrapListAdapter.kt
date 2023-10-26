@@ -10,6 +10,7 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
 import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
+import kr.sparta.tripmate.databinding.HomeGridviewItemsBinding
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
@@ -27,12 +28,12 @@ class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) 
         }
     ) {
 
-    inner class FirstViewHolder(private val binding: HomeFirstItemsBinding) : RecyclerView.ViewHolder
+    inner class FirstViewHolder(private val binding: HomeGridviewItemsBinding) : RecyclerView.ViewHolder
         (binding.root) {
         fun bind(items: ScrapEntity) = with(binding) {
             Log.d("TripMates", "뷰홀더에 항목${items}")
-            homeFirstTitle.text = removeHtmlTags(items.title)
-            homeFirstImage.setImageResource(R.drawable.blogimage)
+            homeGridTitle.text = removeHtmlTags(items.title)
+            homeGridImage.setImageResource(R.drawable.blogimage)
 
             itemView.setOnClickListener {
                 onItemClick(items, bindingAdapterPosition)
@@ -60,7 +61,7 @@ class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) 
 
             else -> {
                 val binding =
-                    HomeFirstItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    HomeGridviewItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 FirstViewHolder(binding)
             }
         }
