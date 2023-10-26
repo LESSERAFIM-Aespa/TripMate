@@ -57,4 +57,7 @@ class FirebaseCommunityRepositoryImpl(
             context
         )
     }
+
+    override fun updateCommunityWrite(item: CommunityModelEntity) = remoteSource.updateCommunityWrite(item)
+    override fun getCommunityKey(): String = remoteSource.getCommunityKey()
 }

@@ -126,6 +126,44 @@ class FirebaseDBRemoteDataSource {
     }
 
     /**
+     * 작성자: 서정한
+     * 내용: 게시글 업로드시 사용할 키를 반환함.
+     * */
+    fun getCommunityKey(): String {
+        val databaseRef = fireDatabase.getReference("CommunityData")
+        return databaseRef.push().toString()
+    }
+
+    /**
+     * 작성자: 서정한
+     * 내용: 커뮤니티의 기존글 내용 업데이트
+     * */
+    fun updateCommunityWrite(item: CommunityModelEntity) {
+        val databaseRef = fireDatabase.getReference("CommunityData")
+        databaseRef.get().addOnSuccessListener { result ->
+            val list = ArrayList<CommunityModel>()
+            for (data in result.children) {
+                val itemModel = data.getValue(CommunityModel::class.java)
+                itemModel?.let { it -> list.add(it) }
+            }
+            val model = item.toCommunity()
+            val findMyPost: CommunityModel? = list.find { it.key == model.key }
+
+            // 기존 글 업데이트
+            if (findMyPost != null) {
+                val index = list.indexOf(findMyPost)
+                list[index] = item.toCommunity()
+                databaseRef.setValue(list)
+                return@addOnSuccessListener
+            }
+
+            // 새로운 글 업로드
+            list.add(model)
+            databaseRef.setValue(list)
+        }
+    }
+
+    /**
      *  작성자: 박성수
      *  내용 : Firebase RDB에서 받아온 Community의 공용데이터를
      *  allCommunityData리스트에 담아서 라이브데이터(데이터+키)와 ui를 함께
