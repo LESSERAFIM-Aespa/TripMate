@@ -38,4 +38,8 @@ interface FirebaseCommunityRepository {
         MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
         MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
     )
+
+    fun updateCommunityWrite(item: CommunityModelEntity)
+
+    fun getCommunityKey(): String
 }
