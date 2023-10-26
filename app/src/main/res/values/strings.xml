@@ -65,4 +65,12 @@
     <string name="community_detail_viewcount">3.14k</string>
     <string name="budget_detail_tab_procedure">과정</string>
     <string name="budget_detail_tab_statistics">통계</string>
+    <string name="budget_detail_dialog_title">삭제하기</string>
+    <string name="budget_detail_dialog_message">삭제한 항목은 되돌릴 수 없습니다.\n삭제하시겠습니까?</string>
+    <string name="budget_detail_dialog_positive_text">확인</string>
+    <string name="budget_detail_dialog_negative_text">취소</string>
+    <string name="user_profile_toolbar_title">프로필</string>
+    <string name="user_profile_tab_title">작성한 글 목록</string>
+
+
 </resources>

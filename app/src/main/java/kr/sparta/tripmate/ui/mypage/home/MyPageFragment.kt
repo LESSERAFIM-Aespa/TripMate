@@ -17,6 +17,8 @@ import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMyPageBinding
+import kr.sparta.tripmate.ui.mypage.board.BoardFragment
+import kr.sparta.tripmate.ui.mypage.scrap.BookmarkFragment
 import kr.sparta.tripmate.ui.setting.SettingActivity
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
@@ -159,5 +161,10 @@ class MyPageFragment : Fragment() {
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
+    }
+    override fun onResume() {
+        super.onResume()
+        (adapter.updateScrap() as BookmarkFragment).updateScrap()
+        (adapter.updateBoard() as BoardFragment).updateBoard()
     }
 }

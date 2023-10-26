@@ -31,6 +31,10 @@ class ScrapViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    companion object {
+        var currentDisplay = 10
+    }
+
     /**
      * 작성자: 박성수
      * 내용: 네이버 API로 블로그 검색한 결과를 받아옴
@@ -40,7 +44,7 @@ class ScrapViewModel(
             // loading start
             _isLoading.value = true
 
-            val result = searchBlog(q)
+            val result = searchBlog(q, currentDisplay)
             val scrapItems = ArrayList<ScrapEntity>()
             result.items?.let {
                 for (i in it.indices) {
@@ -95,7 +99,10 @@ class ScrapViewModel(
      * 내용: Firebase RDB에서 가져온 Scrap목록을 기준으로
      * 북마크된 item들을 찾아줍니다
      * */
-    private fun checkIsBookmarkedScrapData(scrapItems: List<ScrapEntity>, getScrapList: List<ScrapEntity>) {
+    private fun checkIsBookmarkedScrapData(
+        scrapItems: List<ScrapEntity>,
+        getScrapList: List<ScrapEntity>
+    ) {
         for (i in 0 until scrapItems.size) {
             val isDuplicate = getScrapList.any { it.url == scrapItems[i].url }
             if (isDuplicate) {
@@ -115,7 +122,7 @@ class ScrapViewModel(
      * 작성자: 서정한
      * 내용: Firebase RDB에 저장된 아이템에서 선택한 스크랩 item을 찾아 삭제합니다.
      * */
-    fun removeScrap(uid:String, model: ScrapEntity) = removeFirebaseScrapData.invoke(uid, model)
+    fun removeScrap(uid: String, model: ScrapEntity) = removeFirebaseScrapData.invoke(uid, model)
 
     fun updateIsLike(model: ScrapEntity, position: Int) {
         //or.Empty() : 해당값이 null일때 빈 리스트를 반환해준다.

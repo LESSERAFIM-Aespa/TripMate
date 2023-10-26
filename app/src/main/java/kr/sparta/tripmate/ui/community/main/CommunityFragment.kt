@@ -3,7 +3,6 @@ package kr.sparta.tripmate.ui.community.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,17 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityBoardViewModel
+import kr.sparta.tripmate.ui.viewmodel.community.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
 
 class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
-    private val commuViewModel: CommunityViewModel by viewModels()
-    private val boardViewModel: CommunityBoardViewModel by viewModels()
+    private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
 
     lateinit var activity: MainActivity
     lateinit var communityContext: Context
@@ -34,8 +33,11 @@ class CommunityFragment : Fragment() {
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
-            onProfileClicked ={model, position ->
-                commuViewModel.updateCommuView(model.copy(),position)
+            onProfileClicked = { model, position ->
+                commuViewModel.updateCommuView(model.copy(), position)
+                val intent = Intent(communityContext, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", model)
+                startActivity(intent)
             },
             onThumbnailClicked =
             { model, position ->
@@ -45,14 +47,12 @@ class CommunityFragment : Fragment() {
                 commuViewModel.updateCommuIsLike(
                     model = model.copy(
                         commuIsLike = !model.commuIsLike
-                    ), position,communityContext
+                    ), position, communityContext
                 )
             },
             onItemLongClicked = { model, position ->
-                boardViewModel.savedBoard(
-                    model = model.copy(
-                        boardLike = !model.boardLike
-                    ), position, communityContext
+                commuViewModel.updateCommuBoard(
+                    model = model.copy(boardIsLike = !model.boardIsLike), position, communityContext
                 )
             })
     }
@@ -76,7 +76,6 @@ class CommunityFragment : Fragment() {
 
     private fun initViewModel() {
         commuViewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
-            Log.d("TripMates", "커뮤데이터 :${it[0].views}")
             commuAdapter.submitList(it)
         }
         commuViewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를

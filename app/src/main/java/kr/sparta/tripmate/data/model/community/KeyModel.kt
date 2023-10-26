@@ -1,6 +1,6 @@
-package kr.sparta.tripmate.ui.community.main
+package kr.sparta.tripmate.data.model.community
 
-data class CommunityMyModel(
+data class KeyModel(
     val uid: String?,
     val key: String?,
     var myCommuIsLike: Boolean

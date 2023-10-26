@@ -21,13 +21,13 @@ class BudgetAdapter(private val budgetListEventListener: BudgetListEventListener
 
     }) {
     interface BudgetListEventListener {
-        fun itemClicked(num: Int)
+        fun itemClicked(model: Budget)
     }
 
     inner class ViewHolder(private val binding: ItemBudgetBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
-            root.setOnClickListener { budgetListEventListener.itemClicked(currentList[absoluteAdapterPosition].num) }
+            root.setOnClickListener { budgetListEventListener.itemClicked(currentList[absoluteAdapterPosition]) }
             budgetItemStatusTextview.text =
                 "${currentList[absoluteAdapterPosition].money.toMoneyFormat()}원 -> ${currentList[absoluteAdapterPosition].resultMoeny.toMoneyFormat()}원"
             budgetItemDurationTextview.text =

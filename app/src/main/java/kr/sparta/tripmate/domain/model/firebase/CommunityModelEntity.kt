@@ -1,10 +1,9 @@
-package kr.sparta.tripmate.ui.community.main
+package kr.sparta.tripmate.domain.model.firebase
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-
 @Parcelize
-data class CommunityModel(
+data class CommunityModelEntity (
     val id: String, // 게시글 id
     val thumbnail: String?, // 이미지
     val title: String?, // 제목
@@ -16,7 +15,7 @@ data class CommunityModel(
     val key : String?,
     val addedImage: String?,
     var commuIsLike:Boolean = false,
-    val boardLike:Boolean = false,
+    var boardIsLike:Boolean = false,
 
     ) : Parcelable{
     // 매개 변수 없는 생성자 추가 : 파이어베이스는 불러올때 빈생성자를 받아서 이렇게 사용해야함

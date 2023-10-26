@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetBinding
-import kr.sparta.tripmate.domain.repository.BudgetRepository
+import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetViewModelFactory
 
@@ -27,8 +27,8 @@ class BudgetFragment : Fragment() {
 
     private val budgetAdapter by lazy {
         BudgetAdapter(object : BudgetAdapter.BudgetListEventListener {
-            override fun itemClicked(num: Int) {
-                startActivity(BudgetDetailActivity.newIntent(this@BudgetFragment.requireContext(),num))
+            override fun itemClicked(model: Budget) {
+                startActivity(BudgetDetailActivity.newIntentForBudget(this@BudgetFragment.requireContext(),model))
                 /*startActivity(
                     BudgetContentActivity.newIntentForEdit(
                         this@BudgetFragment.requireContext(),

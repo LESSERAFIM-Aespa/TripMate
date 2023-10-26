@@ -9,23 +9,24 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kr.sparta.tripmate.ui.community.main.CommunityModel
+import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.util.method.shortToast
 
 class CommunityBoardViewModel : ViewModel(){
-    private val _boardResult = MutableLiveData<MutableList<CommunityModel>>()
-    val boardResult: LiveData<MutableList<CommunityModel>> get() = _boardResult
+    private val _boardResult = MutableLiveData<MutableList<CommunityModelEntity>>()
+    val boardResult: LiveData<MutableList<CommunityModelEntity>> get() = _boardResult
 
-    fun savedBoard(model: CommunityModel, position: Int, context: Context) {
+    fun savedBoard(model: CommunityModelEntity, position: Int, context: Context) {
 
         val commuDatabase = Firebase.database
         val boardRef = commuDatabase.getReference("BoardData")
         boardRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val boardList = arrayListOf<CommunityModel>()
+                val boardList = arrayListOf<CommunityModelEntity>()
 
                 for(item in snapshot.children){
-                    val getBordList = item.getValue(CommunityModel::class.java)
+                    val getBordList = item.getValue(CommunityModelEntity::class.java)
                     getBordList?.let{
                         boardList.add(it)
                     }

@@ -1,7 +1,9 @@
 package kr.sparta.tripmate.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +11,16 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.scrap.ScrapDetail
+import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardFactory
+import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -28,11 +34,15 @@ class HomeFragment : Fragment() {
     private lateinit var activity: MainActivity
 
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-    private val homeScrapViewModel: HomeScrapViewModel by viewModels() {
+    private val homeScrapViewModel: HomeScrapViewModel by viewModels {
         HomeScrapFactory()
+    }
+    private val homeBoardViewModel: HomeBoardViewModel by viewModels {
+        HomeBoardFactory()
     }
 
     private lateinit var homeScrapListAdapter: HomeScrapListAdapter
+    private lateinit var homeBoardListAdapter: HomeBoardListAdapter
 
     private val homeResults = registerForActivityResult(
         ActivityResultContracts
@@ -57,8 +67,26 @@ class HomeFragment : Fragment() {
         initRoute()
 
         homeView()
+        boardView()
 
         return binding.root
+    }
+
+    private fun boardView() {
+        val uid = SharedPreferences.getUid(homeContext)
+        homeBoardListAdapter = HomeBoardListAdapter(
+            onItemClick = { model, position ->
+                val intent = Intent(homeContext, CommunityDetailActivity::class.java)
+                intent.putExtra("Data", model)
+                homeResults.launch(intent)
+                homeBoardViewModel.viewHomeBoardData(model,position)
+            }
+        )
+        binding.homeRecyclerView2.apply {
+            layoutManager = GridLayoutManager(context,2,GridLayoutManager.HORIZONTAL,false)
+            adapter = homeBoardListAdapter
+            setHasFixedSize(true)
+        }
     }
 
     /**
@@ -92,11 +120,12 @@ class HomeFragment : Fragment() {
         homeScrapListAdapter = HomeScrapListAdapter(
             onItemClick = { model, position ->
                 val intent = ScrapDetail.newIntentForScrap(homeContext, model)
+                intent.putExtra("Data", model)
                 homeResults.launch(intent)
             }
         )
         binding.homeRecyclerView1.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(homeContext, LinearLayoutManager.HORIZONTAL, false)
             adapter = homeScrapListAdapter
             setHasFixedSize(true)
         }
@@ -104,14 +133,28 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val uid = SharedPreferences.getUid(homeContext)
+        homeScrapViewModel.updateScrapData(homeContext)
+        homeBoardViewModel.getHomeBoardData(uid)
+
     }
 
     private fun observeViewModel() {
         with(homeScrapViewModel) {
             homeScraps.observe(viewLifecycleOwner) { list ->
                 homeScrapListAdapter.submitList(list)
+            }
+        }
+        with(homeBoardViewModel) {
+            homeBoard.observe(viewLifecycleOwner) {
+                val sortedList = it.sortedByDescending { it?.likes }
+                Log.d("TripMates", "좋아요순 정렬된 데이터 :${sortedList}")
+                homeBoardListAdapter.submitList(sortedList)
             }
         }
     }
@@ -121,11 +164,5 @@ class HomeFragment : Fragment() {
         binding.homeProfileImage.load(
             SharedPreferences.getProfile(homeContext)
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // 사용자가 저장한 Scrap목록을 Firebase에서 가져와 적용
-        homeScrapViewModel.updateScrapData(homeContext)
     }
 }
