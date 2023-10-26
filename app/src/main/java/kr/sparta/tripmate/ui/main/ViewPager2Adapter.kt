@@ -40,7 +40,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapt
         add(
             MainTabs(
                 fragment = ScrapFragment.newInstance(),
-                title =R.string.main_tab_title_scrap,
+                title =R.string.main_tab_title_blog,
                 icon = R.drawable.scrap,
             )
         )
@@ -68,7 +68,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapt
                 val element = fragments.find { it.title == name }
                 fragments.indexOf(element)
             }
-            R.string.main_tab_title_scrap -> {
+            R.string.main_tab_title_blog -> {
                 val element = fragments.find { it.title == name }
                 fragments.indexOf(element)
             }

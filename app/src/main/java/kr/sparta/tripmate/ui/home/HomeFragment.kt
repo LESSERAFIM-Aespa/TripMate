@@ -101,7 +101,7 @@ class HomeFragment : Fragment() {
 
         // 스크랩
         homeArrow1.setOnClickListener {
-            activity.moveTabFragment(R.string.main_tab_title_scrap)
+            activity.moveTabFragment(R.string.main_tab_title_blog)
         }
 
         // 커뮤니티
