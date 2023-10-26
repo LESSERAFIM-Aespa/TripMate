@@ -1,8 +1,9 @@
 package kr.sparta.tripmate.domain.model.login
 
-import kr.sparta.tripmate.data.model.community.UserData
+import kr.sparta.tripmate.data.model.login.UserData
 
 fun UserData.toEntity() = UserDataEntity(
+    login_type = login_type,
     login_Id = login_Id,
     login_NickName = login_NickName,
     login_Uid = login_Uid,
