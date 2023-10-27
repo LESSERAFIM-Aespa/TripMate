@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.viewmodel.community
+package kr.sparta.tripmate.ui.viewmodel.community.main
 
 import android.content.Context
 import android.util.Log

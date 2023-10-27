@@ -1,27 +1,31 @@
 package kr.sparta.tripmate.ui.community
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.View
+import android.view.WindowManager
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import kr.sparta.tripmate.R
+import coil.load
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
-import kr.sparta.tripmate.data.model.community.CommunityModel
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
+import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteViewModel
+import kr.sparta.tripmate.util.method.isWindowTouchable
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
-import java.io.ByteArrayOutputStream
+import java.util.regex.Pattern
 
 
 /**
@@ -30,155 +34,201 @@ import java.io.ByteArrayOutputStream
  * 기존의 코드는 주석처리해놨습니다. 확인하시고 말씀해주시면 삭제하겠습니다.
  */
 class CommunityWriteActivity : AppCompatActivity() {
+    companion object {
+        const val MODEL_EDIT = "model_edit"
 
-    private lateinit var binding: ActivityCommunityWriteBinding
-    private lateinit var commu_Database: DatabaseReference         //1. 데이터베이스 객체 생성
-    private val storage = Firebase.storage
-    private var imageUrl: String? = null
+        fun newIntentForWrite(context: Context): Intent =
+            Intent(context, CommunityWriteActivity::class.java)
+
+        fun newIntentForEdit(context: Context, model: CommunityModelEntity): Intent =
+            Intent(context, CommunityWriteActivity::class.java).apply {
+                putExtra(MODEL_EDIT, model)
+            }
+    }
+
+    private val binding: ActivityCommunityWriteBinding by lazy {
+        ActivityCommunityWriteBinding.inflate(layoutInflater)
+    }
+
+    private val viewModel: CommunityWriteViewModel by viewModels() {
+        CommunityWriteFactory()
+    }
+
+    private val model by lazy {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(MODEL_EDIT, CommunityModelEntity::class.java)
+        } else {
+            intent.getParcelableExtra(MODEL_EDIT)
+        }
+    }
+
+    // 겔러리 이미지가져오기
+    private val imageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                binding.communityWriteImageIcon.visibility = View.GONE
+                val imageUri = result.data?.data
+                imageUri?.let { binding.communityWriteImage.setImageURI(it) }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityCommunityWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        commu_Database = Firebase.database.reference                        //2. 데이터베이스 객체 초기화
 
-        communityBackBtn()      //3. 뒤로가기 버튼
-        communityAddImage()
-        communitySaveBtn()     //4. 게시하기 버튼
+        initView()
+        initViewModel()
     }
 
-    private fun communitySaveBtn() {
-        binding.communityWriteIcShare.setOnClickListener {
-            if (imageUrl == null) {        // imageURL 이 없을때 처리
-                handleNoImageAdded()
-            } else {                       // imageURL 이 생성되었을때 처리
-                continueWithSave()
+    private fun initView() = with(binding) {
+        // Edit진입. 이전게시판값 불러오기
+        model?.let {
+            communityWriteTitle.setText(it.title)
+            communityWriteDescription.setText(it.description)
+            if(it.addedImage == "") {
+                communityWriteImageIcon.visibility = View.VISIBLE
+            } else {
+                communityWriteImageIcon.visibility = View.INVISIBLE
+                communityWriteImage.load(it.addedImage)
             }
         }
-    }
 
-    private fun continueWithSave() {
-        //9. 데이터베이스 경로소ㅑ
-        val bodyWrite = binding.communityWriteDescription.text.toString()
-        val titleWrite = binding.communityWriteTitle.text.toString()
-        val uid = SharedPreferences.getUid(this)                 //5. sharedpreferences에 저장된 uid
-        val myRef = commu_Database.child("CommunityData")
-        val nickName = SharedPreferences.getNickName(this)          //6. sharedpreferences에 저장된 닉네임
-        val profile =
-            SharedPreferences.getProfile(this)            //7.sharedpreferences에 저장된 프로필 사진
-        val key = myRef.push()
-
-        val imageRef = storage.reference.child("$titleWrite.jpg")
-        val imageView = binding.communitiyWriteAddimage
-
-        imageView.isDrawingCacheEnabled = true
-        imageView.buildDrawingCache()
-        val bitmap = (imageView.drawable as BitmapDrawable).bitmap
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-
-        val uploadTask = imageRef.putBytes(data)
-        uploadTask.addOnFailureListener {
+        // 뒤로가기
+        communityWriteToolbar.setNavigationOnClickListener {
+            finish()
         }
-        imageRef.putBytes(data).addOnSuccessListener { taskSnapshot ->
 
-            imageRef.downloadUrl.addOnSuccessListener { uri ->
-                val imageUrl = uri.toString()
-                saveToDatabase(uid, titleWrite, bodyWrite, nickName, profile, key, imageUrl)
-
+        /**
+         * 작성자: 서정한
+         * 내용: 타이틀 입력값 검증
+         * */
+        communityWriteTitle.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
             }
-        }
-    }
 
-    private fun handleNoImageAdded() {               // 이미지를 추가 하지 않았을때의 처리 방식
-        val bodyWrite = binding.communityWriteDescription.text.toString()
-        val titleWrite = binding.communityWriteTitle.text.toString()
-        val uid = SharedPreferences.getUid(this) // 5. sharedpreferences에 저장된 uid
-        val myRef = commu_Database.child("CommunityData")
-        val nickName = SharedPreferences.getNickName(this) // 6. sharedpreferences에 저장된 닉네임
-        val profile = SharedPreferences.getProfile(this) // 7.sharedpreferences에 저장된 프로필 사진
-        val key = myRef.push()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
 
-        val imageUrl = ""
-        saveToDatabase(uid, titleWrite, bodyWrite, nickName, profile, key, imageUrl)
-    }
-
-    private fun saveToDatabase(
-        uid: String,
-        titleWrite: String,
-        bodyWrite: String,
-        nickName: String,
-        profile: String,
-        key: DatabaseReference,
-        imageUrl: String
-    ) {
-        val writeModel = CommunityModel(
-            uid,
-            titleWrite,
-            bodyWrite,
-            nickName,
-            profile,
-            "0",
-            "0",
-            key.toString(),
-            imageUrl
-        )
-
-        val myRef = commu_Database.child("CommunityData")
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val commuList = ArrayList<CommunityModel>()
-
-                for (items in snapshot.children) {
-                    val getcommuModel = items.getValue(CommunityModel::class.java)
-                    getcommuModel?.let {
-                        commuList.add(it)
+            override fun afterTextChanged(s: Editable?) {
+                val titleRegex = Pattern.compile("^[ㄱ-ㅣ가-힣a-zA-Z0-9\\s]*$")
+                val matcher = s?.let { it1 -> titleRegex.matcher(it1) }
+                matcher?.let {
+                    if (!it.find()) {
+                        Toast.makeText(
+                            this@CommunityWriteActivity,
+                            "제목은 영어, 한글, 숫자만 입력가능합니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
-                commuList.add(writeModel)
-                myRef.setValue(commuList)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
         })
-        shortToast("글이 게시되었습니다(저장완료)")
-        finish()
-    }
 
+        // 게시
+        communityWritePost.setOnClickListener {
+            /**
+             * 작성자: 서정한
+             * 내용: 새로운 글을 작성하여 Firebase RDB로 업로드합니다.
+             * RDB의 경우 기존자료를 업데이트할때에도 새로운 리스트를 만들어 덮어씌우는 형태입니다.
+             * 그래서 수정하는경우에도 새롭게작성하는것과 로직상 차이가 없습니다.
+             * */
+            fun postWrite() {
+                val bitmap: Bitmap? = if(communityWriteImage.drawable != null) {
+                    (communityWriteImage.drawable as BitmapDrawable).bitmap
+                } else {
+                    null
+                }
 
-    private fun communityBackBtn() {
-        binding.communityWriteBackbutton.setOnClickListener {
-            finish() //백버튼을 누를시 현재 액티비티를 종료하도록 설정
+                val key = viewModel.getCommunityKey()
+                val imgName = key.substring(key.length - 17, key.length)
+                val model = CommunityModelEntity(
+                    id = SharedPreferences.getUid(this@CommunityWriteActivity),
+                    title = communityWriteTitle.text.toString(),
+                    description = communityWriteDescription.text.toString(),
+                    profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
+                    profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
+                    views = model?.views ?: "0",
+                    likes = model?.likes ?: "0",
+                    key = model?.key ?: key,
+                    addedImage = "",
+                    commuIsLike = false,
+                    boardIsLike = false,
+                )
+
+                // 새 글 작성 or Edit
+                viewModel.updateCommunityWrite(
+                    imgName = imgName,
+                    image = bitmap,
+                    item = model,
+                )
+            }
+
+            if (binding.communityWriteTitle.text.toString()
+                    .trim() == "" && binding.communityWriteDescription.text.toString().trim() == ""
+            ) {
+                shortToast("제목과 내용을 입력해주셔야 합니다.")
+                return@setOnClickListener
+            }
+
+            // 로딩시작
+            viewModel.setLoadingState(true)
+
+            // 새로운 글 생성
+            postWrite()
+        }
+
+        // 기기이미지 불러오기
+        communityWriteCardView.setOnClickListener {
+            val gallery =
+                Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            imageLauncher.launch(gallery)
         }
     }
 
-    private fun communityAddImage() {
-        binding.communitiyWriteAddimage.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivityForResult(gallery, 100)
+    private fun initViewModel() {
+        with(viewModel) {
+            // 로딩처리
+            isLoading.observe(this@CommunityWriteActivity) { isLoading ->
+                if (isLoading) {
+                    binding.communityWriteProgressBar.visibility = View.VISIBLE
+                    // 화면터치 막기
+                    isWindowTouchable(this@CommunityWriteActivity, true)
+                } else {
+                    binding.communityWriteProgressBar.visibility = View.GONE
+                    shortToast("글이 생성되었습니다.")
+                }
+            }
 
+            // 발행된 아이템 받은 후 DetailPage에 전달
+            publishSubject.subscribeBy(
+                onNext = {
+                    // 로딩 중지
+                    setLoadingState(false)
+
+                    // 업로드 완료후 업데이트된 model DetailPage에 전달
+                    val intent =
+                        CommunityDetailActivity.newIntentForEntity(this@CommunityWriteActivity, it)
+                    setResult(RESULT_OK, intent)
+
+                    // 화면터치 해제
+                    isWindowTouchable(this@CommunityWriteActivity, false)
+
+                    finish()
+                },
+                onError = {
+                    it.printStackTrace()
+                },
+                onComplete = {
+                    Log.d("TripMates", "Complete WriteActivity")
+                }
+            )
         }
-
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            val selectedImageUri = data?.data
-            binding.communitiyWriteAddimage.setImageURI(selectedImageUri)
-            handleImageselected(selectedImageUri)
-        }
-    }
-
-    private fun handleImageselected(selectedImageUri: Uri?) {  // imageURL 을 생성할 지 말지
-        if (selectedImageUri != null) {       // addImage가 활성화 될때 imageURL이 생성 됨
-            imageUrl = selectedImageUri.toString()
-        } else {                              // addImage가 비활성화 일때는 ""로 받아옴.
-            imageUrl = ""
-        }
-    }
 }

@@ -73,12 +73,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun boardView() {
-        val uid = SharedPreferences.getUid(homeContext)
         homeBoardListAdapter = HomeBoardListAdapter(
             onItemClick = { model, position ->
-                val intent = Intent(homeContext, CommunityDetailActivity::class.java)
-                intent.putExtra("Data", model)
+                val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
                 homeResults.launch(intent)
+                // 조회수 업데이트
                 homeBoardViewModel.viewHomeBoardData(model, position)
             }
         )
