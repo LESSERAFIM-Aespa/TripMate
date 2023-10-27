@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.GetCommunityKeyUseCase
@@ -22,11 +23,14 @@ class CommunityWriteViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    // 이벤트처리를위한 PublishSubject
+    val publishSubject: PublishSubject<CommunityModelEntity> = PublishSubject.create()
+
     /**
      * 작성자: 서정한
      * 내용: 현재 로딩상태를 변경하는데 사용
      * */
-    fun setLoadingState(isLoading:Boolean) {
+    fun setLoadingState(isLoading: Boolean) {
         _isLoading.value = isLoading
     }
 
@@ -34,44 +38,56 @@ class CommunityWriteViewModel(
      * 작성자: 서정한
      * 내용: RDB에 저장할 Unique Key 획득
      * */
-    fun getCommunityKey() : String = getCommunityKeyUseCase.invoke()
+    fun getCommunityKey(): String = getCommunityKeyUseCase.invoke()
 
     /**
      * 작성자: 서정한
      * 내용: 글이 있으면 업데이트. 없으면 생성.
      * */
     @SuppressLint("CheckResult")
-    fun updateCommunityWrite(imgName: String, image: Bitmap, item: CommunityModelEntity) {
-        if (imgName.isNotEmpty() && image != null) {
-            val subject: PublishSubject<String> = PublishSubject.create()
-            uploadImageForFirebaseStorage.invoke(
-                imgName = imgName,
-                image = image,
-                publishSubject = subject,
-            )
-            // 이미지 Url 결과값 받기
-            subject.subscribe(
-                { value ->
-                    updateCommunityWriteData.invoke(
-                        item.copy(
-                            addedImage = value
-                        )
-                    )
-                    setLoadingState(false)
-                },
-                { error ->
-                    Log.e("TripMates", "error by CommunityWriteViewModel: ${error.toString()}")
-                },
-                {
-                    Log.d("TripMates", "Complete Rx_kotlin")
-                    subject.onComplete()
-                },
-            )
-            return
-        } else {
-            // 이미지 링크없이 전송
+    fun updateCommunityWrite(imgName: String, image: Bitmap?, item: CommunityModelEntity) {
+        // Observable 생성
+        val getImageUrlSubject: PublishSubject<String> = PublishSubject.create()
+
+        // 이미지 없는경우
+        if(image == null){
+            // 글 업로드
             updateCommunityWriteData.invoke(item)
-            setLoadingState(false)
+
+            // 디테일페이지에 업데이트할 아이템 발행
+            publishSubject.onNext(item)
+            return@updateCommunityWrite
         }
+
+        // 이미지 Storage업로드 요청
+        uploadImageForFirebaseStorage.invoke(
+            imgName = imgName,
+            image = image,
+            publishSubject = getImageUrlSubject,
+        )
+
+        // 이미지 Url 결과값 받기
+        getImageUrlSubject.subscribeBy(
+            onNext = {
+                val newItem = item.copy(
+                    addedImage = it
+                )
+
+                // 글 업로드
+                updateCommunityWriteData.invoke(newItem)
+
+                // 디테일페이지에 업데이트할 아이템 발행
+                publishSubject.onNext(newItem)
+
+                // 아이템 발행 중지
+                getImageUrlSubject.onComplete()
+            },
+            onError = {
+                it.printStackTrace()
+            },
+            onComplete = {
+                Log.d("TripMates", "Complete WriteViewModel")
+            }
+        )
     }
 }
