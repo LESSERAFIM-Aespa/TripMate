@@ -7,7 +7,7 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.ui.budget.detail.procedure.BudgetDetailProcedureFragment
 import kr.sparta.tripmate.ui.budget.detail.statistics.BudgetDetailStatisticsFragment
 
-class BudgetDetailViewPagerAdapter(fragmentActivity: FragmentActivity) :
+class BudgetDetailViewPagerAdapter(budgetNum:Int,fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
     private val fragments = ArrayList<BudgetDetailTab>()
 
@@ -20,7 +20,7 @@ class BudgetDetailViewPagerAdapter(fragmentActivity: FragmentActivity) :
         )
         fragments.add(
             BudgetDetailTab(
-                fragment = BudgetDetailStatisticsFragment.newInstance(),
+                fragment = BudgetDetailStatisticsFragment.newInstance(budgetNum),
                 title = R.string.budget_detail_tab_statistics,
             )
         )

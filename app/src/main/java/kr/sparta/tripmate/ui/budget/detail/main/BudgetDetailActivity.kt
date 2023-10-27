@@ -39,7 +39,7 @@ class BudgetDetailActivity : AppCompatActivity() {
     }
 
     private val adapter by lazy {
-        BudgetDetailViewPagerAdapter(this@BudgetDetailActivity)
+        BudgetDetailViewPagerAdapter(budget?.num!!,this@BudgetDetailActivity)
     }
 
     private val viewModel: BudgetDetailViewModel by viewModels() {
