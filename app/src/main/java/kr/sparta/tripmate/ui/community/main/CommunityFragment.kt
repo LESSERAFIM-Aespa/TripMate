@@ -15,6 +15,7 @@ import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
+import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
 
@@ -54,11 +55,13 @@ class CommunityFragment : Fragment() {
             onBoardClicked = { model, position ->
                 commuViewModel.updateCommuView(model.copy(), position)
                 val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
-                detailLauncher.launch(intent)
+                startActivity(intent)
             },
             onThumbnailClicked =
             { model, position ->
-                (activity).moveTabFragment(R.string.main_tab_title_mypage)
+//                (activity).moveTabFragment(R.string.main_tab_title_mypage)
+               val intent = UserProfileActivity.newIntentForGetUserProfile(communityContext)
+                startActivity(intent)
             },
             onLikeClicked = { model, position ->
                 commuViewModel.updateCommuIsLike(

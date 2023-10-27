@@ -41,7 +41,7 @@ class BoardFragment : Fragment() {
             onProfileClicked = { model, position ->
                 val intent = Intent(boardContext, CommunityDetailActivity::class.java)
                 intent.putExtra("Data", model)
-                boardResurlts.launch(intent)
+                startActivity(intent)
                 boardViewModel.viewMyPageBoardData(model,position)
             }
         )
