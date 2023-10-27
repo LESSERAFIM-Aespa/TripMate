@@ -1,6 +1,8 @@
 package kr.sparta.tripmate.util.method
 
+import android.app.Activity
 import android.content.Context
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -49,4 +51,18 @@ fun setCommaForMoneeyText(money: String): String {
     }
 
     return "${stringBuilder}원"
+}
+
+/**
+ * 작성자: 서정한
+ * 내용: 로딩중 화면터치 컨트롤
+ * */
+fun isWindowTouchable(context: Context, isTouchable: Boolean) {
+    if(isTouchable) {
+        // 화면터치 막기
+        (context as Activity).window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }else {
+        // 화면터치 해제
+        (context as Activity).window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
 }
