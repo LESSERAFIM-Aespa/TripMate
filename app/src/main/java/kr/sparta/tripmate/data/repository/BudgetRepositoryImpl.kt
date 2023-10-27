@@ -1,9 +1,6 @@
 package kr.sparta.tripmate.data.repository
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -84,7 +81,7 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
      * 해당값은 모두 resultMoeny를 가지고있음
      * 과정(Procedure)테이블이 바뀔때마다 가져옴
      * */
-    override fun getAllBugetsToFlowWhenProceduresChanged() = flow{
+    override fun getAllBugetsToFlowWhenProceduresChanged() = flow {
         proceduresDao.getAllProceduresToFlow().collect {
             val list = budgetDao.getAllBudgetsOrederByDate().map {
                 val categoryProceduresList =
@@ -142,21 +139,43 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
         }
     }
 
-    override suspend fun getBudgetCategories(num: Int) = budgetCategoriesDao.getAllBudgetCategories(num)
+    override suspend fun getBudgetCategories(num: Int) =
+        budgetCategoriesDao.getAllBudgetCategories(num)
+
     override suspend fun getLastBudget(): List<Budget> = budgetDao.getLastBudget()
-    override suspend fun getProceduresWithNum(num: Int): List<Procedure> = proceduresDao.getAllProceduresWithNum(num)
+    override suspend fun getProceduresWithNum(num: Int): List<Procedure> =
+        proceduresDao.getAllProceduresWithNum(num)
+
     override suspend fun getPrcedouresWithCategoryNum(num: Int): List<Procedure> {
         return proceduresDao.getAllProceduresWithCategoryNum(num)
     }
 
-    override fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>> = proceduresDao.getAllProceduresWithNumToFlow(num)
+    override fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>> =
+        proceduresDao.getAllProceduresWithNumToFlow(num)
+
     override suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category> {
         return categoryDao.getAllCategoriesWithBudgetNum(budgetNum)
     }
+
     override suspend fun getAllCategoriesForNum(num: Int): List<Category> =
         categoryDao.getAllCategoriesWithNum(num)
 
-    override suspend fun getAllProceuduresWithCategoryNums(nums : List<Int>) : List<Procedure>{
+    override suspend fun getAllProceuduresWithCategoryNums(nums: List<Int>): List<Procedure> {
         return proceduresDao.getAllProceduresWithCategoryNums(nums)
     }
+
+    override fun getBudgetTotalToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<Triple<Budget, List<Category>, List<Procedure>>> =
+        flow {
+            proceduresDao.getAllProceduresToFlow().collect {
+                val budgetCategories = budgetCategoriesDao.getAllBudgetCategories(num).first()
+
+                val budget = budgetCategories.budget
+                val categories = budgetCategories.categories.orEmpty()
+                val procedures =
+                    proceduresDao.getAllProceduresOrderByTimeWithCategoryNums(categories.map { it.num })
+
+                emit(Triple(budget, categories, procedures))
+            }
+        }
+
 }
