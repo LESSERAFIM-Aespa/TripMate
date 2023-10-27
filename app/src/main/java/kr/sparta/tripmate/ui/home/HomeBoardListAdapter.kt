@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.ui.home
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -34,7 +35,19 @@ class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) 
 
             homeGridTitle.text = item.title
             if(!item.addedImage.isNullOrEmpty()){
-                homeGridImage.load(item.addedImage)
+                homeGridImage.load(item.addedImage){
+                    crossfade(true)
+                    listener(
+                        onStart = {
+                            // 로딩시작
+                            homeGridImageProgressbar.visibility = View.VISIBLE
+                        },
+                        onSuccess = { request, result ->
+                            // 로딩종료
+                            homeGridImageProgressbar.visibility = View.GONE
+                        }
+                    )
+                }
             }else homeGridImage.setImageResource(R.drawable.emptycommu)
             itemView.setOnClickListener {
                 onItemClick(item, bindingAdapterPosition)

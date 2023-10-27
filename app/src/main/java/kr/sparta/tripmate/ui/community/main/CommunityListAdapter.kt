@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.ui.community.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -57,8 +58,18 @@ class CommunityListAdapter(
              * */
             fun setUrlImageOrDefault() {
                 item.addedImage?.let {
-                    if (it.isNotEmpty()) {
-                        communityMainThumbnail.load(item.addedImage)
+                    if (it != "") {
+                        communityMainThumbnail.load(item.addedImage) {
+                            crossfade(true)
+                            listener(
+                                onStart = {
+                                    communityMainImageProgressbar.visibility = View.VISIBLE
+                                },
+                                onSuccess = { request, result ->
+                                    communityMainImageProgressbar.visibility = View.GONE
+                                }
+                            )
+                        }
                     } else {
                         communityMainThumbnail.setImageResource(R.drawable.emptycommu)
                     }
@@ -76,14 +87,14 @@ class CommunityListAdapter(
                     communityMainLikesButton.setBackgroundResource(R.drawable.heart)
                 }
             }
-
+            toggleisLikeIcon()
+            setUrlImageOrDefault()
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
 
-            toggleisLikeIcon()
-            setUrlImageOrDefault()
+
             // 좋아요 버튼클릭
             communityMainLikesButton.setOnClickListener {
                 onLikeClicked(item, bindingAdapterPosition)
