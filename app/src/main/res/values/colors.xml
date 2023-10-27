@@ -120,6 +120,7 @@
     <color name="Gray800">#424242</color>
     <color name="Gray900">#212121</color>
     <color name="Gray">#f8f8f8</color>
+    <color name="Gray500_o50">#809E9E9E</color>
 
     <color name="searchoutline">#585858</color>
     <color name="primary">#E9C46A</color>
