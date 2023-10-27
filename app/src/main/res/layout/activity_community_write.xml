@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/community_write_toolbar" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/commu_write_iconCardView"
+        android:id="@+id/community_write_CardView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_gravity="center"
@@ -62,8 +62,17 @@
             android:id="@+id/community_write_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/community_write_image_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             android:src="@drawable/imageadd" />
 
     </androidx.cardview.widget.CardView>
@@ -81,18 +90,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commu_write_iconCardView" />
+        app:layout_constraintTop_toBottomOf="@+id/community_write_CardView" />
 
-    <ProgressBar
+    <FrameLayout
         android:id="@+id/community_write_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/Gray500_o50"
+        android:clickable="false"
         android:visibility="gone"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:indeterminateTint="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:indeterminateTint="@color/primary" />
+
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
