@@ -30,7 +30,7 @@ class CommunityListAdapter(
                 oldItem: CommunityEntity,
                 newItem: CommunityEntity
             ): Boolean {
-                return oldItem.key == newItem.key
+                return oldItem == newItem
             }
 
         }
@@ -93,8 +93,7 @@ class CommunityListAdapter(
             setUrlImageOrDefault()
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.userNickname
-            communityMainViews.text = item.views
-            communityMainLikes.text = item.likes
+
 
 
             // 좋아요 버튼클릭
@@ -121,6 +120,8 @@ class CommunityListAdapter(
                 true
             }
 
+            communityMainViews.text = item.views
+            communityMainLikes.text = item.likes
         }
     }
 }

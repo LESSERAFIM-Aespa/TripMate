@@ -31,10 +31,11 @@ class CommunityViewModel(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     // 게시판 전체목록 불러오기
-    suspend fun getAllBoards(context: Context) {
+    suspend fun getAllBoards(context: Context) = viewModelScope.launch {
         val list = getAllBoardsUseCase.invoke()
         _boardList.value = list
     }
+
 
     // 좋아요 업데이트
     suspend fun updateCommuIsLike(model: CommunityEntity, context: Context) =
@@ -67,8 +68,8 @@ class CommunityViewModel(
     // 조회수 업데이트
     suspend fun updateCommuView(model: CommunityEntity) = viewModelScope.launch {
         updateBoardItemViewsUseCase.invoke(model)
-
-        _boardList.value = getAllBoardsUseCase.invoke()
+        val list = getAllBoardsUseCase.invoke()
+        _boardList.value = list
     }
 
     // 게시글 북마크

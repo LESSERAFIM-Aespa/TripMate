@@ -59,13 +59,10 @@ class CommunityFragment : Fragment() {
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
             onBoardClicked = { model, position ->
-<<<<<<< HEAD
-                commuViewModel.updateCommuView(model.copy(), position)
-                val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
-                startActivity(intent)
-=======
                 CoroutineScope(Dispatchers.Main).launch {
+                    // 조회수증가
                     viewModel.updateCommuView(model)
+
                     val intent = CommunityDetailActivity.newIntentForEntity(
                         communityContext,
                         model.copy(
@@ -74,11 +71,10 @@ class CommunityFragment : Fragment() {
                     )
                     detailLauncher.launch(intent)
                 }
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
             },
             onThumbnailClicked =
             { model, position ->
-                if (model.id == SharedPreferences.getUid(communityContext)) {
+                if (model.userid == SharedPreferences.getUid(communityContext)) {
                     (activity).moveTabFragment(R.string.main_tab_title_mypage)
                 } else {
                     val intent = UserProfileActivity.newIntentForGetUserProfile(
