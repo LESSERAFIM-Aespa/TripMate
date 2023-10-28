@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.GetCommunityKeyUseCase
-import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommunityWriteData
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetCommunityKeyUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommunityWriteDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebasestorage.UploadImageForFirebaseStorage
 
 class CommunityWriteViewModel(
-    private val updateCommunityWriteData: UpdateCommunityWriteData,
+    private val updateCommunityWriteDataUseCase: UpdateCommunityWriteDataUseCase,
     private val uploadImageForFirebaseStorage: UploadImageForFirebaseStorage,
     private val getCommunityKeyUseCase: GetCommunityKeyUseCase,
 ) :
@@ -52,7 +52,7 @@ class CommunityWriteViewModel(
         // 이미지 없는경우
         if(image == null){
             // 글 업로드
-            updateCommunityWriteData.invoke(item)
+            updateCommunityWriteDataUseCase.invoke(item)
 
             // 디테일페이지에 업데이트할 아이템 발행
             publishSubject.onNext(item)
@@ -74,7 +74,7 @@ class CommunityWriteViewModel(
                 )
 
                 // 글 업로드
-                updateCommunityWriteData.invoke(newItem)
+                updateCommunityWriteDataUseCase.invoke(newItem)
 
                 // 디테일페이지에 업데이트할 아이템 발행
                 publishSubject.onNext(newItem)
