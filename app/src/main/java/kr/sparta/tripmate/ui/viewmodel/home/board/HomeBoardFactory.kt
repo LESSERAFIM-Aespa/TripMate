@@ -6,6 +6,7 @@ import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseBoardRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveBoardFirebase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommuIsViewFromBoardRepo
 
 class HomeBoardFactory : ViewModelProvider.Factory {
@@ -19,7 +20,7 @@ class HomeBoardFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(HomeBoardViewModel::class.java)) {
             return HomeBoardViewModel(
                 GetFirebaseBoardDataFromBoardRepo(repository),
-                UpdateCommuIsViewFromBoardRepo(repository)
+                SaveBoardFirebase(repository)
             ) as T
         }
         throw IllegalArgumentException("에러")
