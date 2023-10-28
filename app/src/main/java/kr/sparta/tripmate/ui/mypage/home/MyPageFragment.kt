@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
 import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -25,8 +23,8 @@ import kr.sparta.tripmate.domain.model.login.UserDataEntity
 import kr.sparta.tripmate.ui.mypage.board.BoardFragment
 import kr.sparta.tripmate.ui.mypage.scrap.BookmarkFragment
 import kr.sparta.tripmate.ui.setting.SettingActivity
-import kr.sparta.tripmate.ui.viewmodel.mypage.MyPageFactory
-import kr.sparta.tripmate.ui.viewmodel.mypage.MyPageViewModel
+import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageFactory
+import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageFragment : Fragment() {
@@ -201,7 +199,7 @@ class MyPageFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (adapter.updateScrap() as BookmarkFragment).updateScrap()
+        (adapter.updateScrap() as BookmarkFragment).updateBookmarks()
         (adapter.updateBoard() as BoardFragment).updateBoard()
     }
 }

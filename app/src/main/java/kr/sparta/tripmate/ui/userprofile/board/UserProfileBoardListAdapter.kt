@@ -10,24 +10,24 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemUserProfileBoardBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.userprofile.model.UserProfileModel
 
 class UserProfileBoardListAdapter(
-    private val onItemClicked: (CommunityModelEntity, Int) -> Unit
+    private val onItemClicked: (CommunityEntity, Int) -> Unit
 ) :
-    ListAdapter<CommunityModelEntity, UserProfileBoardListAdapter.UserProfileHolder>(
-        object : DiffUtil.ItemCallback<CommunityModelEntity>() {
+    ListAdapter<CommunityEntity, UserProfileBoardListAdapter.UserProfileHolder>(
+        object : DiffUtil.ItemCallback<CommunityEntity>() {
             override fun areItemsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
                 return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
                 return oldItem.key == newItem.key
             }
@@ -46,14 +46,14 @@ class UserProfileBoardListAdapter(
 
     inner class UserProfileHolder(private val binding: ItemUserProfileBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CommunityModelEntity) = with(binding) {
+        fun bind(item: CommunityEntity) = with(binding) {
             userboardMainTitle.text = item.title
-            userboardMainProfileNickname.text = item.profileNickname
+            userboardMainProfileNickname.text = item.userNickname
             userboardMainThumbnail.apply {
-                if (item.addedImage.isNullOrBlank()) {
+                if (item.image.isNullOrBlank()) {
                     userboardMainThumbnail.setImageResource(R.drawable.emptycommu)
                 } else {
-                    userboardMainThumbnail.load(item.addedImage) {
+                    userboardMainThumbnail.load(item.image) {
                         listener(
                             onStart = {
                                 userboardMainImageProgressbar.visibility = View.VISIBLE
@@ -64,17 +64,21 @@ class UserProfileBoardListAdapter(
                         )
                     }
                 }
-                setOnClickListener {
-                    onItemClicked(item, bindingAdapterPosition)
-                }
             }
             userboardMainViews.text = item.views
             userboardMainLikes.text = item.likes
-            if (item.boardIsLike) {
+
+            if (item.isLike) {
                 userboardMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
                 userboardMainLikesButton.setBackgroundResource(R.drawable.heart)
             }
+
+            // item 클릭이벤트
+            itemView.setOnClickListener {
+                onItemClicked(item, bindingAdapterPosition)
+            }
+
         }
     }
 }

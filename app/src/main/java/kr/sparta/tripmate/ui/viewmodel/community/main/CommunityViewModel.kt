@@ -1,75 +1,80 @@
 package kr.sparta.tripmate.ui.viewmodel.community.main
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
-import kr.sparta.tripmate.domain.model.firebase.toCommunity
-import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommunityBaseData
-import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommuIsLike
-import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommuIsViewFromCommuRepo
-import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommuBoardKey
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.domain.usecase.community.board.GetAllBoardsUseCase
+import kr.sparta.tripmate.domain.usecase.community.board.UpdateBoardItemLikesUseCase
+import kr.sparta.tripmate.domain.usecase.community.board.UpdateBoardItemViewsUseCase
+import kr.sparta.tripmate.domain.usecase.community.bookmark.board.GetAllBookmarkedBoardsUseCase
+import kr.sparta.tripmate.domain.usecase.community.bookmark.board.UpdateBookmarkedBoardUseCase
+import kr.sparta.tripmate.domain.usecase.community.like.UpdateIsLikeUseCase
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityViewModel(
-    private val updateCommunityBaseData: UpdateCommunityBaseData,
-    private val updateCommuIsLike: UpdateCommuIsLike,
-    private val isViewsFirebaseCommunityData: UpdateCommuIsViewFromCommuRepo,
-    private val updateCommuBoardKey: UpdateCommuBoardKey
+    private val getAllBoardsUseCase: GetAllBoardsUseCase,
+    private val updateBoardItemViewsUseCase: UpdateBoardItemViewsUseCase,
+    private val updateBoardItemLikesUseCase: UpdateBoardItemLikesUseCase,
+    private val updateBookmarkedBoardUseCase: UpdateBookmarkedBoardUseCase,
+    private val updateIsLikeUseCase: UpdateIsLikeUseCase,
 ) :
     ViewModel() {
 
-    private val _dataModelList: MutableLiveData<List<CommunityModelEntity?>> = MutableLiveData()
-    val dataModelList get() = _dataModelList
+    private val _boardList: MutableLiveData<List<CommunityEntity?>> = MutableLiveData()
+    val boardList get() = _boardList
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-    private val _keyModelList: MutableLiveData<List<KeyModelEntity?>> = MutableLiveData()
-    private val _boardKeyModelList: MutableLiveData<List<BoardKeyModelEntity?>> = MutableLiveData()
-    fun updateDataModelList(context: Context) = viewModelScope.launch {
-        kotlin.runCatching {
-            val uid = SharedPreferences.getUid(context)
-            _isLoading.value = true
-            updateCommunityBaseData.invoke(uid, _dataModelList, _keyModelList, _boardKeyModelList)
-            _isLoading.value = false
-        }
+
+    // 게시판 전체목록 불러오기
+    suspend fun getAllBoards(context: Context) = viewModelScope.launch {
+        val list = getAllBoardsUseCase.invoke()
+        _boardList.value = list
     }
 
-    fun updateCommuIsLike(model: CommunityModelEntity, position: Int, context: Context) =
+
+    // 좋아요 업데이트
+    suspend fun updateCommuIsLike(model: CommunityEntity, context: Context) =
         viewModelScope.launch {
-            kotlin.runCatching {
-                val uid = SharedPreferences.getUid(context)
-                updateCommuIsLike.invoke(
-                    model.toCommunity(),
-                    position,
-                    _dataModelList,
-                    _keyModelList,
-                    uid
+            val uid = SharedPreferences.getUid(context)
+            // 좋아요목록 업데이트
+            val isLike = updateIsLikeUseCase.invoke(
+                uid,
+                item = model.copy(
+                    isLike = !model.isLike,
                 )
-            }
-        }
+            )
 
-    fun updateCommuView(model: CommunityModelEntity, position: Int) = viewModelScope.launch {
-        kotlin.runCatching {
-            isViewsFirebaseCommunityData.invoke(model.toCommunity(), position, _dataModelList)
-        }
-    }
+            // 좋아요 수 증가
+            updateBoardItemLikesUseCase.invoke(model, isLike)
 
-    fun updateCommuBoard(model: CommunityModelEntity, position: Int, context: Context) =
-        viewModelScope
-            .launch {
-                kotlin.runCatching {
-                    val uid = SharedPreferences.getUid(context)
-                    updateCommuBoardKey.invoke(
-                        model.toCommunity(), position, _dataModelList,
-                        _boardKeyModelList, uid, context
+            val list = getAllBoardsUseCase.invoke().toMutableList()
+            for (i in list.indices) {
+                if (list[i].key == model.key) {
+                    list[i] = list[i].copy(
+                        isLike = isLike
                     )
-                    Log.d("TripMates", "뷰모델 :${model.boardIsLike}")
                 }
             }
+
+            // 게시판 최신화
+            _boardList.value = list
+        }
+
+    // 조회수 업데이트
+    suspend fun updateCommuView(model: CommunityEntity) = viewModelScope.launch {
+        updateBoardItemViewsUseCase.invoke(model)
+        val list = getAllBoardsUseCase.invoke()
+        _boardList.value = list
+    }
+
+    // 게시글 북마크
+    suspend fun addBoardBookmark(model: CommunityEntity, context: Context) = viewModelScope.launch {
+        val uid = SharedPreferences.getUid(context)
+        updateBookmarkedBoardUseCase.invoke(uid, model)
+    }
 }

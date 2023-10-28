@@ -9,13 +9,13 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import coil.load
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityDetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_ENTITY = "extra_entity"
-        fun newIntentForEntity(context: Context, model: CommunityModelEntity): Intent =
+        fun newIntentForEntity(context: Context, model: CommunityEntity): Intent =
             Intent(context, CommunityDetailActivity::class.java).apply {
                 putExtra(EXTRA_ENTITY, model)
             }
@@ -27,7 +27,7 @@ class CommunityDetailActivity : AppCompatActivity() {
 
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_ENTITY, CommunityModelEntity::class.java)
+            intent.getParcelableExtra(EXTRA_ENTITY, CommunityEntity::class.java)
         } else {
             intent.getParcelableExtra(EXTRA_ENTITY)
         }
@@ -40,7 +40,7 @@ class CommunityDetailActivity : AppCompatActivity() {
                 val edit = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
                     result.data?.getParcelableExtra(
                         EXTRA_ENTITY,
-                        CommunityModelEntity::class.java
+                        CommunityEntity::class.java
                     )
                 } else {
                     result.data?.getParcelableExtra(EXTRA_ENTITY)
@@ -55,11 +55,11 @@ class CommunityDetailActivity : AppCompatActivity() {
                     edit?.let {
                         toggleImgUrlIsEmpty(it)
                         checkIsMyPost(it)
-                        communityUserprofile.load(it.profileThumbnail)
+                        communityUserprofile.load(it.userThumbnail)
                         communityTvDetailTitle.text = it.title
                         communityTvDetailDescription.text = it.description
-                        communityTvDetailUsername.text = it.profileNickname
-                        communityImageIv.load(it.addedImage){
+                        communityTvDetailUsername.text = it.userNickname
+                        communityImageIv.load(it.image){
                             crossfade(true)
                             listener(
                                 onStart = {
@@ -93,11 +93,11 @@ class CommunityDetailActivity : AppCompatActivity() {
         model?.let {
             toggleImgUrlIsEmpty(it)
             checkIsMyPost(it)
-            communityUserprofile.load(it.profileThumbnail)
+            communityUserprofile.load(it.userThumbnail)
             communityTvDetailTitle.text = it.title
             communityTvDetailDescription.text = it.description
-            communityTvDetailUsername.text = it.profileNickname
-            communityImageIv.load(it.addedImage) {
+            communityTvDetailUsername.text = it.userNickname
+            communityImageIv.load(it.image) {
                 crossfade(true)
                 listener(
                     onStart = {
@@ -135,8 +135,8 @@ class CommunityDetailActivity : AppCompatActivity() {
      * 작성자: 서정한
      * 내용: 이미지Url유무에따라 ImageView의 Visible을 조절합니다.
      * */
-    private fun toggleImgUrlIsEmpty(model: CommunityModelEntity) = with(binding) {
-        model?.addedImage?.let { url ->
+    private fun toggleImgUrlIsEmpty(model: CommunityEntity) = with(binding) {
+        model?.image?.let { url ->
             if (url != "") {
                 communityImageCardView.visibility = View.VISIBLE
             } else {
@@ -149,9 +149,9 @@ class CommunityDetailActivity : AppCompatActivity() {
      * 작성자: 서정한
      * 내용: 내가 쓴글인지 확인 후 수정버튼 생성
      * */
-    private fun checkIsMyPost(model: CommunityModelEntity) = with(binding) {
+    private fun checkIsMyPost(model: CommunityEntity) = with(binding) {
         val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
-        if (model.id == uid) {
+        if (model.userid == uid) {
             communityDetailEdit.visibility = View.VISIBLE
         } else {
             communityDetailEdit.visibility = View.GONE
