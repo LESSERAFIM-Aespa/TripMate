@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.data.model.community.BoardKeyModel
 import kr.sparta.tripmate.data.model.community.CommunityModel
@@ -409,33 +410,35 @@ class FirebaseDBRemoteDataSource {
     /**
      * 작성자 : 박성수
      * 내용 : RDB에 저장된 Community데이터중에
-     * 내가 게시판에 작성한 목록만 리스트에 담습니다.
+     * 내가 게시판에 작성한 목록만 가져옵니다.
      *
      */
     fun getFirebaseBoardData(
         boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
-        val boardRef = fireDatabase.getReference("CommunityData")
-        val boardList = arrayListOf<CommunityModel>()
-        boardRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (item in snapshot.children) {
-                    val getBoardList = item.getValue(CommunityModel::class.java)
-                    if (getBoardList != null) {
-                        boardList.add(getBoardList)
-                    }
-                }
-                if (!boardList.isNullOrEmpty()) {
-                    boardLiveData.postValue(boardList.toEntity())
-                } else {
-                    boardLiveData.postValue(listOf())
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
+        val boardRef = fireDatabase.getReference("CommunityData")
+        boardRef.get().addOnSuccessListener {
+            if(it.exists()){
+                val getBoardList = it.children.map {
+                    it.getValue(CommunityModel::class.java)
+                }
+                boardLiveData.value = getBoardList.toList().toEntity()
+            } else boardLiveData.value = listOf()
+        }
+    }
+    fun saveBoardFirebase(
+        model: CommunityModelEntity, boardLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>
+    ) {
+        val boardRef = fireDatabase.getReference("CommunityData")
+        val modelList = boardLiveData.value.orEmpty().toMutableList()
+        val selectIndex = modelList.indexOfFirst { it?.key == model.key }
+
+        if(selectIndex != -1){
+            modelList[selectIndex] = model
+            boardRef.setValue(modelList)
+        }
     }
 
     /**
