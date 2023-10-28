@@ -37,13 +37,6 @@ class BoardFragment : Fragment() {
     }
     private val boardAdapter by lazy {
         BoardListAdapter(
-<<<<<<< HEAD
-            onProfileClicked = { model, position ->
-                val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
-                intent.putExtra("Data", model)
-                startActivity(intent)
-                boardViewModel.updateBoardView(model.copy())
-=======
             // 게시글 보기
             onItemClicked = { model, position ->
                 CoroutineScope(Dispatchers.Main).launch {
@@ -65,7 +58,6 @@ class BoardFragment : Fragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     viewModel.updateLikes(boardContext, model)
                 }
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
             }
         )
     }
@@ -91,18 +83,9 @@ class BoardFragment : Fragment() {
     }
 
     private fun initViewModel() {
-<<<<<<< HEAD
-        val uid = SharedPreferences.getUid(boardContext)
-        with(boardViewModel) {
-            myPage.observe(viewLifecycleOwner) {
-                val filteredList = it.filter { it?.id == uid }
-                boardAdapter.submitList(filteredList)
-                boardAdapter.notifyDataSetChanged()
-=======
         with(viewModel) {
             myBoards.observe(viewLifecycleOwner) {
                 boardAdapter.submitList(it)
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
             }
         }
     }
@@ -116,13 +99,9 @@ class BoardFragment : Fragment() {
     }
 
     fun updateBoard() {
-<<<<<<< HEAD
-        boardViewModel.getBoardData()
-=======
         CoroutineScope(Dispatchers.Main).launch {
             val uid = SharedPreferences.getUid(boardContext)
             viewModel.getAllMyBoards(uid)
         }
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
     }
 }

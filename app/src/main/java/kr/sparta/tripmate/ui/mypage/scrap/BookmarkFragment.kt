@@ -15,16 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
-<<<<<<< HEAD
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.ui.scrap.ScrapDetail
 
-=======
 import kr.sparta.tripmate.ui.viewmodel.mypage.bookmark.BookmarkPageFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.bookmark.BookmarkPageViewModel
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class BookmarkFragment : Fragment() {
@@ -58,33 +52,6 @@ class BookmarkFragment : Fragment() {
         if (it.resultCode == AppCompatActivity.RESULT_OK) {
         }
     }
-
-<<<<<<< HEAD
-    private lateinit var bookmarkContext: Context
-    private var _binding: FragmentBookmarkBinding? = null
-    private val binding get() = _binding!!
-    private val bookmarkAdapter by lazy {
-        BookmarkListAdapter(
-            onItemClick = { model, position ->
-                if (model is ScrapEntity) {
-                    model.isLike = true
-                    bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
-                } else if (model is CommunityModelEntity) {
-                    viewModel.saveBoardFirebase(model.copy())
-                    val intent = CommunityDetailActivity.newIntentForEntity(bookmarkContext, model)
-                    intent.putExtra("Data", model)
-                    startActivity(intent)
-                }
-//                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
-//                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
-            }
-        )
-    }
-    private val viewModel: BookmarkPageViewModel by viewModels() {
-        BookmarkPageFactory()
-    }
-=======
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -120,18 +87,6 @@ class BookmarkFragment : Fragment() {
                 bookmarkAdapter.submitList(it)
                 Log.d("TripMates", "List:${it}")
             }
-<<<<<<< HEAD
-            myPageList.observe(viewLifecycleOwner) {
-                Log.d("TripMates", "List:${it}")
-                mergeScrapAndBoardData()
-            }
-            mypageBoard.observe(viewLifecycleOwner) {
-                Log.d("TripMates", "board: ${it}")
-                mergeScrapAndBoardData()
-                bookmarkAdapter.notifyDataSetChanged()
-            }
-=======
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
         }
     }
 

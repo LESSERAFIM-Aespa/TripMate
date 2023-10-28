@@ -50,21 +50,11 @@ class BoardListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CommunityEntity) = with(binding) {
             communityMainTitle.text = item.title
-<<<<<<< HEAD
-            communityMainProfileNickname.text = item.profileNickname
-            communityMainThumbnail.apply {
-                if (item.addedImage.isNullOrBlank()){
-                    communityMainThumbnail.setImageResource(R.drawable.emptycommu)
-
-                } else{
-                    communityMainThumbnail.load(item.addedImage){
-=======
             communityMainProfileNickname.text = item.userNickname
             // 프로필 이미지
             communityMainProfileThumbnail.apply {
                 if (item.userThumbnail != "") {
                     communityMainProfileThumbnail.load(item.userThumbnail) {
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
                         listener(
                             onStart = {
                                 // 로딩시작
@@ -76,14 +66,8 @@ class BoardListAdapter(
                             }
                         )
                     }
-<<<<<<< HEAD
-                }
-                setOnClickListener {
-                    onProfileClicked(item, bindingAdapterPosition)
-=======
                 } else if (item.userThumbnail == "") {
                     communityMainProfileThumbnail.load(R.drawable.emptycommu)
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
                 }
             }
 

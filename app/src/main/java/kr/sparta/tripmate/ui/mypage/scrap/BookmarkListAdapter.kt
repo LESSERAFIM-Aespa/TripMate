@@ -23,11 +23,8 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
                     oldItem.url == newItem.url
                 }
 
-<<<<<<< HEAD
-                oldItem is CommunityModelEntity && newItem is CommunityModelEntity -> {
-=======
+
                 oldItem is CommunityEntity && newItem is CommunityEntity -> {
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
                     oldItem.key == newItem.key
                 }
 
@@ -41,11 +38,7 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
                     oldItem.url == newItem.url
                 }
 
-<<<<<<< HEAD
-                oldItem is CommunityModelEntity && newItem is CommunityModelEntity -> {
-=======
                 oldItem is CommunityEntity && newItem is CommunityEntity -> {
->>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
                     oldItem.key == newItem.key
                 }
 
