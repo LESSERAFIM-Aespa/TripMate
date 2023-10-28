@@ -8,29 +8,30 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.domain.model.firebase.toCommunity
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveBoardFirebase
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseBoardDataFromScrapRepo
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseBoardKeyDataFromScrapRepo
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBookMarkData
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBoardDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetFirebaseScrapData
-import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateCommuIsViewFromScrapRepo
 import kr.sparta.tripmate.util.ScrapInterface
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class BookmarkPageViewModel(
     private val getFirebaseScrapData: GetFirebaseScrapData,
-    private val getFirebaseBoardDataFromScrapRepo: GetFirebaseBoardDataFromScrapRepo,
-    private val updateCommuIsViewFromScrapRepo: UpdateCommuIsViewFromScrapRepo,
-    private val getFirebaseBoardKeyDataFromScrapRepo: GetFirebaseBoardKeyDataFromScrapRepo,
-    private val saveBoardFirebase: SaveBoardFirebase
+    private val getFirebaseBoardDataFromScrapRepo: GetFirebaseBoardDataUseCase,
+    private val saveFirebaseBoardDataUseCase: SaveFirebaseBoardDataUseCase,
+    private val getFirebaseBoardKeyDataFromScrapRepo: GetFirebaseBookMarkData
 ) : ViewModel() {
 
     private val _mypageScraps: MutableLiveData<List<ScrapEntity?>> = MutableLiveData()
     val myPageList get() = _mypageScraps
     private val _mypageBoard: MutableLiveData<List<CommunityModelEntity?>> = MutableLiveData()
     val mypageBoard get() = _mypageBoard
+
+    private val _likeKeyResults: MutableLiveData<List<KeyModelEntity?>> = MutableLiveData()
+    val likeKeyResults get() = _likeKeyResults
 
     private val _boardKey: MutableLiveData<List<BoardKeyModelEntity?>> = MutableLiveData()
     val boardKey get() = _boardKey
@@ -47,11 +48,7 @@ class BookmarkPageViewModel(
     }
 
     fun updateBoardData(uid: String) {
-        getFirebaseBoardDataFromScrapRepo.invoke(uid, _mypageBoard)
-    }
-
-    fun updateBoardDataView(model: CommunityModelEntity, position: Int) {
-        updateCommuIsViewFromScrapRepo.invoke(model.toCommunity(), position, _mypageBoard)
+        getFirebaseBoardDataFromScrapRepo.invoke(uid, _mypageBoard, _likeKeyResults)
     }
 
     fun getBoardKeyData(uid: String) {
@@ -79,7 +76,7 @@ class BookmarkPageViewModel(
         val newViews = currentView + 1
         Log.d("ssss", "조회수오르니? ${newViews}")
         model.views = newViews.toString()
-        saveBoardFirebase(model, _mypageBoard)
+        saveFirebaseBoardDataUseCase(model,_mypageBoard)
         updateBoardData(model.id)
     }
 }

@@ -32,37 +32,4 @@ class FirebaseScrapRepositoryImpl(private val remoteSource: FirebaseDBRemoteData
      * */
     override fun removeScrapData(uid: String, model: ScrapEntity) =
         remoteSource.removeScrap(uid, model)
-
-    /**
-     * 작성자 : 박성수
-     * 커뮤니티 게시글을 불러옵니다.
-     */
-    override fun getFirebaseBoardData(
-        boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
-    ) {
-        remoteSource.getFirebaseBoardData(boardLiveData)
-    }
-
-    /**
-     * 작성자 : 박성수
-     * 커뮤니티 게시글 조회수를 증가시킵니다.
-     */
-    override fun updateCommuIsView(
-        model: CommunityModel,
-        position: Int,
-        commuLiveData: MutableLiveData<List<CommunityModelEntity?>>
-    ) {
-        remoteSource.updateCommuIsView(model, position, commuLiveData)
-    }
-
-    /**
-     * 작성자 : 박성수
-     * 커뮤니티 게시글 중에 북마크 된 항목을 체크하기 위한 키를 불러옵니다.
-     */
-    override fun getFirebaseBoardKeyData(
-        uid: String, boardKeyLiveData:
-        MutableLiveData<List<BoardKeyModelEntity?>>
-    ) {
-        remoteSource.getFirebaseBoardKeyData(uid, boardKeyLiveData)
-    }
 }
