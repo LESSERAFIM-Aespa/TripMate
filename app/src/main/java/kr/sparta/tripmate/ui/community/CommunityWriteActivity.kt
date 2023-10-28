@@ -12,14 +12,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import coil.load
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteViewModel
 import kr.sparta.tripmate.util.method.isWindowTouchable
@@ -35,14 +37,18 @@ import java.util.regex.Pattern
  */
 class CommunityWriteActivity : AppCompatActivity() {
     companion object {
+        const val EXTRA_ENTRY_TYPE = "extra_entry_type"
         const val MODEL_EDIT = "model_edit"
 
         fun newIntentForWrite(context: Context): Intent =
-            Intent(context, CommunityWriteActivity::class.java)
+            Intent(context, CommunityWriteActivity::class.java).apply {
+                putExtra(EXTRA_ENTRY_TYPE, ContentType.WRITE.name)
+            }
 
-        fun newIntentForEdit(context: Context, model: CommunityModelEntity): Intent =
+        fun newIntentForEdit(context: Context, model: CommunityEntity): Intent =
             Intent(context, CommunityWriteActivity::class.java).apply {
                 putExtra(MODEL_EDIT, model)
+                putExtra(EXTRA_ENTRY_TYPE, ContentType.EDIT.name)
             }
     }
 
@@ -54,9 +60,13 @@ class CommunityWriteActivity : AppCompatActivity() {
         CommunityWriteFactory()
     }
 
+    private val entryType by lazy {
+        intent.getStringExtra(EXTRA_ENTRY_TYPE)
+    }
+
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(MODEL_EDIT, CommunityModelEntity::class.java)
+            intent.getParcelableExtra(MODEL_EDIT, CommunityEntity::class.java)
         } else {
             intent.getParcelableExtra(MODEL_EDIT)
         }
@@ -85,11 +95,11 @@ class CommunityWriteActivity : AppCompatActivity() {
         model?.let {
             communityWriteTitle.setText(it.title)
             communityWriteDescription.setText(it.description)
-            if(it.addedImage == "") {
+            if(it.image == "") {
                 communityWriteImageIcon.visibility = View.VISIBLE
             } else {
                 communityWriteImageIcon.visibility = View.INVISIBLE
-                communityWriteImage.load(it.addedImage)
+                communityWriteImage.load(it.image)
             }
         }
 
@@ -138,35 +148,69 @@ class CommunityWriteActivity : AppCompatActivity() {
              * RDB의 경우 기존자료를 업데이트할때에도 새로운 리스트를 만들어 덮어씌우는 형태입니다.
              * 그래서 수정하는경우에도 새롭게작성하는것과 로직상 차이가 없습니다.
              * */
-            fun postWrite() {
-                val bitmap: Bitmap? = if(communityWriteImage.drawable != null) {
-                    (communityWriteImage.drawable as BitmapDrawable).bitmap
-                } else {
-                    null
+            fun updatePost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val bitmap: Bitmap? = if(communityWriteImage.drawable != null) {
+                        (communityWriteImage.drawable as BitmapDrawable).bitmap
+                    } else {
+                        null
+                    }
+
+                    val key = viewModel.getCommunityKey()
+                    val imgName = key.substring(key.length - 17, key.length)
+                    val model = CommunityEntity(
+                        userid = SharedPreferences.getUid(this@CommunityWriteActivity),
+                        title = communityWriteTitle.text.toString(),
+                        description = communityWriteDescription.text.toString(),
+                        userNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
+                        userThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
+                        views = model?.views ?: "0",
+                        likes = model?.likes ?: "0",
+                        key = model?.key ?: key,
+                        image = "",
+                        isLike = false,
+                    )
+
+                    // 새 글 작성 or Edit
+                    viewModel.updateCommunityWrite(
+                        imgName = imgName,
+                        image = bitmap,
+                        item = model,
+                    )
                 }
 
-                val key = viewModel.getCommunityKey()
-                val imgName = key.substring(key.length - 17, key.length)
-                val model = CommunityModelEntity(
-                    id = SharedPreferences.getUid(this@CommunityWriteActivity),
-                    title = communityWriteTitle.text.toString(),
-                    description = communityWriteDescription.text.toString(),
-                    profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
-                    profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
-                    views = model?.views ?: "0",
-                    likes = model?.likes ?: "0",
-                    key = model?.key ?: key,
-                    addedImage = "",
-                    commuIsLike = false,
-                    boardIsLike = false,
-                )
+            }
 
-                // 새 글 작성 or Edit
-                viewModel.updateCommunityWrite(
-                    imgName = imgName,
-                    image = bitmap,
-                    item = model,
-                )
+            fun addPost() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val bitmap: Bitmap? = if(communityWriteImage.drawable != null) {
+                        (communityWriteImage.drawable as BitmapDrawable).bitmap
+                    } else {
+                        null
+                    }
+
+                    val key = viewModel.getCommunityKey()
+                    val imgName = key.substring(key.length - 17, key.length)
+                    val model = CommunityEntity(
+                        userid = SharedPreferences.getUid(this@CommunityWriteActivity),
+                        title = communityWriteTitle.text.toString(),
+                        description = communityWriteDescription.text.toString(),
+                        userNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
+                        userThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
+                        views = "0",
+                        likes = "0",
+                        key = key,
+                        image = "",
+                        isLike = false,
+                    )
+
+                    // 새 글 작성 or Edit
+                    viewModel.addCommunityWrite(
+                        imgName = imgName,
+                        image = bitmap,
+                        item = model,
+                    )
+                }
             }
 
             if (binding.communityWriteTitle.text.toString()
@@ -176,11 +220,24 @@ class CommunityWriteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 로딩시작
-            viewModel.setLoadingState(true)
+            when(entryType) {
+                ContentType.WRITE.name -> {
+                    // 로딩시작
+                    viewModel.setLoadingState(true)
 
-            // 새로운 글 생성
-            postWrite()
+                    // 새로운 글 생성
+                    addPost()
+                }
+
+                ContentType.EDIT.name -> {
+                    // 로딩시작
+                    viewModel.setLoadingState(true)
+
+                    // 글 업데이트
+                    updatePost()
+                }
+            }
+
         }
 
         // 기기이미지 불러오기
@@ -201,25 +258,22 @@ class CommunityWriteActivity : AppCompatActivity() {
                     isWindowTouchable(this@CommunityWriteActivity, true)
                 } else {
                     binding.communityWriteProgressBar.visibility = View.GONE
+                    isWindowTouchable(this@CommunityWriteActivity, false)
                     shortToast("글이 생성되었습니다.")
+                    finish()
                 }
             }
 
             // 발행된 아이템 받은 후 DetailPage에 전달
             publishSubject.subscribeBy(
                 onNext = {
-                    // 로딩 중지
-                    setLoadingState(false)
-
                     // 업로드 완료후 업데이트된 model DetailPage에 전달
                     val intent =
                         CommunityDetailActivity.newIntentForEntity(this@CommunityWriteActivity, it)
                     setResult(RESULT_OK, intent)
 
-                    // 화면터치 해제
-                    isWindowTouchable(this@CommunityWriteActivity, false)
-
-                    finish()
+                    // 로딩 중지
+                    setLoadingState(false)
                 },
                 onError = {
                     it.printStackTrace()

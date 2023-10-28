@@ -10,6 +10,9 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
@@ -19,29 +22,31 @@ import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
 
 class CommunityFragment : Fragment() {
-    companion object{
-        fun newInstance() : CommunityFragment = CommunityFragment()
+    companion object {
+        fun newInstance(): CommunityFragment = CommunityFragment()
     }
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
-    private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
+    private val viewModel: CommunityViewModel by viewModels { CommunityFactory() }
 
     private lateinit var activity: MainActivity
     private lateinit var communityContext: Context
 
-    private val writeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
-        if(result.resultCode == Activity.RESULT_OK) {
+    private val writeLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
 
+            }
         }
-    }
 
-    private val detailLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
-        if(result.resultCode == Activity.RESULT_OK) {
+    private val detailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
 
+            }
         }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,26 +57,38 @@ class CommunityFragment : Fragment() {
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
             onBoardClicked = { model, position ->
-                commuViewModel.updateCommuView(model.copy(), position)
-                val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
-                detailLauncher.launch(intent)
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.updateCommuView(model)
+                    val intent = CommunityDetailActivity.newIntentForEntity(
+                        communityContext,
+                        model.copy(
+                            views = (model.views?.let { Integer.parseInt(it) + 1 }).toString()
+                        )
+                    )
+                    detailLauncher.launch(intent)
+                }
             },
             onThumbnailClicked =
             { model, position ->
                 (activity).moveTabFragment(R.string.main_tab_title_mypage)
             },
-            onLikeClicked = { model, position ->
-                commuViewModel.updateCommuIsLike(
-                    model = model.copy(
-                        commuIsLike = !model.commuIsLike
-                    ), position, communityContext
-                )
+            onLikeClicked = { model ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.updateCommuIsLike(
+                        model = model,
+                        communityContext,
+                    )
+                }
             },
             onItemLongClicked = { model, position ->
-                commuViewModel.updateCommuBoard(
-                    model = model.copy(boardIsLike = !model.boardIsLike), position, communityContext
-                )
-            })
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.addBoardBookmark(
+                        model = model,
+                        context = communityContext,
+                    )
+                }
+            },
+        )
     }
 
     override fun onCreateView(
@@ -93,10 +110,10 @@ class CommunityFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        commuViewModel.dataModelList.observe(viewLifecycleOwner) {
+        viewModel.boardList.observe(viewLifecycleOwner) {
             commuAdapter.submitList(it)
         }
-        commuViewModel.isLoading.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
@@ -114,7 +131,24 @@ class CommunityFragment : Fragment() {
             communityMainRecyclerView.setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
-        commuViewModel.updateDataModelList(communityContext)
+        // 모든 게시판목록 불러오기
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getAllBoards(communityContext)
+        }
+    }
+
+    // 탭 클릭시 게시판 목록 불러오기
+    fun getAllBoards() {
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getAllBoards(communityContext)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.getAllBoards(communityContext)
+        }
     }
 
     override fun onDestroyView() {
