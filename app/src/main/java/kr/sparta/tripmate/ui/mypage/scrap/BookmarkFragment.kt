@@ -12,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.ui.scrap.ScrapDetail
 import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -35,6 +39,12 @@ class BookmarkFragment : Fragment() {
     private val bookmarkAdapter by lazy {
         BookmarkListAdapter(
             onItemClick = { model, position ->
+                if(model is ScrapEntity){
+                    bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
+                } else if(model is CommunityModelEntity){
+                    bookmarkResults.launch(CommunityDetailActivity.newIntentForEntity
+                        (bookmarkContext,model))
+                }
 //                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
 //                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
             }
