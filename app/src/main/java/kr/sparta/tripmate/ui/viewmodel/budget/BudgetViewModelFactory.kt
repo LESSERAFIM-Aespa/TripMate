@@ -2,8 +2,7 @@ package kr.sparta.tripmate.ui.viewmodel.budget
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.domain.repository.BudgetRepository
-import kr.sparta.tripmate.ui.budget.BudgetContentType
+import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
 
 
 class BudgetViewModelFactory(
