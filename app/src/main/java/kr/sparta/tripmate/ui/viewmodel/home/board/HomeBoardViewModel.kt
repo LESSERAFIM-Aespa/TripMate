@@ -16,7 +16,7 @@ updateCommuIsViewFromBoardRepo: UpdateCommuIsViewFromBoardRepo
     val homeBoard get() = _homeBoard
 
     fun getHomeBoardData(uid: String) {
-        getFirebaseBoardDataFromBoardRepo.invoke(uid, _homeBoard)
+        getFirebaseBoardDataFromBoardRepo.invoke(_homeBoard)
     }
     fun viewHomeBoardData(model:CommunityModelEntity,position:Int){
         updateCommuIsViewFromBoardRepo.invoke(model.toCommunity(), position,_homeBoard)
