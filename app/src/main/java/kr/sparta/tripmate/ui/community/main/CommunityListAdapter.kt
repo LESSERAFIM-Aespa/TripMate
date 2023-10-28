@@ -23,14 +23,14 @@ class CommunityListAdapter(
                 oldItem: CommunityModelEntity,
                 newItem: CommunityModelEntity
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(
                 oldItem: CommunityModelEntity,
                 newItem: CommunityModelEntity
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.key == newItem.key
             }
 
         }

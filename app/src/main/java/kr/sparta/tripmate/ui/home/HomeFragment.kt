@@ -118,6 +118,7 @@ class HomeFragment : Fragment() {
     private fun homeView() {
         homeScrapListAdapter = HomeScrapListAdapter(
             onItemClick = { model, position ->
+                model.isLike = true
                 val intent = ScrapDetail.newIntentForScrap(homeContext, model)
                 intent.putExtra("Data", model)
                 homeResults.launch(intent)
@@ -140,7 +141,6 @@ class HomeFragment : Fragment() {
         val uid = SharedPreferences.getUid(homeContext)
         homeScrapViewModel.updateScrapData(homeContext)
         homeBoardViewModel.getHomeBoardData(uid)
-
     }
 
     private fun observeViewModel() {
