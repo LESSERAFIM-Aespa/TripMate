@@ -439,6 +439,7 @@ class FirebaseDBRemoteDataSource {
             modelList[selectIndex] = model
             boardRef.setValue(modelList)
         }
+        boardLiveData.value = modelList
     }
 
     /**
