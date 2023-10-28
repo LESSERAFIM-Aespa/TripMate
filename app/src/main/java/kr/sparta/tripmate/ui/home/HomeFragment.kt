@@ -78,7 +78,7 @@ class HomeFragment : Fragment() {
                 val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
                 startActivity(intent)
                 // 조회수 업데이트
-                homeBoardViewModel.viewHomeBoardData(model, position)
+                homeBoardViewModel.updateBoardView(model)
             }
         )
         binding.homeRecyclerView2.apply {
