@@ -2,19 +2,23 @@ package kr.sparta.tripmate.ui.viewmodel.userproflie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveBoardFirebase
+import com.google.firebase.ktx.Firebase
+import kr.sparta.tripmate.data.datasource.remote.community.FirebaseCommunityBoardsRemoteDataSource
+import kr.sparta.tripmate.data.repository.community.FirebaseCommunityBoardRepositoryImpl
+import kr.sparta.tripmate.domain.repository.community.FirebaseCommunityBoardRepository
+import kr.sparta.tripmate.domain.usecase.community.board.GetAllBoardsUseCase
+import kr.sparta.tripmate.domain.usecase.community.board.UpdateBoardItemViewsUseCase
 
 class UserProfileBoardFactory : ViewModelProvider.Factory {
-    private val repository : FirebaseBoardRepository by lazy {
-        FirebaseBoardRepositoryImpl(FirebaseDBRemoteDataSource())
+    private val repository: FirebaseCommunityBoardRepository by lazy {
+        FirebaseCommunityBoardRepositoryImpl(FirebaseCommunityBoardsRemoteDataSource())
     }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(UserProfileBoardViewModel::class.java)){
+        if (modelClass.isAssignableFrom(UserProfileBoardViewModel::class.java)) {
             return UserProfileBoardViewModel(
-                GetFirebaseBoardDataFromBoardRepo(repository),
-                SaveBoardFirebase(repository)
+                GetAllBoardsUseCase(repository),
+                UpdateBoardItemViewsUseCase(repository),
             ) as T
         }
         throw IllegalArgumentException("에러")
