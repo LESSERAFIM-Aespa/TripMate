@@ -43,10 +43,10 @@ class BookmarkFragment : Fragment() {
                     model.isLike = true
                     bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
                 } else if (model is CommunityModelEntity) {
-                    bookmarkResults.launch(
-                        CommunityDetailActivity.newIntentForEntity
-                            (bookmarkContext, model)
-                    )
+                    viewModel.saveBoardFirebase(model.copy())
+                    val intent = CommunityDetailActivity.newIntentForEntity(bookmarkContext, model)
+                    intent.putExtra("Data", model)
+                    startActivity(intent)
                 }
 //                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
 //                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
@@ -99,6 +99,7 @@ class BookmarkFragment : Fragment() {
             mypageBoard.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "board: ${it}")
                 mergeScrapAndBoardData()
+                bookmarkAdapter.notifyDataSetChanged()
             }
         }
     }
