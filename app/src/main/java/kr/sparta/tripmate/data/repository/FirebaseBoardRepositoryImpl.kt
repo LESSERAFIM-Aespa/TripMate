@@ -16,7 +16,6 @@ class FirebaseBoardRepositoryImpl(
     remoteSource: FirebaseDBRemoteDataSource
 ) : FirebaseBoardRepository {
     override fun getFirebaseBoardData(
-        uid: String,
         boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
         remoteSource.getFirebaseBoardData(boardLiveData)
@@ -28,5 +27,12 @@ class FirebaseBoardRepositoryImpl(
         commuLiveData: MutableLiveData<List<CommunityModelEntity?>>
     ) {
         remoteSource.updateCommuIsView(model, position, commuLiveData)
+    }
+
+    override fun saveBoardFirebase(
+        model: CommunityModelEntity,
+        boardLiveData: MutableLiveData<List<CommunityModelEntity?>>
+    ) {
+        remoteSource.saveBoardFirebase(model, boardLiveData)
     }
 }
