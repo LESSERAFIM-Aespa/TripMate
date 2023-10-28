@@ -39,11 +39,14 @@ class BookmarkFragment : Fragment() {
     private val bookmarkAdapter by lazy {
         BookmarkListAdapter(
             onItemClick = { model, position ->
-                if(model is ScrapEntity){
+                if (model is ScrapEntity) {
+                    model.isLike = true
                     bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
-                } else if(model is CommunityModelEntity){
-                    bookmarkResults.launch(CommunityDetailActivity.newIntentForEntity
-                        (bookmarkContext,model))
+                } else if (model is CommunityModelEntity) {
+                    bookmarkResults.launch(
+                        CommunityDetailActivity.newIntentForEntity
+                            (bookmarkContext, model)
+                    )
                 }
 //                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
 //                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
@@ -89,11 +92,11 @@ class BookmarkFragment : Fragment() {
                 bookmarkAdapter.submitList(it)
                 Log.d("TripMates", "List:${it}")
             }
-            myPageList.observe(viewLifecycleOwner){
+            myPageList.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "List:${it}")
                 mergeScrapAndBoardData()
             }
-            mypageBoard.observe(viewLifecycleOwner){
+            mypageBoard.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "board: ${it}")
                 mergeScrapAndBoardData()
             }
