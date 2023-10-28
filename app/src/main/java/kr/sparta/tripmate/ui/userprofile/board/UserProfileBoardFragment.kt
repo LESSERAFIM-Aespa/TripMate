@@ -25,6 +25,7 @@ class UserProfileBoardFragment : Fragment() {
         fun newInstance(): UserProfileBoardFragment = UserProfileBoardFragment()
     }
 
+    private lateinit var uid: String
     private val userProfileBoardViewModel: UserProfileBoardViewModel by viewModels {
         UserProfileBoardFactory()
     }
@@ -35,8 +36,8 @@ class UserProfileBoardFragment : Fragment() {
     private val boardAdapter by lazy {
         UserProfileBoardListAdapter(
             onItemClicked = { model, position ->
-                userProfileBoardViewModel.updateView(model)
-                val intent =CommunityDetailActivity.newIntentForEntity(boardContext, model)
+                userProfileBoardViewModel.updateView(uid, model)
+                val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
                 intent.putExtra("Data", model)
                 startActivity(intent)
 
@@ -47,6 +48,7 @@ class UserProfileBoardFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         boardContext = context
+        uid = SharedPreferences.getUid(boardContext)
     }
 
     override fun onCreateView(
@@ -66,9 +68,8 @@ class UserProfileBoardFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val uid = SharedPreferences.getUidFromUser(boardContext)
         with(userProfileBoardViewModel) {
-            userPage.observe(viewLifecycleOwner) {getList ->
+            userPage.observe(viewLifecycleOwner) { getList ->
                 Log.d("asdfasdfasdf", "변화감지 ${getList[0]!!.views}")
                 Log.d("TripMates", "변화는 감지되는거야?")
                 val filteredList = getList.filter { it?.id == uid }
@@ -77,6 +78,7 @@ class UserProfileBoardFragment : Fragment() {
             }
         }
     }
+
     private fun initView() = with(binding) {
         userProfileBoardRecyclerview.apply {
             adapter = boardAdapter
@@ -86,16 +88,8 @@ class UserProfileBoardFragment : Fragment() {
     }
 
     fun callDataSource() {
-        Log.d("asdfasdfasdf", "유저 uid : ${SharedPreferences.getUidFromUser(boardContext)}")
-        userProfileBoardViewModel.getFirebaseBoardData()
+        userProfileBoardViewModel.getFirebaseBoardData(uid)
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        userProfileBoardViewModel.getFirebaseBoardData(SharedPreferences.getUidFromUser(boardContext))
-//    }
-
-
 
     override fun onDestroy() {
         _binding = null

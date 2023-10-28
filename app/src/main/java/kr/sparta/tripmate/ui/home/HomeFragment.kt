@@ -154,6 +154,7 @@ class HomeFragment : Fragment() {
                 val sortedList = it.sortedByDescending { it?.likes }
                 Log.d("TripMates", "좋아요순 정렬된 데이터 :${sortedList}")
                 homeBoardListAdapter.submitList(sortedList)
+                homeBoardListAdapter.notifyDataSetChanged()
             }
         }
     }
