@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.ui.budget.BudgetFragment
 import kr.sparta.tripmate.ui.community.main.CommunityFragment
-import kr.sparta.tripmate.ui.scrap.ScrapFragment
+import kr.sparta.tripmate.ui.search.ScrapFragment
 import kr.sparta.tripmate.ui.home.HomeFragment
 import kr.sparta.tripmate.ui.mypage.home.MyPageFragment
 
@@ -82,6 +82,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapt
 
     fun getTitme(position : Int): Int = fragments[position].title
     fun getIcon(position: Int): Int = fragments[position].icon
+    fun getFragment(position: Int) : Fragment = fragments[position].fragment
 
     override fun getItemCount(): Int = fragments.size
     override fun createFragment(position: Int): Fragment = fragments[position].fragment
