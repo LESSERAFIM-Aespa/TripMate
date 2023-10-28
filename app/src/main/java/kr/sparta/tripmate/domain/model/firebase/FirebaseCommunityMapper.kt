@@ -15,7 +15,7 @@ fun CommunityModel.toEntity() = CommunityModelEntity(
     commuIsLike = commuIsLike,
     boardIsLike = boardIsLike
 )
-fun List<CommunityModel>.toEntity() : List<CommunityModelEntity>{
+fun List<CommunityModel?>.toEntity() : List<CommunityModelEntity>{
     val list = ArrayList<CommunityModelEntity>()
     for(i in this.indices){
         this[i]?.let{list.add(it.toEntity())}
