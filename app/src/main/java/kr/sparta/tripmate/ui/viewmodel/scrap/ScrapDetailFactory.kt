@@ -2,7 +2,6 @@ package kr.sparta.tripmate.ui.viewmodel.scrap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseScrapRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseScrapRepository
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.RemoveFirebaseScrapData

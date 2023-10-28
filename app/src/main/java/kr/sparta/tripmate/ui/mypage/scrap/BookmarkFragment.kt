@@ -11,18 +11,44 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
+<<<<<<< HEAD
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.scrap.ScrapDetail
-import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageFactory
-import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageViewModel
+
+=======
+import kr.sparta.tripmate.ui.viewmodel.mypage.bookmark.BookmarkPageFactory
+import kr.sparta.tripmate.ui.viewmodel.mypage.bookmark.BookmarkPageViewModel
+>>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class BookmarkFragment : Fragment() {
     companion object {
         fun newInstance(): BookmarkFragment = BookmarkFragment()
+    }
+
+
+    private lateinit var bookmarkContext: Context
+    private var _binding: FragmentBookmarkBinding? = null
+    private val binding get() = _binding!!
+
+
+    private val bookmarkAdapter by lazy {
+        BookmarkListAdapter(
+            onItemClick = { model, position ->
+//                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
+//                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
+            }
+        )
+    }
+
+    private val viewModel: BookmarkPageViewModel by viewModels() {
+        BookmarkPageFactory()
     }
 
     private val bookmarkResults = registerForActivityResult(
@@ -33,6 +59,7 @@ class BookmarkFragment : Fragment() {
         }
     }
 
+<<<<<<< HEAD
     private lateinit var bookmarkContext: Context
     private var _binding: FragmentBookmarkBinding? = null
     private val binding get() = _binding!!
@@ -56,6 +83,8 @@ class BookmarkFragment : Fragment() {
     private val viewModel: BookmarkPageViewModel by viewModels() {
         BookmarkPageFactory()
     }
+=======
+>>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -73,7 +102,6 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateScrap()
         initView()
         initViewModel()
     }
@@ -88,10 +116,11 @@ class BookmarkFragment : Fragment() {
 
     private fun initViewModel() {
         with(viewModel) {
-            totalMyPage.observe(viewLifecycleOwner) {
+            bookmarks.observe(viewLifecycleOwner) {
                 bookmarkAdapter.submitList(it)
                 Log.d("TripMates", "List:${it}")
             }
+<<<<<<< HEAD
             myPageList.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "List:${it}")
                 mergeScrapAndBoardData()
@@ -101,14 +130,15 @@ class BookmarkFragment : Fragment() {
                 mergeScrapAndBoardData()
                 bookmarkAdapter.notifyDataSetChanged()
             }
+=======
+>>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
         }
     }
 
-    fun updateScrap() {
-        Log.d("TripMates", "호출되나?")
-        val uid = SharedPreferences.getUid(bookmarkContext)
-        viewModel.updateScrapData(bookmarkContext)
-        viewModel.updateBoardData(uid)
-        viewModel.getBoardKeyData(uid)
+    fun updateBookmarks() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val uid = SharedPreferences.getUid(bookmarkContext)
+            viewModel.getAllBookmarkedData(uid)
+        }
     }
 }

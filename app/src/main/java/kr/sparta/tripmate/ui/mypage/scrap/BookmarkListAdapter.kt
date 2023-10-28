@@ -7,13 +7,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.api.Constants.COMMUNITYTYPE
 import kr.sparta.tripmate.api.Constants.SCRAPTYPE
 import kr.sparta.tripmate.databinding.FragmentMypageBookmarkItemBinding
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.util.ScrapInterface
 
 class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit) :
@@ -21,11 +19,15 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
         DiffUtil.ItemCallback<ScrapInterface>() {
         override fun areItemsTheSame(oldItem: ScrapInterface, newItem: ScrapInterface): Boolean {
             return when {
-                oldItem is ScrapEntity && newItem is ScrapEntity -> {
+                oldItem is SearchBlogEntity && newItem is SearchBlogEntity -> {
                     oldItem.url == newItem.url
                 }
 
+<<<<<<< HEAD
                 oldItem is CommunityModelEntity && newItem is CommunityModelEntity -> {
+=======
+                oldItem is CommunityEntity && newItem is CommunityEntity -> {
+>>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
                     oldItem.key == newItem.key
                 }
 
@@ -35,11 +37,15 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
 
         override fun areContentsTheSame(oldItem: ScrapInterface, newItem: ScrapInterface): Boolean {
             return when {
-                oldItem is ScrapEntity && newItem is ScrapEntity -> {
+                oldItem is SearchBlogEntity && newItem is SearchBlogEntity -> {
                     oldItem.url == newItem.url
                 }
 
+<<<<<<< HEAD
                 oldItem is CommunityModelEntity && newItem is CommunityModelEntity -> {
+=======
+                oldItem is CommunityEntity && newItem is CommunityEntity -> {
+>>>>>>> 5cd08d1496b32d88df8498b94c83cd909279e53b
                     oldItem.key == newItem.key
                 }
 
@@ -73,12 +79,12 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
         val item = getItem(position)
         when (holder) {
             is ScrapHolder -> {
-                val scrapItem = item as ScrapEntity
+                val scrapItem = item as SearchBlogEntity
                 holder.bind(scrapItem)
             }
 
             is CommunityHolder -> {
-                val communityItem = item as CommunityModelEntity
+                val communityItem = item as CommunityEntity
                 holder.bind(communityItem)
             }
         }
@@ -87,7 +93,7 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
     inner class ScrapHolder(private val binding: FragmentMypageBookmarkItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScrapInterface) = with(binding) {
-            if (item is ScrapEntity) {
+            if (item is SearchBlogEntity) {
                 bookmarkImage.setImageResource(R.drawable.blogimage)
                 bookmarkTitle.text = item.title
                 bookmarkContent.text = item.description
@@ -102,9 +108,9 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
     inner class CommunityHolder(private val binding: FragmentMypageBookmarkItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScrapInterface) = with(binding) {
-            if (item is CommunityModelEntity) {
-                if (!item.addedImage.isNullOrEmpty()) {
-                    bookmarkImage.load(item.addedImage)
+            if (item is CommunityEntity) {
+                if (!item.image.isNullOrEmpty()) {
+                    bookmarkImage.load(item.image)
                 } else bookmarkImage.setImageResource(R.drawable.emptycommu)
                 bookmarkTitle.text = item.title
                 bookmarkContent.text = item.description
@@ -118,8 +124,8 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return when (item) {
-            is ScrapEntity -> SCRAPTYPE
-            is CommunityModelEntity -> COMMUNITYTYPE
+            is  SearchBlogEntity-> SCRAPTYPE
+            is CommunityEntity -> COMMUNITYTYPE
             else -> super.getItemViewType(position)
         }
     }
