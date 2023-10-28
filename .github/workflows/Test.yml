@@ -19,6 +19,7 @@ on:
       - refector/home
       - feat/procedure
       - hotfix/budget
+      - feat/userprofile
   pull_request:
     branches:
       - feat/main
@@ -37,6 +38,7 @@ on:
       - refector/home
       - feat/procedure
       - hotfix/budget
+      - feat/userprofile
 jobs:
   build:
 
