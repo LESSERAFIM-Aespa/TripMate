@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
         homeBoardListAdapter = HomeBoardListAdapter(
             onItemClick = { model, position ->
                 val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
-                homeResults.launch(intent)
+                startActivity(intent)
                 // 조회수 업데이트
                 homeBoardViewModel.viewHomeBoardData(model, position)
             }

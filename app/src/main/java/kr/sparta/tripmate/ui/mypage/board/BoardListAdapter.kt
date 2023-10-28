@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.mypage.board
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,14 +20,14 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
             oldItem: CommunityModelEntity,
             newItem: CommunityModelEntity
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.key == newItem.key
         }
 
         override fun areContentsTheSame(
             oldItem: CommunityModelEntity,
             newItem: CommunityModelEntity
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.key == newItem.key
         }
 
     }) {
@@ -49,7 +50,10 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
             communityMainThumbnail.apply {
-                if (!item.addedImage.isNullOrEmpty()){
+                if (item.addedImage.isNullOrBlank()){
+                    communityMainThumbnail.setImageResource(R.drawable.emptycommu)
+
+                } else{
                     communityMainThumbnail.load(item.addedImage){
                         listener(
                             onStart = {
@@ -62,7 +66,7 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
                             }
                         )
                     }
-                } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
+                }
                 setOnClickListener {
                     onProfileClicked(item, bindingAdapterPosition)
                 }

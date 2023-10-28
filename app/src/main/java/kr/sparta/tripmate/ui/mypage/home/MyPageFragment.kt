@@ -93,17 +93,6 @@ class MyPageFragment : Fragment() {
 
     private fun initView() = with(binding) {
 
-        // UserInfo 설정
-        fun initUserInfo() {
-
-//            val nickname = SharedPreferences.getNickName(myPageContext)
-//            val thumbnail = SharedPreferences.getProfile(myPageContext)
-//            mypageProfileImageview.load(thumbnail)
-//            mypageProfileNickTextview.text = nickname
-        }
-
-        initUserInfo()
-
         mypageViewpager.adapter = adapter
 
         TabLayoutMediator(mypageTablayout, mypageViewpager) { tab, position ->
@@ -141,12 +130,7 @@ class MyPageFragment : Fragment() {
 
         // 확인 버튼
         mypageEditSubmitButton.setOnClickListener {
-//            // 입력된 Edittext
-//            val nowInputEdittext = mypageProfileContentEdittext.text.toString()
-//            // 입력된 EditText TextView에 입력
-//            mypageProfileContentTextview.text = nowInputEdittext
-//            // EditText 초기화
-//            mypageProfileContentEdittext.setText("")
+
             val user = auth.currentUser
             val nickName = SharedPreferences.getNickName(myPageContext)
 

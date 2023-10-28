@@ -11,11 +11,15 @@ import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
  * updateCommuIsView : 게시판 클릭 시 조회수가 업데이트 됩니다.
  */
 interface FirebaseBoardRepository {
-    fun getFirebaseBoardData(
-        uid: String, boardLiveData : MutableLiveData<List<CommunityModelEntity?>>
-    )
+    fun getFirebaseBoardData(boardLiveData: MutableLiveData<List<CommunityModelEntity?>>)
+
     fun updateCommuIsView(
         model: CommunityModel, position: Int, commuLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>
+    )
+
+    fun saveBoardFirebase(
+        model: CommunityModelEntity, commuLiveData:
         MutableLiveData<List<CommunityModelEntity?>>
     )
 }

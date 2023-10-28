@@ -15,12 +15,14 @@ import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
+import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityFragment : Fragment() {
-    companion object{
-        fun newInstance() : CommunityFragment = CommunityFragment()
+    companion object {
+        fun newInstance(): CommunityFragment = CommunityFragment()
     }
 
     private var _binding: FragmentCommunityBinding? = null
@@ -31,17 +33,19 @@ class CommunityFragment : Fragment() {
     private lateinit var activity: MainActivity
     private lateinit var communityContext: Context
 
-    private val writeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
-        if(result.resultCode == Activity.RESULT_OK) {
+    private val writeLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
 
+            }
         }
-    }
 
-    private val detailLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
-        if(result.resultCode == Activity.RESULT_OK) {
+    private val detailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
 
+            }
         }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,11 +58,19 @@ class CommunityFragment : Fragment() {
             onBoardClicked = { model, position ->
                 commuViewModel.updateCommuView(model.copy(), position)
                 val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
-                detailLauncher.launch(intent)
+                startActivity(intent)
             },
             onThumbnailClicked =
             { model, position ->
-                (activity).moveTabFragment(R.string.main_tab_title_mypage)
+                if (model.id == SharedPreferences.getUid(communityContext)) {
+                    (activity).moveTabFragment(R.string.main_tab_title_mypage)
+                } else {
+                    val intent = UserProfileActivity.newIntentForGetUserProfile(
+                        communityContext,
+                        model
+                    )
+                    startActivity(intent)
+                }
             },
             onLikeClicked = { model, position ->
                 commuViewModel.updateCommuIsLike(
