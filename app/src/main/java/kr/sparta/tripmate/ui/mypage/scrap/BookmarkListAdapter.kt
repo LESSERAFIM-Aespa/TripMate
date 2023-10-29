@@ -103,9 +103,9 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScrapInterface) = with(binding) {
             if (item is CommunityModelEntity) {
-                if (!item.addedImage.isNullOrEmpty()) {
-                    bookmarkImage.load(item.addedImage)
-                } else bookmarkImage.setImageResource(R.drawable.emptycommu)
+                if (item.addedImage.isNullOrBlank()) {
+                    bookmarkImage.setImageResource(R.drawable.emptycommu)
+                } else  bookmarkImage.load(item.addedImage)
                 bookmarkTitle.text = item.title
                 bookmarkContent.text = item.description
                 itemView.setOnClickListener {

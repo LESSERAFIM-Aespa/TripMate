@@ -7,6 +7,7 @@ import kr.sparta.tripmate.data.repository.FirebaseBoardRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBoardDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBookMarkDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseLikeDataUseCase
 
 class CommunityFactory : ViewModelProvider.Factory {
@@ -19,7 +20,8 @@ class CommunityFactory : ViewModelProvider.Factory {
             return CommunityViewModel(
                 SaveFirebaseLikeDataUseCase(boardRepository),
                 GetFirebaseBoardDataUseCase(boardRepository),
-                SaveFirebaseBoardDataUseCase(boardRepository)
+                SaveFirebaseBoardDataUseCase(boardRepository),
+                SaveFirebaseBookMarkDataUseCase(boardRepository),
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")

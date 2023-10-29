@@ -9,11 +9,10 @@ import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
 
 class SaveFirebaseBookMarkDataUseCase(private val repository: FirebaseBoardRepository) {
     operator fun invoke(
-        model: CommunityModelEntity, communityLiveData:
+        model: CommunityModelEntity, uid: String, context: Context, communityLiveData:
         MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
-        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
+        MutableLiveData<List<BoardKeyModelEntity?>>
     ) = repository.saveFirebaseBookMarkData(
-        model,  communityLiveData, boardKeyLiveData, uid,
-        context
+        model, uid, context, communityLiveData, boardKeyLiveData
     )
 }

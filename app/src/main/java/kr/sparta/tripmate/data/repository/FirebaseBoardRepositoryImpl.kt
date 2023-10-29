@@ -23,9 +23,8 @@ class FirebaseBoardRepositoryImpl(
         boardLiveData: MutableLiveData<List<CommunityModelEntity?>>,
         likeKeyLiveData: MutableLiveData<List<KeyModelEntity?>>
     ) {
-        remoteSource.getFirebaseBoardData(uid,boardLiveData, likeKeyLiveData)
+        remoteSource.getFirebaseBoardData(uid, boardLiveData, likeKeyLiveData)
     }
-
 
 
     override fun saveFirebaseBoardData(
@@ -41,14 +40,14 @@ class FirebaseBoardRepositoryImpl(
         communityLiveData: MutableLiveData<List<CommunityModelEntity?>>,
         likeKeyLiveData: MutableLiveData<List<KeyModelEntity?>>
     ) {
-        remoteSource.getFirebaseLikeData(uid,communityData, communityLiveData, likeKeyLiveData)
+        remoteSource.getFirebaseLikeData(uid, communityData, communityLiveData, likeKeyLiveData)
     }
 
     override fun getFirebaseBookMarkData(
         uid: String,
         boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>
     ) {
-        remoteSource.getFirebaseBookMarkData(uid,boardKeyLiveData)
+        remoteSource.getFirebaseBookMarkData(uid, boardKeyLiveData)
     }
 
     override fun saveFirebaseLikeData(
@@ -61,13 +60,12 @@ class FirebaseBoardRepositoryImpl(
     }
 
     override fun saveFirebaseBookMarkData(
-        model: CommunityModelEntity,
-        communityLiveData: MutableLiveData<List<CommunityModelEntity?>>,
-        boardKeyLiveData: MutableLiveData<List<BoardKeyModelEntity?>>,
-        uid: String,
-        context: Context
+        model: CommunityModelEntity, uid: String, context: Context, communityLiveData:
+        MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
+        MutableLiveData<List<BoardKeyModelEntity?>>
     ) {
-        saveFirebaseBookMarkData(model, communityLiveData, boardKeyLiveData, uid, context)
+        remoteSource.saveFirebaseBookMarkData(model, uid, context, communityLiveData,
+            boardKeyLiveData)
     }
 
     override fun updateCommunityWrite(item: CommunityModelEntity) {
@@ -75,7 +73,7 @@ class FirebaseBoardRepositoryImpl(
     }
 
     override fun getCommunityKey(): String =
-       remoteSource.getCommunityKey()
+        remoteSource.getCommunityKey()
 
 
 }

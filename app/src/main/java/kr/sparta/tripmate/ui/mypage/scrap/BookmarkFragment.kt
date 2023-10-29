@@ -90,11 +90,13 @@ class BookmarkFragment : Fragment() {
         with(viewModel) {
             totalMyPage.observe(viewLifecycleOwner) {
                 bookmarkAdapter.submitList(it)
+                bookmarkAdapter.notifyDataSetChanged()
                 Log.d("TripMates", "List:${it}")
             }
             myPageList.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "List:${it}")
                 mergeScrapAndBoardData()
+                bookmarkAdapter.notifyDataSetChanged()
             }
             mypageBoard.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "board: ${it}")

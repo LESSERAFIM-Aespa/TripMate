@@ -40,9 +40,9 @@ interface FirebaseBoardRepository {
         : MutableLiveData<List<KeyModelEntity?>>, uid: String
     )
     fun saveFirebaseBookMarkData(
-        model: CommunityModelEntity, communityLiveData:
+        model: CommunityModelEntity, uid: String, context: Context, communityLiveData:
         MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
-        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
+        MutableLiveData<List<BoardKeyModelEntity?>>
     )
     fun updateCommunityWrite(item: CommunityModelEntity)
     fun getCommunityKey(): String

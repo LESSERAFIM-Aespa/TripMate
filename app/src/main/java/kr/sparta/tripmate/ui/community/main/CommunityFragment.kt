@@ -30,7 +30,6 @@ class CommunityFragment : Fragment() {
     companion object {
         fun newInstance(): CommunityFragment = CommunityFragment()
     }
-    private val handler = Handler(Looper.getMainLooper())
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
     private lateinit var uid : String
@@ -88,10 +87,10 @@ class CommunityFragment : Fragment() {
                 Log.d("sssss", "클릭했을때 좋아요 버튼 ${model.commuIsLike}")
             },
             onItemLongClicked = { model, position ->
-//                commuViewModel.updateCommuBoard(
-//                    model = model.copy(boardIsLike = !model.boardIsLike), position, communityContext
-//                )
-//                Log.d("ssss", "클릭했을때 북마크버튼 ${model.boardIsLike}")
+                commuViewModel.saveBookMarkData(
+                    model = model.copy(boardIsLike = !model.boardIsLike), uid,communityContext)
+
+                Log.d("ssss", "클릭했을때 북마크버튼 ${model.boardIsLike}")
             })
     }
 

@@ -167,15 +167,16 @@ class FirebaseDBRemoteDataSource {
             databaseRef.setValue(list)
         }
     }
+
     /**
      * 작성자 : 박성수
      * 내용 : 북마크된 데이터를 식별합니다.
      * 키를 라이브데이터로 관리하고, RDB에 저장합니다.
      */
     fun saveFirebaseBookMarkData(
-        model: CommunityModel, communityLiveData:
+        model: CommunityModelEntity, uid: String, context: Context, communityLiveData:
         MutableLiveData<List<CommunityModelEntity?>>, boardKeyLiveData:
-        MutableLiveData<List<BoardKeyModelEntity?>>, uid: String, context: Context
+        MutableLiveData<List<BoardKeyModelEntity?>>
     ) {
         val list = communityLiveData.value.orEmpty().toMutableList()
         list.find { it?.key == model.key } ?: return
@@ -258,13 +259,18 @@ class FirebaseDBRemoteDataSource {
     ) {
         val boardRef = fireDatabase.getReference("CommunityData")
 
-        boardRef.addValueEventListener(object :ValueEventListener{
+        boardRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val getBoardList = snapshot.children.map {
                         it.getValue(CommunityModel::class.java)
                     }
-                    getFirebaseLikeData(uid, getBoardList.toEntity(), boardLiveData, likeKeyLiveData)
+                    getFirebaseLikeData(
+                        uid,
+                        getBoardList.toEntity(),
+                        boardLiveData,
+                        likeKeyLiveData
+                    )
                 } else boardLiveData.value = listOf()
             }
 
