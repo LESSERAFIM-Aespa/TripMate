@@ -1,30 +1,32 @@
 package kr.sparta.tripmate.ui.viewmodel.mypage
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.domain.model.firebase.toCommunity
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveBoardFirebase
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommuIsViewFromBoardRepo
+import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBoardDataUseCase
 
 class BoardViewModel(
-    private val getFirebaseBoardDataFromBoardRepo: GetFirebaseBoardDataFromBoardRepo,
-    private val saveBoardFirebase: SaveBoardFirebase
+    private val getFirebaseBoardDataUseCase: GetFirebaseBoardDataUseCase,
+    private val saveFirebaseBoardDataUseCase: SaveFirebaseBoardDataUseCase
 ) :
     ViewModel() {
     private val _myPage: MutableLiveData<List<CommunityModelEntity?>> = MutableLiveData()
     val myPage get() = _myPage
 
-    fun getBoardData() {
-        getFirebaseBoardDataFromBoardRepo.invoke(_myPage)
+    private val _likeKeyResults: MutableLiveData<List<KeyModelEntity?>> = MutableLiveData()
+    val likeKeyResults get() = _likeKeyResults
+
+    fun getBoardData(uid: String) {
+        getFirebaseBoardDataUseCase.invoke(uid, _myPage, _likeKeyResults)
     }
-    fun updateBoardView(model:CommunityModelEntity){
-        val currentView = model.views?.toIntOrNull() ?:0
+
+    fun updateBoardView(uid: String, model: CommunityModelEntity) {
+        val currentView = model.views?.toIntOrNull() ?: 0
         val newViews = currentView + 1
         model.views = newViews.toString()
-        saveBoardFirebase.invoke(model, _myPage)
-        getBoardData()
+        saveFirebaseBoardDataUseCase.invoke(model, _myPage)
+        getBoardData(uid)
     }
 }
