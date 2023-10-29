@@ -4,12 +4,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
-import kr.sparta.tripmate.ui.community.main.CommunityFragment
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -32,9 +30,9 @@ class MainActivity : AppCompatActivity() {
             tab.setText(viewPagerAdapter.getTitme(position))
             tab.setIcon(viewPagerAdapter.getIcon(position))
         }.attach()
-        binding.viewPager2.offscreenPageLimit = viewPagerAdapter.itemCount
 
         pageChangeCallBack()
+        binding.viewPager2.offscreenPageLimit = viewPagerAdapter.itemCount
     }
 
     private fun viewPager2State() {
@@ -59,21 +57,14 @@ class MainActivity : AppCompatActivity() {
                 positionOffsetPixels: Int
             ) {
                 if (currentState == ViewPager2.SCROLL_STATE_DRAGGING && currentPosition == position) {
-                    if (currentPosition == 0) {
-                        binding.viewPager2.currentItem = 4
-                    }
-                    else if (currentPosition == 4) {
-                        binding.viewPager2.currentItem = 0
-                    }
+                    if (currentPosition == 0) binding.viewPager2.currentItem = 4
+                    else if (currentPosition == 4) binding.viewPager2.currentItem = 0
                 }
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
 
             override fun onPageSelected(position: Int) {
                 currentPosition = position
-                if(viewPagerAdapter.getFragment(position) is CommunityFragment) {
-                    (viewPagerAdapter.getFragment(position) as CommunityFragment).getAllBoards()
-                }
                 super.onPageSelected(position)
             }
 
@@ -83,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
 
     /**
      * 작성자: 서정한
@@ -95,6 +85,4 @@ class MainActivity : AppCompatActivity() {
         val index = viewPagerAdapter.findFragmentTabIndex(title)
         binding.viewPager2.setCurrentItem(index, false)
     }
-
-    fun getTabFragment(position: Int) : Fragment = viewPagerAdapter.getFragment(position)
 }

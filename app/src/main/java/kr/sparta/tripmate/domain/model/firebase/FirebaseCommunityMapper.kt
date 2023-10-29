@@ -1,38 +1,38 @@
 package kr.sparta.tripmate.domain.model.firebase
 
 import kr.sparta.tripmate.data.model.community.CommunityModel
-import kr.sparta.tripmate.domain.model.community.CommunityEntity
 
-fun CommunityModel.toEntity() = CommunityEntity(
-    key = key,
+fun CommunityModel.toEntity() = CommunityModelEntity(
+    id = id,
     title = title,
-    description = description,
-    userid = userid,
-    userNickname = userNickname,
-    userThumbnail = userThumbnail,
+    description = body,
+    profileNickname = profileNickname,
+    profileThumbnail = profileThumbnail,
     views = views,
     likes = likes,
-    image = image,
-    isLike = isLike
+    key = key,
+    addedImage = addedImage,
+    commuIsLike = commuIsLike,
+    boardIsLike = boardIsLike
 )
-
-fun List<CommunityModel?>.toEntity(): List<CommunityEntity> {
-    val list = ArrayList<CommunityEntity>()
-    for (i in this.indices) {
-        this[i]?.let { list.add(it.toEntity()) }
+fun List<CommunityModel?>.toEntity() : List<CommunityModelEntity>{
+    val list = ArrayList<CommunityModelEntity>()
+    for(i in this.indices){
+        this[i]?.let{list.add(it.toEntity())}
     }
     return list.toList()
 }
 
-fun CommunityEntity.toCommunity() = CommunityModel(
-    key = key,
+fun CommunityModelEntity.toCommunity() = CommunityModel(
+    id = id,
     title = title,
-    description = description,
-    userid = userid,
-    userNickname = userNickname,
-    userThumbnail = userThumbnail,
+    body = description,
+    profileNickname = profileNickname,
+    profileThumbnail = profileThumbnail,
     views = views,
     likes = likes,
-    image = image,
-    isLike = isLike
+    key = key,
+    addedImage = addedImage,
+    commuIsLike = commuIsLike,
+    boardIsLike = boardIsLike
 )

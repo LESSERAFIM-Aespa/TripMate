@@ -2,7 +2,12 @@ package kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
+import kr.sparta.tripmate.api.naver.NaverNetWorkClient
+import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.ScrapRepositoryImpl
+import kr.sparta.tripmate.domain.repository.BudgetRepository
+import kr.sparta.tripmate.domain.repository.ScrapRepository
+import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.util.TripMateApp
 
 class BudgetProcedureFactory(): ViewModelProvider.Factory {

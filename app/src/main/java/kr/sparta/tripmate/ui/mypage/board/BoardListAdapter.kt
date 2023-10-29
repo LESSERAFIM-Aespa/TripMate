@@ -8,26 +8,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
-import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 
-class BoardListAdapter(
-    private val onItemClicked: (CommunityEntity, Int) -> Unit,
-    private val onIsLikeClicked: (CommunityEntity) -> Unit,
-    ) :
-    ListAdapter<CommunityEntity, BoardListAdapter.Holder>(object : DiffUtil
-    .ItemCallback<CommunityEntity>() {
+class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int) -> Unit) :
+    ListAdapter<CommunityModelEntity, BoardListAdapter.Holder>(object : DiffUtil
+    .ItemCallback<CommunityModelEntity>() {
         override fun areItemsTheSame(
-            oldItem: CommunityEntity,
-            newItem: CommunityEntity
+            oldItem: CommunityModelEntity,
+            newItem: CommunityModelEntity
         ): Boolean {
             return oldItem.key == newItem.key
         }
 
         override fun areContentsTheSame(
-            oldItem: CommunityEntity,
-            newItem: CommunityEntity
+            oldItem: CommunityModelEntity,
+            newItem: CommunityModelEntity
         ): Boolean {
             return oldItem.key == newItem.key
         }
@@ -48,33 +46,15 @@ class BoardListAdapter(
 
     inner class Holder(private val binding: FragmentCommunityMainItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CommunityEntity) = with(binding) {
+        fun bind(item: CommunityModelEntity) = with(binding) {
             communityMainTitle.text = item.title
-            communityMainProfileNickname.text = item.userNickname
-            // 프로필 이미지
-            communityMainProfileThumbnail.apply {
-                if (item.userThumbnail != "") {
-                    communityMainProfileThumbnail.load(item.userThumbnail) {
-                        listener(
-                            onStart = {
-                                // 로딩시작
-                                communityMainImageProgressbar.visibility = View.VISIBLE
-                            },
-                            onSuccess = { request, result ->
-                                // 로딩종료
-                                communityMainImageProgressbar.visibility = View.GONE
-                            }
-                        )
-                    }
-                } else if (item.userThumbnail == "") {
-                    communityMainProfileThumbnail.load(R.drawable.emptycommu)
-                }
-            }
-
-            // 게시 이미지
+            communityMainProfileNickname.text = item.profileNickname
             communityMainThumbnail.apply {
-                if (item.image != "") {
-                    communityMainThumbnail.load(item.image) {
+                if (item.addedImage.isNullOrBlank()){
+                    communityMainThumbnail.setImageResource(R.drawable.emptycommu)
+
+                } else{
+                    communityMainThumbnail.load(item.addedImage){
                         listener(
                             onStart = {
                                 // 로딩시작
@@ -86,28 +66,17 @@ class BoardListAdapter(
                             }
                         )
                     }
-                } else if (item.image == "") {
-                    communityMainThumbnail.load(R.drawable.emptycommu)
+                }
+                setOnClickListener {
+                    onProfileClicked(item, bindingAdapterPosition)
                 }
             }
-
             communityMainViews.text = item.views
             communityMainLikes.text = item.likes
-
-            if (item.isLike) {
+            if (item.commuIsLike) {
                 communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
                 communityMainLikesButton.setBackgroundResource(R.drawable.heart)
-            }
-
-            // 게시판 클릭
-            itemView.setOnClickListener {
-                onItemClicked(item, bindingAdapterPosition)
-            }
-
-            //좋아요 클릭
-            communityMainLikesButton.setOnClickListener {
-                onIsLikeClicked(item)
             }
         }
     }

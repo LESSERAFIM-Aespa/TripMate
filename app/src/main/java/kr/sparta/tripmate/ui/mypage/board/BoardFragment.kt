@@ -1,7 +1,9 @@
 package kr.sparta.tripmate.ui.mypage.board
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +12,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.mypage.board.BoardFactory
-import kr.sparta.tripmate.ui.viewmodel.mypage.board.BoardViewModel
+import kr.sparta.tripmate.ui.scrap.ScrapDetail
+import kr.sparta.tripmate.ui.viewmodel.mypage.BoardFactory
+import kr.sparta.tripmate.ui.viewmodel.mypage.BoardViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class BoardFragment : Fragment() {
@@ -27,7 +28,7 @@ class BoardFragment : Fragment() {
     private lateinit var boardContext: Context
     private var _binding: FragmentBoardBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: BoardViewModel by viewModels { BoardFactory() }
+    private val boardViewModel: BoardViewModel by viewModels { BoardFactory() }
     private val boardResurlts = registerForActivityResult(
         ActivityResultContracts
             .StartActivityForResult()
@@ -37,27 +38,11 @@ class BoardFragment : Fragment() {
     }
     private val boardAdapter by lazy {
         BoardListAdapter(
-            // 게시글 보기
-            onItemClicked = { model, position ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    // 조회수 증가
-                    viewModel.viewMyPageBoardData(model)
-
-                    // 페이지 이동
-                    val intent = CommunityDetailActivity.newIntentForEntity(
-                        boardContext,
-                        model = model.copy(
-                            views =(model.views?.let { Integer.parseInt(it) + 1}).toString()
-                        )
-                    )
-                    startActivity(intent)
-                }
-            },
-            // 좋아요 클릭
-            onIsLikeClicked = { model ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.updateLikes(boardContext, model)
-                }
+            onProfileClicked = { model, position ->
+                val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
+                intent.putExtra("Data", model)
+                startActivity(intent)
+                boardViewModel.updateBoardView(model.copy())
             }
         )
     }
@@ -83,9 +68,12 @@ class BoardFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        with(viewModel) {
-            myBoards.observe(viewLifecycleOwner) {
-                boardAdapter.submitList(it)
+        val uid = SharedPreferences.getUid(boardContext)
+        with(boardViewModel) {
+            myPage.observe(viewLifecycleOwner) {
+                val filteredList = it.filter { it?.id == uid }
+                boardAdapter.submitList(filteredList)
+                boardAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -99,9 +87,6 @@ class BoardFragment : Fragment() {
     }
 
     fun updateBoard() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val uid = SharedPreferences.getUid(boardContext)
-            viewModel.getAllMyBoards(uid)
-        }
+        boardViewModel.getBoardData()
     }
 }

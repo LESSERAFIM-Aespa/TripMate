@@ -3,26 +3,31 @@ package kr.sparta.tripmate.ui.viewmodel.userproflie
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kr.sparta.tripmate.data.model.community.CommunityModel
-import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.domain.usecase.community.board.GetAllBoardsUseCase
-import kr.sparta.tripmate.domain.usecase.community.board.UpdateBoardItemViewsUseCase
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.firebase.toCommunity
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveBoardFirebase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommuIsViewFromBoardRepo
 
 class UserProfileBoardViewModel(
-    private val getAllBoardsUseCase: GetAllBoardsUseCase,
-    private val updateBoardItemViewsUseCase: UpdateBoardItemViewsUseCase,
+    private val getFirebaseBoardDataFromBoardRepo:
+    GetFirebaseBoardDataFromBoardRepo,
+    private val saveBoardFirebase: SaveBoardFirebase
 ) : ViewModel() {
-    private val _userPage: MutableLiveData<List<CommunityEntity?>> = MutableLiveData()
+    private val _userPage: MutableLiveData<List<CommunityModelEntity?>> = MutableLiveData()
     val userPage get() = _userPage
 
-    suspend fun getFirebaseBoardData() {
+    fun getFirebaseBoardData() {
         Log.d("asdfasdfasdf", "뷰모델 데이터 호출은 되고있냐?")
-        _userPage.value = getAllBoardsUseCase.invoke()
+        getFirebaseBoardDataFromBoardRepo.invoke(_userPage)
     }
 
-    suspend fun updateView(model: CommunityEntity) {
-        updateBoardItemViewsUseCase.invoke(model)
-
-        _userPage.value = getAllBoardsUseCase.invoke()
+    fun updateView(model:CommunityModelEntity){
+        Log.d("asdfasdfasdf", "뷰모델 조회수 호출은 되고있냐?")
+        val currentView = model.views?.toIntOrNull() ?:0
+        val newViews = currentView + 1
+        model.views = newViews.toString()
+        saveBoardFirebase.invoke(model, _userPage)
+        getFirebaseBoardData()
     }
 }

@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.login.UserDataEntity
-import kr.sparta.tripmate.domain.usecase.user.ResignUserDataUseCase
-import kr.sparta.tripmate.domain.usecase.user.SaveUserDataUseCase
-import kr.sparta.tripmate.domain.usecase.user.UpdateUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.ResignUserData
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserData
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserData
 
 class SettingViewModel(
-    private val updateUserData: UpdateUserDataUseCase,
-    private val saveUserData: SaveUserDataUseCase,
-    private val resignUserData: ResignUserDataUseCase
+    private val updateUserData: UpdateUserData,
+    private val saveUserData: SaveUserData,
+    private val resignUserData: ResignUserData
 ) : ViewModel() {
     private val _settingUserData: MutableLiveData<UserDataEntity?> = MutableLiveData()
     val settingUserData get() = _settingUserData

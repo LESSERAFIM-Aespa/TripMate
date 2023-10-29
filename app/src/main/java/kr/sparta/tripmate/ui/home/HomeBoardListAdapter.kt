@@ -9,33 +9,33 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.HomeGridviewItemsBinding
-import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 
-class HomeBoardListAdapter(private val onItemClick: (CommunityEntity, Int) -> Unit) :
-    ListAdapter<CommunityEntity, HomeBoardListAdapter.Holder>(object : DiffUtil
-    .ItemCallback<CommunityEntity>() {
+class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) -> Unit) :
+    ListAdapter<CommunityModelEntity, HomeBoardListAdapter.Holder>(object : DiffUtil
+    .ItemCallback<CommunityModelEntity>() {
         override fun areItemsTheSame(
-            oldItem: CommunityEntity,
-            newItem: CommunityEntity
+            oldItem: CommunityModelEntity,
+            newItem: CommunityModelEntity
         ): Boolean {
-            return oldItem.userid == newItem.userid
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: CommunityEntity,
-            newItem: CommunityEntity
+            oldItem: CommunityModelEntity,
+            newItem: CommunityModelEntity
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
     }) {
     inner class Holder(private val binding: HomeGridviewItemsBinding) : RecyclerView
     .ViewHolder(binding.root) {
-        fun bind(item: CommunityEntity) = with(binding) {
+        fun bind(item: CommunityModelEntity) = with(binding) {
 
             homeGridTitle.text = item.title
-            if(!item.image.isNullOrEmpty()){
-                homeGridImage.load(item.image){
+            if(!item.addedImage.isNullOrEmpty()){
+                homeGridImage.load(item.addedImage){
                     crossfade(true)
                     listener(
                         onStart = {

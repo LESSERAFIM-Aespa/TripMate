@@ -6,21 +6,17 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.PublishSubject
-import kotlinx.coroutines.launch
-import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.domain.usecase.community.UploadImageForFirebaseStorage
-import kr.sparta.tripmate.domain.usecase.community.board.AddBoardItemUseCase
-import kr.sparta.tripmate.domain.usecase.community.board.GetCommunityKeyUseCase
-import kr.sparta.tripmate.domain.usecase.community.board.UpdateBoardItemUseCase
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.GetCommunityKeyUseCase
+import kr.sparta.tripmate.domain.usecase.firebasecommunityrepository.UpdateCommunityWriteData
+import kr.sparta.tripmate.domain.usecase.firebasestorage.UploadImageForFirebaseStorage
 
 class CommunityWriteViewModel(
+    private val updateCommunityWriteData: UpdateCommunityWriteData,
     private val uploadImageForFirebaseStorage: UploadImageForFirebaseStorage,
-    private val updateBoardItemUseCase: UpdateBoardItemUseCase,
     private val getCommunityKeyUseCase: GetCommunityKeyUseCase,
-    private val addBoardItemUseCase: AddBoardItemUseCase,
 ) :
     ViewModel() {
 
@@ -28,7 +24,7 @@ class CommunityWriteViewModel(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     // 이벤트처리를위한 PublishSubject
-    val publishSubject: PublishSubject<CommunityEntity> = PublishSubject.create()
+    val publishSubject: PublishSubject<CommunityModelEntity> = PublishSubject.create()
 
     /**
      * 작성자: 서정한
@@ -46,110 +42,52 @@ class CommunityWriteViewModel(
 
     /**
      * 작성자: 서정한
-     * 내용: 게시글 생성.
-     * */
-    suspend fun addCommunityWrite(imgName: String, image: Bitmap?, item: CommunityEntity) {
-        viewModelScope.launch {
-            // Observable 생성
-            val getImageUrlSubject: PublishSubject<String> = PublishSubject.create()
-
-            // 이미지 없는경우
-            if (image == null) {
-                // 글 업로드
-                addBoardItemUseCase.invoke(item)
-
-                // 디테일페이지에 업데이트할 아이템 발행
-                publishSubject.onNext(item)
-                return@launch
-            }
-
-            // 이미지 Storage업로드 요청
-            uploadImageForFirebaseStorage.invoke(
-                imgName = imgName,
-                image = image,
-                publishSubject = getImageUrlSubject,
-            )
-
-            // 이미지 Url 결과값 받기
-            getImageUrlSubject.subscribeBy(
-                onNext = {
-                    viewModelScope.launch {
-                        val newItem = item.copy(
-                            image = it
-                        )
-
-                        // 글 업로드
-                        addBoardItemUseCase.invoke(newItem)
-
-                        // 디테일페이지에 업데이트할 아이템 발행
-                        publishSubject.onNext(newItem)
-
-                        // 아이템 발행 중지
-                        getImageUrlSubject.onComplete()
-                    }
-                },
-                onError = {
-                    it.printStackTrace()
-                },
-                onComplete = {
-                    Log.d("TripMates", "Complete WriteViewModel")
-                }
-            )
-        }
-    }
-
-    /**
-     * 작성자: 서정한
-     * 내용: 게시글 수정
+     * 내용: 글이 있으면 업데이트. 없으면 생성.
      * */
     @SuppressLint("CheckResult")
-    suspend fun updateCommunityWrite(imgName: String, image: Bitmap?, item: CommunityEntity) {
-        viewModelScope.launch {
-            // Observable 생성
-            val getImageUrlSubject: PublishSubject<String> = PublishSubject.create()
+    fun updateCommunityWrite(imgName: String, image: Bitmap?, item: CommunityModelEntity) {
+        // Observable 생성
+        val getImageUrlSubject: PublishSubject<String> = PublishSubject.create()
 
-            // 이미지 없는경우
-            if (image == null) {
+        // 이미지 없는경우
+        if(image == null){
+            // 글 업로드
+            updateCommunityWriteData.invoke(item)
+
+            // 디테일페이지에 업데이트할 아이템 발행
+            publishSubject.onNext(item)
+            return@updateCommunityWrite
+        }
+
+        // 이미지 Storage업로드 요청
+        uploadImageForFirebaseStorage.invoke(
+            imgName = imgName,
+            image = image,
+            publishSubject = getImageUrlSubject,
+        )
+
+        // 이미지 Url 결과값 받기
+        getImageUrlSubject.subscribeBy(
+            onNext = {
+                val newItem = item.copy(
+                    addedImage = it
+                )
+
                 // 글 업로드
-                updateBoardItemUseCase.invoke(item)
+                updateCommunityWriteData.invoke(newItem)
 
                 // 디테일페이지에 업데이트할 아이템 발행
-                publishSubject.onNext(item)
-                return@launch
+                publishSubject.onNext(newItem)
+
+                // 아이템 발행 중지
+                getImageUrlSubject.onComplete()
+            },
+            onError = {
+                it.printStackTrace()
+            },
+            onComplete = {
+                Log.d("TripMates", "Complete WriteViewModel")
             }
-
-            // 이미지 Storage업로드 요청
-            uploadImageForFirebaseStorage.invoke(
-                imgName = imgName,
-                image = image,
-                publishSubject = getImageUrlSubject,
-            )
-
-            // 이미지 Url 결과값 받기
-            getImageUrlSubject.subscribeBy(
-                onNext = {
-                    viewModelScope.launch {
-                        val newItem = item.copy(
-                            image = it
-                        )
-
-                        // 글 업로드
-                        updateBoardItemUseCase.invoke(newItem)
-
-                        // 디테일페이지에 업데이트할 아이템 발행
-                        publishSubject.onNext(newItem)
-
-                        // 아이템 발행 중지
-                        getImageUrlSubject.onComplete()
-                    }
-                },
-                onError = {
-                    it.printStackTrace()
-                },
-                onComplete = {
-                    Log.d("TripMates", "Complete WriteViewModel")
-                }
-            )
-        }
+        )
     }
 }

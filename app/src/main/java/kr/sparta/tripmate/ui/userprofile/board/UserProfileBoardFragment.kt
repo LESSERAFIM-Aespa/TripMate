@@ -10,10 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kr.sparta.tripmate.databinding.FragmentUserProfileBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileBoardFactory
@@ -39,11 +35,11 @@ class UserProfileBoardFragment : Fragment() {
     private val boardAdapter by lazy {
         UserProfileBoardListAdapter(
             onItemClicked = { model, position ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    userProfileBoardViewModel.updateView(model)
-                    val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
-                    startActivity(intent)
-                }
+                userProfileBoardViewModel.updateView(model)
+                val intent =CommunityDetailActivity.newIntentForEntity(boardContext, model)
+                intent.putExtra("Data", model)
+                startActivity(intent)
+
             }
         )
     }
@@ -72,15 +68,15 @@ class UserProfileBoardFragment : Fragment() {
     private fun initViewModel() {
         val uid = SharedPreferences.getUidFromUser(boardContext)
         with(userProfileBoardViewModel) {
-            userPage.observe(viewLifecycleOwner) { getList ->
+            userPage.observe(viewLifecycleOwner) {getList ->
                 Log.d("asdfasdfasdf", "변화감지 ${getList[0]!!.views}")
                 Log.d("TripMates", "변화는 감지되는거야?")
-                val filteredList = getList.filter { it?.userid == uid }
+                val filteredList = getList.filter { it?.id == uid }
                 boardAdapter.submitList(filteredList)
+                boardAdapter.notifyDataSetChanged()
             }
         }
     }
-
     private fun initView() = with(binding) {
         userProfileBoardRecyclerview.apply {
             adapter = boardAdapter
@@ -90,16 +86,15 @@ class UserProfileBoardFragment : Fragment() {
     }
 
     fun callDataSource() {
-        CoroutineScope(Dispatchers.Main).launch {
-            Log.d("asdfasdfasdf", "유저 uid : ${SharedPreferences.getUidFromUser(boardContext)}")
-            userProfileBoardViewModel.getFirebaseBoardData()
-        }
+        Log.d("asdfasdfasdf", "유저 uid : ${SharedPreferences.getUidFromUser(boardContext)}")
+        userProfileBoardViewModel.getFirebaseBoardData()
     }
 
 //    override fun onResume() {
 //        super.onResume()
 //        userProfileBoardViewModel.getFirebaseBoardData(SharedPreferences.getUidFromUser(boardContext))
 //    }
+
 
 
     override fun onDestroy() {

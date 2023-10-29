@@ -10,9 +10,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
@@ -31,7 +28,7 @@ class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CommunityViewModel by viewModels { CommunityFactory() }
+    private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
 
     private lateinit var activity: MainActivity
     private lateinit var communityContext: Context
@@ -59,22 +56,13 @@ class CommunityFragment : Fragment() {
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
             onBoardClicked = { model, position ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    // 조회수증가
-                    viewModel.updateCommuView(model)
-
-                    val intent = CommunityDetailActivity.newIntentForEntity(
-                        communityContext,
-                        model.copy(
-                            views = (model.views?.let { Integer.parseInt(it) + 1 }).toString()
-                        )
-                    )
-                    detailLauncher.launch(intent)
-                }
+                commuViewModel.updateCommuView(model.copy(), position)
+                val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
+                startActivity(intent)
             },
             onThumbnailClicked =
             { model, position ->
-                if (model.userid == SharedPreferences.getUid(communityContext)) {
+                if (model.id == SharedPreferences.getUid(communityContext)) {
                     (activity).moveTabFragment(R.string.main_tab_title_mypage)
                 } else {
                     val intent = UserProfileActivity.newIntentForGetUserProfile(
@@ -84,23 +72,18 @@ class CommunityFragment : Fragment() {
                     startActivity(intent)
                 }
             },
-            onLikeClicked = { model ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.updateCommuIsLike(
-                        model = model,
-                        communityContext,
-                    )
-                }
+            onLikeClicked = { model, position ->
+                commuViewModel.updateCommuIsLike(
+                    model = model.copy(
+                        commuIsLike = !model.commuIsLike
+                    ), position, communityContext
+                )
             },
             onItemLongClicked = { model, position ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.addBoardBookmark(
-                        model = model,
-                        context = communityContext,
-                    )
-                }
-            },
-        )
+                commuViewModel.updateCommuBoard(
+                    model = model.copy(boardIsLike = !model.boardIsLike), position, communityContext
+                )
+            })
     }
 
     override fun onCreateView(
@@ -122,10 +105,10 @@ class CommunityFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel.boardList.observe(viewLifecycleOwner) {
+        commuViewModel.dataModelList.observe(viewLifecycleOwner) {
             commuAdapter.submitList(it)
         }
-        viewModel.isLoading.observe(viewLifecycleOwner) {
+        commuViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
@@ -143,24 +126,7 @@ class CommunityFragment : Fragment() {
             communityMainRecyclerView.setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
-        // 모든 게시판목록 불러오기
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getAllBoards(communityContext)
-        }
-    }
-
-    // 탭 클릭시 게시판 목록 불러오기
-    fun getAllBoards() {
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getAllBoards(communityContext)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getAllBoards(communityContext)
-        }
+        commuViewModel.updateDataModelList(communityContext)
     }
 
     override fun onDestroyView() {

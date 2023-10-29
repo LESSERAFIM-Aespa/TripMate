@@ -1,7 +1,9 @@
 package kr.sparta.tripmate.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +12,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.ui.community.main.CommunityFragment
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.search.SearchBlogDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.home.HomeFactory
-import kr.sparta.tripmate.ui.viewmodel.home.HomeViewModel
+import kr.sparta.tripmate.ui.scrap.ScrapDetail
+import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardFactory
+import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardViewModel
+import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapFactory
+import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeFragment : Fragment() {
@@ -33,9 +34,11 @@ class HomeFragment : Fragment() {
     private lateinit var activity: MainActivity
 
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-
-    private val viewModel: HomeViewModel by viewModels {
-        HomeFactory()
+    private val homeScrapViewModel: HomeScrapViewModel by viewModels {
+        HomeScrapFactory()
+    }
+    private val homeBoardViewModel: HomeBoardViewModel by viewModels {
+        HomeBoardFactory()
     }
 
     private lateinit var homeScrapListAdapter: HomeScrapListAdapter
@@ -72,18 +75,10 @@ class HomeFragment : Fragment() {
     private fun boardView() {
         homeBoardListAdapter = HomeBoardListAdapter(
             onItemClick = { model, position ->
-                CoroutineScope(Dispatchers.Main).launch {
-                    // 조회수 업데이트
-                    viewModel.updatesBoardViews(model)
-
-                    val intent = CommunityDetailActivity.newIntentForEntity(
-                        homeContext,
-                        model = model.copy(
-                            views = (model.views?.let { Integer.parseInt(it) + 1}).toString()
-                        )
-                    )
-                    homeResults.launch(intent)
-                }
+                val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
+                startActivity(intent)
+                // 조회수 업데이트
+                homeBoardViewModel.updateBoardView(model)
             }
         )
         binding.homeRecyclerView2.apply {
@@ -110,7 +105,6 @@ class HomeFragment : Fragment() {
 
         // 커뮤니티
         homeArrow2.setOnClickListener {
-            (activity.getTabFragment(1) as CommunityFragment).getAllBoards()
             activity.moveTabFragment(R.string.main_tab_title_community)
         }
 
@@ -124,7 +118,9 @@ class HomeFragment : Fragment() {
     private fun homeView() {
         homeScrapListAdapter = HomeScrapListAdapter(
             onItemClick = { model, position ->
-                val intent = SearchBlogDetailActivity.newIntentForScrap(homeContext, model)
+                model.isLike = true
+                val intent = ScrapDetail.newIntentForScrap(homeContext, model)
+                intent.putExtra("Data", model)
                 homeResults.launch(intent)
             }
         )
@@ -142,21 +138,22 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            viewModel.getAllScraps(homeContext)
-            viewModel.getAllBoardsOrderByLikes()
-        }
+        val uid = SharedPreferences.getUid(homeContext)
+        homeScrapViewModel.updateScrapData(homeContext)
+        homeBoardViewModel.getHomeBoardData(uid)
     }
 
     private fun observeViewModel() {
-        with(viewModel) {
-            scraps.observe(viewLifecycleOwner) {list ->
+        with(homeScrapViewModel) {
+            homeScraps.observe(viewLifecycleOwner) { list ->
                 homeScrapListAdapter.submitList(list)
             }
-
-            boards.observe(viewLifecycleOwner) {list ->
-                homeBoardListAdapter.submitList(list)
+        }
+        with(homeBoardViewModel) {
+            homeBoard.observe(viewLifecycleOwner) {
+                val sortedList = it.sortedByDescending { it?.likes }
+                Log.d("TripMates", "좋아요순 정렬된 데이터 :${sortedList}")
+                homeBoardListAdapter.submitList(sortedList)
             }
         }
     }

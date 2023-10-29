@@ -9,20 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
+import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
 import kr.sparta.tripmate.databinding.HomeGridviewItemsBinding
-import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
-// TODO 블로그, 게시글 스크랩으로 구조변경
-class HomeScrapListAdapter(private val onItemClick: (SearchBlogEntity, Int) -> Unit) :
-    ListAdapter<SearchBlogEntity,
+class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
+    ListAdapter<ScrapEntity,
             RecyclerView.ViewHolder>(
-        object : DiffUtil.ItemCallback<SearchBlogEntity>() {
-            override fun areItemsTheSame(oldItem: SearchBlogEntity, newItem: SearchBlogEntity): Boolean {
+        object : DiffUtil.ItemCallback<ScrapEntity>() {
+            override fun areItemsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
                 return oldItem.url == newItem.url
             }
 
-            override fun areContentsTheSame(oldItem: SearchBlogEntity, newItem: SearchBlogEntity): Boolean {
+            override fun areContentsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
                 return oldItem == newItem
             }
         }
@@ -30,7 +30,7 @@ class HomeScrapListAdapter(private val onItemClick: (SearchBlogEntity, Int) -> U
 
     inner class FirstViewHolder(private val binding: HomeGridviewItemsBinding) : RecyclerView.ViewHolder
         (binding.root) {
-        fun bind(items: SearchBlogEntity) = with(binding) {
+        fun bind(items: ScrapEntity) = with(binding) {
             Log.d("TripMates", "뷰홀더에 항목${items}")
             homeGridTitle.text = removeHtmlTags(items.title)
             homeGridImage.setImageResource(R.drawable.blogimage)
@@ -84,7 +84,7 @@ class HomeScrapListAdapter(private val onItemClick: (SearchBlogEntity, Int) -> U
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) is SearchBlogEntity) {
+        return if (getItem(position) is ScrapEntity) {
             Constants.SCRAPTYPE
         } else {
             Constants.EMPTYTYPE
