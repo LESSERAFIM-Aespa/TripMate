@@ -57,9 +57,9 @@ class ScrapAdapter(
     }
     fun ImageView.likeChange(isLiked: Boolean) {
         if (isLiked) {
-            this.setImageResource(R.drawable.paintedlove)
+            this.setImageResource(R.drawable.paintedstar)
         } else {
-            this.setImageResource(R.drawable.love)
+            this.setImageResource(R.drawable.hollowstar)
         }
     }
 }
