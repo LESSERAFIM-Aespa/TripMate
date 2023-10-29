@@ -132,6 +132,6 @@ class ScrapViewModel(
         _scrapResult.value = list
     }
     fun resetList(){
-        _scrapResult.value = listOf()
+        _scrapResult.value = emptyList()
     }
 }

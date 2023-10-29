@@ -41,6 +41,13 @@ class UserProfileBoardFragment : Fragment() {
                 intent.putExtra("Data", model)
                 startActivity(intent)
 
+            },
+            onLikeClicked = { model, position ->
+                userProfileBoardViewModel.updateCommuIsLike(
+                    model = model.copy(
+                        commuIsLike = !model.commuIsLike
+                    ), boardContext, uid
+                )
             }
         )
     }
@@ -48,7 +55,7 @@ class UserProfileBoardFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         boardContext = context
-        uid = SharedPreferences.getUid(boardContext)
+        uid = SharedPreferences.getUidFromUser(boardContext)
     }
 
     override fun onCreateView(
@@ -70,7 +77,7 @@ class UserProfileBoardFragment : Fragment() {
     private fun initViewModel() {
         with(userProfileBoardViewModel) {
             userPage.observe(viewLifecycleOwner) { getList ->
-                Log.d("asdfasdfasdf", "변화감지 ${getList[0]!!.views}")
+                Log.d("asdfasdfasdf", "변화감지 ${getList[0]!!.commuIsLike}")
                 Log.d("TripMates", "변화는 감지되는거야?")
                 val filteredList = getList.filter { it?.id == uid }
                 boardAdapter.submitList(filteredList)

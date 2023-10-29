@@ -233,6 +233,7 @@ class FirebaseDBRemoteDataSource {
         } else {
             myKeyList.add(myKeyModel.toEntity())
         }
+        Log.d("rewq","좋아요키 저장id ${uid}")
         mycommuRef.setValue(myKeyList)
         keyLiveData.postValue(myKeyList)
 
@@ -326,7 +327,7 @@ class FirebaseDBRemoteDataSource {
                 val updateList = communityData.map { updateListData ->
                     val updatedModel = updateListData?.copy()
                     for (item in keyList) {
-                        if (updateListData?.key == item.key) {
+                        if (updateListData?.id == item.uid && updateListData?.key == item.key) {
                             updatedModel?.commuIsLike = item.myCommuIsLike
                         }
                     }

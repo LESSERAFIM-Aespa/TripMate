@@ -14,7 +14,8 @@ import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.ui.userprofile.model.UserProfileModel
 
 class UserProfileBoardListAdapter(
-    private val onItemClicked: (CommunityModelEntity, Int) -> Unit
+    private val onItemClicked: (CommunityModelEntity, Int) -> Unit,
+    private val onLikeClicked: (CommunityModelEntity, Int) -> Unit
 ) :
     ListAdapter<CommunityModelEntity, UserProfileBoardListAdapter.UserProfileHolder>(
         object : DiffUtil.ItemCallback<CommunityModelEntity>() {
@@ -68,8 +69,12 @@ class UserProfileBoardListAdapter(
                     onItemClicked(item, bindingAdapterPosition)
                 }
             }
+            userboardMainProfileThumbnail.load(item.profileThumbnail)
             userboardMainViews.text = item.views
             userboardMainLikes.text = item.likes
+            userboardMainLikesButton.setOnClickListener {
+                onLikeClicked(item, bindingAdapterPosition)
+            }
             if (item.boardIsLike) {
                 userboardMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
