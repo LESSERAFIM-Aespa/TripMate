@@ -68,7 +68,6 @@ class BudgetDetailProcedureFragment : Fragment() {
          * 내용: 과정 데이터 init
          * */
         fun initProcedureData() {
-
             activity.budget?.let {
                 // 원금
                 budgetDetailStatusPrincipalTextview.text = setCommaForMoneeyText(it.money.toString())
@@ -96,6 +95,12 @@ class BudgetDetailProcedureFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity.budget?.let{
+            viewModel.getAllProcedures(it)
+        }
+    }
 
     override fun onDestroy() {
         _binding = null
