@@ -13,7 +13,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityScrapDetailBinding
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapDetailViewModel
@@ -54,10 +53,10 @@ class ScrapDetail : AppCompatActivity() {
 
                 val uid = SharedPreferences.getUid(this@ScrapDetail)
                 if (model!!.isLike) {
-                    binding.scrapDetailLikeBtn.setImageResource(R.drawable.hollowstar)
+                    binding.scrapDetailLikeBtn.setImageResource(R.drawable.ic_star)
                     removeFirebaseScrapData(uid, model!!)
                 } else {
-                    binding.scrapDetailLikeBtn.setImageResource(R.drawable.paintedstar)
+                    binding.scrapDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
                 }
             }
         }
@@ -65,8 +64,8 @@ class ScrapDetail : AppCompatActivity() {
 
     private fun viewLike(model:ScrapEntity) {
         if(model.isLike){
-            binding.scrapDetailLikeBtn.setImageResource(R.drawable.paintedstar)
-        } else binding.scrapDetailLikeBtn.setImageResource(R.drawable.hollowstar)
+            binding.scrapDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
+        } else binding.scrapDetailLikeBtn.setImageResource(R.drawable.ic_star)
     }
 
     private fun initView() = with(binding){

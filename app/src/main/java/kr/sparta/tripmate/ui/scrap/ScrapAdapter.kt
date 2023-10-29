@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.model.scrap.ScrapModel
 import kr.sparta.tripmate.databinding.ScraptitemsBinding
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
@@ -57,9 +56,9 @@ class ScrapAdapter(
     }
     fun ImageView.likeChange(isLiked: Boolean) {
         if (isLiked) {
-            this.setImageResource(R.drawable.paintedstar)
+            this.setImageResource(R.drawable.ic_star_filled)
         } else {
-            this.setImageResource(R.drawable.hollowstar)
+            this.setImageResource(R.drawable.ic_star)
         }
     }
 }

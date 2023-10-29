@@ -43,7 +43,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginHorizontal="5dp"
-            android:src="@drawable/hollowstar"/>
+            android:src="@drawable/ic_star"/>
     </LinearLayout>
 
     <TextView
