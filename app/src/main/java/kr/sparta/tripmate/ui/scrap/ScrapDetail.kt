@@ -69,8 +69,10 @@ class ScrapDetail : AppCompatActivity() {
         } else binding.scrapDetailLikeBtn.setImageResource(R.drawable.hollowstar)
     }
 
-    private fun initView() {
-//        scrapDetailViewModel.getFirebaseScrapData(SharedPreferences.getUid(this))
+    private fun initView() = with(binding){
+        scrapDetailToolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
     private fun initViewModel() {
         with(scrapDetailViewModel) {
