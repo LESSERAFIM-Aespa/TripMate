@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
+import kr.sparta.tripmate.ui.budget.ProcedureDetailActivity
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
@@ -33,7 +34,16 @@ class BudgetDetailProcedureFragment : Fragment() {
         get() = _binding!!
 
     private val adapter by lazy {
-        BudgetDetailProcedureListAdapter()
+        BudgetDetailProcedureListAdapter(
+            onItemClick = { procedureNum ->
+                val intent = ProcedureDetailActivity.newIntent(
+                    context = procedureContext,
+                    budgetNum = activity.budget.num ?: -1,
+                    procedureNum = procedureNum,
+                )
+                startActivity(intent)
+            }
+        )
     }
 
     private val viewModel: BudgetProcedureViewModel by viewModels() {
