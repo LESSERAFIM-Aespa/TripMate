@@ -7,35 +7,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
-import com.github.mikephil.charting.utils.ColorTemplate.COLORFUL_COLORS
-import com.github.mikephil.charting.utils.MPPointF
-import com.google.android.play.integrity.internal.m
+import com.github.mikephil.charting.formatter.ValueFormatter
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModelFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
+import java.text.NumberFormat
 
 private const val ARG_BUDGET_NUM = "budgetNum"
 
 class BudgetDetailStatisticsFragment : Fragment() {
 
     companion object {
-        private const val TAG = "BudgetDetailStatisticsF"
+        private const val TAG = "BudgetDetailStatisticsFragment"
         fun newInstance(budgetNum: Int) = BudgetDetailStatisticsFragment().apply {
             arguments = Bundle().apply {
                 putInt(ARG_BUDGET_NUM, budgetNum)
@@ -57,6 +51,28 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     private val expenditureListAdapter : BudgetDetailStatisticsListAdapter = BudgetDetailStatisticsListAdapter()
 
+    fun PieDataSet.toCustomFormat() = this.apply{
+        valueTextSize = 16f
+
+        // Value lines
+        valueLinePart1Length = 0.6f
+        valueLinePart2Length = 0.3f
+        valueLineWidth = 2f
+        valueLinePart1OffsetPercentage = 115f
+        isUsingSliceColorAsValueLineColor = true
+        // Value text appearance
+        yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+        valueTextSize = 16f
+        valueTypeface = Typeface.DEFAULT_BOLD
+        valueFormatter = object : ValueFormatter() {
+            private val formatter = NumberFormat.getPercentInstance()
+
+            override fun getFormattedValue(value: Float) =
+                formatter.format(value / 100f)
+        }
+        selectionShift = 3f
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -75,10 +91,20 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     private fun initViews() = with(binding) {
         binding.budgetDetailExpenditurePiechart.apply {
-            description.isEnabled = false
-            isRotationEnabled = false
+            renderer = CustomPieChartRenderer(this, 10f)
+            setExtraOffsets(40f, 8f, 40f, 8f)
+
+            isDrawHoleEnabled = true
+            holeRadius = 50f
+            setDrawCenterText(true)
+            setCenterTextSize(20f)
+            setCenterTextTypeface(Typeface.DEFAULT_BOLD)
+            setCenterTextColor(Color.parseColor("#222222"))
             centerText = "지출"
 
+            legend.isEnabled = false
+            description.isEnabled = false
+            isRotationEnabled = false
 
             setUsePercentValues(true)
             setEntryLabelColor(Color.BLACK)
@@ -137,13 +163,14 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
                         adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totlaExpenditureSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
                     }
+
                     expenditureListAdapter.submitList(adapterPostItems)
-                    val pieDataSet = PieDataSet(entries, "")
-                    pieDataSet.apply {
+
+                    val pieDataSet = PieDataSet(entries, "").apply {
                         colors = colorsItems
-                        valueTextColor = Color.BLACK
-                        valueTextSize = 16f
-                    }
+                        setValueTextColors(colorsItems)
+                    }.toCustomFormat()
+
                     val pieData = PieData(pieDataSet)
                     binding.budgetDetailExpenditurePiechart.data = pieData
                     binding.budgetDetailExpenditurePiechart.data.setValueFormatter(PercentFormatter())
@@ -171,9 +198,6 @@ class BudgetDetailStatisticsFragment : Fragment() {
                         valueTextSize = 16f
                     }
                     val pieData = PieData(pieDataSet)
-                   /* binding.budgetDetailSpendPiechart.data = pieData
-                    binding.budgetDetailSpendPiechart.data.setValueFormatter(PercentFormatter())
-                    binding.budgetDetailSpendPiechart.invalidate()*/
                 }
             }
         }
