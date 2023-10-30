@@ -9,15 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/budget_detail_expenditure_piechart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                android:layout_height="200dp" />
             <androidx.recyclerview.widget.RecyclerView
-
+                android:id="@+id/budget_detail_expenditure_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
