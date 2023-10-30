@@ -24,9 +24,11 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
                 oldItem is ScrapEntity && newItem is ScrapEntity -> {
                     oldItem.url == newItem.url
                 }
+
                 oldItem is CommunityModelEntity && newItem is CommunityModelEntity -> {
                     oldItem.key == newItem.key
                 }
+
                 else -> false
             }
         }
@@ -36,9 +38,11 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
                 oldItem is ScrapEntity && newItem is ScrapEntity -> {
                     oldItem.url == newItem.url
                 }
+
                 oldItem is CommunityModelEntity && newItem is CommunityModelEntity -> {
                     oldItem.key == newItem.key
                 }
+
                 else -> false
             }
         }
@@ -72,6 +76,7 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
                 val scrapItem = item as ScrapEntity
                 holder.bind(scrapItem)
             }
+
             is CommunityHolder -> {
                 val communityItem = item as CommunityModelEntity
                 holder.bind(communityItem)
@@ -98,11 +103,14 @@ class BookmarkListAdapter(private val onItemClick: (ScrapInterface, Int) -> Unit
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScrapInterface) = with(binding) {
             if (item is CommunityModelEntity) {
-                if (!item.addedImage.isNullOrEmpty()) {
-                    bookmarkImage.load(item.addedImage)
-                } else bookmarkImage.setImageResource(R.drawable.emptycommu)
+                if (item.addedImage.isNullOrBlank()) {
+                    bookmarkImage.setImageResource(R.drawable.emptycommu)
+                } else  bookmarkImage.load(item.addedImage)
                 bookmarkTitle.text = item.title
-                bookmarkContent.text = item.body
+                bookmarkContent.text = item.description
+                itemView.setOnClickListener {
+                    onItemClick(item, bindingAdapterPosition)
+                }
             }
         }
     }

@@ -19,7 +19,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityLoginBinding
-import kr.sparta.tripmate.domain.model.login.UserData
+import kr.sparta.tripmate.domain.model.login.UserDataEntity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.shortToast
@@ -109,19 +109,26 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun savedLogin(id: String, nickName: String, photoUrl: String, uid: String) {
+    private fun savedLogin(
+        type: String,
+        id: String,
+        nickName: String,
+        photoUrl: String,
+        uid: String,
+        coment: String
+    ) {
         Log.d("TripMates", "아이디 : ${id}")
         Log.d("TripMates", "닉넴 : ${nickName}")
         login_Database.child("UserData").child(uid).setValue(
-            UserData(
-                id, nickName, photoUrl,
-                uid
+            UserDataEntity(
+                type, id, nickName, photoUrl,
+                uid, coment
             )
         )
         SharedPreferences.apply {
-            saveUid(this@LoginActivity,uid)
-            saveProfile(this@LoginActivity,photoUrl)
-            saveNickName(this@LoginActivity,nickName)
+            saveUid(this@LoginActivity, uid)
+            saveProfile(this@LoginActivity, photoUrl)
+            saveNickName(this@LoginActivity, nickName)
         }
 
         startActivity(Intent(this, MainActivity::class.java))
@@ -149,8 +156,8 @@ class LoginActivity : AppCompatActivity() {
             val input_nickName = binding.nickEdit.text.toString()
             longToast("${input_nickName}의 계정으로 로그인 되었습니다.")
             savedLogin(                                     //저장할 데이터들 함수로 보냄
-                user?.email.toString(), input_nickName,
-                user?.photoUrl?.toString() ?: "", user?.uid!!
+                "Google",user?.email.toString(), input_nickName,
+                user?.photoUrl?.toString() ?: "", user?.uid!!, ""
             )
         }
     }

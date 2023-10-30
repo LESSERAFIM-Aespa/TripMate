@@ -24,7 +24,7 @@ class BoardFragment : Fragment() {
     companion object {
         fun newInstance(): BoardFragment = BoardFragment()
     }
-
+    private lateinit var uid:String
     private lateinit var boardContext: Context
     private var _binding: FragmentBoardBinding? = null
     private val binding get() = _binding!!
@@ -39,10 +39,10 @@ class BoardFragment : Fragment() {
     private val boardAdapter by lazy {
         BoardListAdapter(
             onProfileClicked = { model, position ->
-                val intent = Intent(boardContext, CommunityDetailActivity::class.java)
+                val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
                 intent.putExtra("Data", model)
-                boardResurlts.launch(intent)
-                boardViewModel.viewMyPageBoardData(model,position)
+                startActivity(intent)
+                boardViewModel.updateBoardView(uid,model.copy())
             }
         )
     }
@@ -50,6 +50,7 @@ class BoardFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         boardContext = context
+        uid = SharedPreferences.getUid(boardContext)
     }
 
     override fun onCreateView(
@@ -68,11 +69,11 @@ class BoardFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        val uid = SharedPreferences.getUid(boardContext)
         with(boardViewModel) {
             myPage.observe(viewLifecycleOwner) {
                 val filteredList = it.filter { it?.id == uid }
                 boardAdapter.submitList(filteredList)
+                boardAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -86,7 +87,6 @@ class BoardFragment : Fragment() {
     }
 
     fun updateBoard() {
-        val uid = SharedPreferences.getUid(boardContext)
         boardViewModel.getBoardData(uid)
     }
 }

@@ -15,6 +15,7 @@ object SharedPreferences {
         val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
         return spf.getString("uid", "") ?: ""
     }
+
     fun saveProfile(context: Context, profile: String) {
         val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
         editor.putString("profile", profile)
@@ -25,6 +26,7 @@ object SharedPreferences {
         val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
         return spf.getString("profile", "") ?: ""
     }
+
     fun saveNickName(context: Context, nickName: String) {
         val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
         editor.putString("nickName", nickName)
@@ -34,6 +36,17 @@ object SharedPreferences {
     fun getNickName(context: Context): String {
         val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
         return spf.getString("nickName", "") ?: ""
+    }
+
+    fun saveUidFromUser(context: Context, uidFromUser: String) {
+        val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        editor.putString("uidFromUser", uidFromUser)
+        editor.apply()
+    }
+
+    fun getUidFromUser(context: Context): String {
+        val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
+        return spf.getString("uidFromUser", "") ?: ""
     }
 
 }

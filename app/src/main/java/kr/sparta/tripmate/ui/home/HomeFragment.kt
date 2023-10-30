@@ -73,13 +73,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun boardView() {
-        val uid = SharedPreferences.getUid(homeContext)
         homeBoardListAdapter = HomeBoardListAdapter(
             onItemClick = { model, position ->
-                val intent = Intent(homeContext, CommunityDetailActivity::class.java)
-                intent.putExtra("Data", model)
-                homeResults.launch(intent)
-                homeBoardViewModel.viewHomeBoardData(model, position)
+                val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
+                startActivity(intent)
+                // 조회수 업데이트
+                homeBoardViewModel.updateBoardView(model)
             }
         )
         binding.homeRecyclerView2.apply {
@@ -119,6 +118,7 @@ class HomeFragment : Fragment() {
     private fun homeView() {
         homeScrapListAdapter = HomeScrapListAdapter(
             onItemClick = { model, position ->
+                model.isLike = true
                 val intent = ScrapDetail.newIntentForScrap(homeContext, model)
                 intent.putExtra("Data", model)
                 homeResults.launch(intent)
@@ -141,7 +141,6 @@ class HomeFragment : Fragment() {
         val uid = SharedPreferences.getUid(homeContext)
         homeScrapViewModel.updateScrapData(homeContext)
         homeBoardViewModel.getHomeBoardData(uid)
-
     }
 
     private fun observeViewModel() {
@@ -155,6 +154,7 @@ class HomeFragment : Fragment() {
                 val sortedList = it.sortedByDescending { it?.likes }
                 Log.d("TripMates", "좋아요순 정렬된 데이터 :${sortedList}")
                 homeBoardListAdapter.submitList(sortedList)
+                homeBoardListAdapter.notifyDataSetChanged()
             }
         }
     }

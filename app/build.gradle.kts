@@ -101,4 +101,8 @@ dependencies {
 
     // use chart
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Rx Kotlin
+    implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
+    implementation ("io.reactivex.rxjava3:rxkotlin:3.0.0")
 }

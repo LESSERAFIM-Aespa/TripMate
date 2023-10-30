@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
 import kr.sparta.tripmate.data.repository.FirebaseBoardRepositoryImpl
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataFromBoardRepo
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommuIsViewFromBoardRepo
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBoardDataUseCase
 
 class HomeBoardFactory : ViewModelProvider.Factory {
     private val repository: FirebaseBoardRepository by lazy {
@@ -18,8 +18,8 @@ class HomeBoardFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeBoardViewModel::class.java)) {
             return HomeBoardViewModel(
-                GetFirebaseBoardDataFromBoardRepo(repository),
-                UpdateCommuIsViewFromBoardRepo(repository)
+                GetFirebaseBoardDataUseCase(repository),
+                SaveFirebaseBoardDataUseCase(repository)
             ) as T
         }
         throw IllegalArgumentException("에러")

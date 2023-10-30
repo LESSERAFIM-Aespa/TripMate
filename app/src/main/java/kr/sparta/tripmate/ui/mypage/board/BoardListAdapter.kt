@@ -1,6 +1,8 @@
 package kr.sparta.tripmate.ui.mypage.board
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -18,14 +20,14 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
             oldItem: CommunityModelEntity,
             newItem: CommunityModelEntity
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.key == newItem.key
         }
 
         override fun areContentsTheSame(
             oldItem: CommunityModelEntity,
             newItem: CommunityModelEntity
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.key == newItem.key
         }
 
     }) {
@@ -48,9 +50,23 @@ class BoardListAdapter(private val onProfileClicked: (CommunityModelEntity, Int)
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
             communityMainThumbnail.apply {
-                if (!item.addedImage.isNullOrEmpty()){
-                    communityMainThumbnail.load(item.addedImage)
-                } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
+                if (item.addedImage.isNullOrBlank()){
+                    communityMainThumbnail.setImageResource(R.drawable.emptycommu)
+
+                } else{
+                    communityMainThumbnail.load(item.addedImage){
+                        listener(
+                            onStart = {
+                                // 로딩시작
+                                communityMainImageProgressbar.visibility = View.VISIBLE
+                            },
+                            onSuccess = { request, result ->
+                                // 로딩종료
+                                communityMainImageProgressbar.visibility = View.GONE
+                            }
+                        )
+                    }
+                }
                 setOnClickListener {
                     onProfileClicked(item, bindingAdapterPosition)
                 }

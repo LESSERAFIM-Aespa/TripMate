@@ -5,7 +5,7 @@ import kr.sparta.tripmate.data.model.community.CommunityModel
 fun CommunityModel.toEntity() = CommunityModelEntity(
     id = id,
     title = title,
-    body = body,
+    description = body,
     profileNickname = profileNickname,
     profileThumbnail = profileThumbnail,
     views = views,
@@ -15,7 +15,7 @@ fun CommunityModel.toEntity() = CommunityModelEntity(
     commuIsLike = commuIsLike,
     boardIsLike = boardIsLike
 )
-fun List<CommunityModel>.toEntity() : List<CommunityModelEntity>{
+fun List<CommunityModel?>.toEntity() : List<CommunityModelEntity>{
     val list = ArrayList<CommunityModelEntity>()
     for(i in this.indices){
         this[i]?.let{list.add(it.toEntity())}
@@ -26,7 +26,7 @@ fun List<CommunityModel>.toEntity() : List<CommunityModelEntity>{
 fun CommunityModelEntity.toCommunity() = CommunityModel(
     id = id,
     title = title,
-    body = body,
+    body = description,
     profileNickname = profileNickname,
     profileThumbnail = profileThumbnail,
     views = views,

@@ -12,6 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import kr.sparta.tripmate.databinding.FragmentBookmarkBinding
+import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.ui.scrap.ScrapDetail
 import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.BookmarkPageViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -35,6 +39,15 @@ class BookmarkFragment : Fragment() {
     private val bookmarkAdapter by lazy {
         BookmarkListAdapter(
             onItemClick = { model, position ->
+                if (model is ScrapEntity) {
+                    model.isLike = true
+                    bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
+                } else if (model is CommunityModelEntity) {
+                    viewModel.saveBoardFirebase(model.copy())
+                    val intent = CommunityDetailActivity.newIntentForEntity(bookmarkContext, model)
+                    intent.putExtra("Data", model)
+                    startActivity(intent)
+                }
 //                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
 //                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
             }
@@ -77,15 +90,18 @@ class BookmarkFragment : Fragment() {
         with(viewModel) {
             totalMyPage.observe(viewLifecycleOwner) {
                 bookmarkAdapter.submitList(it)
+                bookmarkAdapter.notifyDataSetChanged()
                 Log.d("TripMates", "List:${it}")
             }
-            myPageList.observe(viewLifecycleOwner){
+            myPageList.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "List:${it}")
                 mergeScrapAndBoardData()
+                bookmarkAdapter.notifyDataSetChanged()
             }
-            mypageBoard.observe(viewLifecycleOwner){
+            mypageBoard.observe(viewLifecycleOwner) {
                 Log.d("TripMates", "board: ${it}")
                 mergeScrapAndBoardData()
+                bookmarkAdapter.notifyDataSetChanged()
             }
         }
     }
