@@ -59,7 +59,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
         with(procedureDetailViewModel) {
             procedure.observe(this@ProcedureDetailActivity) { list ->
                 if (list.isEmpty()) finish()
-                val procedure = list.first()
+                val procedure = list.orEmpty().first()
                 val categories = categories.value.orEmpty()
 
                 binding.procedureDetailTitleTextview.text = procedure.name
