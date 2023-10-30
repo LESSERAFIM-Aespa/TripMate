@@ -50,6 +50,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
     }
 
     private val expenditureListAdapter : BudgetDetailStatisticsListAdapter = BudgetDetailStatisticsListAdapter()
+    private val incomeListAdapter : BudgetDetailStatisticsListAdapter = BudgetDetailStatisticsListAdapter()
 
     fun PieDataSet.toCustomFormat() = this.apply{
         valueTextSize = 16f
@@ -92,7 +93,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
     private fun initViews() = with(binding) {
         binding.budgetDetailExpenditurePiechart.apply {
             renderer = CustomPieChartRenderer(this, 10f)
-            setExtraOffsets(40f, 8f, 40f, 8f)
+            setExtraOffsets(40f, 12f, 40f, 12f)
 
             isDrawHoleEnabled = true
             holeRadius = 50f
@@ -111,9 +112,35 @@ class BudgetDetailStatisticsFragment : Fragment() {
             setTouchEnabled(false)
         }
 
+        binding.budgetDetailIncomePiechart.apply {
+            renderer = CustomPieChartRenderer(this, 10f)
+            setExtraOffsets(40f, 12f, 40f, 12f)
+
+            isDrawHoleEnabled = true
+            holeRadius = 50f
+            setDrawCenterText(true)
+            setCenterTextSize(20f)
+            setCenterTextTypeface(Typeface.DEFAULT_BOLD)
+            setCenterTextColor(Color.parseColor("#222222"))
+            centerText = "소득"
+
+            legend.isEnabled = false
+            description.isEnabled = false
+            isRotationEnabled = false
+
+            setUsePercentValues(true)
+            setEntryLabelColor(Color.BLACK)
+            setTouchEnabled(false)
+        }
+
         binding.budgetDetailExpenditureRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = expenditureListAdapter
+        }
+
+        binding.budgetDetailIncomeRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = incomeListAdapter
         }
     }
 
@@ -129,33 +156,40 @@ class BudgetDetailStatisticsFragment : Fragment() {
                 val procedureGroupByCategoryNum: Map<Int, List<Procedure>> =
                     procedures.groupBy { it.categoryNum }
 
-                val totalDataMap : Map<Int,Int> = mutableMapOf<Int, Int>().apply {
-                    procedureGroupByCategoryNum.forEach { i, procedures ->
-                        put(i,procedures.sumOf { it.money })
-                    }
-                }
                 // 지출
                 val totalExpenditureData : MutableMap<Int,Int> = mutableMapOf()
                 // 수입
                 val totalIncomeData : MutableMap<Int,Int> = mutableMapOf()
 
-                totalDataMap.forEach { key, sum ->
-                    Log.d(TAG, "initViewModels: key,$key sum,$sum")
-                    when{
-                        sum < 0 -> totalIncomeData[key] = -sum
-                        sum > 0 -> totalExpenditureData[key] = sum
+                procedureGroupByCategoryNum.forEach { i, procedures ->
+                    var expenditure = 0
+                    var income = 0
+
+                    procedures.forEach { procedure ->
+                        if (procedure.money < 0){//수입
+                            income += -procedure.money
+                        }else if (procedure.money > 0){//지출
+                            expenditure += procedure.money
+                        }
                     }
+
+                    if (expenditure != 0) totalExpenditureData[i] = expenditure
+                    if (income != 0) totalIncomeData[i] = income
                 }
 
-                Log.d(TAG, "initViewModels:totalExpenditureData.size, ${totalExpenditureData.size}")
-                Log.d(TAG, "initViewModels:totalIncomeData.size, ${totalIncomeData.size}")
+                val totlaExpenditureSum = totalExpenditureData.map { it.value }.sumOf { it }
+                val totlaIncomeSum = totalIncomeData.map { it.value }.sumOf { it }
 
                 if (totalExpenditureData.isNotEmpty()){
+                    binding.budgetDetailExpenditurePiechart.visibility = View.VISIBLE
+                    binding.budgetDetailExpenditureRecyclerview.visibility = View.VISIBLE
+                    binding.expenditureTitleTextview.visibility = View.VISIBLE
+                    binding.expenditureTextview.visibility = View.VISIBLE
+
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
                     val adapterPostItems = mutableListOf<Pair<Category,String>>()
-                    val totlaExpenditureSum = totalExpenditureData.map { it.value }.sumOf { it }
                     totalExpenditureData.forEach { key, sum ->
                         entries.add(PieEntry(sum.toFloat(),categoryMap[key]?.name))
                         Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
@@ -174,30 +208,54 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val pieData = PieData(pieDataSet)
                     binding.budgetDetailExpenditurePiechart.data = pieData
                     binding.budgetDetailExpenditurePiechart.data.setValueFormatter(PercentFormatter())
+                    binding.budgetDetailExpenditurePiechart.animate()
                     binding.budgetDetailExpenditurePiechart.invalidate()
+                    binding.expenditureTextview.text = totlaExpenditureSum.toMoneyFormat() + "원"
+                } else {
+                    binding.budgetDetailExpenditurePiechart.visibility = View.GONE
+                    binding.budgetDetailExpenditureRecyclerview.visibility = View.GONE
+                    binding.expenditureTitleTextview.visibility = View.GONE
+                    binding.expenditureTextview.visibility = View.GONE
                 }
 
                 if (totalIncomeData.isNotEmpty()){
+                    binding.budgetDetailIncomePiechart.visibility = View.VISIBLE
+                    binding.budgetDetailIncomeRecyclerview.visibility = View.VISIBLE
+                    binding.incomeTitleTextview.visibility = View.VISIBLE
+                    binding.incomeTextview.visibility = View.VISIBLE
+
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
+                    val adapterPostItems = mutableListOf<Pair<Category,String>>()
                     totalIncomeData.forEach { key, sum ->
                         entries.add(PieEntry(sum.toFloat(),categoryMap[key]?.name))
                         Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
                         colorsItems.add(Color.parseColor(categoryMap[key]?.color))
+
+                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totlaIncomeSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
                     }
 
+                    incomeListAdapter.submitList(adapterPostItems)
 
-                    Log.d(TAG, "initViewModels:entries.size, ${entries.size}")
-                    Log.d(TAG, "initViewModels:colorsItems.size, ${colorsItems.size}")
-
-                    val pieDataSet = PieDataSet(entries, "")
-                    pieDataSet.apply {
+                    val pieDataSet = PieDataSet(entries, "").apply {
                         colors = colorsItems
-                        valueTextColor = Color.BLACK
-                        valueTextSize = 16f
-                    }
+                        setValueTextColors(colorsItems)
+                    }.toCustomFormat()
+
                     val pieData = PieData(pieDataSet)
+                    binding.budgetDetailIncomePiechart.data = pieData
+                    binding.budgetDetailIncomePiechart.data.setValueFormatter(PercentFormatter())
+
+                    binding.budgetDetailIncomePiechart.animate()
+                    binding.budgetDetailIncomePiechart.invalidate()
+
+                    binding.incomeTextview.text = totlaIncomeSum.toMoneyFormat() + "원"
+                } else {
+                    binding.budgetDetailIncomePiechart.visibility = View.GONE
+                    binding.budgetDetailIncomeRecyclerview.visibility = View.GONE
+                    binding.incomeTitleTextview.visibility = View.GONE
+                    binding.incomeTextview.visibility = View.GONE
                 }
             }
         }
