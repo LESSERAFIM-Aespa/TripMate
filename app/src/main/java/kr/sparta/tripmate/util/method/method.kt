@@ -40,7 +40,11 @@ fun setCommaForMoneeyText(money: String): String {
     } else {
         money.length / 3
     }
-    var commaStartIndex = (money.length / 3) + 1
+    var commaStartIndex = if(money.length % 3 == 0) {
+        (money.length / 3) + 1
+    } else {
+        money.length % 3
+    }
     val comma = ','
     val stringBuilder = StringBuilder()
     stringBuilder.append(money)
