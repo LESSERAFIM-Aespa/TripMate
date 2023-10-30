@@ -63,9 +63,10 @@ class ScrapFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onPause() {
+        super.onPause()
         scrapViewModel.resetList()
+        searchQuery = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,7 +88,7 @@ class ScrapFragment : Fragment() {
     private fun searchView() {
         scrapAdapter = ScrapAdapter(
             onItemClick = { model, position ->
-                val intent = ScrapDetail.newIntentForScrap(requireContext(), model)
+                val intent = ScrapDetail.newIntentForScrap(scrapContext, model)
                 scrapResults.launch(intent)
             },
             onLikeClick = { model, position ->

@@ -19,18 +19,29 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/arrow_left">
 
-            <TextView
-                android:id="@+id/community_detail_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/community_detail_like_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="20dp"
-                android:visibility="gone"
-                android:text="수정"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/primary"/>
+                android:src="@drawable/ic_star_filled" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/community_detail_remove"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_delete" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/community_detail_edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_edit"/>
         </androidx.appcompat.widget.Toolbar>
 
         <TextView

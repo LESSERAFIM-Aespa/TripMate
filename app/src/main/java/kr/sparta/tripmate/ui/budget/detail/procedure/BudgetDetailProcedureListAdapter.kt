@@ -22,7 +22,9 @@ import kr.sparta.tripmate.util.method.setCommaForMoneeyText
  * 작성자: 서정한
  * 내용: 과정 Fragment의 RecyclerView Adapter.
  * */
-class BudgetDetailProcedureListAdapter :
+class BudgetDetailProcedureListAdapter(
+    private val onItemClick : (Int) -> Unit,
+) :
     ListAdapter<ProcedureModel, BudgetDetailProcedureListAdapter.ProcedureHolder>(
         object : DiffUtil.ItemCallback<ProcedureModel>() {
             override fun areItemsTheSame(
@@ -46,7 +48,8 @@ class BudgetDetailProcedureListAdapter :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            onItemClick
         )
     }
 
@@ -54,7 +57,10 @@ class BudgetDetailProcedureListAdapter :
         holder.bind(getItem(position))
     }
 
-    class ProcedureHolder(private val binding: ItemProcedureBinding) :
+    class ProcedureHolder(
+        private val binding: ItemProcedureBinding,
+        private val onItemClick: (Int) -> Unit,
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProcedureModel) = with(binding) {
             budgetProcedureBeforeMoneyTextview.text = setCommaForMoneeyText(item.beforeMoney.toString())
@@ -64,6 +70,11 @@ class BudgetDetailProcedureListAdapter :
             budgetProcedureTimeTextview.text = item.time
             budgetProcedureCategoryTextview.text = item.categoryName
             budgetProcedureCategoryTextview.backgroundTintList = ColorStateList.valueOf(Color.parseColor(item.categoryColor))
+
+            // 세부과정 디테일페이지로 이동
+            itemView.setOnClickListener {
+                onItemClick(item.num)
+            }
         }
     }
 }

@@ -5,12 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
+import kr.sparta.tripmate.domain.model.firebase.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetFirebaseBoardDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBoardDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.SaveFirebaseBookMarkDataUseCase
@@ -41,7 +48,6 @@ class CommunityViewModel(
     fun updateDataModelList(uid: String) {
 
         getFirebaseBoardDataUseCase(uid, _communityResults, _likeKeyResults)
-
     }
 
     /**
