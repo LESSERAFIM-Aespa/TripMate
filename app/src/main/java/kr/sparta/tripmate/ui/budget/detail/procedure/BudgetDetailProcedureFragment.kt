@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.ProcedureDetailActivity
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
@@ -38,7 +37,7 @@ class BudgetDetailProcedureFragment : Fragment() {
             onItemClick = { procedureNum ->
                 val intent = ProcedureDetailActivity.newIntent(
                     context = procedureContext,
-                    budgetNum = activity.budget.num ?: -1,
+                    budgetNum = activity.budget?.num ?: -1,
                     procedureNum = procedureNum,
                 )
                 startActivity(intent)
@@ -84,7 +83,7 @@ class BudgetDetailProcedureFragment : Fragment() {
                 // 잔액
                 budgetDetailStatusBalanceTextview.text = setCommaForMoneeyText(it.money.toString())
                 // 과정 RecyclerView item
-                viewModel.getAllProcedures(it)
+                viewModel.updateAllProcedures(it)
             }
         }
 
@@ -108,7 +107,7 @@ class BudgetDetailProcedureFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         activity.budget?.let{
-            viewModel.getAllProcedures(it)
+            viewModel.updateAllProcedures(it)
         }
     }
 
