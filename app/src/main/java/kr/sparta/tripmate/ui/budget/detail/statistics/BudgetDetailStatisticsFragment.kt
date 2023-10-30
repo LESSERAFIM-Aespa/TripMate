@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -27,6 +28,7 @@ import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModelFactory
+import kr.sparta.tripmate.util.method.toMoneyFormat
 
 private const val ARG_BUDGET_NUM = "budgetNum"
 
@@ -53,6 +55,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
         BudgetStatisticsViewModelFactory(budgetNum)
     }
 
+    private val expenditureListAdapter : BudgetDetailStatisticsListAdapter = BudgetDetailStatisticsListAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -75,9 +79,15 @@ class BudgetDetailStatisticsFragment : Fragment() {
             isRotationEnabled = false
             centerText = "지출"
 
+
             setUsePercentValues(true)
             setEntryLabelColor(Color.BLACK)
             setTouchEnabled(false)
+        }
+
+        binding.budgetDetailExpenditureRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = expenditureListAdapter
         }
     }
 
@@ -118,16 +128,16 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
+                    val adapterPostItems = mutableListOf<Pair<Category,String>>()
+                    val totlaExpenditureSum = totalExpenditureData.map { it.value }.sumOf { it }
                     totalExpenditureData.forEach { key, sum ->
                         entries.add(PieEntry(sum.toFloat(),categoryMap[key]?.name))
                         Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
                         colorsItems.add(Color.parseColor(categoryMap[key]?.color))
+
+                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totlaExpenditureSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
                     }
-
-
-                    Log.d(TAG, "initViewModels:entries.size, ${entries.size}")
-                    Log.d(TAG, "initViewModels:colorsItems.size, ${colorsItems.size}")
-
+                    expenditureListAdapter.submitList(adapterPostItems)
                     val pieDataSet = PieDataSet(entries, "")
                     pieDataSet.apply {
                         colors = colorsItems
