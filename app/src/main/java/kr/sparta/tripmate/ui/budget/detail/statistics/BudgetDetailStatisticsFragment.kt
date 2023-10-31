@@ -1,13 +1,34 @@
 package kr.sparta.tripmate.ui.budget.detail.statistics
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.os.Environment.isExternalStorageRemovable
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.PixelCopy
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import androidx.core.view.doOnLayout
 import androidx.core.view.isEmpty
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +37,8 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.google.android.play.integrity.internal.c
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
@@ -23,7 +46,13 @@ import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModelFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.IllegalArgumentException
 import java.text.NumberFormat
+import kotlin.random.Random
 
 private const val ARG_BUDGET_NUM = "budgetNum"
 
@@ -31,6 +60,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     companion object {
         private const val TAG = "BudgetDetailStatisticsFragment"
+        private const val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        private const val requestCode = 1001
         fun newInstance(budgetNum: Int) = BudgetDetailStatisticsFragment().apply {
             arguments = Bundle().apply {
                 putInt(ARG_BUDGET_NUM, budgetNum)
@@ -50,10 +81,12 @@ class BudgetDetailStatisticsFragment : Fragment() {
         BudgetStatisticsViewModelFactory(budgetNum)
     }
 
-    private val expenditureListAdapter : BudgetDetailStatisticsListAdapter = BudgetDetailStatisticsListAdapter()
-    private val incomeListAdapter : BudgetDetailStatisticsListAdapter = BudgetDetailStatisticsListAdapter()
+    private val expenditureListAdapter: BudgetDetailStatisticsListAdapter =
+        BudgetDetailStatisticsListAdapter()
+    private val incomeListAdapter: BudgetDetailStatisticsListAdapter =
+        BudgetDetailStatisticsListAdapter()
 
-    fun PieDataSet.toCustomFormat() = this.apply{
+    fun PieDataSet.toCustomFormat() = this.apply {
         valueTextSize = 16f
 
         // Value lines
@@ -90,6 +123,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
         initViews()
         initViewModels()
     }
+
 
     private fun initViews() = with(binding) {
         binding.budgetDetailExpenditurePiechart.apply {
@@ -158,18 +192,18 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     procedures.groupBy { it.categoryNum }
 
                 // 지출
-                val totalExpenditureData : MutableMap<Int,Int> = mutableMapOf()
+                val totalExpenditureData: MutableMap<Int, Int> = mutableMapOf()
                 // 수입
-                val totalIncomeData : MutableMap<Int,Int> = mutableMapOf()
+                val totalIncomeData: MutableMap<Int, Int> = mutableMapOf()
 
                 procedureGroupByCategoryNum.forEach { i, procedures ->
                     var expenditure = 0
                     var income = 0
 
                     procedures.forEach { procedure ->
-                        if (procedure.money < 0){//수입
+                        if (procedure.money < 0) {//수입
                             income += -procedure.money
-                        }else if (procedure.money > 0){//지출
+                        } else if (procedure.money > 0) {//지출
                             expenditure += procedure.money
                         }
                     }
@@ -181,7 +215,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                 val totalExpenditureSum = totalExpenditureData.map { it.value }.sumOf { it }
                 val totalIncomeSum = totalIncomeData.map { it.value }.sumOf { it }
 
-                if (totalExpenditureData.isNotEmpty()){
+                if (totalExpenditureData.isNotEmpty()) {
                     binding.budgetDetailExpenditurePiechart.visibility = View.VISIBLE
                     binding.budgetDetailExpenditureRecyclerview.visibility = View.VISIBLE
                     binding.expenditureTitleTextview.visibility = View.VISIBLE
@@ -190,13 +224,21 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
-                    val adapterPostItems = mutableListOf<Pair<Category,String>>()
+                    val adapterPostItems = mutableListOf<Pair<Category, String>>()
                     totalExpenditureData.forEach { key, sum ->
-                        entries.add(PieEntry(sum.toFloat(),categoryMap[key]?.name))
-                        Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
+                        entries.add(PieEntry(sum.toFloat(), categoryMap[key]?.name))
+                        Log.d(
+                            TAG,
+                            "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
+                        )
                         colorsItems.add(Color.parseColor(categoryMap[key]?.color))
 
-                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totalExpenditureSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
+                        adapterPostItems.add(
+                            Pair(
+                                categoryMap[key]!!,
+                                "${(sum / totalExpenditureSum.toFloat() * 100).toInt()}%, ${sum.toMoneyFormat()}원"
+                            )
+                        )
                     }
 
                     expenditureListAdapter.submitList(adapterPostItems)
@@ -219,7 +261,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     binding.expenditureTextview.visibility = View.GONE
                 }
 
-                if (totalIncomeData.isNotEmpty()){
+                if (totalIncomeData.isNotEmpty()) {
                     binding.budgetDetailIncomePiechart.visibility = View.VISIBLE
                     binding.budgetDetailIncomeRecyclerview.visibility = View.VISIBLE
                     binding.incomeTitleTextview.visibility = View.VISIBLE
@@ -228,13 +270,21 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val entries = ArrayList<PieEntry>()
                     val colorsItems = ArrayList<Int>()
 
-                    val adapterPostItems = mutableListOf<Pair<Category,String>>()
+                    val adapterPostItems = mutableListOf<Pair<Category, String>>()
                     totalIncomeData.forEach { key, sum ->
-                        entries.add(PieEntry(sum.toFloat(),categoryMap[key]?.name))
-                        Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
+                        entries.add(PieEntry(sum.toFloat(), categoryMap[key]?.name))
+                        Log.d(
+                            TAG,
+                            "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
+                        )
                         colorsItems.add(Color.parseColor(categoryMap[key]?.color))
 
-                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totalIncomeSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
+                        adapterPostItems.add(
+                            Pair(
+                                categoryMap[key]!!,
+                                "${(sum / totalIncomeSum.toFloat() * 100).toInt()}%, ${sum.toMoneyFormat()}원"
+                            )
+                        )
                     }
 
                     incomeListAdapter.submitList(adapterPostItems)
@@ -259,24 +309,66 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     binding.incomeTextview.visibility = View.GONE
                 }
 
-                binding.budgetStatisticsDurationTextview.text = budget.startDate + "~" + budget.endDate
+                binding.budgetStatisticsDurationTextview.text =
+                    budget.startDate + "~" + budget.endDate
                 binding.budgetStatisticsMoneyTextview.text = budget.money.toMoneyFormat() + "원"
-                binding.budgetStatisticsExpenditureTextview.text = totalExpenditureSum.toMoneyFormat() + "원"
+                binding.budgetStatisticsExpenditureTextview.text =
+                    totalExpenditureSum.toMoneyFormat() + "원"
                 binding.budgetStatisticsIncomeTextview.text = totalIncomeSum.toMoneyFormat() + "원"
-                binding.budgetStatisticsRemainTextview.text = (budget.money - totalExpenditureSum + totalIncomeSum).toMoneyFormat() + "원"
+                binding.budgetStatisticsRemainTextview.text =
+                    (budget.money - totalExpenditureSum + totalIncomeSum).toMoneyFormat() + "원"
 
-                binding.budgetStatisticsCalculateTextview.text = totalExpenditureSum.toMoneyFormat() + "원"
+                binding.budgetStatisticsCalculateTextview.text =
+                    totalExpenditureSum.toMoneyFormat() + "원"
 
                 binding.budgetStatisticsCalculateButton.setOnClickListener {
-                    if (binding.budgetStatisticsCalculateEdittext.text.toString().isBlank()){
+                    if (binding.budgetStatisticsCalculateEdittext.text.toString().isBlank()) {
 
-                    }else{
+                    } else {
                         val n = binding.budgetStatisticsCalculateEdittext.text.toString().toInt()
-                        binding.budgetStatisticsCalculateTextview.text = (totalExpenditureSum/n).toMoneyFormat() + "원"
+                        binding.budgetStatisticsCalculateTextview.text =
+                            (totalExpenditureSum / n).toMoneyFormat() + "원"
+                    }
+                }
+
+                binding.budgetStatisticsShareImageview.setOnClickListener {
+                    if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), requestCode)
+                    } else {
+                        captureScrollableContent()
                     }
                 }
             }
         }
+    }
+
+    private fun captureScrollableContent() {
+        val scrollView = binding.budgetStatisticsScrollview
+        val bitmap = Bitmap.createBitmap(
+            scrollView.width, scrollView.getChildAt(0).height,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+        scrollView.draw(canvas)
+
+        saveAndShareImage(bitmap)
+    }
+
+    private fun saveAndShareImage(bitmap: Bitmap) {
+        val file = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "scroll_capture.png")
+        val fileOutputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+        fileOutputStream.close()
+
+        val uri = FileProvider.getUriForFile(this.requireContext(), "kr.sparta.tripmate.provider", file)
+        val shareIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_STREAM, uri)
+            type = "image/png"
+        }
+
+        startActivity(Intent.createChooser(shareIntent, "스크롤 캡쳐 공유"))
     }
 
     override fun onDestroy() {
