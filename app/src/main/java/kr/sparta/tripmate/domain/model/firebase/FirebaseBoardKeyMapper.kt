@@ -1,7 +1,5 @@
 package kr.sparta.tripmate.domain.model.firebase
 
-import kr.sparta.tripmate.data.model.community.BoardKeyModel
-
 fun BoardKeyModel.toEntity() = BoardKeyModelEntity(
     uid = uid,
     key = key,

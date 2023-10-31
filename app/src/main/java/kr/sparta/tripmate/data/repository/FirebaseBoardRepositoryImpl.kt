@@ -2,21 +2,19 @@ package kr.sparta.tripmate.data.repository
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import kr.sparta.tripmate.data.datasource.remote.FirebaseDBRemoteDataSource
-import kr.sparta.tripmate.data.model.community.CommunityModel
+import kr.sparta.tripmate.data.datasource.remote.FirebaseBoardRemoteDataSource
 import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
 import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 import kr.sparta.tripmate.domain.repository.FirebaseBoardRepository
 
 /**
- * 작성자 : 박성수
- * getFirebaseBoardData : 내가쓴글 목록을 불러옵니다.
- * updateCommuIsView : 게시판을 클릭했을때 조회수가 업데이트 됩니다.
- */
+ * 작성자: 서정한
+ * 내용: 커뮤니티 게시판 Repository
+ * */
 class FirebaseBoardRepositoryImpl(
     private val
-    remoteSource: FirebaseDBRemoteDataSource
+    remoteSource: FirebaseBoardRemoteDataSource
 ) : FirebaseBoardRepository {
     override fun getFirebaseBoardData(
         uid: String,

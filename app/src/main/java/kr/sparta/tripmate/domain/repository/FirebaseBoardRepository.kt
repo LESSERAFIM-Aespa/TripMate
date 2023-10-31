@@ -8,11 +8,9 @@ import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
 import kr.sparta.tripmate.domain.model.firebase.KeyModelEntity
 
 /**
- * 작성자 : 박성수
- * 목적 : 단순히 업데이트된 커뮤니티 데이터와 조회수가 증가됩니다.
- * getFirebaseBoardData : 커뮤니티 게시판관련 데이터를 불러옵니다.
- * updateCommuIsView : 게시판 클릭 시 조회수가 업데이트 됩니다.
- */
+ * 작성자: 서정한
+ * 내용: 커뮤니티 게시판 Repository
+ * */
 interface FirebaseBoardRepository {
     fun getFirebaseBoardData(
         uid: String,
