@@ -9,7 +9,7 @@ import kr.sparta.tripmate.domain.model.login.UserDataEntity
 
 /**
  * 작성자: 서정한
- * 내용: Firebase RDB의 Scrap Data Repository
+ * 내용: 유저가 스크랩한 블로그, 게시글 Repository
  * */
 interface FirebaseScrapRepository {
     // 스크렙데이터 가져오기
