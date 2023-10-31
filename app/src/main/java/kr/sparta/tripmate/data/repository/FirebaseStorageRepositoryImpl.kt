@@ -5,6 +5,10 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import kr.sparta.tripmate.data.datasource.remote.FirebaseStorageRemoteDataSource
 import kr.sparta.tripmate.domain.repository.FirebaseStorageRepository
 
+/**
+ * 작성자: 서정한
+ * 내용: FirebaseStorage Repository
+ * */
 class FirebaseStorageRepositoryImpl(private val remoteDataSource: FirebaseStorageRemoteDataSource) :
     FirebaseStorageRepository {
     override fun uploadImage(
