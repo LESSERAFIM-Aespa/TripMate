@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -177,8 +178,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     if (income != 0) totalIncomeData[i] = income
                 }
 
-                val totlaExpenditureSum = totalExpenditureData.map { it.value }.sumOf { it }
-                val totlaIncomeSum = totalIncomeData.map { it.value }.sumOf { it }
+                val totalExpenditureSum = totalExpenditureData.map { it.value }.sumOf { it }
+                val totalIncomeSum = totalIncomeData.map { it.value }.sumOf { it }
 
                 if (totalExpenditureData.isNotEmpty()){
                     binding.budgetDetailExpenditurePiechart.visibility = View.VISIBLE
@@ -195,7 +196,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                         Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
                         colorsItems.add(Color.parseColor(categoryMap[key]?.color))
 
-                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totlaExpenditureSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
+                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totalExpenditureSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
                     }
 
                     expenditureListAdapter.submitList(adapterPostItems)
@@ -210,7 +211,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     binding.budgetDetailExpenditurePiechart.data.setValueFormatter(PercentFormatter())
                     binding.budgetDetailExpenditurePiechart.animate()
                     binding.budgetDetailExpenditurePiechart.invalidate()
-                    binding.expenditureTextview.text = totlaExpenditureSum.toMoneyFormat() + "원"
+                    binding.expenditureTextview.text = totalExpenditureSum.toMoneyFormat() + "원"
                 } else {
                     binding.budgetDetailExpenditurePiechart.visibility = View.GONE
                     binding.budgetDetailExpenditureRecyclerview.visibility = View.GONE
@@ -233,7 +234,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                         Log.d(TAG, "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}")
                         colorsItems.add(Color.parseColor(categoryMap[key]?.color))
 
-                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totlaIncomeSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
+                        adapterPostItems.add(Pair(categoryMap[key]!!,"${(sum/totalIncomeSum.toFloat()*100).toInt()}%, ${sum.toMoneyFormat()}원"))
                     }
 
                     incomeListAdapter.submitList(adapterPostItems)
@@ -250,12 +251,29 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     binding.budgetDetailIncomePiechart.animate()
                     binding.budgetDetailIncomePiechart.invalidate()
 
-                    binding.incomeTextview.text = totlaIncomeSum.toMoneyFormat() + "원"
+                    binding.incomeTextview.text = totalIncomeSum.toMoneyFormat() + "원"
                 } else {
                     binding.budgetDetailIncomePiechart.visibility = View.GONE
                     binding.budgetDetailIncomeRecyclerview.visibility = View.GONE
                     binding.incomeTitleTextview.visibility = View.GONE
                     binding.incomeTextview.visibility = View.GONE
+                }
+
+                binding.budgetStatisticsDurationTextview.text = budget.startDate + "~" + budget.endDate
+                binding.budgetStatisticsMoneyTextview.text = budget.money.toMoneyFormat() + "원"
+                binding.budgetStatisticsExpenditureTextview.text = totalExpenditureSum.toMoneyFormat() + "원"
+                binding.budgetStatisticsIncomeTextview.text = totalIncomeSum.toMoneyFormat() + "원"
+                binding.budgetStatisticsRemainTextview.text = (budget.money - totalExpenditureSum + totalIncomeSum).toMoneyFormat() + "원"
+
+                binding.budgetStatisticsCalculateTextview.text = totalExpenditureSum.toMoneyFormat() + "원"
+
+                binding.budgetStatisticsCalculateButton.setOnClickListener {
+                    if (binding.budgetStatisticsCalculateEdittext.text.toString().isBlank()){
+
+                    }else{
+                        val n = binding.budgetStatisticsCalculateEdittext.text.toString().toInt()
+                        binding.budgetStatisticsCalculateTextview.text = (totalExpenditureSum/n).toMoneyFormat() + "원"
+                    }
                 }
             }
         }
