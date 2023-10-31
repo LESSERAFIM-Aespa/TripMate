@@ -1,5 +1,9 @@
 package kr.sparta.tripmate.data.model.login
 
+/**
+ * 작성자: 박성수
+ * 내용: 유저 Model
+ * */
 data class UserData(
     val login_type : String? = null,
     val login_Id: String? = null,       //로그인 id
