@@ -17,6 +17,7 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemProcedureBinding
 import kr.sparta.tripmate.util.TripMateApp
 import kr.sparta.tripmate.util.method.setCommaForMoneeyText
+import kr.sparta.tripmate.util.method.toMoneyFormat
 
 /**
  * 작성자: 서정한
@@ -63,9 +64,9 @@ class BudgetDetailProcedureListAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProcedureModel) = with(binding) {
-            budgetProcedureBeforeMoneyTextview.text = setCommaForMoneeyText(item.beforeMoney.toString())
-            budgetProcedurePriceTextview.text = setCommaForMoneeyText(item.price.toString())
-            budgetProcedureTotalAmountTextview.text = setCommaForMoneeyText(item.totalAmount.toString())
+            budgetProcedureBeforeMoneyTextview.text = item.beforeMoney.toMoneyFormat() + "원"
+            budgetProcedurePriceTextview.text = item.price.toMoneyFormat() + "원"
+            budgetProcedureTotalAmountTextview.text = item.totalAmount.toMoneyFormat() + "원"
             budgetProcedureTitleTextview.text = item.title
             budgetProcedureTimeTextview.text = item.time
             budgetProcedureCategoryTextview.text = item.categoryName
