@@ -58,26 +58,29 @@ class ProcedureDetailActivity : AppCompatActivity() {
     private fun initViewModels() {
         with(procedureDetailViewModel) {
             procedure.observe(this@ProcedureDetailActivity) { list ->
-                if (list.isEmpty()) finish()
-                val procedure = list.orEmpty().first()
-                val categories = categories.value.orEmpty()
+                if (list.isEmpty()) {
+                    finish()
+                }else{
+                    val procedure = list.orEmpty().first()
+                    val categories = categories.value.orEmpty()
 
-                binding.procedureDetailTitleTextview.text = procedure.name
-                categories.firstOrNull {
-                    it.num == procedure.categoryNum
-                }?.let { category ->
-                    binding.procedureCategoryName.text = category.name
-                    binding.procedureCategoryName.backgroundTintList =
-                        ColorStateList.valueOf(Color.parseColor(category.color))
+                    binding.procedureDetailTitleTextview.text = procedure.name
+                    categories.firstOrNull {
+                        it.num == procedure.categoryNum
+                    }?.let { category ->
+                        binding.procedureCategoryName.text = category.name
+                        binding.procedureCategoryName.backgroundTintList =
+                            ColorStateList.valueOf(Color.parseColor(category.color))
+                    }
+                    binding.procedureTimeTextview.text = procedure.time
+                    binding.procedureDescriptionTextview.text = procedure.description
+                    if (procedure.money > 0) {
+                        binding.procedureMoneyStateTextview.text = "지출"
+                    } else {
+                        binding.procedureMoneyStateTextview.text = "수입"
+                    }
+                    binding.procedureMoneyTextview.text = abs(procedure.money).toMoneyFormat() + "원"
                 }
-                binding.procedureTimeTextview.text = procedure.time
-                binding.procedureDescriptionTextview.text = procedure.description
-                if (procedure.money > 0) {
-                    binding.procedureMoneyStateTextview.text = "지출"
-                } else {
-                    binding.procedureMoneyStateTextview.text = "수입"
-                }
-                binding.procedureMoneyTextview.text = abs(procedure.money).toMoneyFormat() + "원"
             }
         }
     }
