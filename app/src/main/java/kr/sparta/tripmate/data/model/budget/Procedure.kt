@@ -65,3 +65,14 @@ fun Procedure.toModel(model: ProcedureModel) = ProcedureModel(
     categoryColor = model.categoryColor,
     categoryName = model.categoryName,
 )
+
+fun Procedure.toModel() = ProcedureModel(
+    num = num,
+    title = name,
+    price = money,
+    beforeMoney = 0,
+    totalAmount = 0,
+    time = time,
+    categoryColor = "",
+    categoryName = "",
+)

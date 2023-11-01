@@ -7,23 +7,39 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.ProcedureDetailActivity
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModelFactory
 import kr.sparta.tripmate.util.method.setCommaForMoneeyText
+import kr.sparta.tripmate.util.method.toMoneyFormat
 
 
 /**
  * 작성자: 서정한
  * 내용: 가계부 세부 과정 Fragment
  * */
+
+
+private const val ARG_BUDGET_NUM = "budgetNum"
 class BudgetDetailProcedureFragment : Fragment() {
     companion object {
-        fun newInstance() = BudgetDetailProcedureFragment()
+        fun newInstance(budgetNum: Int) = BudgetDetailProcedureFragment().apply {
+            arguments = Bundle().apply {
+                putInt(ARG_BUDGET_NUM, budgetNum)
+            }
+        }
     }
+
+    private val budgetNum: Int by lazy {
+        arguments?.getInt(ARG_BUDGET_NUM)!!
+    }
+
 
     private lateinit var procedureContext: Context
     private lateinit var activity: BudgetDetailActivity
@@ -45,8 +61,8 @@ class BudgetDetailProcedureFragment : Fragment() {
         )
     }
 
-    private val viewModel: BudgetProcedureViewModel by viewModels() {
-        BudgetProcedureFactory()
+    private val viewModel: BudgetStatisticsViewModel by activityViewModels {
+        BudgetStatisticsViewModelFactory(budgetNum)
     }
 
     override fun onAttach(context: Context) {
@@ -76,38 +92,29 @@ class BudgetDetailProcedureFragment : Fragment() {
          * 작성자: 서정한
          * 내용: 과정 데이터 init
          * */
-        fun initProcedureData() {
-            activity.budget?.let {
-                // 원금
-                budgetDetailStatusPrincipalTextview.text = setCommaForMoneeyText(it.money.toString())
-                // 잔액
-                budgetDetailStatusBalanceTextview.text = setCommaForMoneeyText(it.money.toString())
-                // 과정 RecyclerView item
-                viewModel.updateAllProcedures(it)
-            }
-        }
 
         // RecyclerView
         budgetDetailProcedureRecyclerview.adapter = adapter
-
-        initProcedureData()
     }
 
     private fun initViewModel() {
-        viewModel.procedureList.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list)
-
-            // 잔액 업데이트
-            if (list.isNotEmpty()) {
-                binding.budgetDetailStatusBalanceTextview.text = setCommaForMoneeyText(list.last().totalAmount.toString())
+        with(viewModel){
+            budgetLiveData.observe(viewLifecycleOwner) {
+                binding.budgetDetailStatusPrincipalTextview.text = it.money.toMoneyFormat() + "원"
+                binding.budgetDetailStatusBalanceTextview.text = it.money.toMoneyFormat() + "원"
             }
-        }
-    }
+            procedureList.observe(viewLifecycleOwner) { list ->
+                adapter.submitList(list)
 
-    override fun onResume() {
-        super.onResume()
-        activity.budget?.let{
-            viewModel.updateAllProcedures(it)
+                // 잔액 업데이트
+                if (list.isNotEmpty()) {
+                    binding.budgetDetailStatusBalanceTextview.text = list.last().totalAmount.toMoneyFormat() + "원"
+                }else{
+                    binding.budgetDetailStatusBalanceTextview.text = binding.budgetDetailStatusPrincipalTextview.text.toString()
+                }
+            }
+
+            budgetTotal.observe(viewLifecycleOwner){}
         }
     }
 
