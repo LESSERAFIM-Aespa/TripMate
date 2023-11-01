@@ -35,8 +35,8 @@ class BudgetStatisticsViewModel(budgetNum: Int, repository: BudgetRepository) : 
                         }
                     }
 
-                    var currentMoney = budget.money
-                    fun reduceCurrentMoney(reduce: Int): Int {
+                    var currentMoney = budget.money.toLong()
+                    fun reduceCurrentMoney(reduce: Int): Long {
                         currentMoney -= reduce
                         return currentMoney
                     }
