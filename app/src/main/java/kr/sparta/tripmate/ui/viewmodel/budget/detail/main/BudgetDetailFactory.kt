@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModelProvider
 import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
 import kr.sparta.tripmate.util.TripMateApp
 
-class BudgetDetailFactory(): ViewModelProvider.Factory {
+class BudgetDetailFactory(private val budgetNum : Int): ViewModelProvider.Factory {
     private val repository by lazy {
         BudgetRepositoryImpl(TripMateApp.getApp().applicationContext)
     }
 
     override fun<T : ViewModel> create(modelClass:Class<T>):T{
         if(modelClass.isAssignableFrom(BudgetDetailViewModel::class.java)) {
-            return BudgetDetailViewModel(repository) as T
+            return BudgetDetailViewModel(repository,budgetNum) as T
         } else {
             throw IllegalArgumentException("Not found ViewModel class.")
         }

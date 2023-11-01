@@ -43,7 +43,7 @@ class BudgetDetailActivity : AppCompatActivity() {
     }
 
     private val viewModel: BudgetDetailViewModel by viewModels() {
-        BudgetDetailFactory()
+        BudgetDetailFactory(budget?.num!!)
     }
 
     val budget by lazy {
@@ -59,6 +59,7 @@ class BudgetDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViews()
+        initViewModels()
     }
 
     private fun initViews() = with(binding) {
@@ -100,8 +101,16 @@ class BudgetDetailActivity : AppCompatActivity() {
 
     }
 
+    private fun initViewModels() {
+        with(viewModel){
+            budgetLiveData.observe(this@BudgetDetailActivity){ budget ->
+                binding.budgetDetailToolbar.title = budget.name
+            }
+        }
+    }
+
     private fun showDeleteBudgetDialog() {
-        var builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.budget_detail_dialog_title))
         builder.setMessage(getString(R.string.budget_detail_dialog_message))
 
