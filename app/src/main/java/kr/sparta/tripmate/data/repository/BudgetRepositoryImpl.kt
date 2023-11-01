@@ -167,14 +167,17 @@ class BudgetRepositoryImpl(context: Context) : BudgetRepository {
     override fun getBudgetTotalToFlowWhenProccessChangedWithBudgetNum(num: Int): Flow<Triple<Budget, List<Category>, List<Procedure>>> =
         flow {
             proceduresDao.getAllProceduresToFlow().collect {
-                val budgetCategories = budgetCategoriesDao.getAllBudgetCategories(num).first()
+                val triple = budgetCategoriesDao.getAllBudgetCategories(num)
+                if (triple.isNotEmpty()){
+                    val budgetCategories = triple.first()
 
-                val budget = budgetCategories.budget
-                val categories = budgetCategories.categories.orEmpty()
-                val procedures =
-                    proceduresDao.getAllProceduresOrderByTimeWithCategoryNums(categories.map { it.num })
+                    val budget = budgetCategories.budget
+                    val categories = budgetCategories.categories.orEmpty()
+                    val procedures =
+                        proceduresDao.getAllProceduresOrderByTimeWithCategoryNums(categories.map { it.num })
 
-                emit(Triple(budget, categories, procedures))
+                    emit(Triple(budget, categories, procedures))
+                }
             }
         }
 
