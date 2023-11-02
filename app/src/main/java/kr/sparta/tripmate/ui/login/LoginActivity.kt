@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-val x = 1
+
         auth = FirebaseAuth.getInstance()
         login_Database = Firebase.database.reference
 
