@@ -9,28 +9,29 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(
-    private val onBoardClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onLikeClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onThumbnailClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onItemLongClicked: (CommunityModelEntity, Int) -> Unit
+    private val onBoardClicked: (CommunityEntity, Int) -> Unit,
+    private val onLikeClicked: (CommunityEntity, Int) -> Unit,
+    private val onUserProfileClicked: (CommunityEntity, Int) -> Unit,
+    private val onItemLongClicked: (CommunityEntity, Int) -> Unit
 ) :
-    ListAdapter<CommunityModelEntity, CommunityListAdapter.CommunityHolder>(
-        object : DiffUtil.ItemCallback<CommunityModelEntity>() {
+    ListAdapter<CommunityEntity, CommunityListAdapter.CommunityHolder>(
+        object : DiffUtil.ItemCallback<CommunityEntity>() {
             override fun areItemsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
                 return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
-                return oldItem.key == newItem.key
+                return oldItem == newItem
             }
 
         }
@@ -51,15 +52,16 @@ class CommunityListAdapter(
     inner class CommunityHolder(private val binding: FragmentCommunityMainItemBinding) :
         RecyclerView
         .ViewHolder(binding.root) {
-        fun bind(item: CommunityModelEntity) = with(binding) {
+        fun bind(item: CommunityEntity) = with(binding) {
             /**
              * 작성자: 서정한
              * 내용: url의 이미지가 없을경우 기본이미지로 보여준다.
              * */
             fun setUrlImageOrDefault() {
-                item.addedImage?.let {
+                item.image?.let {
                     if (it != "") {
-                        communityMainThumbnail.load(item.addedImage) {
+                        communityMainThumbnail.load(it) {
+                            memoryCacheKey(item.key)
                             crossfade(true)
                             listener(
                                 onStart = {
@@ -71,7 +73,7 @@ class CommunityListAdapter(
                             )
                         }
                     } else {
-                        communityMainThumbnail.setImageResource(R.drawable.emptycommu)
+                        communityMainThumbnail.load(R.drawable.emptycommu)
                     }
                 }
             }
@@ -80,19 +82,23 @@ class CommunityListAdapter(
              * 작성자: 서정한
              * 내용: 좋아요버튼 클릭에따른 토글처리
              * */
-            fun toggleisLikeIcon() {
-                if (item.commuIsLike) {
+            fun toggleIsLikeIcon() {
+                val uid = SharedPreferences.getUid(itemView.context)
+                val isLike = item.likeUsers.find { it == uid } ?: ""
+
+                if (isLike != "") {
                     communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
                 } else {
                     communityMainLikesButton.setBackgroundResource(R.drawable.heart)
                 }
             }
-            toggleisLikeIcon()
+
+            toggleIsLikeIcon()
             setUrlImageOrDefault()
             communityMainTitle.text = item.title
             communityMainProfileNickname.text = item.profileNickname
-            communityMainViews.text = item.views
-            communityMainLikes.text = item.likes
+            communityMainViews.text = item.views.toString()
+            communityMainLikes.text = item.likes.toString()
 
 
             // 좋아요 버튼클릭
@@ -109,7 +115,7 @@ class CommunityListAdapter(
             communityMainProfileThumbnail.apply {
                 load(item.profileThumbnail)
                 setOnClickListener {
-                    onThumbnailClicked(item, bindingAdapterPosition)
+                    onUserProfileClicked(item, bindingAdapterPosition)
                 }
             }
 
