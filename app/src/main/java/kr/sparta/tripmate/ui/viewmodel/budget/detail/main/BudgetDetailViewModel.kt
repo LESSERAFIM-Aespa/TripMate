@@ -1,15 +1,11 @@
 package kr.sparta.tripmate.ui.viewmodel.budget.detail.main
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.data.model.budget.Category
-import kr.sparta.tripmate.data.model.budget.toModel
-import kr.sparta.tripmate.domain.repository.BudgetRepository
-import kr.sparta.tripmate.ui.budget.detail.procedure.ProcedureModel
+import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
 
 /**
  * 작성자: 서정한
