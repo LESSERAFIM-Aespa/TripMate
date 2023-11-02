@@ -40,8 +40,8 @@
         android:id="@+id/scrap_SearchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/scrap_content_outline"
         android:layout_marginHorizontal="20dp"
+        android:background="@drawable/scrap_content_outline"
         app:layout_constraintBottom_toTopOf="@+id/scrap_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,6 @@
         android:id="@+id/scrap_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="17dp"
         android:background="@drawable/bodyshape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,22 +64,11 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/primary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="550dp"-->
-    <!--        android:background="@drawable/bodyshape"-->
-    <!--        android:backgroundTint="@color/white"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent">-->
-
-    <!--        -->
-
-    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
