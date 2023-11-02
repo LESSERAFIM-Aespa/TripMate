@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +11,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.ActivitySettingBinding
-import kr.sparta.tripmate.domain.model.login.UserDataEntity
+import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.viewmodel.setting.SettingFactory
 import kr.sparta.tripmate.ui.viewmodel.setting.SettingViewModel
