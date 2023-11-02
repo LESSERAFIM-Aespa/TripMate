@@ -7,14 +7,5 @@ data class SearchBlogServerData(
     @SerializedName("total") val total: Int?,
     @SerializedName("start") val start: Int?,
     @SerializedName("display") val display: Int?,
-    @SerializedName("items") val items: ArrayList<SearchBlogItems>?
-)
-
-data class SearchBlogItems(
-    @SerializedName("title") val title: String?,
-    @SerializedName("link") val link: String?,
-    @SerializedName("description") val description: String?,
-    @SerializedName("bloggername") val bloggername: String?,
-    @SerializedName("bloggerlink") val bloggerlink: String?,
-    @SerializedName("postdate") val postdate: String?
+    @SerializedName("items") val items: ArrayList<SearchBlogModel>?
 )
