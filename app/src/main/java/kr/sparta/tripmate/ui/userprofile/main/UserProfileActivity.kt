@@ -5,14 +5,12 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import kr.sparta.tripmate.databinding.ActivityUserProfileBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.ui.userprofile.model.UserProfileModel
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileFactory
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -24,7 +22,7 @@ import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 class UserProfileActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_MODEL = "extra_model"
-        fun newIntentForGetUserProfile(context: Context, model: CommunityModelEntity): Intent =
+        fun newIntentForGetUserProfile(context: Context, model: CommunityEntity): Intent =
             Intent(context, UserProfileActivity::class.java).apply {
                 putExtra(EXTRA_MODEL, model)
             }
@@ -42,7 +40,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_MODEL, CommunityModelEntity::class.java)
+            intent.getParcelableExtra(EXTRA_MODEL, CommunityEntity::class.java)
         } else {
             intent.getParcelableExtra(EXTRA_MODEL)
         }
@@ -51,7 +49,7 @@ class UserProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        SharedPreferences.saveUidFromUser(this, model!!.id)
+        model?.id?.let { SharedPreferences.saveUidFromUser(this, it) }
         initView()
         initViewModel()
         callDataSource()
@@ -59,7 +57,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun callDataSource() {
         model?.let {
-            userProfileViewModel.updateUserData(model!!.id)
+            model?.id?.let { it1 -> userProfileViewModel.updateUserData(it1) }
         }
     }
 
