@@ -26,6 +26,7 @@ import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.ScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
+import java.util.Random
 
 class ScrapFragment : Fragment() {
     companion object {
@@ -59,8 +60,30 @@ class ScrapFragment : Fragment() {
 
         setUpView()
         searchView()
+        initImage()
 
         return binding.root
+    }
+
+    private fun initImage() {
+        val suggestionItems: ArrayList<String> = arrayListOf("울산 여행지", "부산 여행지","인천 여행지", "대구 여행지", "서울 여행지", "대전 여행지", "광주 여행지", "세종 여행지" )
+        val random = Random()
+        val randomIndex = random.nextInt(suggestionItems.size)
+        val randomItem = suggestionItems[randomIndex]
+        scrapViewModel.searchImageResult(randomItem)
+        binding.scrapImagesearchTextview.text = randomItem + "로 떠나볼까요?"
+        binding.scrapImagelayout.setOnClickListener {
+            scrapViewModel.searchAPIResult(randomItem, scrapContext)
+            binding.scrapRecyclerView.visibility=View.VISIBLE
+            binding.scrapImagelayout.visibility= View.GONE
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+        scrapViewModel.resetList()
+        searchQuery = null
+        binding.scrapRecyclerView.visibility=View.GONE
+        binding.scrapImagelayout.visibility= View.VISIBLE
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

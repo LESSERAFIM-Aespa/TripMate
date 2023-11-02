@@ -1,8 +1,9 @@
 package kr.sparta.tripmate.api.naver
 
+import com.google.firebase.BuildConfig
 import com.google.gson.GsonBuilder
-import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.api.Constants
+import kr.sparta.tripmate.data.datasource.remote.ImageRemoteDataSource
 import kr.sparta.tripmate.data.datasource.remote.ScrapRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,6 +14,8 @@ import java.util.concurrent.TimeUnit
 object NaverNetWorkClient {
     val apiService : ScrapRemoteDataSource
         get() = instance.create(ScrapRemoteDataSource::class.java)
+    val imageApiService : ImageRemoteDataSource
+        get() = instance.create(ImageRemoteDataSource::class.java)
 
     private fun createOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()

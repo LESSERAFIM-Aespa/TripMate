@@ -14,7 +14,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.domain.model.scrap.ImageItemsEntity
 import kr.sparta.tripmate.domain.model.scrap.toScrapEntity
+import kr.sparta.tripmate.domain.usecase.GetImageUseCase
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.domain.usecase.RemoveFirebaseScrapData
 import kr.sparta.tripmate.domain.usecase.SaveFirebaseScrapData
@@ -23,10 +25,14 @@ import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 class ScrapViewModel(
     private val searchBlog: GetSearchBlogUseCase,
     private val saveFirebaseScrapData: SaveFirebaseScrapData,
-    private val removeFirebaseScrapData: RemoveFirebaseScrapData
+    private val removeFirebaseScrapData: RemoveFirebaseScrapData,
+    private val getImageUseCase: GetImageUseCase
 ) : ViewModel() {
     private val _scrapResult = MutableLiveData<List<ScrapEntity>>()
     val scrapResult: LiveData<List<ScrapEntity>> get() = _scrapResult
+    private val _imageResult = MutableLiveData<List<ImageItemsEntity>>()
+    val imageResult: LiveData<List<ImageItemsEntity>> get() = _imageResult
+
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -63,6 +69,24 @@ class ScrapViewModel(
             Log.e("ScrapViewModel", it.message.toString())
         }
     }
+    fun searchImageResult(q:String) = viewModelScope.launch {
+        kotlin.runCatching {
+            _isLoading.value = true
+            val result = getImageUseCase(q)
+            val imageItems = ArrayList<ImageItemsEntity>()
+            result.items?.let {
+                for(i in it.indices){
+                    imageItems.add(it[i])
+                }
+                _imageResult.value = imageItems
+                _isLoading.value = false
+            }
+        }.onFailure {
+            _isLoading.value = false
+            Log.e("tripmates", it.message.toString())
+        }
+    }
+
 
     /**
      * 작성자: 박성수
@@ -130,5 +154,8 @@ class ScrapViewModel(
         list.find { it.url == model.url } ?: return
         list[position] = model
         _scrapResult.value = list
+    }
+    fun resetList(){
+        _scrapResult.value = emptyList()
     }
 }
