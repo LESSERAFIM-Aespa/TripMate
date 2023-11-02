@@ -2,8 +2,7 @@ package kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
-import kr.sparta.tripmate.domain.repository.BudgetRepository
+import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.util.TripMateApp
 
 class BudgetStatisticsViewModelFactory(val budgetNum:Int) : ViewModelProvider.Factory {
