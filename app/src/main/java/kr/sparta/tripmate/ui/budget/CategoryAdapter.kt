@@ -55,11 +55,11 @@ class CategoryAdapter(val categoryListEventListener: CategoryListEventListener) 
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    saveList[absoluteAdapterPosition] =
+                        saveList[absoluteAdapterPosition].copy(name = budgetCategoryNameEdittext.text.toString())
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
-                    saveList[absoluteAdapterPosition] =
-                        saveList[absoluteAdapterPosition].copy(name = budgetCategoryNameEdittext.text.toString())
                 }
             })
         }

@@ -8,6 +8,10 @@ import android.graphics.Color
 import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextUtils.replace
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import com.google.android.datatransport.runtime.util.PriorityMapping.toInt
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -94,6 +99,9 @@ class BudgetContentActivity : AppCompatActivity() {
     }
 
 
+    private val decimalFormat = DecimalFormat("#,###")
+    private var resultMoney: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -166,6 +174,28 @@ class BudgetContentActivity : AppCompatActivity() {
             //취소하기
             finish()
         }
+        budgetMoneyEdittext.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != resultMoney){
+                    if(charSequence.toString().any { it == '.' }){
+                        resultMoney = decimalFormat.format(charSequence.toString().replace(".","").toDouble())
+                        budgetMoneyEdittext.setText(resultMoney)
+                        budgetMoneyEdittext.setSelection(resultMoney.length)
+                    }else{
+                        resultMoney = decimalFormat.format(charSequence.toString().replace(",","").toDouble())
+                        budgetMoneyEdittext.setText(resultMoney)
+                        budgetMoneyEdittext.setSelection(resultMoney.length)
+                    }
+
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
 
         budgetSaveButton.setOnClickListener {
             when {
@@ -178,10 +208,10 @@ class BudgetContentActivity : AppCompatActivity() {
 
                 }
 
-                budgetNameEdittext.text.toString().length >= 30 -> {
+                budgetNameEdittext.text.toString().length >= 10 -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
-                        "가계부 이름은 30자이내로 적어주세요.",
+                        "가계부 이름은 10자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -210,7 +240,7 @@ class BudgetContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                !budgetMoneyEdittext.text.toString().isDigitsOnly() -> {
+                !budgetMoneyEdittext.text.toString().replace(",","").isDigitsOnly() -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
                         "소수와 음수는 원금으로 사용할수없습니다.",
@@ -218,10 +248,17 @@ class BudgetContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                categoryAdapter.saveList.any { it.name.isBlank() || it.name.length > 30 } -> {
+                budgetMoneyEdittext.text.toString().replace(",","").length > 9 -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
-                        "카테고리이름을 30자이내로 적어주세요",
+                        "최대범위를 넘었습니다. 10억 미만으로 입력해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                categoryAdapter.saveList.any { it.name.isBlank() || it.name.length > 10 } -> {
+                    Toast.makeText(
+                        this@BudgetContentActivity,
+                        "카테고리이름을 10자이내로 적어주세요",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -230,7 +267,7 @@ class BudgetContentActivity : AppCompatActivity() {
                         name = budgetNameEdittext.text.toString(),
                         startDate = budgetStartdateTextview.text.toString(),
                         endDate = budgetEnddateTextview.text.toString(),
-                        money = budgetMoneyEdittext.text.toString().toInt()
+                        money = budgetMoneyEdittext.text.toString().replace(",","").toInt()
                     )
                     val categories = categoryAdapter.saveList
                     when (entryType) {

@@ -8,6 +8,9 @@ import android.content.res.ColorStateList
 import android.icu.text.DecimalFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +80,9 @@ class ProcedureContentActivity : AppCompatActivity() {
 
     private lateinit var arrayAdapter: ArrayAdapter<Category>
 
+    private val decimalFormat = DecimalFormat("#,###")
+    private var resultMoney: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -129,10 +135,11 @@ class ProcedureContentActivity : AppCompatActivity() {
                     val procedure = list.orEmpty().first()
                     binding.procedureNameEdittext.setText(procedure.name)
                     binding.procedureTimeTextview.text = procedure.time
-                    if (procedure.money <= 0){
+                    if (procedure.money <= 0) {
                         binding.procedureMoneyTextview.isSelected = true
                         binding.procedureMoneyTextview.text = "소비"
-                        binding.procedureMoneyTextview.backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
+                        binding.procedureMoneyTextview.backgroundTintList =
+                            ColorStateList.valueOf(getColor(R.color.primary))
                     }
                     binding.procedureMoneyEdittext.setText("${abs(procedure.money)}")
                     binding.procedureMemoEdittext.setText(procedure.description)
@@ -170,13 +177,40 @@ class ProcedureContentActivity : AppCompatActivity() {
                     }
 
                     false -> {
-                        text = "수입"
+                        text = "소득"
                         backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
                     }
                 }
                 isSelected = !isSelected
             }
         }
+
+        binding.procedureMoneyEdittext.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != resultMoney) {
+                    if (charSequence.toString().any { it == '.' }) {
+                        resultMoney = decimalFormat.format(
+                            charSequence.toString().replace(".", "").toDouble()
+                        )
+                        procedureMoneyEdittext.setText(resultMoney)
+                        procedureMoneyEdittext.setSelection(resultMoney.length)
+                    } else {
+                        resultMoney = decimalFormat.format(
+                            charSequence.toString().replace(",", "").toDouble()
+                        )
+                        procedureMoneyEdittext.setText(resultMoney)
+                        procedureMoneyEdittext.setSelection(resultMoney.length)
+                    }
+
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
 
         procedureSaveButton.setOnClickListener {
             when {
@@ -188,10 +222,10 @@ class ProcedureContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                procedureNameEdittext.text.toString().length >= 30 -> {
+                procedureNameEdittext.text.toString().length >= 10 -> {
                     Toast.makeText(
                         this@ProcedureContentActivity,
-                        "과정 이름은 30자이내로 적어주세요.",
+                        "과정 이름은 10자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -220,9 +254,16 @@ class ProcedureContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
+                procedureMoneyEdittext.text.toString().replace(",", "").length > 9 -> {
+                    Toast.makeText(
+                        this@ProcedureContentActivity,
+                        "최대범위를 넘었습니다. 10억 미만으로 입력해주세요",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
                 else -> {
-                    val money = procedureMoneyEdittext.text.toString().toInt()
+                    val money = procedureMoneyEdittext.text.toString().replace(",", "").toInt()
                     val procedure = Procedure(
                         categoryNum = arrayAdapter.getItem(procedureCategorySpinner.selectedItemPosition)!!.num,
                         name = procedureNameEdittext.text.toString(),

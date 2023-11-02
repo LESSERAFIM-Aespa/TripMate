@@ -37,9 +37,9 @@ class BudgetProcedureViewModel(private val repository: BudgetRepository) : ViewM
                 // 원금
                 val principal = model.money
                 // 직전 총액
-                var beforeAmount: Int = 0
+                var beforeAmount: Long = 0
                 // 현재 남은 잔액
-                var totalAmount: Int = principal
+                var totalAmount: Long = principal.toLong()
 
                 // 과정의 모든 데이터를 불러오기
                 val procedures =
