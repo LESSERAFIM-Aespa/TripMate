@@ -177,7 +177,7 @@ class ProcedureContentActivity : AppCompatActivity() {
                     }
 
                     false -> {
-                        text = "수입"
+                        text = "소득"
                         backgroundTintList = ColorStateList.valueOf(getColor(R.color.primary))
                     }
                 }
