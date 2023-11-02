@@ -9,33 +9,33 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.HomeGridviewItemsBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 
-class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) -> Unit) :
-    ListAdapter<CommunityModelEntity, HomeBoardListAdapter.Holder>(object : DiffUtil
-    .ItemCallback<CommunityModelEntity>() {
+class HomeBoardListAdapter(private val onItemClick: (CommunityEntity) -> Unit) :
+    ListAdapter<CommunityEntity, HomeBoardListAdapter.Holder>(object : DiffUtil
+    .ItemCallback<CommunityEntity>() {
         override fun areItemsTheSame(
-            oldItem: CommunityModelEntity,
-            newItem: CommunityModelEntity
+            oldItem: CommunityEntity,
+            newItem: CommunityEntity
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.key == newItem.key
         }
 
         override fun areContentsTheSame(
-            oldItem: CommunityModelEntity,
-            newItem: CommunityModelEntity
+            oldItem: CommunityEntity,
+            newItem: CommunityEntity
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
     }) {
     inner class Holder(private val binding: HomeGridviewItemsBinding) : RecyclerView
     .ViewHolder(binding.root) {
-        fun bind(item: CommunityModelEntity) = with(binding) {
-
+        fun bind(item: CommunityEntity) = with(binding) {
             homeGridTitle.text = item.title
-            if(!item.addedImage.isNullOrEmpty()){
-                homeGridImage.load(item.addedImage){
+            if(!item.image.isNullOrEmpty()){
+                homeGridImage.load(item.image){
+                    memoryCacheKey(item.key)
                     crossfade(true)
                     listener(
                         onStart = {
@@ -48,9 +48,13 @@ class HomeBoardListAdapter(private val onItemClick: (CommunityModelEntity, Int) 
                         }
                     )
                 }
-            }else homeGridImage.setImageResource(R.drawable.emptycommu)
+            } else {
+                homeGridImage.load(R.drawable.emptycommu)
+            }
+
+            // 게시글 클릭시 이동
             itemView.setOnClickListener {
-                onItemClick(item, bindingAdapterPosition)
+                onItemClick(item)
             }
 
         }
