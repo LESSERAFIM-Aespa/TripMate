@@ -208,10 +208,10 @@ class BudgetContentActivity : AppCompatActivity() {
 
                 }
 
-                budgetNameEdittext.text.toString().length >= 30 -> {
+                budgetNameEdittext.text.toString().length >= 10 -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
-                        "가계부 이름은 30자이내로 적어주세요.",
+                        "가계부 이름은 10자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -255,10 +255,10 @@ class BudgetContentActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                categoryAdapter.saveList.any { it.name.isBlank() || it.name.length > 30 } -> {
+                categoryAdapter.saveList.any { it.name.isBlank() || it.name.length > 10 } -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
-                        "카테고리이름을 30자이내로 적어주세요",
+                        "카테고리이름을 10자이내로 적어주세요",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
