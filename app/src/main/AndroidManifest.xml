@@ -55,7 +55,7 @@
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.scrap.ScrapDetail"
+            android:name=".ui.scrap.detail.ScrapDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
