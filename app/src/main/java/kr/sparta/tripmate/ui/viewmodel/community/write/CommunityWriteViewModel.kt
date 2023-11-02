@@ -1,6 +1,9 @@
 package kr.sparta.tripmate.ui.viewmodel.community.write
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,13 +11,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.PublishSubject
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.AddBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetCommunityKeyUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateCommunityWriteDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebasestorage.UploadImageForFirebaseStorage
+import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.util.method.isWindowTouchable
 
 class CommunityWriteViewModel(
-    private val updateCommunityWriteDataUseCase: UpdateCommunityWriteDataUseCase,
+    private val addBoardUseCase: AddBoardUseCase,
     private val uploadImageForFirebaseStorage: UploadImageForFirebaseStorage,
     private val getCommunityKeyUseCase: GetCommunityKeyUseCase,
 ) :
@@ -24,7 +32,7 @@ class CommunityWriteViewModel(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     // 이벤트처리를위한 PublishSubject
-    val publishSubject: PublishSubject<CommunityModelEntity> = PublishSubject.create()
+    val publishSubject: PublishSubject<CommunityEntity> = PublishSubject.create()
 
     /**
      * 작성자: 서정한
@@ -45,49 +53,52 @@ class CommunityWriteViewModel(
      * 내용: 글이 있으면 업데이트. 없으면 생성.
      * */
     @SuppressLint("CheckResult")
-    fun updateCommunityWrite(imgName: String, image: Bitmap?, item: CommunityModelEntity) {
-        // Observable 생성
-        val getImageUrlSubject: PublishSubject<String> = PublishSubject.create()
+    fun updateCommunityWrite(imgName: String, image: Bitmap?, item: CommunityEntity, context: Context) {
 
-        // 이미지 없는경우
-        if(image == null){
-            // 글 업로드
-            updateCommunityWriteDataUseCase.invoke(item)
-
-            // 디테일페이지에 업데이트할 아이템 발행
-            publishSubject.onNext(item)
-            return@updateCommunityWrite
-        }
-
-        // 이미지 Storage업로드 요청
-        uploadImageForFirebaseStorage.invoke(
-            imgName = imgName,
-            image = image,
-            publishSubject = getImageUrlSubject,
-        )
-
-        // 이미지 Url 결과값 받기
-        getImageUrlSubject.subscribeBy(
-            onNext = {
-                val newItem = item.copy(
-                    addedImage = it
-                )
-
+        CoroutineScope(Dispatchers.Main).launch {
+            // 이미지 없는경우
+            if (image == null) {
                 // 글 업로드
-                updateCommunityWriteDataUseCase.invoke(newItem)
+                addBoardUseCase.invoke(item)
 
-                // 디테일페이지에 업데이트할 아이템 발행
-                publishSubject.onNext(newItem)
+                // 로딩 중지
+                setLoadingState(false)
 
-                // 아이템 발행 중지
-                getImageUrlSubject.onComplete()
-            },
-            onError = {
-                it.printStackTrace()
-            },
-            onComplete = {
-                Log.d("TripMates", "Complete WriteViewModel")
+                // 업로드 완료후 업데이트된 model DetailPage에 전달
+                val intent =
+                    CommunityDetailActivity.newIntentForEntity(context, item)
+                (context as Activity).setResult(RESULT_OK, intent)
+
+                // 화면터치 해제
+                isWindowTouchable(context, false)
+                (context as Activity).finish()
+                return@launch
             }
-        )
+
+            // 이미지 Storage업로드 요청
+            val url = uploadImageForFirebaseStorage.invoke(
+                imgName = imgName,
+                image = image,
+            )
+
+            val newItem = item.copy(
+                image = url
+            )
+
+            // 글 업로드
+            addBoardUseCase.invoke(newItem)
+
+            // 로딩 중지
+            setLoadingState(false)
+
+            // 업로드 완료후 업데이트된 model DetailPage에 전달
+            val intent =
+                CommunityDetailActivity.newIntentForEntity(context, item)
+            (context as Activity).setResult(RESULT_OK, intent)
+
+            // 화면터치 해제
+            isWindowTouchable(context, false)
+            (context as Activity).finish()
+        }
     }
 }
