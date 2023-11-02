@@ -28,9 +28,8 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
-import kr.sparta.tripmate.domain.repository.BudgetRepository
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModelFactory
 import java.util.Calendar

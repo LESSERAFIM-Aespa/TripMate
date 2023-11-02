@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_gravity="center_horizontal"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -13,7 +14,11 @@
         android:layout_height="115dp"
         android:layout_gravity="center"
         app:cardCornerRadius="20dp"
-        app:cardElevation="0dp">
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <ImageView
             android:id="@+id/bookmark_image"
@@ -34,7 +39,11 @@
         android:maxLines="1"
         android:textColor="@color/black"
         android:textSize="15sp"
-        tools:text="타이틀" />
+        tools:text="타이틀"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_cardview"
+        />
 
     <TextView
         android:id="@+id/bookmark_content"
@@ -46,7 +55,22 @@
         android:maxLines="2"
         android:textColor="@color/black"
         android:textSize="12sp"
-        tools:text="내용내용내용내용내용내용내용" />
+        tools:text="내용내용내용내용내용내용내용"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_title"/>
 
+    <ProgressBar
+        android:id="@+id/bookmark_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/primary"
+        app:layout_constraintStart_toStartOf="@id/bookmark_cardview"
+        app:layout_constraintEnd_toEndOf="@id/bookmark_cardview"
+        app:layout_constraintTop_toTopOf="@id/bookmark_cardview"
+        app:layout_constraintBottom_toBottomOf="@id/bookmark_cardview"
+        />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

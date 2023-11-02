@@ -12,14 +12,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import coil.load
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteViewModel
 import kr.sparta.tripmate.util.method.isWindowTouchable
@@ -40,7 +39,7 @@ class CommunityWriteActivity : AppCompatActivity() {
         fun newIntentForWrite(context: Context): Intent =
             Intent(context, CommunityWriteActivity::class.java)
 
-        fun newIntentForEdit(context: Context, model: CommunityModelEntity): Intent =
+        fun newIntentForEdit(context: Context, model: CommunityEntity): Intent =
             Intent(context, CommunityWriteActivity::class.java).apply {
                 putExtra(MODEL_EDIT, model)
             }
@@ -56,7 +55,7 @@ class CommunityWriteActivity : AppCompatActivity() {
 
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(MODEL_EDIT, CommunityModelEntity::class.java)
+            intent.getParcelableExtra(MODEL_EDIT, CommunityEntity::class.java)
         } else {
             intent.getParcelableExtra(MODEL_EDIT)
         }
@@ -84,12 +83,12 @@ class CommunityWriteActivity : AppCompatActivity() {
         // Edit진입. 이전게시판값 불러오기
         model?.let {
             communityWriteTitle.setText(it.title)
-            communityWriteDescription.setText(it.description)
-            if(it.addedImage == "") {
+            communityWriteDescription.setText(it.content)
+            if(it.image == "") {
                 communityWriteImageIcon.visibility = View.VISIBLE
             } else {
                 communityWriteImageIcon.visibility = View.INVISIBLE
-                communityWriteImage.load(it.addedImage)
+                communityWriteImage.load(it.image)
             }
         }
 
@@ -147,18 +146,18 @@ class CommunityWriteActivity : AppCompatActivity() {
 
                 val key = viewModel.getCommunityKey()
                 val imgName = key.substring(key.length - 17, key.length)
-                val model = CommunityModelEntity(
+                val model = CommunityEntity(
                     id = SharedPreferences.getUid(this@CommunityWriteActivity),
+                    key = model?.key ?: key,
                     title = communityWriteTitle.text.toString(),
-                    description = communityWriteDescription.text.toString(),
+                    content = communityWriteDescription.text.toString(),
                     profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
                     profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
-                    views = model?.views ?: "0",
-                    likes = model?.likes ?: "0",
-                    key = model?.key ?: key,
-                    addedImage = "",
-                    commuIsLike = false,
-                    boardIsLike = false,
+                    views = model?.views ?: 0,
+                    likes = model?.likes ?: 0,
+                    image = "",
+                    likeUsers = listOf(),
+                    scrapUsers = listOf(),
                 )
 
                 // 새 글 작성 or Edit
@@ -166,6 +165,7 @@ class CommunityWriteActivity : AppCompatActivity() {
                     imgName = imgName,
                     image = bitmap,
                     item = model,
+                    context= this@CommunityWriteActivity,
                 )
             }
 
@@ -204,30 +204,6 @@ class CommunityWriteActivity : AppCompatActivity() {
                     shortToast("글이 생성되었습니다.")
                 }
             }
-
-            // 발행된 아이템 받은 후 DetailPage에 전달
-            publishSubject.subscribeBy(
-                onNext = {
-                    // 로딩 중지
-                    setLoadingState(false)
-
-                    // 업로드 완료후 업데이트된 model DetailPage에 전달
-                    val intent =
-                        CommunityDetailActivity.newIntentForEntity(this@CommunityWriteActivity, it)
-                    setResult(RESULT_OK, intent)
-
-                    // 화면터치 해제
-                    isWindowTouchable(this@CommunityWriteActivity, false)
-
-                    finish()
-                },
-                onError = {
-                    it.printStackTrace()
-                },
-                onComplete = {
-                    Log.d("TripMates", "Complete WriteActivity")
-                }
-            )
         }
     }
 

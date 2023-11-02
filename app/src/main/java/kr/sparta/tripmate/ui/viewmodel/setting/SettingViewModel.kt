@@ -3,7 +3,7 @@ package kr.sparta.tripmate.ui.viewmodel.setting
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kr.sparta.tripmate.domain.model.login.UserDataEntity
+import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.ResignUserData
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserData
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserData

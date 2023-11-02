@@ -5,15 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.mypage.scrap.BookmarkFragment">
+    tools:context=".ui.mypage.scrap.MyPageScrapFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookmark_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        android:layout_gravity="fill_horizontal"
         tools:listitem="@layout/fragment_mypage_bookmark_item" />
 
 </LinearLayout>

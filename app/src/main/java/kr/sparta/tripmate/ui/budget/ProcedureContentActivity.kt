@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModelFactory

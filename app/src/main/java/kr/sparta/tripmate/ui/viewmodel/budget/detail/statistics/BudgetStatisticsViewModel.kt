@@ -11,7 +11,7 @@ import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.data.model.budget.toModel
-import kr.sparta.tripmate.domain.repository.BudgetRepository
+import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
 import kr.sparta.tripmate.ui.budget.detail.procedure.ProcedureModel
 
 class BudgetStatisticsViewModel(budgetNum: Int, repository: BudgetRepository) : ViewModel() {

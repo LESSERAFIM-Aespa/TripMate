@@ -1,6 +1,5 @@
 package kr.sparta.tripmate.ui.userprofile.board
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,25 +9,24 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemUserProfileBoardBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.ui.userprofile.model.UserProfileModel
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 
 class UserProfileBoardListAdapter(
-    private val onItemClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onLikeClicked: (CommunityModelEntity, Int) -> Unit
+    private val onItemClicked: (CommunityEntity, Int) -> Unit,
+    private val onLikeClicked: (CommunityEntity, Int) -> Unit
 ) :
-    ListAdapter<CommunityModelEntity, UserProfileBoardListAdapter.UserProfileHolder>(
-        object : DiffUtil.ItemCallback<CommunityModelEntity>() {
+    ListAdapter<CommunityEntity, UserProfileBoardListAdapter.UserProfileHolder>(
+        object : DiffUtil.ItemCallback<CommunityEntity>() {
             override fun areItemsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
                 return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
                 return oldItem.key == newItem.key
             }
@@ -47,14 +45,14 @@ class UserProfileBoardListAdapter(
 
     inner class UserProfileHolder(private val binding: ItemUserProfileBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CommunityModelEntity) = with(binding) {
+        fun bind(item: CommunityEntity) = with(binding) {
             userboardMainTitle.text = item.title
             userboardMainProfileNickname.text = item.profileNickname
             userboardMainThumbnail.apply {
-                if (item.addedImage.isNullOrBlank()) {
+                if (item.image.isNullOrBlank()) {
                     userboardMainThumbnail.setImageResource(R.drawable.emptycommu)
                 } else {
-                    userboardMainThumbnail.load(item.addedImage) {
+                    userboardMainThumbnail.load(item.image) {
                         listener(
                             onStart = {
                                 userboardMainImageProgressbar.visibility = View.VISIBLE
@@ -70,12 +68,13 @@ class UserProfileBoardListAdapter(
                 }
             }
             userboardMainProfileThumbnail.load(item.profileThumbnail)
-            userboardMainViews.text = item.views
-            userboardMainLikes.text = item.likes
+            userboardMainViews.text = item.views.toString()
+            userboardMainLikes.text = item.likes.toString()
             userboardMainLikesButton.setOnClickListener {
                 onLikeClicked(item, bindingAdapterPosition)
             }
-            if (item.boardIsLike) {
+            // TODO 좋아요 UI반응 처리하기
+            if (true) {
                 userboardMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
             } else {
                 userboardMainLikesButton.setBackgroundResource(R.drawable.heart)

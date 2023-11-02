@@ -8,22 +8,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import coil.load
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.model.community.BoardKeyModel
 import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
-import kr.sparta.tripmate.domain.model.firebase.BoardKeyModelEntity
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailFactory
+import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityDetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_ENTITY = "extra_entity"
-        fun newIntentForEntity(context: Context, model: CommunityModelEntity): Intent =
+        fun newIntentForEntity(context: Context, model: CommunityEntity): Intent =
             Intent(context, CommunityDetailActivity::class.java).apply {
                 putExtra(EXTRA_ENTITY, model)
             }
@@ -33,9 +34,13 @@ class CommunityDetailActivity : AppCompatActivity() {
         ActivityCommunityDetailBinding.inflate(layoutInflater)
     }
 
+    private val viewModel: CommunityDetailViewModel by viewModels {
+        CommunityDetailFactory()
+    }
+
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_ENTITY, CommunityModelEntity::class.java)
+            intent.getParcelableExtra(EXTRA_ENTITY, CommunityEntity::class.java)
         } else {
             intent.getParcelableExtra(EXTRA_ENTITY)
         }
@@ -48,7 +53,7 @@ class CommunityDetailActivity : AppCompatActivity() {
                 val edit = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
                     result.data?.getParcelableExtra(
                         EXTRA_ENTITY,
-                        CommunityModelEntity::class.java
+                        CommunityEntity::class.java
                     )
                 } else {
                     result.data?.getParcelableExtra(EXTRA_ENTITY)
@@ -65,9 +70,9 @@ class CommunityDetailActivity : AppCompatActivity() {
                         checkIsMyPost(it)
                         communityUserprofile.load(it.profileThumbnail)
                         communityTvDetailTitle.text = it.title
-                        communityTvDetailDescription.text = it.description
+                        communityTvDetailDescription.text = it.content
                         communityTvDetailUsername.text = it.profileNickname
-                        communityImageIv.load(it.addedImage) {
+                        communityImageIv.load(it.image) {
                             crossfade(true)
                             listener(
                                 onStart = {
@@ -80,8 +85,8 @@ class CommunityDetailActivity : AppCompatActivity() {
                                 }
                             )
                         }
-                        communityDetailLikecount.text = it.likes
-                        communityTvDetailViewcount.text = it.views
+                        communityDetailLikecount.text = it.likes.toString()
+                        communityTvDetailViewcount.text = it.views.toString()
                     }
                 }
 
@@ -94,18 +99,24 @@ class CommunityDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initView()
+        initViewModel()
     }
+
 
     private fun initView() = with(binding) {
         // View init
         model?.let {
+            val isBoardScrap = checkIsBoardScrap(it)
+            viewModel.updateIsBoardScrap(isBoardScrap)
+
             toggleImgUrlIsEmpty(it)
             checkIsMyPost(it)
+
             communityUserprofile.load(it.profileThumbnail)
             communityTvDetailTitle.text = it.title
-            communityTvDetailDescription.text = it.description
+            communityTvDetailDescription.text = it.content
             communityTvDetailUsername.text = it.profileNickname
-            communityImageIv.load(it.addedImage) {
+            communityImageIv.load(it.image) {
                 crossfade(true)
                 listener(
                     onStart = {
@@ -118,33 +129,8 @@ class CommunityDetailActivity : AppCompatActivity() {
                     }
                 )
             }
-            val currentViews = it.views?.toIntOrNull() ?: 0
-            val newViews = currentViews + 1
-            communityDetailLikecount.text = it.likes
-            communityTvDetailViewcount.text = newViews.toString()
-
-            // TODO 기능테스트용 리펙토링때 수정예정
-            val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
-            val fireDatabase = Firebase.database
-            val bookmarkBoard = fireDatabase.getReference("MyBoardKey").child(uid)
-            bookmarkBoard.get().addOnSuccessListener { list ->
-                val bookmarkedList = list.children.map { boardKeys ->
-                    boardKeys.getValue(BoardKeyModelEntity::class.java)
-                }
-
-                for (i in bookmarkedList.indices) {
-                    if (it.key == bookmarkedList[i]?.key) {
-                        bookmarkedList[i]?.let { like ->
-                            if (like.myBoardIsLike) {
-                                communityDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
-                            } else {
-                                communityDetailLikeBtn.setImageResource(R.drawable.ic_star)
-                            }
-                        }
-                    }
-                }
-
-            }
+            communityDetailLikecount.text = it.likes.toString()
+            communityTvDetailViewcount.text = it.views.toString()
         }
 
         // 뒤로가기
@@ -163,69 +149,39 @@ class CommunityDetailActivity : AppCompatActivity() {
             editLauncher.launch(intent)
         }
 
+        // 게시글 Scrap 버튼
         communityDetailLikeBtn.setOnClickListener {
-            val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
-            val fireDatabase = Firebase.database
-            val bookmarkBoard = fireDatabase.getReference("MyBoardKey").child(uid)
+            model?.let { communityEntity ->
+                val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
 
-            // TODO 기능테스트용 리펙토링때 수정예정
-            bookmarkBoard.get().addOnSuccessListener { list ->
-                val bookmarkedList = list.children.map { boardKeys ->
-                    boardKeys.getValue(BoardKeyModelEntity::class.java)
-                }.toMutableList()
+                // 스크랩 업데이트
+                communityEntity.key?.let { it1 ->
+                    viewModel.updateBoardScrap(uid, it1)
+                }
 
-                val item = bookmarkedList.firstOrNull { it?.key == model?.key }
-                if(item == null) {
-                    bookmarkedList.add(
-                        BoardKeyModelEntity(
-                            uid = uid,
-                            key = model?.key,
-                            myBoardIsLike = true,
-                        )
-                    )
-                    communityDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
-                    bookmarkBoard.setValue(bookmarkedList)
-                } else {
-                    val index = bookmarkedList.indexOf(item)
-                    val listItem = bookmarkedList[index]
-                    listItem?.let{
-                        bookmarkedList[index] = it.copy(
-                            myBoardIsLike = !it.myBoardIsLike
-                        )
-                        if (!it.myBoardIsLike) {
-                            communityDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
-                        } else {
-                            communityDetailLikeBtn.setImageResource(R.drawable.ic_star)
-                        }
-                    }
-                    bookmarkBoard.setValue(bookmarkedList)
+                // 현재 스크랩상태 불러오기
+                val isBoardScrap = viewModel.isBoardScrap.value
+
+                // 현재 스크랩상태 업데이트
+                isBoardScrap?.let {isScraped ->
+                    viewModel.updateIsBoardScrap(!isScraped)
                 }
             }
-
         }
 
+        // 삭제하기
         communityDetailRemove.setOnClickListener {
             val builder = AlertDialog.Builder(this@CommunityDetailActivity)
             builder.setTitle(getString(R.string.budget_detail_dialog_title))
             builder.setMessage(getString(R.string.budget_detail_dialog_message))
 
-            // 버튼 클릭시에 무슨 작업을 할 것인가!
             val listener = DialogInterface.OnClickListener { p0, p1 ->
                 when (p1) {
                     DialogInterface.BUTTON_POSITIVE -> {
-                        // TODO 기능테스트용 리펙토링때 수정예정
-                        val fireDatabase = Firebase.database
-                        val boardRef = fireDatabase.getReference("CommunityData")
-                        boardRef.get().addOnSuccessListener {
-                            val getBoardList = it.children.map { it1 ->
-                                it1.getValue(CommunityModel::class.java)
-                            }.toMutableList()
-                            val item = getBoardList.find { board -> board?.key == model?.key }
-                            item?.let { remove ->
-                                getBoardList.remove(remove)
-                                boardRef.setValue(getBoardList)
-                                finish()
-                            }
+                        model?.key?.let {
+                            // 게시글 삭제
+                            viewModel.removeBoard(it)
+                            finish()
                         }
                     }
 
@@ -246,12 +202,18 @@ class CommunityDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun initViewModel()=with(viewModel) {
+        isBoardScrap.observe(this@CommunityDetailActivity) {
+            toggleBoardScrap(it)
+        }
+    }
+
     /**
      * 작성자: 서정한
      * 내용: 이미지Url유무에따라 ImageView의 Visible을 조절합니다.
      * */
-    private fun toggleImgUrlIsEmpty(model: CommunityModelEntity) = with(binding) {
-        model?.addedImage?.let { url ->
+    private fun toggleImgUrlIsEmpty(model: CommunityEntity) = with(binding) {
+        model.image?.let { url ->
             if (url != "") {
                 communityImageCardView.visibility = View.VISIBLE
             } else {
@@ -264,7 +226,7 @@ class CommunityDetailActivity : AppCompatActivity() {
      * 작성자: 서정한
      * 내용: 내가 쓴글인지 확인 후 수정 및 삭제버튼 생성
      * */
-    private fun checkIsMyPost(model: CommunityModelEntity) = with(binding) {
+    private fun checkIsMyPost(model: CommunityEntity) = with(binding) {
         val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
         if (model.id == uid) {
             communityDetailEdit.visibility = View.VISIBLE
@@ -272,6 +234,36 @@ class CommunityDetailActivity : AppCompatActivity() {
         } else {
             communityDetailEdit.visibility = View.GONE
             communityDetailRemove.visibility = View.GONE
+        }
+    }
+
+    /**
+     * 작성자: 서정한
+     * 내용: 해당 게시글이 스크랩목록에 존재하는지 여부를 알려줌
+     * true- 존재함 / false- 없음
+     * */
+    private fun checkIsBoardScrap(model: CommunityEntity): Boolean {
+        val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
+        val scrapUsers = model.scrapUsers.toMutableList()
+        val findItem = scrapUsers.find { it == uid } ?: ""
+
+        // 해당 게시글이 내 스크랩목록에 존재하지 않을경우
+        if (findItem == "") {
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * 작성자: 서정한
+     * 내용: 게시물 스크랩버튼의 토글기능.
+     * */
+    private fun toggleBoardScrap(isBoardScrap: Boolean) = with(binding) {
+        if (isBoardScrap) {
+            communityDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
+        } else {
+            communityDetailLikeBtn.setImageResource(R.drawable.ic_star)
         }
     }
 

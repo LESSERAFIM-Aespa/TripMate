@@ -98,7 +98,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/home_title1" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_recyclerView1"
+                android:id="@+id/home_scrap_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/home_view2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView1" />
+                app:layout_constraintTop_toBottomOf="@+id/home_scrap_recycler_view" />
 
             <ImageView
                 android:id="@+id/home_arrow2"
@@ -126,7 +126,7 @@
                 android:src="@drawable/homemove"
                 app:layout_constraintBottom_toBottomOf="@+id/home_view2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView1" />
+                app:layout_constraintTop_toBottomOf="@+id/home_scrap_recycler_view" />
 
             <View
                 android:id="@+id/home_view2"
@@ -139,7 +139,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/home_title2" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_recyclerView2"
+                android:id="@+id/home_board_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="280dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -156,7 +156,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/home_view3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView2" />
+                app:layout_constraintTop_toBottomOf="@+id/home_board_recycler_view" />
 
             <ImageView
                 android:id="@+id/home_arrow3"
@@ -165,7 +165,7 @@
                 android:src="@drawable/homemove"
                 app:layout_constraintBottom_toBottomOf="@+id/home_view3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_recyclerView2" />
+                app:layout_constraintTop_toBottomOf="@+id/home_board_recycler_view" />
 
             <View
                 android:id="@+id/home_view3"
