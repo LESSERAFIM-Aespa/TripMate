@@ -3,8 +3,6 @@ package kr.sparta.tripmate.ui.community.main
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,9 +28,10 @@ class CommunityFragment : Fragment() {
     companion object {
         fun newInstance(): CommunityFragment = CommunityFragment()
     }
+
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
-    private lateinit var uid : String
+    private lateinit var uid: String
     private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
 
     private lateinit var activity: MainActivity
@@ -62,12 +61,21 @@ class CommunityFragment : Fragment() {
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
             onBoardClicked = { model, position ->
-                commuViewModel.updateBoardView(uid,model.copy())
-                val intent = CommunityDetailActivity.newIntentForEntity(communityContext, model)
+                // 조회수 증가
+                commuViewModel.updateBoardView(model)
+
+                // 게시글 상세페이지 이동
+                val intent = CommunityDetailActivity.newIntentForEntity(
+                    communityContext, model.copy(
+                        views = model.views?.plus(1)
+                    )
+                )
                 startActivity(intent)
             },
-            onThumbnailClicked =
+            onUserProfileClicked =
             { model, position ->
+                // 유저프로필 클릭시 유저정보페이지로 이동.
+                // 단 내 프로필일경우 myPage로 이동.
                 if (model.id == uid) {
                     (activity).moveTabFragment(R.string.main_tab_title_mypage)
                 } else {
@@ -79,18 +87,14 @@ class CommunityFragment : Fragment() {
                 }
             },
             onLikeClicked = { model, position ->
+                val uid = SharedPreferences.getUid(communityContext)
                 commuViewModel.updateCommuIsLike(
-                    model = model.copy(
-                        commuIsLike = !model.commuIsLike
-                    ),communityContext
+                    uid = uid,
+                    model = model,
                 )
-                Log.d("sssss", "클릭했을때 좋아요 버튼 ${model.commuIsLike}")
             },
             onItemLongClicked = { model, position ->
-                commuViewModel.saveBookMarkData(
-                    model = model.copy(boardIsLike = !model.boardIsLike), uid,communityContext)
-
-                Log.d("ssss", "클릭했을때 북마크버튼 ${model.boardIsLike}")
+                commuViewModel.addBoardScrap(uid, model.key.toString())
             })
     }
 
@@ -113,9 +117,8 @@ class CommunityFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        commuViewModel.communityResults.observe(viewLifecycleOwner) {
+        commuViewModel.boards.observe(viewLifecycleOwner) {
             commuAdapter.submitList(it)
-            commuAdapter.notifyDataSetChanged()
         }
         commuViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
@@ -142,11 +145,10 @@ class CommunityFragment : Fragment() {
         updateUI()
     }
 
-    fun updateUI() {
-        CoroutineScope(Dispatchers.Main).launch {
-            commuViewModel.updateDataModelList(uid)
-        }
+    private fun updateUI() = CoroutineScope(Dispatchers.Main).launch {
+        commuViewModel.getAllBoards()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
