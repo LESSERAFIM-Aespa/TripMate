@@ -19,7 +19,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityLoginBinding
-import kr.sparta.tripmate.domain.model.login.UserDataEntity
+import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.shortToast
