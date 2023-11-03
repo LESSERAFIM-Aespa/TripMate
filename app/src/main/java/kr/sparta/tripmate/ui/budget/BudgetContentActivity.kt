@@ -114,14 +114,18 @@ class BudgetContentActivity : AppCompatActivity() {
     private fun initViews() = with(binding) {
         when (entryType) {
             BudgetContentType.ADD -> {
-                budgetDetailTitleTextview.text = "가계부 추가"
+                budgetContentToolbar.title = "가계부 추가"
             }
 
             BudgetContentType.EDIT -> {
-                budgetDetailTitleTextview.text = "가계부 수정"
+                budgetContentToolbar.title = "가계부 수정"
             }
 
             else -> {}
+        }
+
+        budgetContentToolbar.setNavigationOnClickListener {
+            finish()
         }
 
         budgetStartdateTextview.setOnClickListener {
@@ -158,16 +162,13 @@ class BudgetContentActivity : AppCompatActivity() {
 
         budgetCategoryFloatingactionbutton.setOnClickListener {
             val currentList = categoryAdapter.currentList.toMutableList()
-            val category = Category(budgetNum, "", "#E9C46A")
+            val category = Category(budgetNum, "", "#D9D9D9")
             currentList.add(category)
             categoryAdapter.saveList.add(category)
             categoryAdapter.submitList(currentList)
         }
 
-        budgetDetailBackImageview.setOnClickListener {
-            //뒤로가기
-            finish()
-        }
+
 
         budgetCancelButton.setOnClickListener {
             //취소하기
