@@ -130,7 +130,8 @@ class CommunityDetailActivity : AppCompatActivity() {
                 )
             }
             communityDetailLikecount.text = it.likes.toString()
-            communityTvDetailViewcount.text = it.views.toString()
+            val currentViews = it.views?.plus(1).toString()
+            communityTvDetailViewcount.text = currentViews
         }
 
         // 뒤로가기
