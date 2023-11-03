@@ -79,13 +79,22 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/mypage_profile_content_textview"
             android:layout_width="308dp"
             android:layout_height="101.03704dp"
             android:layout_margin="10dp"
-            android:background="@drawable/mypage_profile_content_box"
             android:padding="5dp"
-            tools:text="안녕하세요!" />
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp">
+
+            <TextView
+                android:id="@+id/mypage_profile_content_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="안녕하세요!" />
+
+        </androidx.cardview.widget.CardView>
+
 
         <FrameLayout
             android:id="@+id/mypage_editmode_edittext_container"
