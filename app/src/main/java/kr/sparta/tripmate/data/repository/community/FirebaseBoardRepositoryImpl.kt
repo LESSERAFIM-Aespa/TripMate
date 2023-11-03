@@ -42,10 +42,12 @@ class FirebaseBoardRepositoryImpl(
      * 작성자: 서정한
      * 내용: 조회수 업데이트
      * */
-    override fun updateBoardViews(item: CommunityEntity) =
+    override fun updateBoardViews(item: CommunityEntity) {
+        item.views?.plus(1)
         remoteSource.updateBoard(
             item.toModel()
         )
+    }
 
     /**
      * 작성자: 서정한
