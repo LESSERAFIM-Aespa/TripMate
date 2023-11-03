@@ -85,9 +85,7 @@ class FirebaseBoardRemoteDataSource {
 
             list.forEachIndexed { index, communityModel ->
                 if (communityModel.key == item.key) {
-                    list[index] = item.copy(
-                        views = item.views?.plus(1)
-                    )
+                    list[index] = item
                     return@forEachIndexed
                 }
             }
