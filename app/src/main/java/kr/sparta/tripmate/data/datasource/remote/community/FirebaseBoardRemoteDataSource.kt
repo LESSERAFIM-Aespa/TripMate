@@ -16,7 +16,7 @@ import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
  * 요청하고 응답받는 DataSource Class
  * */
 class FirebaseBoardRemoteDataSource {
-    private val REFERENCE_COMMUNITY_DATA = "CommunityData1"
+    private val REFERENCE_COMMUNITY_DATA = "CommunityData"
     private fun getReference() = Firebase.database.getReference(REFERENCE_COMMUNITY_DATA)
 
     /**
