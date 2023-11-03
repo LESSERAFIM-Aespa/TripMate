@@ -1,37 +1,41 @@
 package kr.sparta.tripmate.ui.userprofile.board
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemUserProfileBoardBinding
-import kr.sparta.tripmate.ui.userprofile.model.UserProfileModel
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
 
 class UserProfileBoardListAdapter(
-
+    private val onItemClicked: (CommunityEntity, Int) -> Unit,
+    private val onLikeClicked: (CommunityEntity, Int) -> Unit
 ) :
-    ListAdapter<UserProfileModel, UserProfileBoardListAdapter.UserProfileHolder>(
-        object : DiffUtil.ItemCallback<UserProfileModel>() {
+    ListAdapter<CommunityEntity, UserProfileBoardListAdapter.UserProfileHolder>(
+        object : DiffUtil.ItemCallback<CommunityEntity>() {
             override fun areItemsTheSame(
-                oldItem: UserProfileModel,
-                newItem: UserProfileModel
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
-                return oldItem.thumbnail == newItem.thumbnail
+                return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(
-                oldItem: UserProfileModel,
-                newItem: UserProfileModel
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
-                return oldItem == newItem
+                return oldItem.key == newItem.key
             }
 
         }
     ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserProfileHolder {
-        val view = ItemUserProfileBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val view =
+            ItemUserProfileBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserProfileHolder(view)
     }
 
@@ -39,16 +43,42 @@ class UserProfileBoardListAdapter(
         holder.bind(getItem(position))
     }
 
-    class UserProfileHolder(private val binding: ItemUserProfileBoardBinding) :
+    inner class UserProfileHolder(private val binding: ItemUserProfileBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bind(item : UserProfileModel)=with(binding) {
-                userProfileBoardUserThumbnail.load(item.thumbnail)
-                userProfileBoardNickname.text = item.nickname
-                userProfileBoardTitle.text = item.title
-                userProfileBoardThumbnail.load(item.image)
-                userProfileBoardLikes.text = item.likes
-                userProfileBoardViews.text = item.views
+        fun bind(item: CommunityEntity) = with(binding) {
+            userboardMainTitle.text = item.title
+            userboardMainProfileNickname.text = item.profileNickname
+            userboardMainThumbnail.apply {
+                if (item.image.isNullOrBlank()) {
+                    userboardMainThumbnail.setImageResource(R.drawable.emptycommu)
+                } else {
+                    userboardMainThumbnail.load(item.image) {
+                        listener(
+                            onStart = {
+                                userboardMainImageProgressbar.visibility = View.VISIBLE
+                            },
+                            onSuccess = { request, result ->
+                                userboardMainImageProgressbar.visibility = View.GONE
+                            }
+                        )
+                    }
+                }
+                setOnClickListener {
+                    onItemClicked(item, bindingAdapterPosition)
+                }
             }
-
+            userboardMainProfileThumbnail.load(item.profileThumbnail)
+            userboardMainViews.text = item.views.toString()
+            userboardMainLikes.text = item.likes.toString()
+            userboardMainLikesButton.setOnClickListener {
+                onLikeClicked(item, bindingAdapterPosition)
+            }
+            // TODO 좋아요 UI반응 처리하기
+            if (true) {
+                userboardMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
+            } else {
+                userboardMainLikesButton.setBackgroundResource(R.drawable.heart)
+            }
+        }
     }
 }

@@ -4,8 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".util.TripMateApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -15,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TripMate.RemoveSplash"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.userprofile.main.UserProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.budget.ProcedureContentActivity"
             android:exported="false" />
@@ -43,9 +48,6 @@
             android:theme="@style/Theme.TripMate.RemoveSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -53,13 +55,22 @@
             android:name=".ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.scrap.ScrapDetail"
+            android:name=".ui.scrap.detail.ScrapDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustPan" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="kr.sparta.tripmate.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>

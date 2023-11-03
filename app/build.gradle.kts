@@ -74,11 +74,12 @@ dependencies {
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1")
+
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.github.skydoves:powerspinner:1.2.7")
-    implementation ("com.facebook.android:facebook-login:latest.release")
 
     //use room
     val room_version = "2.5.2"
@@ -98,4 +99,11 @@ dependencies {
 
     // use colorpicker dialog
     implementation("com.github.Dhaval2404:ColorPicker:2.3")
+
+    // use chart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Rx Kotlin
+    implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
+    implementation ("io.reactivex.rxjava3:rxkotlin:3.0.0")
 }

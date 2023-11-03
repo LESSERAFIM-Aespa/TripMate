@@ -1,37 +1,35 @@
 package kr.sparta.tripmate.ui.community.main
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
-import kr.sparta.tripmate.domain.model.firebase.CommunityModelEntity
-import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(
-    private val onProfileClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onLikeClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onThumbnailClicked: (CommunityModelEntity, Int) -> Unit,
-    private val onItemLongClicked: (CommunityModelEntity, Int) -> Unit
+    private val onBoardClicked: (CommunityEntity, Int) -> Unit,
+    private val onLikeClicked: (CommunityEntity, Int) -> Unit,
+    private val onUserProfileClicked: (CommunityEntity, Int) -> Unit,
+    private val onItemLongClicked: (CommunityEntity, Int) -> Unit
 ) :
-    ListAdapter<CommunityModelEntity, CommunityListAdapter.CommunityHolder>(
-        object : DiffUtil.ItemCallback<CommunityModelEntity>() {
+    ListAdapter<CommunityEntity, CommunityListAdapter.CommunityHolder>(
+        object : DiffUtil.ItemCallback<CommunityEntity>() {
             override fun areItemsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(
-                oldItem: CommunityModelEntity,
-                newItem: CommunityModelEntity
+                oldItem: CommunityEntity,
+                newItem: CommunityEntity
             ): Boolean {
                 return oldItem == newItem
             }
@@ -54,35 +52,79 @@ class CommunityListAdapter(
     inner class CommunityHolder(private val binding: FragmentCommunityMainItemBinding) :
         RecyclerView
         .ViewHolder(binding.root) {
-        fun bind(item: CommunityModelEntity) = with(binding) {
-            communityMainTitle.text = item.title
-            communityMainProfileNickname.text = item.profileNickname
-            communityMainThumbnail.setOnClickListener {
-                    onProfileClicked(item, bindingAdapterPosition)
-                }
-            if (!item.addedImage.isNullOrEmpty()){
-                communityMainThumbnail.load(item.addedImage)
-            } else{communityMainThumbnail.setImageResource(R.drawable.emptycommu)}
-            communityMainProfileThumbnail.apply {
-                load(item.profileThumbnail)
-                setOnClickListener {
-                    onThumbnailClicked(item, bindingAdapterPosition)
+        fun bind(item: CommunityEntity) = with(binding) {
+            /**
+             * 작성자: 서정한
+             * 내용: url의 이미지가 없을경우 기본이미지로 보여준다.
+             * */
+            fun setUrlImageOrDefault() {
+                item.image?.let {
+                    if (it != "") {
+                        communityMainThumbnail.load(it) {
+                            memoryCacheKey(item.key)
+                            crossfade(true)
+                            listener(
+                                onStart = {
+                                    communityMainImageProgressbar.visibility = View.VISIBLE
+                                },
+                                onSuccess = { request, result ->
+                                    communityMainImageProgressbar.visibility = View.GONE
+                                }
+                            )
+                        }
+                    } else {
+                        communityMainThumbnail.load(R.drawable.emptycommu)
+                    }
                 }
             }
-            communityMainViews.text = item.views
-            communityMainLikes.text = item.likes
+
+            /**
+             * 작성자: 서정한
+             * 내용: 좋아요버튼 클릭에따른 토글처리
+             * */
+            fun toggleIsLikeIcon() {
+                val uid = SharedPreferences.getUid(itemView.context)
+                val isLike = item.likeUsers.find { it == uid } ?: ""
+
+                if (isLike != "") {
+                    communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
+                } else {
+                    communityMainLikesButton.setBackgroundResource(R.drawable.heart)
+                }
+            }
+
+            toggleIsLikeIcon()
+            setUrlImageOrDefault()
+            communityMainTitle.text = item.title
+            communityMainProfileNickname.text = item.profileNickname
+            communityMainViews.text = item.views.toString()
+            communityMainLikes.text = item.likes.toString()
+
+
+            // 좋아요 버튼클릭
             communityMainLikesButton.setOnClickListener {
                 onLikeClicked(item, bindingAdapterPosition)
             }
-            if (item.commuIsLike) {
-                communityMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
-            } else {
-                communityMainLikesButton.setBackgroundResource(R.drawable.heart)
+
+            // 게시물 클릭시 상세페이지로 이동
+            itemView.setOnClickListener{
+                onBoardClicked(item, bindingAdapterPosition)
             }
+
+            // 게시글 작성유저 클릭시
+            communityMainProfileThumbnail.apply {
+                load(item.profileThumbnail)
+                setOnClickListener {
+                    onUserProfileClicked(item, bindingAdapterPosition)
+                }
+            }
+
+            // 게시물 스크랩
             itemView.setOnLongClickListener {
                 onItemLongClicked(item, bindingAdapterPosition)
                 true
             }
+
         }
     }
 }

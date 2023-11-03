@@ -1,9 +1,7 @@
 package kr.sparta.tripmate.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +10,16 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.scrap.ScrapDetail
+import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardViewModel
-import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapFactory
-import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeScrapViewModel
+import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapFactory
+import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeFragment : Fragment() {
@@ -33,16 +30,40 @@ class HomeFragment : Fragment() {
     private lateinit var homeContext: Context
     private lateinit var activity: MainActivity
 
-    private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-    private val homeScrapViewModel: HomeScrapViewModel by viewModels {
-        HomeScrapFactory()
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private val homeScrapViewModel: HomeBlogScrapViewModel by viewModels {
+        HomeBlogScrapFactory()
     }
+
     private val homeBoardViewModel: HomeBoardViewModel by viewModels {
         HomeBoardFactory()
     }
 
-    private lateinit var homeScrapListAdapter: HomeScrapListAdapter
-    private lateinit var homeBoardListAdapter: HomeBoardListAdapter
+    private val homeScrapListAdapter: HomeScrapListAdapter by lazy {
+        HomeScrapListAdapter(
+            onItemClick = { model ->
+                val intent = ScrapDetailActivity.newIntentForScrap(
+                    homeContext, model.copy(
+                        isLike = true
+                    )
+                )
+                homeResults.launch(intent)
+            }
+        )
+    }
+
+    private val homeBoardListAdapter: HomeBoardListAdapter by lazy {
+        HomeBoardListAdapter(
+            onItemClick = { model ->
+                val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
+                startActivity(intent)
+                // 조회수 업데이트
+                homeBoardViewModel.updateBoardView(model)
+            }
+        )
+    }
 
     private val homeResults = registerForActivityResult(
         ActivityResultContracts
@@ -61,32 +82,49 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        inputToolBar()
-        // 페이지 이동 정의
-        initRoute()
-
-        homeView()
-        boardView()
-
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun boardView() {
-        val uid = SharedPreferences.getUid(homeContext)
-        homeBoardListAdapter = HomeBoardListAdapter(
-            onItemClick = { model, position ->
-                val intent = Intent(homeContext, CommunityDetailActivity::class.java)
-                intent.putExtra("Data", model)
-                homeResults.launch(intent)
-                homeBoardViewModel.viewHomeBoardData(model,position)
-            }
-        )
-        binding.homeRecyclerView2.apply {
-            layoutManager = GridLayoutManager(context,2,GridLayoutManager.HORIZONTAL,false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initRoute()
+        initView()
+        initViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    private fun initView() = with(binding) {
+        // 상단 프로필 이미지 && 닉네임
+        val profileImg = SharedPreferences.getProfile(homeContext)
+        homeProfileTitle.text = "${SharedPreferences.getNickName(homeContext)} 님"
+        homeProfileImage.load(profileImg)
+
+        // 블로그
+        homeScrapRecyclerView.apply {
+            layoutManager = GridLayoutManager(homeContext, 2, GridLayoutManager.HORIZONTAL, false)
+            adapter = homeScrapListAdapter
+            setHasFixedSize(true)
+        }
+
+        // 인기글
+        homeBoardRecyclerView.apply {
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
             adapter = homeBoardListAdapter
             setHasFixedSize(true)
         }
+
+        val uid = SharedPreferences.getUid(homeContext)
+        // 블로그 불러오기
+        homeScrapViewModel.getAllBlogs(uid)
+
+        // 인기글 불러오기
+        homeBoardViewModel.getAllBoards()
     }
 
     /**
@@ -101,7 +139,7 @@ class HomeFragment : Fragment() {
 
         // 스크랩
         homeArrow1.setOnClickListener {
-            activity.moveTabFragment(R.string.main_tab_title_scrap)
+            activity.moveTabFragment(R.string.main_tab_title_blog)
         }
 
         // 커뮤니티
@@ -116,53 +154,27 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun homeView() {
-        homeScrapListAdapter = HomeScrapListAdapter(
-            onItemClick = { model, position ->
-                val intent = ScrapDetail.newIntentForScrap(homeContext, model)
-                intent.putExtra("Data", model)
-                homeResults.launch(intent)
-            }
-        )
-        binding.homeRecyclerView1.apply {
-            layoutManager = LinearLayoutManager(homeContext, LinearLayoutManager.HORIZONTAL, false)
-            adapter = homeScrapListAdapter
-            setHasFixedSize(true)
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val uid = SharedPreferences.getUid(homeContext)
-        homeScrapViewModel.updateScrapData(homeContext)
-        homeBoardViewModel.getHomeBoardData(uid)
-
-    }
-
-    private fun observeViewModel() {
+    private fun initViewModel() {
+        // 블로그
         with(homeScrapViewModel) {
-            homeScraps.observe(viewLifecycleOwner) { list ->
+            blogScraps.observe(viewLifecycleOwner) { list ->
                 homeScrapListAdapter.submitList(list)
             }
         }
+
+        // 인기글
         with(homeBoardViewModel) {
-            homeBoard.observe(viewLifecycleOwner) {
-                val sortedList = it.sortedByDescending { it?.likes }
-                Log.d("TripMates", "좋아요순 정렬된 데이터 :${sortedList}")
+            boards.observe(viewLifecycleOwner) { it ->
+                val sortedList = it?.let {
+                    it.sortedByDescending { it1 -> it1?.likes }
+                }.orEmpty()
                 homeBoardListAdapter.submitList(sortedList)
             }
         }
     }
 
-    private fun inputToolBar() {
-        binding.homeProfileTitle.text = "${SharedPreferences.getNickName(homeContext)} 님"
-        binding.homeProfileImage.load(
-            SharedPreferences.getProfile(homeContext)
-        )
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }

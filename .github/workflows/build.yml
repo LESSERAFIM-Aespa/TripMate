@@ -1,0 +1,64 @@
+name: build
+
+on:
+  push:
+    branches:
+      - feat/main
+      - feat/budget
+      - feat/community
+      - feat/communitymain
+      - feat/communitydetail
+      - feat/home
+      - feat/scrap
+      - feat/mypage
+      - feat/login
+      - feat/splash
+      - feat/setting
+      - feat/budgetlist
+      - feat/budgetdetail
+      - refector/home
+      - feat/procedure
+      - hotfix/budget
+      - feat/userprofile
+  pull_request:
+    branches:
+      - feat/main
+      - feat/budget
+      - feat/community
+      - feat/communitymain
+      - feat/communitydetail
+      - feat/home
+      - feat/scrap
+      - feat/mypage
+      - feat/login
+      - feat/splash
+      - feat/setting
+      - feat/budgetlist
+      - feat/budgetdetail
+      - refector/home
+      - feat/procedure
+      - hotfix/budget
+      - feat/userprofile
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Access MAPS_API_KEY
+        env:
+          APOD_API_KEY: ${{ secrets.MAPS_API_KEY }}
+        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build

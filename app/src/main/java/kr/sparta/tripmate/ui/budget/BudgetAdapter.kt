@@ -16,7 +16,7 @@ class BudgetAdapter(private val budgetListEventListener: BudgetListEventListener
         }
 
         override fun areContentsTheSame(oldItem: Budget, newItem: Budget): Boolean {
-            return oldItem == newItem
+            return oldItem == newItem && oldItem.resultMoeny == newItem.resultMoeny
         }
 
     }) {

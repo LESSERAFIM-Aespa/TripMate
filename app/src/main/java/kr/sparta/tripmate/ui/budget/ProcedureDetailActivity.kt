@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
-import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
+import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModelFactory
@@ -58,26 +56,29 @@ class ProcedureDetailActivity : AppCompatActivity() {
     private fun initViewModels() {
         with(procedureDetailViewModel) {
             procedure.observe(this@ProcedureDetailActivity) { list ->
-                if (list.isEmpty()) finish()
-                val procedure = list.first()
-                val categories = categories.value.orEmpty()
+                if (list.isEmpty()) {
+                    finish()
+                }else{
+                    val procedure = list.orEmpty().first()
+                    val categories = categories.value.orEmpty()
 
-                binding.procedureDetailTitleTextview.text = procedure.name
-                categories.firstOrNull {
-                    it.num == procedure.categoryNum
-                }?.let { category ->
-                    binding.procedureCategoryName.text = category.name
-                    binding.procedureCategoryName.backgroundTintList =
-                        ColorStateList.valueOf(Color.parseColor(category.color))
+                    binding.procedureDetailTitleTextview.text = procedure.name
+                    categories.firstOrNull {
+                        it.num == procedure.categoryNum
+                    }?.let { category ->
+                        binding.procedureCategoryName.text = category.name
+                        binding.procedureCategoryName.backgroundTintList =
+                            ColorStateList.valueOf(Color.parseColor(category.color))
+                    }
+                    binding.procedureTimeTextview.text = procedure.time
+                    binding.procedureDescriptionTextview.text = procedure.description
+                    if (procedure.money > 0) {
+                        binding.procedureMoneyStateTextview.text = "지출"
+                    } else {
+                        binding.procedureMoneyStateTextview.text = "수입"
+                    }
+                    binding.procedureMoneyTextview.text = abs(procedure.money).toMoneyFormat() + "원"
                 }
-                binding.procedureTimeTextview.text = procedure.time
-                binding.procedureDescriptionTextview.text = procedure.description
-                if (procedure.money > 0) {
-                    binding.procedureMoneyStateTextview.text = "지출"
-                } else {
-                    binding.procedureMoneyStateTextview.text = "수입"
-                }
-                binding.procedureMoneyTextview.text = abs(procedure.money).toMoneyFormat() + "원"
             }
         }
     }

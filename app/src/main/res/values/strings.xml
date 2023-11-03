@@ -14,7 +14,7 @@
     <string name="mypage_edit_submit">확인</string>
     <string name="mypage_edit_cancel">취소</string>
     <string name="mypage_edit_text">Edit</string>
-    <string name="scrap_toolbar_title">스크랩</string>
+    <string name="blog_toolbar_title">Blog</string>
     <string name="scrap_bg_content_description">BackgroundImage</string>
     <string name="community_bg_content_description">BackgroundImage</string>
     <string name="default_web_client_id">""</string>
@@ -25,7 +25,7 @@
     <string name="community_main_title">커뮤니티</string>
     <string name="welcome">환영 합니다!</string>
     <string name="popularposts">인기글</string>
-    <string name="budgetmanagement">가계부 관리</string>
+    <string name="budgetmanagement">가계부</string>
 
     <string name="budget_list_title">가계부 관리</string>
     <string name="budget_status_text">과정</string>
@@ -54,7 +54,7 @@
     <string name="main_tab_title_budget">Budget</string>
     <string name="main_tab_title_community">Commu</string>
     <string name="main_tab_title_home">Home</string>
-    <string name="main_tab_title_scrap">Scrap</string>
+    <string name="main_tab_title_blog">Blog</string>
     <string name="main_tab_title_mypage">MyPage</string>
     <string name="pleaseentertitle">제목을 입력하세요.</string>
     <string name="pleaseenteryourdetails">내용을 입력해주세요</string>
@@ -71,6 +71,7 @@
     <string name="budget_detail_dialog_negative_text">취소</string>
     <string name="user_profile_toolbar_title">프로필</string>
     <string name="user_profile_tab_title">작성한 글 목록</string>
+    <string name="community_write_post_text">게시</string>
 
 
 </resources>

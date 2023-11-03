@@ -1,59 +1,100 @@
 package kr.sparta.tripmate.ui.community.main
 
+import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityFactory
-import kr.sparta.tripmate.ui.viewmodel.community.CommunityViewModel
+import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
+import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
+import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityFragment : Fragment() {
+    companion object {
+        fun newInstance(): CommunityFragment = CommunityFragment()
+    }
+
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var uid: String
     private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
 
-    lateinit var activity: MainActivity
-    lateinit var communityContext: Context
+    private lateinit var activity: MainActivity
+    private lateinit var communityContext: Context
+
+    private val writeLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+            }
+        }
+
+    private val detailLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+            }
+        }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         communityContext = context
         activity = requireActivity() as MainActivity
+        uid = SharedPreferences.getUid(communityContext)
     }
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
         CommunityListAdapter(
-            onProfileClicked = { model, position ->
-                commuViewModel.updateCommuView(model.copy(), position)
-                val intent = Intent(communityContext, CommunityDetailActivity::class.java)
-                intent.putExtra("Data", model)
+            onBoardClicked = { model, position ->
+                // 조회수 증가
+                commuViewModel.updateBoardView(model)
+
+                // 게시글 상세페이지 이동
+                val intent = CommunityDetailActivity.newIntentForEntity(
+                    communityContext, model.copy(
+                        views = model.views?.plus(1)
+                    )
+                )
                 startActivity(intent)
             },
-            onThumbnailClicked =
+            onUserProfileClicked =
             { model, position ->
-                (activity).moveTabFragment(R.string.main_tab_title_mypage)
+                // 유저프로필 클릭시 유저정보페이지로 이동.
+                // 단 내 프로필일경우 myPage로 이동.
+                if (model.id == uid) {
+                    (activity).moveTabFragment(R.string.main_tab_title_mypage)
+                } else {
+                    val intent = UserProfileActivity.newIntentForGetUserProfile(
+                        communityContext,
+                        model
+                    )
+                    startActivity(intent)
+                }
             },
             onLikeClicked = { model, position ->
+                val uid = SharedPreferences.getUid(communityContext)
                 commuViewModel.updateCommuIsLike(
-                    model = model.copy(
-                        commuIsLike = !model.commuIsLike
-                    ), position, communityContext
+                    uid = uid,
+                    model = model,
                 )
             },
             onItemLongClicked = { model, position ->
-                commuViewModel.updateCommuBoard(
-                    model = model.copy(boardIsLike = !model.boardIsLike), position, communityContext
-                )
+                commuViewModel.addBoardScrap(uid, model.key.toString())
             })
     }
 
@@ -69,24 +110,25 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // FAB Click Event
         commuFloatBtn()
         initView()
         initViewModel()
     }
 
     private fun initViewModel() {
-        commuViewModel.dataModelList.observe(viewLifecycleOwner) { //5. 뷰모델에서 데이터베이스에서 받아온데이터를 관찰하고 어댑터에 넣어줍니다.
+        commuViewModel.boards.observe(viewLifecycleOwner) {
             commuAdapter.submitList(it)
         }
-        commuViewModel.isLoading.observe(viewLifecycleOwner) {//6. 뷰모델에서 로딩중인지 감지하고 해당 뷰를
+        commuViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 
     private fun commuFloatBtn() {
         binding.writeBtn.setOnClickListener {
-            val intent = Intent(context, CommunityWriteActivity::class.java)
-            startActivity(intent)
+            val intent = CommunityWriteActivity.newIntentForWrite(communityContext)
+            writeLauncher.launch(intent)
         }
     }
 
@@ -96,7 +138,15 @@ class CommunityFragment : Fragment() {
             communityMainRecyclerView.setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
         }
-        commuViewModel.updateDataModelList(communityContext)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateUI()
+    }
+
+    private fun updateUI() = CoroutineScope(Dispatchers.Main).launch {
+        commuViewModel.getAllBoards()
     }
 
     override fun onDestroyView() {

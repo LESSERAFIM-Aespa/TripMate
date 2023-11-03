@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.ui.mypage.home
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -12,14 +13,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.viewModels
 import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMyPageBinding
-import kr.sparta.tripmate.ui.mypage.board.BoardFragment
-import kr.sparta.tripmate.ui.mypage.scrap.BookmarkFragment
+import kr.sparta.tripmate.domain.model.user.UserDataEntity
+import kr.sparta.tripmate.ui.mypage.scrap.MyPageScrapFragment
 import kr.sparta.tripmate.ui.setting.SettingActivity
+import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageFactory
+import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageFragment : Fragment() {
@@ -27,6 +31,11 @@ class MyPageFragment : Fragment() {
         fun newInstance(): MyPageFragment = MyPageFragment()
     }
 
+    private lateinit var auth: FirebaseAuth
+    private val myPageViewModel: MyPageViewModel by viewModels {
+        MyPageFactory()
+    }
+    private lateinit var myPageContext: Context
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!
 
@@ -39,10 +48,16 @@ class MyPageFragment : Fragment() {
             }
         }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        myPageContext = context
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        auth = FirebaseAuth.getInstance()
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,19 +65,30 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        myPageViewModel.updateUserData(
+            SharedPreferences.getUid(myPageContext)
+
+
+        )
         initView()
+        initViewModel()
+
     }
 
-    private fun initView() = with(binding) {
-        // UserInfo 설정
-        fun initUserInfo() {
-            val nickname = SharedPreferences.getNickName(requireContext())
-            val thumbnail = SharedPreferences.getProfile(requireContext())
-            mypageProfileImageview.load(thumbnail)
-            mypageProfileNickTextview.text = nickname
+    private fun initViewModel() {
+        with(myPageViewModel) {
+            userData.observe(viewLifecycleOwner) {
+                with(binding) {
+                    mypageProfileImageview.load(it?.login_profile)
+                    mypageProfileNickTextview.text = it?.login_NickName
+                    mypageProfileContentTextview.text = it?.login_coment
+                }
+            }
         }
+    }
 
-        initUserInfo()
+
+    private fun initView() = with(binding) {
 
         mypageViewpager.adapter = adapter
 
@@ -74,7 +100,7 @@ class MyPageFragment : Fragment() {
 
         // 설정페이지 이동
         mypageSettingButton.setOnClickListener {
-            val intent : Intent = SettingActivity.newIntent(requireContext())
+            val intent: Intent = SettingActivity.newIntent(requireContext())
             settingLauncher.launch(intent)
         }
 
@@ -101,12 +127,19 @@ class MyPageFragment : Fragment() {
 
         // 확인 버튼
         mypageEditSubmitButton.setOnClickListener {
-            // 입력된 Edittext
-            val nowInputEdittext = mypageProfileContentEdittext.text.toString()
-            // 입력된 EditText TextView에 입력
-            mypageProfileContentTextview.text = nowInputEdittext
-            // EditText 초기화
-            mypageProfileContentEdittext.setText("")
+
+            val user = auth.currentUser
+            val nickName = SharedPreferences.getNickName(myPageContext)
+
+            val input_EditText = binding.mypageProfileContentEdittext.text.toString()
+            myPageViewModel.saveUserData(
+                myPageContext,
+                UserDataEntity(
+                    "Google",
+                    user?.email.toString(), nickName,
+                    user?.photoUrl?.toString() ?: "", user?.uid!!, input_EditText
+                )
+            )
             updateEditType(false)
         }
 
@@ -162,9 +195,10 @@ class MyPageFragment : Fragment() {
         _binding = null
         super.onDestroy()
     }
+
     override fun onResume() {
         super.onResume()
-        (adapter.updateScrap() as BookmarkFragment).updateScrap()
-        (adapter.updateBoard() as BoardFragment).updateBoard()
+        (adapter.updateScrap() as MyPageScrapFragment).getAllScrapedData()
+//        (adapter.updateBoard() as BoardFragment).updateBoard()
     }
 }

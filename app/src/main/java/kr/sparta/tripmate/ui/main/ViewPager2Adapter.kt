@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.ui.budget.BudgetFragment
 import kr.sparta.tripmate.ui.community.main.CommunityFragment
-import kr.sparta.tripmate.ui.scrap.ScrapFragment
+import kr.sparta.tripmate.ui.scrap.main.ScrapFragment
 import kr.sparta.tripmate.ui.home.HomeFragment
 import kr.sparta.tripmate.ui.mypage.home.MyPageFragment
 
@@ -40,7 +40,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapt
         add(
             MainTabs(
                 fragment = ScrapFragment.newInstance(),
-                title =R.string.main_tab_title_scrap,
+                title =R.string.main_tab_title_blog,
                 icon = R.drawable.scrap,
             )
         )
@@ -68,7 +68,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapt
                 val element = fragments.find { it.title == name }
                 fragments.indexOf(element)
             }
-            R.string.main_tab_title_scrap -> {
+            R.string.main_tab_title_blog -> {
                 val element = fragments.find { it.title == name }
                 fragments.indexOf(element)
             }

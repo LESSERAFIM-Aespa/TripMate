@@ -3,77 +3,114 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:layout_height="123dp"
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginTop="20dp"
     android:background="@drawable/board_thumbnail_box">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/user_profile_board_thumbnail"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userboard_type_iconCardView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@color/Yellow300"
-        android:scaleType="centerCrop"
+        android:layout_gravity="center"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/userboard_main_thumbnail"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/emptycommu"
+            />
+
+        <ProgressBar
+            android:id="@+id/userboard_main_image_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary" />
+
+    </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/user_profile_board_title"
+        android:id="@+id/userboard_main_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="15dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/user_profile_board_thumbnail"
-        app:layout_constraintTop_toTopOf="@+id/user_profile_board_thumbnail"
+        app:layout_constraintStart_toEndOf="@+id/userboard_type_iconCardView"
+        app:layout_constraintTop_toTopOf="@+id/userboard_type_iconCardView"
         tools:text="타이틀" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_profile_board_user_thumbnail"
+        android:id="@+id/userboard_main_profile_thumbnail"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/user_profile_board_nickname"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="40dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/userboard_main_profile_nickname"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/user_profile_board_title"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_board_title"
-        tools:src="@color/Green300" />
+        app:layout_constraintStart_toEndOf="@+id/userboard_type_iconCardView"
+        app:layout_constraintTop_toTopOf="@+id/userboard_type_iconCardView"
+        tools:src="@drawable/usercicrlelight" />
 
     <TextView
-        android:id="@+id/user_profile_board_nickname"
+        android:id="@+id/userboard_main_profile_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/user_profile_board_user_thumbnail"
-        app:layout_constraintStart_toEndOf="@+id/user_profile_board_user_thumbnail"
-        app:layout_constraintTop_toTopOf="@+id/user_profile_board_user_thumbnail"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="40dp"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/userboard_main_profile_thumbnail"
+        app:layout_constraintStart_toEndOf="@+id/userboard_type_iconCardView"
+        app:layout_constraintTop_toTopOf="@+id/userboard_type_iconCardView"
         tools:text="정나미" />
 
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/witness"
+        app:layout_constraintBottom_toBottomOf="@+id/userboard_main_views"
+        app:layout_constraintEnd_toStartOf="@+id/userboard_main_views"
+        app:layout_constraintTop_toTopOf="@+id/userboard_main_views" />
+
     <TextView
-        android:id="@+id/user_profile_board_views"
+        android:id="@+id/userboard_main_views"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/user_profile_board_likes"
-        app:layout_constraintEnd_toStartOf="@+id/user_profile_board_likes_button"
-        app:layout_constraintTop_toTopOf="@+id/user_profile_board_likes"
+        app:layout_constraintBottom_toBottomOf="@+id/userboard_main_likes"
+        app:layout_constraintEnd_toStartOf="@+id/userboard_main_likes_button"
+        app:layout_constraintTop_toTopOf="@+id/userboard_main_likes"
         tools:text="3.14k" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/user_profile_board_likes_button"
+        android:id="@+id/userboard_main_likes_button"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="5dp"
-        android:background="@drawable/star"
-        app:layout_constraintBottom_toBottomOf="@+id/user_profile_board_likes"
-        app:layout_constraintEnd_toStartOf="@+id/user_profile_board_likes"
-        app:layout_constraintTop_toTopOf="@+id/user_profile_board_likes" />
+        android:background="@drawable/heart"
+        app:layout_constraintBottom_toBottomOf="@+id/userboard_main_likes"
+        app:layout_constraintEnd_toStartOf="@+id/userboard_main_likes"
+        app:layout_constraintTop_toTopOf="@+id/userboard_main_likes" />
 
     <TextView
-        android:id="@+id/user_profile_board_likes"
+        android:id="@+id/userboard_main_likes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="17dp"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

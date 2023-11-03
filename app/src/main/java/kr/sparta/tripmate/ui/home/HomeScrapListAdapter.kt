@@ -1,41 +1,42 @@
 package kr.sparta.tripmate.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.EmptyViewBinding
-import kr.sparta.tripmate.databinding.HomeFirstItemsBinding
-import kr.sparta.tripmate.domain.model.firebase.ScrapEntity
+import kr.sparta.tripmate.databinding.HomeGridviewItemsBinding
+import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.util.method.removeHtmlTags
 
-class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) :
-    ListAdapter<ScrapEntity,
+class HomeScrapListAdapter(private val onItemClick: (SearchBlogEntity) -> Unit) :
+    ListAdapter<SearchBlogEntity,
             RecyclerView.ViewHolder>(
-        object : DiffUtil.ItemCallback<ScrapEntity>() {
-            override fun areItemsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
-                return oldItem.url == newItem.url
+        object : DiffUtil.ItemCallback<SearchBlogEntity>() {
+            override fun areItemsTheSame(oldItem: SearchBlogEntity, newItem: SearchBlogEntity): Boolean {
+                return oldItem.link == newItem.link
             }
 
-            override fun areContentsTheSame(oldItem: ScrapEntity, newItem: ScrapEntity): Boolean {
+            override fun areContentsTheSame(oldItem: SearchBlogEntity, newItem: SearchBlogEntity): Boolean {
                 return oldItem == newItem
             }
         }
     ) {
 
-    inner class FirstViewHolder(private val binding: HomeFirstItemsBinding) : RecyclerView.ViewHolder
+    inner class BlogViewHolder(private val binding: HomeGridviewItemsBinding) : RecyclerView.ViewHolder
         (binding.root) {
-        fun bind(items: ScrapEntity) = with(binding) {
-            Log.d("TripMates", "뷰홀더에 항목${items}")
-            homeFirstTitle.text = removeHtmlTags(items.title)
-            homeFirstImage.setImageResource(R.drawable.blogimage)
+        fun bind(item: SearchBlogEntity) = with(binding) {
+            homeGridTitle.text = item.title?.let { removeHtmlTags(it) }
+            homeGridImage.load(R.drawable.blogimage){
+                memoryCacheKey(item.link)
+            }
 
             itemView.setOnClickListener {
-                onItemClick(items, bindingAdapterPosition)
+                onItemClick(item)
             }
         }
     }
@@ -43,7 +44,6 @@ class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) 
     inner class EmptyViewHolder(private val binding: EmptyViewBinding) : RecyclerView.ViewHolder
         (binding.root) {
         fun bind() {
-            Log.d("TripMates","빈텍스트 호출되고있냐?")
             binding.emptyTextView.text = "결과가 없습니다."
         }
     }
@@ -60,8 +60,8 @@ class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) 
 
             else -> {
                 val binding =
-                    HomeFirstItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                FirstViewHolder(binding)
+                    HomeGridviewItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                BlogViewHolder(binding)
             }
         }
     }
@@ -76,14 +76,14 @@ class HomeScrapListAdapter(private val onItemClick: (ScrapEntity, Int) -> Unit) 
             }
 
             Constants.SCRAPTYPE -> {
-                holder as FirstViewHolder
+                holder as BlogViewHolder
                 holder.bind(getItem(position))
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position) is ScrapEntity) {
+        return if (getItem(position) is SearchBlogEntity) {
             Constants.SCRAPTYPE
         } else {
             Constants.EMPTYTYPE

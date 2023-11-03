@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.data.repository.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetBinding
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetViewModel
@@ -38,7 +38,7 @@ class BudgetFragment : Fragment() {
         })
     }
 
-    private val budgetViewModel: BudgetViewModel by viewModels {
+    private val budgetViewModel: BudgetViewModel by activityViewModels {
         BudgetViewModelFactory(BudgetRepositoryImpl(requireContext()))
     }
 
