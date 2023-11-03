@@ -60,4 +60,6 @@ class FirebaseBoardRepositoryImpl(
      * 내용: Unique Key생성
      * */
     override fun getKey(): String = remoteSource.getKey()
+
+    override fun updateBoard(item: CommunityEntity) = remoteSource.updateBoard(item.toModel())
 }
