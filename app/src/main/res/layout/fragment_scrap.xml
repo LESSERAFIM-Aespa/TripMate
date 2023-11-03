@@ -59,6 +59,49 @@
         app:layout_constraintTop_toBottomOf="@+id/scrap_top_background"
         tools:listitem="@layout/scraptitems" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/scrap_imagelayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/bodyshape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrap_top_background">
+        <FrameLayout
+            android:id="@+id/scrap_imageframe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/scrap_imagelayout"
+            app:layout_constraintEnd_toEndOf="@+id/scrap_imagelayout"
+            app:layout_constraintStart_toStartOf="@+id/scrap_imagelayout"
+            app:layout_constraintTop_toTopOf="@+id/scrap_imagelayout">
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/scrap_imagesearch_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/addimage"/>
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/search"
+                android:layout_gravity="bottom|end"/>
+        </FrameLayout>
+        <TextView
+            android:id="@+id/scrap_imagesearch_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="이곳은 어떤가요?"
+            app:layout_constraintEnd_toEndOf="@+id/scrap_imagelayout"
+            app:layout_constraintStart_toStartOf="@+id/scrap_imagelayout"
+            app:layout_constraintTop_toBottomOf="@+id/scrap_imageframe"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     <ProgressBar
         android:id="@+id/scrap_loading"
         style="?android:attr/progressBarStyleLarge"

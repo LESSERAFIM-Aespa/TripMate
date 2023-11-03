@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.ui.viewmodel.scrap.main
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +10,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kr.sparta.tripmate.domain.model.scrap.ImageItemsEntity
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.model.search.toEntity
+import kr.sparta.tripmate.domain.usecase.GetImageUseCase
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
@@ -20,11 +23,16 @@ class SearchBlogViewModel(
     private val searchBlog: GetSearchBlogUseCase,
     private val updateBlogScrapUseCase: UpdateBlogScrapUseCase,
     private val getAllBlogScraps: GetAllBlogScrapsUseCase,
+    private val getImageUseCase: GetImageUseCase
 ) : ViewModel() {
     private val _searchList = MutableLiveData<List<SearchBlogEntity>>()
     val searchList: LiveData<List<SearchBlogEntity>> get() = _searchList
 
     private val _isLoading = MutableLiveData<Boolean>()
+
+    private val _imageResult = MutableLiveData<List<ImageItemsEntity>>()
+    val imageResult :LiveData<List<ImageItemsEntity>> get() = _imageResult
+
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     companion object {
@@ -80,6 +88,25 @@ class SearchBlogViewModel(
         }
     }
 
+    fun searchImageResult(q: String) = viewModelScope.launch {
+        kotlin.runCatching {
+            _isLoading.value = true
+            val result = getImageUseCase(q)
+            val imageItems = ArrayList<ImageItemsEntity>()
+            result.items?.let {
+                for(i in it.indices){
+                    imageItems.add(it[i])
+                }
+                _imageResult.value = imageItems
+                _isLoading.value = false
+            }
+        }.onFailure {
+            _isLoading.value = false
+            Log.e("tripmates", it.message.toString())
+        }
+    }
+
+
     /**
      * 작성자: 서정한
      * 내용: 블로그의 스크랩목록을 업데이트합니다.
@@ -98,5 +125,8 @@ class SearchBlogViewModel(
 
         list[position] = model
         _searchList.value = list
+    }
+    fun resetList(){
+        _searchList.value = emptyList()
     }
 }
