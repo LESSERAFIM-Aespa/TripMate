@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/mypage_toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="139dp"
         android:background="@color/primary"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,14 +22,14 @@
             style="@style/MypageToolbarTextApperance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity=""
+            android:layout_gravity="start|top"
             android:text="@string/mypage_toolbar_title" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/mypage_setting_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="end"
+            android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/ic_setting" />
 
@@ -37,7 +37,7 @@
             android:id="@+id/mypage_edit_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="end"
+            android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/mypage_baseline_create_24" />
     </androidx.appcompat.widget.Toolbar>
@@ -46,13 +46,13 @@
         android:id="@+id/carview"
         android:layout_width="308dp"
         android:layout_height="101.03704dp"
-        android:layout_margin="10dp"
+        android:layout_marginTop="85dp"
         android:padding="5dp"
         app:cardCornerRadius="14dp"
         app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="@+id/Frame"
-        app:layout_constraintStart_toStartOf="@+id/Frame"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mypage_toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -84,7 +84,8 @@
                 android:id="@+id/mypage_profile_content_textview"
                 android:layout_width="180dp"
                 android:layout_height="24.4dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="28dp"
                 android:gravity="start"
                 android:text="안녕하세요!"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -95,17 +96,7 @@
     </androidx.cardview.widget.CardView>
 
 
-    <FrameLayout
-        android:id="@+id/Frame"
-        android:layout_width="match_parent"
-        android:layout_height="139dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -118,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Frame"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_toolbar"
         app:layout_constraintVertical_bias="0.0">
 
         <FrameLayout
