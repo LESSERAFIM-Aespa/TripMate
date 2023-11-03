@@ -6,9 +6,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.ui.budget.BudgetFragment
 import kr.sparta.tripmate.ui.community.main.CommunityFragment
-import kr.sparta.tripmate.ui.scrap.main.ScrapFragment
 import kr.sparta.tripmate.ui.home.HomeFragment
 import kr.sparta.tripmate.ui.mypage.home.MyPageFragment
+import kr.sparta.tripmate.ui.scrap.ScrapFragment
 
 /**
  * 작성자: 서정한

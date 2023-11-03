@@ -2,7 +2,6 @@ package kr.sparta.tripmate.api.naver
 
 import com.google.firebase.BuildConfig
 import com.google.gson.GsonBuilder
-import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.data.datasource.remote.ImageRemoteDataSource
 import kr.sparta.tripmate.data.datasource.remote.search.SearchBlogRemoteDataSource
