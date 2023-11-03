@@ -45,7 +45,7 @@
         android:id="@+id/mypage_profile_background_imageview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_splash"
+        android:src="@drawable/"
         app:layout_constraintBottom_toBottomOf="@id/mypage_profile_imageview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
