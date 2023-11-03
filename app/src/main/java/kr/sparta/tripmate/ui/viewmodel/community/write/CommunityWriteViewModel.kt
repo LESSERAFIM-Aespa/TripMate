@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.AddBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetCommunityKeyUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScrapUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebasestorage.UploadImageForFirebaseStorage
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.util.method.isWindowTouchable
@@ -25,6 +27,7 @@ class CommunityWriteViewModel(
     private val addBoardUseCase: AddBoardUseCase,
     private val uploadImageForFirebaseStorage: UploadImageForFirebaseStorage,
     private val getCommunityKeyUseCase: GetCommunityKeyUseCase,
+    private val updateBoardUseCase: UpdateBoardUseCase
 ) :
     ViewModel() {
 
@@ -53,52 +56,59 @@ class CommunityWriteViewModel(
      * 내용: 글이 있으면 업데이트. 없으면 생성.
      * */
     @SuppressLint("CheckResult")
-    fun updateCommunityWrite(imgName: String, image: Bitmap?, item: CommunityEntity, context: Context) {
-
+    private fun updateItem(
+        imgName: String,
+        image: Bitmap?,
+        item: CommunityEntity,
+        context: Context,
+        useCase: (CommunityEntity) -> Unit
+    ) {
         CoroutineScope(Dispatchers.Main).launch {
-            // 이미지 없는경우
             if (image == null) {
-                // 글 업로드
-                addBoardUseCase.invoke(item)
-
-                // 로딩 중지
+                useCase.invoke(item)
                 setLoadingState(false)
 
-                // 업로드 완료후 업데이트된 model DetailPage에 전달
-                val intent =
-                    CommunityDetailActivity.newIntentForEntity(context, item)
-                (context as Activity).setResult(RESULT_OK, intent)
-
-                // 화면터치 해제
                 isWindowTouchable(context, false)
                 (context as Activity).finish()
                 return@launch
             }
 
-            // 이미지 Storage업로드 요청
+
             val url = uploadImageForFirebaseStorage.invoke(
                 imgName = imgName,
-                image = image,
+                image = image
             )
+            val newItem = item.copy(image = url)
 
-            val newItem = item.copy(
-                image = url
-            )
+            useCase.invoke(newItem)
 
-            // 글 업로드
-            addBoardUseCase.invoke(newItem)
-
-            // 로딩 중지
             setLoadingState(false)
 
-            // 업로드 완료후 업데이트된 model DetailPage에 전달
-            val intent =
-                CommunityDetailActivity.newIntentForEntity(context, item)
-            (context as Activity).setResult(RESULT_OK, intent)
+            if (useCase == updateBoardUseCase::invoke) {
+                val intent = CommunityDetailActivity.newIntentForEntity(context, newItem)
+                (context as Activity).setResult(RESULT_OK, intent)
+            }
 
-            // 화면터치 해제
             isWindowTouchable(context, false)
             (context as Activity).finish()
         }
+    }
+
+    fun addCommunityWrite(
+        imgName: String,
+        image: Bitmap?,
+        item: CommunityEntity,
+        context: Context
+    ) {
+        updateItem(imgName, image, item, context, addBoardUseCase::invoke)
+    }
+
+    fun updateCommunityWrite(
+        imgName: String,
+        image: Bitmap?,
+        item: CommunityEntity,
+        context: Context
+    ) {
+        updateItem(imgName, image, item, context, updateBoardUseCase::invoke)
     }
 }
