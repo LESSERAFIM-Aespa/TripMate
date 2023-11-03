@@ -302,7 +302,7 @@
                         android:id="@+id/budget_statistics_calculate_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/background_budget_view_type1"
+                        android:background="@drawable/shape_budget_detail_tab_bg"
                         android:fontFamily="@font/inter"
                         android:hint="인원을 입력해주세요"
                         android:padding="10dp"
