@@ -43,9 +43,9 @@ class FirebaseBoardRepositoryImpl(
      * 내용: 조회수 업데이트
      * */
     override fun updateBoardViews(item: CommunityEntity) {
-        item.views?.plus(1)
+        val updatedItem = item.copy(views = (item.views ?: 0) + 1)
         remoteSource.updateBoard(
-            item.toModel()
+            updatedItem.toModel()
         )
     }
 
