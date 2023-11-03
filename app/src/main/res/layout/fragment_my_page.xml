@@ -83,7 +83,7 @@
             android:layout_height="101.03704dp"
             android:layout_margin="10dp"
             android:padding="5dp"
-            app:cardCornerRadius="4dp"
+            app:cardCornerRadius="14dp"
             app:cardElevation="2dp">
 
             <TextView
