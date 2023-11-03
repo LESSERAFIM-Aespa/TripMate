@@ -28,8 +28,10 @@ class BudgetAdapter(private val budgetListEventListener: BudgetListEventListener
         RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
             root.setOnClickListener { budgetListEventListener.itemClicked(currentList[absoluteAdapterPosition]) }
-            budgetItemStatusTextview.text =
-                "${currentList[absoluteAdapterPosition].money.toMoneyFormat()}원 -> ${currentList[absoluteAdapterPosition].resultMoeny.toMoneyFormat()}원"
+            budgetItemStatusBeforeTextview.text =
+                "${currentList[absoluteAdapterPosition].money.toMoneyFormat()}원"
+            budgetItemStatusAfterTextview.text =
+                "${currentList[absoluteAdapterPosition].resultMoeny.toMoneyFormat()}원"
             budgetItemDurationTextview.text =
                 "${currentList[absoluteAdapterPosition].startDate} ~ ${currentList[absoluteAdapterPosition].endDate}"
             budgetItemTitleTextview.text = currentList[absoluteAdapterPosition].name
