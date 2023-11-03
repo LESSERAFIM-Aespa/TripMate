@@ -7,31 +7,27 @@
     android:background="@color/white"
     tools:context=".ui.budget.BudgetFragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/budget_list_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/inter"
-        android:text="@string/budget_list_title"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="가계부 관리"
+        app:titleMarginStart="20dp"
+        app:titleTextAppearance="@style/toolbarMenuTheme.title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/budget_list_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/budget_list_toolbar"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_budget" />
 
