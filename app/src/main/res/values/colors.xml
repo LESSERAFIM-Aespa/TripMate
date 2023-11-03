@@ -131,5 +131,5 @@
 
     <color name="ligth_background">#F5F5F5</color>
     <color name="dark_background">#D9D9D9</color>
-    <color name="sub_text_color">#555555</color>
+    <color name="sub_text_color">#555</color>
 </resources>
