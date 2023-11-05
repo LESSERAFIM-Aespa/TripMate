@@ -32,6 +32,13 @@
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/ic_setting" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/mypage_edit_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end|top"
+            android:layout_marginHorizontal="7dp"
+            android:background="@drawable/mypage_baseline_create_24" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.cardview.widget.CardView
@@ -42,6 +49,7 @@
         android:layout_marginTop="85dp"
         android:layout_marginEnd="26dp"
         android:padding="5dp"
+        android:visibility="visible"
         app:cardCornerRadius="14dp"
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +94,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/mypage_profile_nick_textview" />
 
             <ImageView
-                android:id="@+id/mypage_edit_button"
+                android:id="@+id/mypage_edit_button2"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="18dp"
@@ -111,15 +119,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/carview"
         app:layout_constraintVertical_bias="0.0">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white">
+
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/mypage_editmode_edittext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/mypage_profile_content_edittext"
