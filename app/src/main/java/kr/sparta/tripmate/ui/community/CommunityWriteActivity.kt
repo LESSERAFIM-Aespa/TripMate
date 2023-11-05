@@ -10,13 +10,11 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import coil.load
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
@@ -60,8 +58,6 @@ class CommunityWriteActivity : AppCompatActivity() {
             intent.getParcelableExtra(MODEL_EDIT)
         }
     }
-    private lateinit var imgName: String
-    private var newModel: CommunityEntity? = null
 
     // 겔러리 이미지가져오기
     private val imageLauncher =
@@ -139,6 +135,21 @@ class CommunityWriteActivity : AppCompatActivity() {
              * RDB의 경우 기존자료를 업데이트할때에도 새로운 리스트를 만들어 덮어씌우는 형태입니다.
              * 그래서 수정하는경우에도 새롭게작성하는것과 로직상 차이가 없습니다.
              * */
+            fun editItem(key: String, imgName: String): CommunityEntity =
+                CommunityEntity(
+                    id = SharedPreferences.getUid(this@CommunityWriteActivity),
+                    key = model?.key ?: key,
+                    title = binding.communityWriteTitle.text.toString(),
+                    content = binding.communityWriteDescription.text.toString(),
+                    profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
+                    profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
+                    views = model?.views ?: 0,
+                    likes = model?.likes ?: 0,
+                    image = "",
+                    likeUsers = listOf(),
+                    scrapUsers = listOf(),
+                )
+
             fun postWrite() {
                 val bitmap: Bitmap? = if (communityWriteImage.drawable != null) {
                     (communityWriteImage.drawable as BitmapDrawable).bitmap
@@ -147,26 +158,28 @@ class CommunityWriteActivity : AppCompatActivity() {
                 }
                 if (model?.key.isNullOrEmpty()) {
                     val key = viewModel.getCommunityKey()
-                    editItem(key)
-
+                    val imgName = key.substring(key.length - 17, key.length)
+                    val newModel = editItem(key, imgName)
                     // 새 글 작성 or Edit
                     viewModel.addCommunityWrite(
                         imgName = imgName,
                         image = bitmap,
-                        item = newModel!!,
+                        item = newModel,
                         context = this@CommunityWriteActivity,
                     )
                 } else {
                     val key = model?.key
-                    editItem(key!!)
-                    viewModel.updateCommunityWrite(
-                        imgName,
-                        bitmap,
-                        newModel!!,
-                        this@CommunityWriteActivity
-                    )
+                    val imgName = key?.substring(key.length - 17, key.length)
+                    imgName?.let {
+                        val newModel = editItem(key, imgName)
+                        viewModel.updateCommunityWrite(
+                            imgName,
+                            bitmap,
+                            newModel,
+                            this@CommunityWriteActivity
+                        )
+                    }
                 }
-
             }
 
             if (binding.communityWriteTitle.text.toString()
@@ -189,23 +202,6 @@ class CommunityWriteActivity : AppCompatActivity() {
                 Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             imageLauncher.launch(gallery)
         }
-    }
-
-    private fun editItem(key: String) {
-        imgName = key.substring(key.length - 17, key.length)
-        newModel = CommunityEntity(
-            id = SharedPreferences.getUid(this@CommunityWriteActivity),
-            key = model?.key ?: key,
-            title = binding.communityWriteTitle.text.toString(),
-            content = binding.communityWriteDescription.text.toString(),
-            profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
-            profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
-            views = model?.views ?: 0,
-            likes = model?.likes ?: 0,
-            image = "",
-            likeUsers = listOf(),
-            scrapUsers = listOf(),
-        )
     }
 
     private fun initViewModel() {
