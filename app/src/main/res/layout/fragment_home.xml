@@ -67,7 +67,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                app:cardElevation="20dp"
+                app:cardCornerRadius="16dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/scrap_const"
@@ -76,8 +80,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/popular_const"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:elevation="20dp">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/home_scrap"
@@ -129,8 +132,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/budget_const"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrap_const"
-                android:elevation="20dp">
+                app:layout_constraintTop_toBottomOf="@+id/scrap_const">
 
                 <TextView
                     android:id="@+id/home_popular"
@@ -179,8 +181,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/popular_const"
-                android:elevation="20dp">
+                app:layout_constraintTop_toBottomOf="@+id/popular_const">
 
                 <TextView
                     android:id="@+id/home_title3"
