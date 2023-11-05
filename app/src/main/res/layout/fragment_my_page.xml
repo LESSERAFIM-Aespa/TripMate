@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fragment_background"
+    android:background="@color/primary"
     tools:context=".ui.mypage.home.MyPageFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/mypage_toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="139dp"
+        android:background="@color/primary"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,14 +22,14 @@
             style="@style/MypageToolbarTextApperance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="start|top"
             android:text="@string/mypage_toolbar_title" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/mypage_setting_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="end"
+            android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/ic_setting" />
 
@@ -36,63 +37,80 @@
             android:id="@+id/mypage_edit_button"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="end"
+            android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/mypage_baseline_create_24" />
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/mypage_profile_background_imageview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_splash"
-        app:layout_constraintBottom_toBottomOf="@id/mypage_profile_imageview"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/carview"
+        android:layout_width="308dp"
+        android:layout_height="101.03704dp"
+        android:layout_marginTop="85dp"
+        android:padding="5dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/mypage_profile_imageview" />
+        app:layout_constraintTop_toTopOf="@+id/mypage_toolbar">
 
-    <TextView
-        android:id="@+id/mypage_profile_nick_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mypage_profile_box"
-        android:gravity="center_vertical|center_horizontal"
-        app:layout_constraintStart_toStartOf="@+id/mypage_profile_imageview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mypage_profile_imageview"
-        app:layout_constraintBottom_toBottomOf="@+id/mypage_profile_imageview"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        tools:text="닉네임닉네임닉네임닉네임" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/mypage_profile_imageview"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="30dp"
-        tools:src="@color/Pink200"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_toolbar" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mypage_profile_imageview"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@color/Pink200" />
+
+            <TextView
+                android:id="@+id/mypage_profile_nick_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="22dp"
+                android:text="닉네임"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/mypage_profile_imageview"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mypage_profile_content_textview"
+                android:layout_width="180dp"
+                android:layout_height="24.4dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="28dp"
+                android:gravity="start"
+                android:text="안녕하세요!"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_profile_nick_textview" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:gravity="center|top"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mypage_profile_imageview">
-
-        <TextView
-            android:id="@+id/mypage_profile_content_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="5dp"
-            tools:text="안녕하세요!"
-            android:background="@drawable/mypage_profile_content_box" />
+        app:layout_constraintTop_toBottomOf="@+id/mypage_toolbar"
+        app:layout_constraintVertical_bias="0.0">
 
         <FrameLayout
             android:id="@+id/mypage_editmode_edittext_container"
@@ -107,14 +125,14 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="hint"
                 android:background="@drawable/mypage_profile_content_box_edit"
+                android:gravity="top"
+                android:hint="@string/mypage_edittext_hint"
                 android:inputType="text"
                 android:maxLength="30"
                 android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_profile_container"
-                android:hint="@string/mypage_edittext_hint"
-                android:gravity="top"
                 tools:ignore="LabelFor" />
 
             <TextView
@@ -169,6 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
