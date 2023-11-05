@@ -68,8 +68,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginEnd="14dp"
+                android:layout_margin="14dp"
                 app:cardElevation="20dp"
                 app:cardCornerRadius="16dp">
 
@@ -123,56 +122,65 @@
 
             </androidx.cardview.widget.CardView>
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/popular_const"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/budget_const"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/scrap_const">
+                android:layout_margin="14dp"
+                app:cardElevation="20dp"
+                app:cardCornerRadius="16dp">
 
-                <TextView
-                    android:id="@+id/home_popular"
-                    style="@style/HomesubHeadingTextApperance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="35dp"
-                    android:text="@string/popularposts"
-                    app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/popular_const" />
-
-                <ImageView
-                    android:id="@+id/home_arrow2"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/homemove"
-                    app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/popular_const" />
-
-                <View
-                    android:id="@+id/home_view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="15dp"
-                    android:background="@color/Brown100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_arrow2" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/home_board_recyclerview"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/popular_const"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/budget_const"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_view2" />
+                    app:layout_constraintTop_toBottomOf="@+id/scrap_const">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/home_popular"
+                        style="@style/HomesubHeadingTextApperance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="35dp"
+                        android:text="@string/popularposts"
+                        app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/popular_const" />
+
+                    <ImageView
+                        android:id="@+id/home_arrow2"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/homemove"
+                        app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/popular_const" />
+
+                    <View
+                        android:id="@+id/home_view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_margin="15dp"
+                        android:background="@color/Brown100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_arrow2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_board_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/home_view2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/budget_const"
