@@ -3,42 +3,16 @@ name: build
 on:
   push:
     branches:
-      - feat/main
-      - feat/budget
-      - feat/community
-      - feat/communitymain
-      - feat/communitydetail
-      - feat/home
-      - feat/scrap
-      - feat/mypage
-      - feat/login
-      - feat/splash
-      - feat/setting
-      - feat/budgetlist
-      - feat/budgetdetail
-      - refector/home
-      - feat/procedure
-      - hotfix/budget
-      - feat/userprofile
+      - feat/*     
+      - refector/*
+      - hotfix/*
+      - fix/*
   pull_request:
     branches:
-      - feat/main
-      - feat/budget
-      - feat/community
-      - feat/communitymain
-      - feat/communitydetail
-      - feat/home
-      - feat/scrap
-      - feat/mypage
-      - feat/login
-      - feat/splash
-      - feat/setting
-      - feat/budgetlist
-      - feat/budgetdetail
-      - refector/home
-      - feat/procedure
-      - hotfix/budget
-      - feat/userprofile
+      - feat/*     
+      - refector/*
+      - hotfix/*
+      - fix/*
 jobs:
   build:
 
