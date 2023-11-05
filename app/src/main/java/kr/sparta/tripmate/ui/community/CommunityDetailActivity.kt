@@ -144,7 +144,7 @@ class CommunityDetailActivity : AppCompatActivity() {
             val intent = model?.let { it1 ->
                 CommunityWriteActivity.newIntentForEdit(
                     this@CommunityDetailActivity,
-                    it1
+                    it1.copy(views = (it1.views ?: 0) + 1)
                 )
             }
             editLauncher.launch(intent)
@@ -164,7 +164,7 @@ class CommunityDetailActivity : AppCompatActivity() {
                 val isBoardScrap = viewModel.isBoardScrap.value
 
                 // 현재 스크랩상태 업데이트
-                isBoardScrap?.let {isScraped ->
+                isBoardScrap?.let { isScraped ->
                     viewModel.updateIsBoardScrap(!isScraped)
                 }
             }
@@ -203,7 +203,7 @@ class CommunityDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViewModel()=with(viewModel) {
+    private fun initViewModel() = with(viewModel) {
         isBoardScrap.observe(this@CommunityDetailActivity) {
             toggleBoardScrap(it)
         }
