@@ -1,8 +1,9 @@
 package kr.sparta.tripmate.api.naver
 
+import com.google.firebase.BuildConfig
 import com.google.gson.GsonBuilder
-import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.api.Constants
+import kr.sparta.tripmate.data.datasource.remote.ImageRemoteDataSource
 import kr.sparta.tripmate.data.datasource.remote.search.SearchBlogRemoteDataSource
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,6 +12,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NaverNetWorkClient {
+
+    val imageApiService : ImageRemoteDataSource
+        get() = instance.create(ImageRemoteDataSource::class.java)
     val apiService : SearchBlogRemoteDataSource
         get() = instance.create(SearchBlogRemoteDataSource::class.java)
 
