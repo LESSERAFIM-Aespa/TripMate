@@ -167,6 +167,8 @@ class CommunityWriteActivity : AppCompatActivity() {
                         item = newModel,
                         context = this@CommunityWriteActivity,
                     )
+                    // 로딩시작
+                    viewModel.setAddLoadingState(true)
                 } else {
                     val key = model?.key
                     val imgName = key?.substring(key.length - 17, key.length)
@@ -179,6 +181,7 @@ class CommunityWriteActivity : AppCompatActivity() {
                             this@CommunityWriteActivity
                         )
                     }
+                    viewModel.setEditLoadingState(true)
                 }
             }
 
@@ -188,10 +191,6 @@ class CommunityWriteActivity : AppCompatActivity() {
                 shortToast("제목과 내용을 입력해주셔야 합니다.")
                 return@setOnClickListener
             }
-
-            // 로딩시작
-            viewModel.setLoadingState(true)
-
             // 새로운 글 생성
             postWrite()
         }
@@ -207,16 +206,22 @@ class CommunityWriteActivity : AppCompatActivity() {
     private fun initViewModel() {
         with(viewModel) {
             // 로딩처리
-            isLoading.observe(this@CommunityWriteActivity) { isLoading ->
-                if (isLoading) {
-                    binding.communityWriteProgressBar.visibility = View.VISIBLE
-                    // 화면터치 막기
-                    isWindowTouchable(this@CommunityWriteActivity, true)
-                } else {
-                    binding.communityWriteProgressBar.visibility = View.GONE
-                    shortToast("글이 생성되었습니다.")
-                }
+            isAddLoading.observe(this@CommunityWriteActivity) { isAddLoading ->
+                communityDataIsLoading(isAddLoading, "글이 생성 되었습니다.")
             }
+            isEditLoading.observe(this@CommunityWriteActivity) { isEditLoading ->
+                communityDataIsLoading(isEditLoading, "게시글이 수정 되었습니다.")
+            }
+        }
+    }
+
+    private fun communityDataIsLoading(isLoading: Boolean, toastMessage: String) {
+        if (isLoading) {
+            binding.communityWriteProgressBar.visibility = View.VISIBLE
+            isWindowTouchable(this@CommunityWriteActivity, true)
+        } else {
+            binding.communityWriteProgressBar.visibility = View.GONE
+            shortToast(toastMessage)
         }
     }
 
