@@ -44,4 +44,6 @@ interface FirebaseBoardRepository {
      * 내용: Unique Key생성
      * */
     fun getKey(): String
+
+    fun updateBoard(item: CommunityEntity)
 }

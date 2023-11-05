@@ -61,7 +61,7 @@ class CommunityListAdapter(
                 item.image?.let {
                     if (it != "") {
                         communityMainThumbnail.load(it) {
-                            memoryCacheKey(item.key)
+                            memoryCacheKey(it)
                             crossfade(true)
                             listener(
                                 onStart = {

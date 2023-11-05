@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.viewmodel.community.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,6 +33,7 @@ class CommunityViewModel(
      * 내용 : RDB 커뮤니티데이터 불러옵니다.
      */
     suspend fun getAllBoards() {
+        Log.d("tripmatessss", "getAllBoards이 호출되고있냐?")
         getAllBoardsUseCase.invoke().collect() {
             _boards.value = it.toEntity()
         }

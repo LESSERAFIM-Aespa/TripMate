@@ -35,7 +35,7 @@ class HomeBoardListAdapter(private val onItemClick: (CommunityEntity) -> Unit) :
             homeGridTitle.text = item.title
             if(!item.image.isNullOrEmpty()){
                 homeGridImage.load(item.image){
-                    memoryCacheKey(item.key)
+                    memoryCacheKey(item.image)
                     crossfade(true)
                     listener(
                         onStart = {
