@@ -52,10 +52,10 @@ class CommunityWriteViewModel(
     fun getCommunityKey(): String = getCommunityKeyUseCase.invoke()
 
     /**
-     * 작성자: 서정한
-     * 내용: 글이 있으면 업데이트. 없으면 생성.
-     * */
-    @SuppressLint("CheckResult")
+     * 작성자 : 박성수
+     * 재활용 함수 (수정 후 업데이트 및 게시글 추가 할 때 공용으로 사용합니다.)
+     * 수정&추가 데이터를 RDB에 저장합니다.
+     */
     private fun updateItem(
         imgName: String,
         image: Bitmap?,
@@ -93,7 +93,10 @@ class CommunityWriteViewModel(
             (context as Activity).finish()
         }
     }
-
+    /**
+     * 작성자: 서정한
+     * 내용: 게시글을 추가 했을때 업데이트 합니다.
+     * */
     fun addCommunityWrite(
         imgName: String,
         image: Bitmap?,
@@ -102,6 +105,10 @@ class CommunityWriteViewModel(
     ) {
         updateItem(imgName, image, item, context, addBoardUseCase::invoke)
     }
+
+    /**작성자 : 박성수
+     * 내용 : 게시글을 수정 했을 때 업데이트 합니다.
+     */
 
     fun updateCommunityWrite(
         imgName: String,
