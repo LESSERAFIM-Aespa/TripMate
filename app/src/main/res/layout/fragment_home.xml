@@ -65,54 +65,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/scrap_const"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/popular_const"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:elevation="20dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/home_scrap"
-                    style="@style/HomesubHeadingTextApperance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="35dp"
-                    android:text="@string/main_tab_title_my_scrap"
-                    app:layout_constraintBottom_toBottomOf="@+id/home_view1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/home_arrow1"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/homemove"
-                    app:layout_constraintBottom_toBottomOf="@+id/home_view1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/home_view1"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="15dp"
-                    android:background="@color/Brown100"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_scrap" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/home_scrap_recycler_view"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/scrap_const"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/popular_const"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/home_view1" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:elevation="20dp">
+
+                    <TextView
+                        android:id="@+id/home_scrap"
+                        style="@style/HomesubHeadingTextApperance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="35dp"
+                        android:text="@string/main_tab_title_my_scrap"
+                        app:layout_constraintBottom_toBottomOf="@+id/home_view1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/home_arrow1"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/homemove"
+                        app:layout_constraintBottom_toBottomOf="@+id/home_view1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/home_view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_margin="15dp"
+                        android:background="@color/Brown100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_scrap" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_scrap_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_view1" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
