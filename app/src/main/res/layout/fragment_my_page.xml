@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
     tools:context=".ui.mypage.home.MyPageFragment">
 
     <androidx.appcompat.widget.Toolbar
@@ -44,10 +43,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/carview"
-        android:layout_width="308dp"
+        android:layout_width="match_parent"
         android:layout_height="101.03704dp"
+        android:layout_marginStart="26dp"
         android:layout_marginTop="85dp"
+        android:layout_marginEnd="26dp"
         android:padding="5dp"
+        android:visibility="visible"
         app:cardCornerRadius="14dp"
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,24 +87,39 @@
                 android:layout_width="180dp"
                 android:layout_height="24.4dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="80dp"
                 android:gravity="start"
                 android:text="안녕하세요!"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_profile_nick_textview" />
+
+            <ImageView
+                android:id="@+id/mypage_edit_button2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/mypage_baseline_create25"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/mypage_profile_content_textview" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginEnd="7dp"
+                android:src="@drawable/mypage_menu_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
 
-
-
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         android:gravity="center|top"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -111,6 +128,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mypage_toolbar"
         app:layout_constraintVertical_bias="0.0">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white">
+
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/mypage_editmode_edittext_container"
@@ -180,6 +204,7 @@
             android:id="@+id/mypage_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
             app:tabTextColor="@color/black" />
 
         <androidx.viewpager2.widget.ViewPager2
