@@ -113,7 +113,7 @@ class HomeFragment : Fragment() {
         }
 
         // 인기글
-        homeBoardRecyclerView.apply {
+        homeBoardRecyclerview.apply {
             layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
             adapter = homeBoardListAdapter
             setHasFixedSize(true)
