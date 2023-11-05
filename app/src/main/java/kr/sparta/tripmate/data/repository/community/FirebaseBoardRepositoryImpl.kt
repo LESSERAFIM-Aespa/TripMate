@@ -42,10 +42,12 @@ class FirebaseBoardRepositoryImpl(
      * 작성자: 서정한
      * 내용: 조회수 업데이트
      * */
-    override fun updateBoardViews(item: CommunityEntity) =
+    override fun updateBoardViews(item: CommunityEntity) {
+        val updatedItem = item.copy(views = (item.views ?: 0) + 1)
         remoteSource.updateBoard(
-            item.toModel()
+            updatedItem.toModel()
         )
+    }
 
     /**
      * 작성자: 서정한
@@ -58,4 +60,6 @@ class FirebaseBoardRepositoryImpl(
      * 내용: Unique Key생성
      * */
     override fun getKey(): String = remoteSource.getKey()
+
+    override fun updateBoard(item: CommunityEntity) = remoteSource.updateBoard(item.toModel())
 }

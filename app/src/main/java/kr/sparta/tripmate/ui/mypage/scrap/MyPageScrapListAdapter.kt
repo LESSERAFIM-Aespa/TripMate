@@ -104,11 +104,11 @@ class MyPageScrapListAdapter(private val onItemClick: (ScrapInterface, Int) -> U
             if (item is CommunityEntity) {
                 if (item.image.isNullOrBlank()) {
                     bookmarkImage.load(R.drawable.emptycommu) {
-                        memoryCacheKey(item.key)
+                        memoryCacheKey(item.image)
                     }
                 } else  {
                     bookmarkImage.load(item.image) {
-                        memoryCacheKey(item.key)
+                        memoryCacheKey(item.image)
                         crossfade(true)
                         listener(
                             onStart = {

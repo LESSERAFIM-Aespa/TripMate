@@ -10,13 +10,11 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import coil.load
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
@@ -84,7 +82,7 @@ class CommunityWriteActivity : AppCompatActivity() {
         model?.let {
             communityWriteTitle.setText(it.title)
             communityWriteDescription.setText(it.content)
-            if(it.image == "") {
+            if (it.image == "") {
                 communityWriteImageIcon.visibility = View.VISIBLE
             } else {
                 communityWriteImageIcon.visibility = View.INVISIBLE
@@ -137,36 +135,60 @@ class CommunityWriteActivity : AppCompatActivity() {
              * RDB의 경우 기존자료를 업데이트할때에도 새로운 리스트를 만들어 덮어씌우는 형태입니다.
              * 그래서 수정하는경우에도 새롭게작성하는것과 로직상 차이가 없습니다.
              * */
-            fun postWrite() {
-                val bitmap: Bitmap? = if(communityWriteImage.drawable != null) {
-                    (communityWriteImage.drawable as BitmapDrawable).bitmap
-                } else {
-                    null
-                }
-
-                val key = viewModel.getCommunityKey()
-                val imgName = key.substring(key.length - 17, key.length)
-                val model = CommunityEntity(
+            fun editItem(
+                key: String,
+                scrapUsers: List<String>,
+                likeUsers: List<String>
+            ): CommunityEntity =
+                CommunityEntity(
                     id = SharedPreferences.getUid(this@CommunityWriteActivity),
                     key = model?.key ?: key,
-                    title = communityWriteTitle.text.toString(),
-                    content = communityWriteDescription.text.toString(),
+                    title = binding.communityWriteTitle.text.toString(),
+                    content = binding.communityWriteDescription.text.toString(),
                     profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
                     profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
                     views = model?.views ?: 0,
                     likes = model?.likes ?: 0,
                     image = "",
-                    likeUsers = listOf(),
-                    scrapUsers = listOf(),
+                    likeUsers = likeUsers,
+                    scrapUsers = scrapUsers,
                 )
 
-                // 새 글 작성 or Edit
-                viewModel.updateCommunityWrite(
-                    imgName = imgName,
-                    image = bitmap,
-                    item = model,
-                    context= this@CommunityWriteActivity,
-                )
+            fun postWrite() {
+                val bitmap: Bitmap? = if (communityWriteImage.drawable != null) {
+                    (communityWriteImage.drawable as BitmapDrawable).bitmap
+                } else {
+                    null
+                }
+                if (model?.key.isNullOrEmpty()) {
+                    val key = viewModel.getCommunityKey()
+                    val imgName = key.substring(key.length - 17, key.length)
+                    val newModel = editItem(key, listOf(), listOf())
+                    // 새 글 작성 or Edit
+                    viewModel.addCommunityWrite(
+                        imgName = imgName,
+                        image = bitmap,
+                        item = newModel,
+                        context = this@CommunityWriteActivity,
+                    )
+                    // 로딩시작
+                    viewModel.setAddLoadingState(true)
+                } else {
+                    val key = model?.key
+                    val scrapUsers = model?.scrapUsers ?: listOf()
+                    val likeUsers = model?.likeUsers ?: listOf()
+                    val imgName = key?.substring(key.length - 17, key.length)
+                    imgName?.let {
+                        val newModel = editItem(key, scrapUsers, likeUsers)
+                        viewModel.updateCommunityWrite(
+                            imgName,
+                            bitmap,
+                            newModel,
+                            this@CommunityWriteActivity
+                        )
+                    }
+                    viewModel.setEditLoadingState(true)
+                }
             }
 
             if (binding.communityWriteTitle.text.toString()
@@ -175,10 +197,6 @@ class CommunityWriteActivity : AppCompatActivity() {
                 shortToast("제목과 내용을 입력해주셔야 합니다.")
                 return@setOnClickListener
             }
-
-            // 로딩시작
-            viewModel.setLoadingState(true)
-
             // 새로운 글 생성
             postWrite()
         }
@@ -194,16 +212,22 @@ class CommunityWriteActivity : AppCompatActivity() {
     private fun initViewModel() {
         with(viewModel) {
             // 로딩처리
-            isLoading.observe(this@CommunityWriteActivity) { isLoading ->
-                if (isLoading) {
-                    binding.communityWriteProgressBar.visibility = View.VISIBLE
-                    // 화면터치 막기
-                    isWindowTouchable(this@CommunityWriteActivity, true)
-                } else {
-                    binding.communityWriteProgressBar.visibility = View.GONE
-                    shortToast("글이 생성되었습니다.")
-                }
+            isAddLoading.observe(this@CommunityWriteActivity) { isAddLoading ->
+                communityDataIsLoading(isAddLoading, "글이 생성 되었습니다.")
             }
+            isEditLoading.observe(this@CommunityWriteActivity) { isEditLoading ->
+                communityDataIsLoading(isEditLoading, "게시글이 수정 되었습니다.")
+            }
+        }
+    }
+
+    private fun communityDataIsLoading(isLoading: Boolean, toastMessage: String) {
+        if (isLoading) {
+            binding.communityWriteProgressBar.visibility = View.VISIBLE
+            isWindowTouchable(this@CommunityWriteActivity, true)
+        } else {
+            binding.communityWriteProgressBar.visibility = View.GONE
+            shortToast(toastMessage)
         }
     }
 
