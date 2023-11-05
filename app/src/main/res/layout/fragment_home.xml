@@ -42,14 +42,15 @@
                 android:id="@+id/home_profile_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp" />
+                style="@style/HomeToolbarTextApperance" />
 
             <TextView
                 android:id="@+id/home_profile_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome"
-                android:textSize="14sp" />
+                style="@style/HomeToolbarTextApperance"
+                />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -72,8 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/main_tab_title_my_scrap"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                style="@style/HomesubHeadingTextApperance"
                 app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,7 +101,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_scrap_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_view1" />
@@ -113,8 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/popularposts"
-                android:textSize="24sp"
-                android:textStyle="normal"
+                style="@style/HomesubHeadingTextApperance"
                 app:layout_constraintBottom_toBottomOf="@+id/home_view2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +141,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_board_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="280dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_view2" />
@@ -152,8 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/budget_list_title"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                style="@style/HomesubHeadingTextApperance"
                 app:layout_constraintBottom_toBottomOf="@+id/home_view3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +179,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_recyclerView3"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_view3" />
