@@ -119,7 +119,7 @@ class ProcedureContentActivity : AppCompatActivity() {
             budgetCategories.observe(this@ProcedureContentActivity) { list ->
                 val budgetCategories = list.orEmpty().first()
                 val budget = budgetCategories.budget
-                binding.budgetDetailTitleTextview.text = budget.name
+                binding.procedureToolbar.title = budget.name
                 startDate = budget.startDate
                 endDate = budget.endDate
                 val categories = budgetCategories.categories.orEmpty()
@@ -162,7 +162,7 @@ class ProcedureContentActivity : AppCompatActivity() {
                 procedureTimeTextview
             )
         }
-        budgetDetailBackImageview.setOnClickListener {
+        procedureToolbar.setNavigationOnClickListener {
             finish()
         }
         procedureCancelButton.setOnClickListener {
