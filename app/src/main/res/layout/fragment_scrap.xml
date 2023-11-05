@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fragment_background">
+    android:background="@color/primary">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/scrap_toolbar"
@@ -18,27 +18,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/blog_toolbar_title"
-            android:textColor="@color/white"
-            android:textSize="40sp"
+            style="@style/ScrapToolbarTextApperance"
+            android:layout_marginHorizontal="23dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.appcompat.widget.Toolbar>
 
-    >
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/scrap_SearchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="23dp"
-        android:layout_marginTop="58dp"
+        android:layout_marginTop="0dp"
         android:background="@drawable/scrap_content_outline"
-        app:layout_constraintBottom_toTopOf="@+id/scrap_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrap_toolbar"
         app:queryHint="검색하기" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -46,21 +44,27 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
+        android:layout_marginTop="14dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrap_SearchView"
         tools:listitem="@layout/scraptitems" />
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/scrap_imagelayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="14dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrap_SearchView">
+        app:layout_constraintTop_toBottomOf="@+id/scrap_SearchView"
+        app:layout_constraintVertical_bias="0.0">
+
         <FrameLayout
             android:id="@+id/scrap_imageframe"
             android:layout_width="wrap_content"
@@ -69,31 +73,53 @@
             app:layout_constraintEnd_toEndOf="@+id/scrap_imagelayout"
             app:layout_constraintStart_toStartOf="@+id/scrap_imagelayout"
             app:layout_constraintTop_toTopOf="@+id/scrap_imagelayout">
+
+
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:id="@+id/scrap_imagesearch_view"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:src="@drawable/addimage"/>
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/search"
-                android:layout_gravity="bottom|end"/>
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:layout_gravity="center"
+                android:src="@drawable/addimage" />
+
+            <LinearLayout
+                android:id="@+id/text_and_image_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="54dp"
+                    android:layout_height="37dp"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/search" />
+
+                <TextView
+                    android:id="@+id/scrap_imagesearch_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@color/black"
+                    android:text="검색하기"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/scrap_recommand_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="0dp"
+                android:text="오늘 여기는 어떤가요?"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
         </FrameLayout>
-        <TextView
-            android:id="@+id/scrap_imagesearch_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="이곳은 어떤가요?"
-            app:layout_constraintEnd_toEndOf="@+id/scrap_imagelayout"
-            app:layout_constraintStart_toStartOf="@+id/scrap_imagelayout"
-            app:layout_constraintTop_toBottomOf="@+id/scrap_imageframe"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <ProgressBar
         android:id="@+id/scrap_loading"
