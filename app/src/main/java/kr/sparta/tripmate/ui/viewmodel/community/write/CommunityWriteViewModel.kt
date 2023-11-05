@@ -31,8 +31,10 @@ class CommunityWriteViewModel(
 ) :
     ViewModel() {
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
+    private val _isAddLoading = MutableLiveData<Boolean>()
+    val isAddLoading: LiveData<Boolean> get() = _isAddLoading
+    private val _isEditLoading = MutableLiveData<Boolean>()
+    val isEditLoading : LiveData<Boolean> get() = _isEditLoading
 
     // 이벤트처리를위한 PublishSubject
     val publishSubject: PublishSubject<CommunityEntity> = PublishSubject.create()
@@ -41,8 +43,11 @@ class CommunityWriteViewModel(
      * 작성자: 서정한
      * 내용: 현재 로딩상태를 변경하는데 사용
      * */
-    fun setLoadingState(isLoading: Boolean) {
-        _isLoading.value = isLoading
+    fun setAddLoadingState(isAddLoading: Boolean) {
+        _isAddLoading.value = isAddLoading
+    }
+    fun setEditLoadingState(isEditLoading:Boolean){
+        _isEditLoading.value = isEditLoading
     }
 
     /**
@@ -56,7 +61,7 @@ class CommunityWriteViewModel(
      * 재활용 함수 (수정 후 업데이트 및 게시글 추가 할 때 공용으로 사용합니다.)
      * 수정&추가 데이터를 RDB에 저장합니다.
      */
-    private fun updateItem(
+    private fun updateCommunityWrite(
         imgName: String,
         image: Bitmap?,
         item: CommunityEntity,
@@ -66,7 +71,9 @@ class CommunityWriteViewModel(
         CoroutineScope(Dispatchers.Main).launch {
             if (image == null) {
                 useCase.invoke(item)
-                setLoadingState(false)
+                if(useCase == addBoardUseCase::invoke){
+                    setAddLoadingState(false)
+                } else setEditLoadingState(false)
 
                 isWindowTouchable(context, false)
                 (context as Activity).finish()
@@ -81,8 +88,9 @@ class CommunityWriteViewModel(
             val newItem = item.copy(image = url)
 
             useCase.invoke(newItem)
-
-            setLoadingState(false)
+            if(useCase == addBoardUseCase::invoke){
+                setAddLoadingState(false)
+            }else setEditLoadingState(false)
 
             if (useCase == updateBoardUseCase::invoke) {
                 val intent = CommunityDetailActivity.newIntentForEntity(context, newItem)
@@ -103,7 +111,7 @@ class CommunityWriteViewModel(
         item: CommunityEntity,
         context: Context
     ) {
-        updateItem(imgName, image, item, context, addBoardUseCase::invoke)
+        updateCommunityWrite(imgName, image, item, context, addBoardUseCase::invoke)
     }
 
     /**작성자 : 박성수
@@ -116,6 +124,6 @@ class CommunityWriteViewModel(
         item: CommunityEntity,
         context: Context
     ) {
-        updateItem(imgName, image, item, context, updateBoardUseCase::invoke)
+        updateCommunityWrite(imgName, image, item, context, updateBoardUseCase::invoke)
     }
 }
