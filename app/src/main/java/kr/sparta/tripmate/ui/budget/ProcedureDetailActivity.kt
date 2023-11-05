@@ -62,7 +62,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
                     val procedure = list.orEmpty().first()
                     val categories = categories.value.orEmpty()
 
-                    binding.procedureDetailTitleTextview.text = procedure.name
+                    binding.procedureToolbar.title = procedure.name
                     categories.firstOrNull {
                         it.num == procedure.categoryNum
                     }?.let { category ->
@@ -84,7 +84,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
     }
 
     private fun initViews() = with(binding) {
-        procedureDetailBackImageview.setOnClickListener {
+        procedureToolbar.setNavigationOnClickListener {
             finish()
         }
 
