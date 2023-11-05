@@ -122,7 +122,7 @@
     <color name="Gray">#f8f8f8</color>
     <color name="Gray500_o50">#809E9E9E</color>
 
-    <color name="searchoutline">#585858</color>
+    <color name="searchoutline">#555555</color>
     <color name="primary">#E9C46A</color>
     <color name="secondary">#E76F51</color>
     <color name="fragment_background">#08192B</color>
