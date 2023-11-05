@@ -141,8 +141,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:visibility="gone">
-
+            android:visibility="visible">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/mypage_profile_content_edittext"
                 android:layout_width="match_parent"
@@ -169,6 +171,7 @@
                 android:textColor="@color/Gray"
                 android:textStyle="bold"
                 tools:text="30/30" />
+            </androidx.cardview.widget.CardView>
         </FrameLayout>
 
         <LinearLayout
@@ -178,7 +181,7 @@
             android:layout_margin="15dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/mypage_edit_cancel_button"
