@@ -192,7 +192,7 @@ class CommunityWriteActivity : AppCompatActivity() {
             }
 
             if (binding.communityWriteTitle.text.toString()
-                    .trim() == "" && binding.communityWriteDescription.text.toString().trim() == ""
+                    .trim() == "" || binding.communityWriteDescription.text.toString().trim() == ""
             ) {
                 shortToast("제목과 내용을 입력해주셔야 합니다.")
                 return@setOnClickListener
