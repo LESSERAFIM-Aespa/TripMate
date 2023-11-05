@@ -140,11 +140,16 @@
             android:id="@+id/mypage_editmode_edittext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginEnd="26dp"
+            android:background="@color/white"
             android:visibility="visible">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                app:cardElevation="2dp"
                 app:cardCornerRadius="14dp">
             <EditText
                 android:id="@+id/mypage_profile_content_edittext"
