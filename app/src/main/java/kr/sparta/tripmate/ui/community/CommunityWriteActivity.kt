@@ -190,11 +190,15 @@ class CommunityWriteActivity : AppCompatActivity() {
                     viewModel.setEditLoadingState(true)
                 }
             }
-
-            if (binding.communityWriteTitle.text.toString()
-                    .trim() == "" || binding.communityWriteDescription.text.toString().trim() == ""
+            val titleRegex = "^[ㄱ-ㅣ가-힣a-zA-Z0-9\\s]*".toRegex()
+            val communityWriteTitle = binding.communityWriteTitle.text.toString().trim()
+            val communityWriteDescription= binding.communityWriteDescription.text.toString().trim()
+            if (communityWriteTitle.isNullOrBlank() || communityWriteDescription.isNullOrBlank()
             ) {
                 shortToast("제목과 내용을 입력해주셔야 합니다.")
+                return@setOnClickListener
+            } else if(!communityWriteTitle.matches(titleRegex)){
+                shortToast("제목은 영어, 한글, 숫자만 입력 가능합니다.")
                 return@setOnClickListener
             }
             // 새로운 글 생성
