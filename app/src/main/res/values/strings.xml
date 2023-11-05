@@ -14,8 +14,7 @@
     <string name="mypage_edit_submit">확인</string>
     <string name="mypage_edit_cancel">취소</string>
     <string name="mypage_edit_text">Edit</string>
-    <string name="blog_toolbar_title">Blog</string>
-    <string name="my_scrap">내 스크랩</string>
+    <string name="blog_toolbar_title">블로그</string>
     <string name="scrap_bg_content_description">BackgroundImage</string>
     <string name="community_bg_content_description">BackgroundImage</string>
     <string name="default_web_client_id">""</string>
@@ -57,6 +56,7 @@
     <string name="main_tab_title_home">Home</string>
     <string name="main_tab_title_blog">Blog</string>
     <string name="main_tab_title_mypage">MyPage</string>
+    <string name="main_tab_title_my_scrap">내 스크랩</string>
     <string name="pleaseentertitle">제목을 입력하세요.</string>
     <string name="pleaseenteryourdetails">내용을 입력해주세요</string>
     <string name="community_detail_title">디테일페이지제목</string>
