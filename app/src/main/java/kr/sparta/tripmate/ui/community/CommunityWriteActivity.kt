@@ -135,7 +135,11 @@ class CommunityWriteActivity : AppCompatActivity() {
              * RDB의 경우 기존자료를 업데이트할때에도 새로운 리스트를 만들어 덮어씌우는 형태입니다.
              * 그래서 수정하는경우에도 새롭게작성하는것과 로직상 차이가 없습니다.
              * */
-            fun editItem(key: String, imgName: String): CommunityEntity =
+            fun editItem(
+                key: String,
+                scrapUsers: List<String>,
+                likeUsers: List<String>
+            ): CommunityEntity =
                 CommunityEntity(
                     id = SharedPreferences.getUid(this@CommunityWriteActivity),
                     key = model?.key ?: key,
@@ -146,8 +150,8 @@ class CommunityWriteActivity : AppCompatActivity() {
                     views = model?.views ?: 0,
                     likes = model?.likes ?: 0,
                     image = "",
-                    likeUsers = listOf(),
-                    scrapUsers = listOf(),
+                    likeUsers = likeUsers,
+                    scrapUsers = scrapUsers,
                 )
 
             fun postWrite() {
@@ -159,7 +163,7 @@ class CommunityWriteActivity : AppCompatActivity() {
                 if (model?.key.isNullOrEmpty()) {
                     val key = viewModel.getCommunityKey()
                     val imgName = key.substring(key.length - 17, key.length)
-                    val newModel = editItem(key, imgName)
+                    val newModel = editItem(key, listOf(), listOf())
                     // 새 글 작성 or Edit
                     viewModel.addCommunityWrite(
                         imgName = imgName,
@@ -171,9 +175,11 @@ class CommunityWriteActivity : AppCompatActivity() {
                     viewModel.setAddLoadingState(true)
                 } else {
                     val key = model?.key
+                    val scrapUsers = model?.scrapUsers ?: listOf()
+                    val likeUsers = model?.likeUsers ?: listOf()
                     val imgName = key?.substring(key.length - 17, key.length)
                     imgName?.let {
-                        val newModel = editItem(key, imgName)
+                        val newModel = editItem(key, scrapUsers, likeUsers)
                         viewModel.updateCommunityWrite(
                             imgName,
                             bitmap,
