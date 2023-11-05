@@ -31,7 +31,8 @@
         android:elevation="10dp"
         app:tabBackground="@color/white"
         app:tabIndicatorColor="@color/primary"
-        app:tabIndicatorAnimationDuration=""
+        app:tabIndicator="@drawable/tab_selector_shape"
+        app:tabIndicatorGravity="top"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
