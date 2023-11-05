@@ -107,14 +107,14 @@ class HomeFragment : Fragment() {
 
         // 블로그
         homeScrapRecyclerView.apply {
-            layoutManager = GridLayoutManager(homeContext, 2, GridLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(homeContext, 1, GridLayoutManager.HORIZONTAL, false)
             adapter = homeScrapListAdapter
             setHasFixedSize(true)
         }
 
         // 인기글
         homeBoardRecyclerView.apply {
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
             adapter = homeBoardListAdapter
             setHasFixedSize(true)
         }
