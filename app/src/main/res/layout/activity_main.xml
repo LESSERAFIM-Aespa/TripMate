@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:elevation="10dp"
         app:tabBackground="@color/white"
+        app:tabIndicatorColor="@color/primary"
         app:layout_constraintBottom_toBottomOf="parent">
 
 
