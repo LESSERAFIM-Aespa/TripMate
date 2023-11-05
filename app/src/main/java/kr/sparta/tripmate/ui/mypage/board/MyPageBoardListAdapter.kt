@@ -78,7 +78,7 @@ class MyPageBoardListAdapter(
                     }
                     // 이미지가 존재할경우
                     myPageItemThumbnail.load(item.image) {
-                        memoryCacheKey(item.key)
+                        memoryCacheKey(item.image)
                         crossfade(true)
                         listener(
                             onStart = {
