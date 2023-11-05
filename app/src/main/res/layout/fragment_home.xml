@@ -61,14 +61,14 @@
         android:layout_marginTop="?attr/actionBarSize">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/home_body_const"
+            android:id="@+id/scrap_const"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/home_toolbar">
 
             <TextView
-                android:id="@+id/home_title1"
+                android:id="@+id/home_scrap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -96,7 +96,7 @@
                 android:background="@color/Brown100"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_title1" />
+                app:layout_constraintTop_toBottomOf="@+id/home_scrap" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/home_scrap_recycler_view"
@@ -106,84 +106,94 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_view1" />
 
-
-
-            <TextView
-                android:id="@+id/home_title2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/popularposts"
-                style="@style/HomesubHeadingTextApperance"
-                app:layout_constraintBottom_toBottomOf="@+id/home_view2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_scrap_recycler_view" />
-
-            <ImageView
-                android:id="@+id/home_arrow2"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:src="@drawable/homemove"
-                app:layout_constraintBottom_toBottomOf="@+id/home_view2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_scrap_recycler_view" />
-
-            <View
-                android:id="@+id/home_view2"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_margin="5dp"
-                android:background="@color/Brown100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_title2" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_board_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_view2" />
-
-            <TextView
-                android:id="@+id/home_title3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/budget_list_title"
-                style="@style/HomesubHeadingTextApperance"
-                app:layout_constraintBottom_toBottomOf="@+id/home_view3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_board_recycler_view" />
-
-            <ImageView
-                android:id="@+id/home_arrow3"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:src="@drawable/homemove"
-                app:layout_constraintBottom_toBottomOf="@+id/home_view3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_board_recycler_view" />
-
-            <View
-                android:id="@+id/home_view3"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_margin="5dp"
-                android:background="@color/Brown100"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_title3" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_recyclerView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/home_view3" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/scrap_const"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/home_title2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/popularposts"-->
+<!--                style="@style/HomesubHeadingTextApperance"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/home_view2"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_scrap_recycler_view" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/home_arrow2"-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:src="@drawable/homemove"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/home_view2"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_scrap_recycler_view" />-->
+
+<!--            <View-->
+<!--                android:id="@+id/home_view2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:background="@color/Brown100"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_title2" />-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/home_board_recycler_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_view2" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/home_title3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/budget_list_title"-->
+<!--                style="@style/HomesubHeadingTextApperance"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/home_view3"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_board_recycler_view" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/home_arrow3"-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:src="@drawable/homemove"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/home_view3"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_board_recycler_view" />-->
+
+<!--            <View-->
+<!--                android:id="@+id/home_view3"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:background="@color/Brown100"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_title3" />-->
+
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/home_recyclerView3"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/home_view3" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
