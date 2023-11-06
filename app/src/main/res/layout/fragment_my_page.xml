@@ -31,7 +31,8 @@
             android:layout_height="24dp"
             android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
-            android:background="@drawable/ic_setting" />
+            android:background="@drawable/ic_setting"
+            android:visibility="visible"/>
 
     </androidx.appcompat.widget.Toolbar>
 
