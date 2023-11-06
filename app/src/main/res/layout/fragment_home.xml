@@ -239,17 +239,32 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="33dp"
+                        android:layout_marginStart="25dp"
                         android:text="@string/budget_list_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@+id/home_recyclerView3"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
+
+                    <TextView
+                        android:id="@+id/home_move3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/main_tab_move_button"
+                        android:textColor="@color/primary"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/inter"
+                        android:layout_marginEnd="3dp"
+                        app:layout_constraintTop_toTopOf="@+id/budget_const"
+                        app:layout_constraintBottom_toTopOf="@id/home_view3"
+                        app:layout_constraintEnd_toStartOf="@+id/home_arrow3"/>
 
                     <ImageView
                         android:id="@+id/home_arrow3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/arrow_right"
+                        android:layout_marginEnd="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toTopOf="@+id/home_recyclerView3"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
@@ -258,7 +273,8 @@
                         android:id="@+id/home_view3"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_margin="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
                         android:layout_marginTop="5dp"
                         android:background="@color/Brown100"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -269,7 +285,7 @@
                         android:id="@+id/home_recyclerView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="28dp"
+                        android:layout_marginStart="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view3" />
