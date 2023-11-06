@@ -16,7 +16,7 @@ import kr.sparta.tripmate.databinding.ItemCategoryBinding
 class CategoryAdapter(val categoryListEventListener: CategoryListEventListener) :
     ListAdapter<Category, CategoryAdapter.ViewHolder>(object : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem == newItem
+            return oldItem.num == newItem.num
         }
 
         override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
@@ -34,13 +34,9 @@ class CategoryAdapter(val categoryListEventListener: CategoryListEventListener) 
     inner class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() = with(binding) {
-            if (saveList[absoluteAdapterPosition].name.isNotBlank()) {
-                budgetCategoryNameEdittext.setText(saveList[absoluteAdapterPosition].name)
-            }
-            if (saveList[absoluteAdapterPosition].color.isNotBlank()) {
-                budgetCategoryColorButton.backgroundTintList =
-                    ColorStateList.valueOf(Color.parseColor(saveList[absoluteAdapterPosition].color))
-            }
+            budgetCategoryNameEdittext.setText(saveList[absoluteAdapterPosition].name)
+            budgetCategoryColorButton.backgroundTintList =
+                ColorStateList.valueOf(Color.parseColor(saveList[absoluteAdapterPosition].color))
             budgetCategoryColorButton.setOnClickListener {
                 categoryListEventListener.onColorButtonClicked(
                     absoluteAdapterPosition,

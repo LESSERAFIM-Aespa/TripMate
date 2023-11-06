@@ -41,7 +41,7 @@ class BudgetContentViewModel(
         viewModelScope.launch {
             repository.insertBudgets(budget)
             val currentNum = repository.getLastBudget().first().num
-            val arr = categories.map { it.copy(budgetNum = currentNum) }.toTypedArray()
+            val arr = categories.map { it.copy(budgetNum = currentNum, num = 0) }.toTypedArray()
             repository.insertCategories(*arr)
         }
 
@@ -90,7 +90,7 @@ class BudgetContentViewModel(
                         continue@after
                     }
                 }
-                repository.insertCategories(category)
+                repository.insertCategories(category.copy(num = 0))
             }
             Log.d(TAG, "updateBudgetAndCategories: mid2")
             val etcNum = beforeCategories[2].num // 기타 카테고리
