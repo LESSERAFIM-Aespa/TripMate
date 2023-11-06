@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -90,6 +91,8 @@ class MyPageFragment : Fragment() {
 
     private fun initView() = with(binding) {
 
+        mypageProfileContentTextview.movementMethod = ScrollingMovementMethod.getInstance()
+
         mypageViewpager.adapter = adapter
 
         TabLayoutMediator(mypageTablayout, mypageViewpager) { tab, position ->
@@ -108,12 +111,21 @@ class MyPageFragment : Fragment() {
         fun updateEditType(isEditMode: Boolean) {
             if (isEditMode) {
                 mypageEditmodeEdittextContainer.visibility = View.VISIBLE
-                mypageEditmodeButtonContainer.visibility = View.VISIBLE
+                mypageEditCancelButton.visibility = View.VISIBLE
+                mypageEditSubmitButton.visibility = View.VISIBLE
                 mypageProfileContentTextview.visibility = View.GONE
+                mypageInfoTv.visibility = View.GONE
+                mypageSettingButton.visibility = View.GONE
+                mypageEditButton.visibility = View.GONE
+
             } else {
                 mypageEditmodeEdittextContainer.visibility = View.GONE
-                mypageEditmodeButtonContainer.visibility = View.GONE
+                mypageEditCancelButton.visibility = View.GONE
+                mypageEditSubmitButton.visibility = View.GONE
                 mypageProfileContentTextview.visibility = View.VISIBLE
+                mypageInfoTv.visibility = View.VISIBLE
+                mypageSettingButton.visibility = View.VISIBLE
+                mypageEditButton.visibility = View.VISIBLE
             }
         }
 
