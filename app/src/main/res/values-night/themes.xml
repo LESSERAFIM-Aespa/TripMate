@@ -1,7 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.TripMate" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.TripMate" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.TripMate" parent="Base.Theme.TripMate" />
+    <style name="Theme.TripMate.RemoveSplash" parent="Theme.TripMate">
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>
