@@ -111,11 +111,18 @@ class MyPageFragment : Fragment() {
                 mypageEditCancelButton.visibility = View.VISIBLE
                 mypageEditSubmitButton.visibility = View.VISIBLE
                 mypageProfileContentTextview.visibility = View.GONE
+                mypageInfoTv.visibility = View.GONE
+                mypageSettingButton.visibility = View.GONE
+                mypageEditButton.visibility = View.GONE
+
             } else {
                 mypageEditmodeEdittextContainer.visibility = View.GONE
                 mypageEditCancelButton.visibility = View.GONE
                 mypageEditSubmitButton.visibility = View.GONE
                 mypageProfileContentTextview.visibility = View.VISIBLE
+                mypageInfoTv.visibility = View.VISIBLE
+                mypageSettingButton.visibility = View.VISIBLE
+                mypageEditButton.visibility = View.VISIBLE
             }
         }
 

@@ -18,12 +18,12 @@
         app:titleTextColor="@color/white">
 
         <TextView
+            android:id="@+id/mypage_info_tv"
             style="@style/MypageToolbarTextApperance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
-            android:text="@string/mypage_toolbar_title"
-            android:visibility="visible"/>
+            android:text="@string/mypage_toolbar_title" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/mypage_setting_button"
@@ -31,23 +31,24 @@
             android:layout_height="24dp"
             android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
-            android:background="@drawable/ic_setting"
-            android:visibility="visible"/>
+            android:background="@drawable/ic_setting" />
+
         <ImageView
             android:id="@+id/mypage_edit_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
             android:src="@drawable/arrow_left_white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/mypage_edit_submit_button"
             android:layout_width="34dp"
             android:layout_height="22dp"
-            android:layout_marginEnd="13dp"
             android:layout_gravity="end|top"
+            android:layout_marginEnd="13dp"
             android:src="@drawable/share_button"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -141,43 +142,45 @@
             android:id="@+id/mypage_editmode_edittext_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="26dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="26dp"
             android:background="@color/white"
             android:visibility="gone">
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
-                app:cardElevation="2dp"
-                app:cardCornerRadius="14dp">
-            <EditText
-                android:id="@+id/mypage_profile_content_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="hint"
-                android:background="@drawable/mypage_profile_content_box_edit"
-                android:gravity="top"
-                android:hint="@string/mypage_edittext_hint"
-                android:inputType="text"
-                android:maxLength="30"
-                android:padding="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mypage_profile_container"
-                tools:ignore="LabelFor" />
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp">
 
-            <TextView
-                android:id="@+id/mypage_profile_check_length_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="5dp"
-                android:textColor="@color/Gray"
-                android:textStyle="bold"
-                tools:text="30/30" />
+                <EditText
+                    android:id="@+id/mypage_profile_content_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="hint"
+                    android:background="@drawable/mypage_profile_content_box_edit"
+                    android:gravity="top"
+                    android:hint="@string/mypage_edittext_hint"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:padding="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_profile_container"
+                    tools:ignore="LabelFor" />
+
+                <TextView
+                    android:id="@+id/mypage_profile_check_length_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:textColor="@color/Gray"
+                    android:textStyle="bold"
+                    tools:text="30/30" />
             </androidx.cardview.widget.CardView>
         </FrameLayout>
 
@@ -186,8 +189,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
-            app:tabTextColor="@color/black"
-            app:tabIndicatorColor="@color/black"/>
+            app:tabIndicatorColor="@color/black"
+            app:tabTextColor="@color/black" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/mypage_viewpager"
