@@ -10,20 +10,18 @@
         android:id="@+id/scrap_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/arrow_left_white">
+        app:navigationIcon="@drawable/arrow_left">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/blog_toolbar_title"
-            android:textColor="@color/white"
-            android:textSize="40sp"
-            android:fontFamily="@font/roboto_regular"
-            android:textStyle="normal"
+            android:textColor="@color/black"
+            style="@style/ScrapToolbarTextApperance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
