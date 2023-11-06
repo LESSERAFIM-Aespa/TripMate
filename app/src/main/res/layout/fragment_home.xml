@@ -93,19 +93,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/home_move1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/main_tab_move_button"
-                        android:textColor="@color/primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/inter"
-                        android:layout_marginEnd="3dp"
-                        app:layout_constraintBottom_toTopOf="@+id/home_scrap_recycler_view"
-                        app:layout_constraintEnd_toStartOf="@+id/home_arrow1"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/home_arrow1"
@@ -169,20 +156,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/popular_const" />
 
-                    <TextView
-                        android:id="@+id/home_move2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/main_tab_move_button"
-                        android:textColor="@color/primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/inter"
-                        android:layout_marginEnd="3dp"
-                        app:layout_constraintTop_toTopOf="@+id/popular_const"
-                        app:layout_constraintBottom_toTopOf="@+id/home_view2"
-                        app:layout_constraintEnd_toStartOf="@+id/home_arrow2"/>
-
 
                     <ImageView
                         android:id="@+id/home_arrow2"
@@ -245,19 +218,6 @@
                         app:layout_constraintBottom_toTopOf="@+id/home_recyclerView3"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
 
-                    <TextView
-                        android:id="@+id/home_move3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/main_tab_move_button"
-                        android:textColor="@color/primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/inter"
-                        android:layout_marginEnd="3dp"
-                        app:layout_constraintTop_toTopOf="@+id/budget_const"
-                        app:layout_constraintBottom_toTopOf="@id/home_view3"
-                        app:layout_constraintEnd_toStartOf="@+id/home_arrow3"/>
 
                     <ImageView
                         android:id="@+id/home_arrow3"
@@ -284,7 +244,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/home_recyclerView3"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="180dp"
                         android:layout_marginStart="20dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
