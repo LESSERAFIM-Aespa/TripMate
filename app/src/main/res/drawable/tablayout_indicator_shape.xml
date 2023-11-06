@@ -4,9 +4,9 @@
     <item android:gravity="center">
         <shape>
             <size
-                android:width="41dp"
-                android:height="41dp" />
-            <corners android:radius="21dp" />
+                android:width="43dp"
+                android:height="43dp" />
+            <corners android:radius="14dp" />
             <solid android:color="@color/primary" />
         </shape>
     </item>
