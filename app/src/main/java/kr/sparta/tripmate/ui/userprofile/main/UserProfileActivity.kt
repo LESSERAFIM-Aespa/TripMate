@@ -66,7 +66,7 @@ class UserProfileActivity : AppCompatActivity() {
             userProfileResult.observe(this@UserProfileActivity) {
                 with(binding) {
                     userProfileThumbnail.load(it?.login_profile)
-                    userProfileNickname.text = it?.login_NickName
+                    userProfileNickTextview.text = it?.login_NickName
                     userProfileContentTextview.text = it?.login_coment
                 }
             }
@@ -81,7 +81,7 @@ class UserProfileActivity : AppCompatActivity() {
         }.attach()
 
         // 뒤로가기
-        userProfileToolbar.setNavigationOnClickListener {
+        userToolbar.setNavigationOnClickListener {
             finish()
         }
     }

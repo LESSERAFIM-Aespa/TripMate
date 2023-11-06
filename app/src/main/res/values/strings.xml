@@ -74,6 +74,7 @@
     <string name="user_profile_toolbar_title">프로필</string>
     <string name="user_profile_tab_title">작성한 글 목록</string>
     <string name="community_write_post_text">게시</string>
-
+    <string name="click_on_the_image_to_search">이미지를 클릭하면 검색 됩니다!</string>
+    <string name="scrap_search">검색하기</string>
 
 </resources>

@@ -1,9 +1,7 @@
 package kr.sparta.tripmate.ui.scrap
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,17 +13,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
-import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
-import kr.sparta.tripmate.ui.scrap.main.ScrapAdapter
-import kr.sparta.tripmate.ui.scrap.main.SearchScrollListener
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -77,16 +66,19 @@ class ScrapFragment : Fragment() {
         binding.scrapImagesearchTextview.text = randomItem + "은 어떤가요?"
         binding.scrapImagelayout.setOnClickListener {
             viewModel.searchAPIResult(randomItem, scrapContext)
-            binding.scrapRecyclerView.visibility=View.VISIBLE
-            binding.scrapImagelayout.visibility= View.GONE
+            setUpLayout(true)
         }
     }
     override fun onPause() {
         super.onPause()
         viewModel.resetList()
-        searchQuery = null
-        binding.scrapRecyclerView.visibility=View.GONE
-        binding.scrapImagelayout.visibility= View.VISIBLE
+        initSearchQuery()
+        setUpLayout(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initImage()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,7 +98,6 @@ class ScrapFragment : Fragment() {
         }
         imageResult.observe(viewLifecycleOwner){
             binding.scrapImagesearchView.load(it[0].thumbnail)
-            Log.d("tripmatesss", "이미지데이터 : ${it[0].thumbnail}")
             isLoading.observe(viewLifecycleOwner) { isLoading ->
                 binding.scrapLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
@@ -157,6 +148,7 @@ class ScrapFragment : Fragment() {
                         setupListeners()
                         searchLoading = !searchLoading
                     }
+                    setUpLayout(true)
                     return false
                 }
 
@@ -170,9 +162,15 @@ class ScrapFragment : Fragment() {
 
     private fun setupListeners() {
         searchQuery?.let {
-            viewModel.searchAPIResult(searchQuery!!, requireContext())
+            viewModel.searchAPIResult(searchQuery!!, scrapContext)
         }
     }
-
-
+    private fun setUpLayout(isVisible: Boolean) {
+        binding.scrapRecyclerView.visibility = if (isVisible) View.VISIBLE else View.GONE
+        binding.scrapImagelayout.visibility = if (!isVisible) View.VISIBLE else View.GONE
+    }
+    private fun initSearchQuery(){
+        binding.scrapSearchView.setQuery("", false)
+        searchQuery = null
+    }
 }

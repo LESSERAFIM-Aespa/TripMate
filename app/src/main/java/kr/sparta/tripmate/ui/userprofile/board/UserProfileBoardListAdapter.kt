@@ -10,6 +10,7 @@ import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemUserProfileBoardBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class UserProfileBoardListAdapter(
     private val onItemClicked: (CommunityEntity, Int) -> Unit,
@@ -46,6 +47,16 @@ class UserProfileBoardListAdapter(
     inner class UserProfileHolder(private val binding: ItemUserProfileBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CommunityEntity) = with(binding) {
+            fun toggleIsLikeIcon() {
+                val uid = SharedPreferences.getUidFromUser(itemView.context)
+                val isLike = item.likeUsers.find { it == uid } ?: ""
+
+                if (isLike != "") {
+                    userboardMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
+                } else {
+                    userboardMainLikesButton.setBackgroundResource(R.drawable.heart)
+                }
+            }
             userboardMainTitle.text = item.title
             userboardMainProfileNickname.text = item.profileNickname
             userboardMainThumbnail.apply {
@@ -63,9 +74,9 @@ class UserProfileBoardListAdapter(
                         )
                     }
                 }
-                setOnClickListener {
+            }
+            itemView.setOnClickListener{
                     onItemClicked(item, bindingAdapterPosition)
-                }
             }
             userboardMainProfileThumbnail.load(item.profileThumbnail)
             userboardMainViews.text = item.views.toString()
@@ -73,12 +84,7 @@ class UserProfileBoardListAdapter(
             userboardMainLikesButton.setOnClickListener {
                 onLikeClicked(item, bindingAdapterPosition)
             }
-            // TODO 좋아요 UI반응 처리하기
-            if (true) {
-                userboardMainLikesButton.setBackgroundResource(R.drawable.paintedheart)
-            } else {
-                userboardMainLikesButton.setBackgroundResource(R.drawable.heart)
-            }
+            toggleIsLikeIcon()
         }
     }
 }

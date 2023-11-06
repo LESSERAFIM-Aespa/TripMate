@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/primary">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/community_main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/fragment_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -19,9 +18,11 @@
             android:id="@+id/gotowritepage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="23dp"
             android:text="@string/community_main_title"
             android:textColor="@color/white"
-            android:textSize="32sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,23 +30,12 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/community_main_top_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/community_bg_content_description"
-        android:src="@drawable/bg_splash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_main_toolbar" />
-
     <androidx.appcompat.widget.SearchView
         android:id="@+id/community_main_SearchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:background="@drawable/scrap_content_outline"
-        app:layout_constraintBottom_toTopOf="@+id/community_main_recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/community_main_toolbar"
@@ -55,13 +45,15 @@
         android:id="@+id/community_main_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/white"
+        android:layout_marginTop="14dp"
         android:clipToPadding="false"
         android:paddingBottom="?attr/actionBarSize"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/community_main_top_background"
+        app:layout_constraintTop_toBottomOf="@+id/community_main_SearchView"
         tools:listitem="@layout/fragment_community_main_item" />
 
     <ProgressBar
