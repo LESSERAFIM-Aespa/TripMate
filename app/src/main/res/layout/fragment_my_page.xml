@@ -219,7 +219,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/Gray300"
-        android:layout_marginHorizontal="30dp"
+        android:layout_marginHorizontal="25dp"
         android:layout_marginTop="88dp"
         app:layout_constraintTop_toTopOf="@+id/linearLayout2"
         app:layout_constraintStart_toStartOf="parent"
