@@ -36,15 +36,14 @@ class UserProfileBoardFragment : Fragment() {
     private val boardAdapter by lazy {
         UserProfileBoardListAdapter(
             onItemClicked = { model, position ->
-                userProfileBoardViewModel.updateView(uid, model)
+                userProfileBoardViewModel.updateView(model)
                 val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
                 startActivity(intent)
             },
             onLikeClicked = { model, position ->
-                userProfileBoardViewModel.updateCommuIsLike(
-                    model = model,
-                    uid = uid
-                )
+                model.key?.let {
+                    userProfileBoardViewModel.updateCommuIsLike(uid, it)
+                }
             }
         )
     }
@@ -65,7 +64,6 @@ class UserProfileBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        callDataSource()
         initView()
         initViewModel()
 
@@ -73,9 +71,9 @@ class UserProfileBoardFragment : Fragment() {
 
     private fun initViewModel() {
         with(userProfileBoardViewModel) {
-            userPage.observe(viewLifecycleOwner) { getList ->
-                val filteredList = getList.filter { it?.id == uid }
-                boardAdapter.submitList(filteredList)
+            userPage.observe(viewLifecycleOwner) {
+                boardAdapter.submitList(it)
+                boardAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -86,6 +84,11 @@ class UserProfileBoardFragment : Fragment() {
             layoutManager = LinearLayoutManager(boardContext)
             setHasFixedSize(true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callDataSource()
     }
 
     fun callDataSource() {

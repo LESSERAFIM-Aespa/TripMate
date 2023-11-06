@@ -26,20 +26,18 @@ class UserProfileBoardViewModel(
     val userPage get() = _userPage
 
     fun getFirebaseBoardData(uid: String) = CoroutineScope(Dispatchers.Main).launch {
-        getAllBoardsUseCase().collect() {
-            _userPage.value = it.toEntity()
+        getAllBoardsUseCase().collect() {userData ->
+            val filterData = userData.filter { it?.id == uid }
+            _userPage.value = filterData.toEntity()
         }
-
     }
 
-    fun updateView(uid: String, model: CommunityEntity) {
+    fun updateView(model: CommunityEntity) {
         // 조회수 업데이트
         updateBoardViewsUseCase.invoke(model)
-//        getFirebaseBoardData(uid)
     }
 
-    fun updateCommuIsLike(model: CommunityEntity, uid: String) = viewModelScope.launch {
-        model.key?.let { updateBoardLikeUseCase(uid, it) }
-//        getFirebaseBoardData(uid)
+    fun updateCommuIsLike(uid: String, key: String) = viewModelScope.launch {
+        updateBoardLikeUseCase(uid, key)
     }
 }
