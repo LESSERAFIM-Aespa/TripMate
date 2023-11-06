@@ -137,9 +137,9 @@ class ScrapDetailActivity : AppCompatActivity() {
      * */
     private fun toggleScrapBlog(isScraped: Boolean) {
         if (isScraped) {
-            binding.scrapDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
+            binding.scrapDetailLikeBtn.setImageResource(R.drawable.star_filled)
         } else {
-            binding.scrapDetailLikeBtn.setImageResource(R.drawable.ic_star)
+            binding.scrapDetailLikeBtn.setImageResource(R.drawable.star)
         }
     }
 }
