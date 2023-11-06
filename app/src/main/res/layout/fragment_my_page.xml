@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|top"
             android:layout_marginEnd="13dp"
-            android:text="게시"
+            android:text="@string/community_write_post_text"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
