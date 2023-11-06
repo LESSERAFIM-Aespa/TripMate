@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
+import kr.sparta.tripmate.ui.scrap.main.ScrapAdapter
+import kr.sparta.tripmate.ui.scrap.main.SearchScrollListener
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
