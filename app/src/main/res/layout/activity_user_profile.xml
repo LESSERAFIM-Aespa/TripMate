@@ -8,91 +8,121 @@
     tools:context=".ui.userprofile.main.UserProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/user_profile_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/user_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="139dp"
+        android:background="@color/primary"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/arrow_left_white">
+        app:titleTextColor="@color/white">
 
         <TextView
+            android:id="@+id/user_info_tv"
+            style="@style/MypageToolbarTextApperance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/user_profile_toolbar_title"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
+            android:layout_gravity="start|top"
+            android:text="@string/user_profile_toolbar_title" />
     </androidx.appcompat.widget.Toolbar>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_profile_thumbnail"
-        android:layout_width="135dp"
-        android:layout_height="135dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_toolbar"
-        tools:src="@color/primary" />
-
-
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/user_profile_nickname_bg"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/user_cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="15dp"
-        android:src="@drawable/bg_splash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_thumbnail" />
-
-    <TextView
-        android:id="@+id/user_profile_nickname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/mypage_profile_box"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/user_profile_nickname_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/user_profile_nickname_bg"
-        tools:text="닉네임닉네임닉네임닉네임" />
-
-    <TextView
-        android:id="@+id/user_profile_content_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:background="@drawable/mypage_profile_content_box"
+        android:layout_height="101.03704dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="57dp"
+        android:layout_marginEnd="26dp"
         android:padding="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/user_profile_tablayout"
+        android:visibility="visible"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_nickname_bg"
-        tools:text="안녕하세요!" />
+        app:layout_constraintTop_toTopOf="@+id/user_toolbar">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/user_profile_tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_content_textview" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/user_profile_viewpager"
-        android:layout_width="match_parent"
+            <FrameLayout
+                android:id="@+id/user_profile_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_profile_thumbnail"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="25dp"
+                    tools:src="@color/Pink200" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/user_profile_nick_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="22dp"
+                android:text="@string/community_detail_username"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/user_profile_layout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/user_profile_content_textview"
+                android:layout_width="180dp"
+                android:layout_height="24.4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="11dp"
+                android:scrollbars="vertical"
+                android:text="안녕하세요!"
+                app:layout_constraintStart_toEndOf="@+id/user_profile_layout"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile_nick_textview" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/user_tab_linear_layout"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_tablayout"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
+        app:layout_constraintVertical_bias="0.0">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/white">
+
+        </FrameLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/user_profile_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            app:tabIndicatorColor="@color/black"
+            app:tabTextColor="@color/black" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/user_profile_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
