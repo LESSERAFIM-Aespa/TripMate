@@ -147,9 +147,9 @@ class BudgetContentActivity : AppCompatActivity() {
             adapter = categoryAdapter
             if (entryType == BudgetContentType.ADD){
                 val list = listOf<Category>(
-                    Category(budgetNum, "교통비", "#F4A261"),
-                    Category(budgetNum, "식비", "#E76F51"),
-                    Category(budgetNum, "기타", "#D9D9D9"),
+                    Category(budgetNum, "교통비", "#F4A261",-1),
+                    Category(budgetNum, "식비", "#E76F51",-2),
+                    Category(budgetNum, "기타", "#D9D9D9",-3),
                 )
                 categoryAdapter.saveList = list.toMutableList()
                 categoryAdapter.submitList(list)
@@ -161,10 +161,10 @@ class BudgetContentActivity : AppCompatActivity() {
             swipeHelper.removePreviousClamp(budgetCategoryRecyclerview)
             false
         }
-
+        var saveCategoryNum = -4
         budgetCategoryFloatingactionbutton.setOnClickListener {
             val currentList = categoryAdapter.currentList.toMutableList()
-            val category = Category(budgetNum, "", "#D9D9D9")
+            val category = Category(budgetNum, "", "#D9D9D9",saveCategoryNum--)
             currentList.add(category)
             categoryAdapter.saveList.add(category)
             categoryAdapter.submitList(currentList)
