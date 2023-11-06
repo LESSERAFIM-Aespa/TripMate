@@ -79,9 +79,7 @@ class MyPageBoardFragment : Fragment() {
     private fun initViewModel() {
         with(viewModel) {
             myBoards.observe(viewLifecycleOwner) {
-                val uid = SharedPreferences.getUid(boardContext)
-                val filteredList = it.filter { it?.id == uid }
-                boardAdapter.submitList(filteredList)
+                boardAdapter.submitList(it)
             }
         }
     }
