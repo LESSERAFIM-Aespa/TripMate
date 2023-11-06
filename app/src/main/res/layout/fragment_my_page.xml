@@ -22,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
-            android:text="@string/mypage_toolbar_title" />
+            android:text="@string/mypage_toolbar_title"
+            android:visibility="visible"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/mypage_setting_button"
