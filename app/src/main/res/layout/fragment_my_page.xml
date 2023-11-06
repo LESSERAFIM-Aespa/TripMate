@@ -40,9 +40,11 @@
             android:layout_gravity="start|top"
             android:src="@drawable/arrow_left_white"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity=""/>
+            android:layout_width="34dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="13dp"
+            android:layout_gravity="end|top"
+            android:src="@drawable/share_button"/>
 
     </androidx.appcompat.widget.Toolbar>
 
