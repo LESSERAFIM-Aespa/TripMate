@@ -40,6 +40,7 @@
             android:layout_gravity="start|top"
             android:src="@drawable/arrow_left_white"/>
         <ImageView
+            android:id="@+id/mypage_edit_submit_button"
             android:layout_width="34dp"
             android:layout_height="22dp"
             android:layout_marginEnd="13dp"
@@ -187,14 +188,6 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/mypage_edit_submit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/mypage_button_submit"
-                android:text="@string/mypage_edit_submit"
-                android:textSize="14sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
