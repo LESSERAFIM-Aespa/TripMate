@@ -10,7 +10,7 @@
         android:id="@+id/scrap_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,8 +21,7 @@
             android:layout_height="wrap_content"
             android:text="@string/blog_toolbar_title"
             android:textColor="@color/black"
-            android:textSize="40sp"
-            android:fontFamily="@font/roboto_regular"
+            style="@style/ScrapToolbarTextApperance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +30,7 @@
             android:id="@+id/scrap_detail_like_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginEnd="10dp"
             android:src="@drawable/ic_star" />
 

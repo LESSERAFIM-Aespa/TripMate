@@ -3,6 +3,7 @@ package kr.sparta.tripmate.ui.scrap.main
 import android.content.Context
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
+import kr.sparta.tripmate.ui.scrap.ScrapFragment
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
 import kr.sparta.tripmate.util.method.shortToast
 
