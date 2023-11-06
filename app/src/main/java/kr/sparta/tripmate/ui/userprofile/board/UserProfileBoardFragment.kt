@@ -73,7 +73,6 @@ class UserProfileBoardFragment : Fragment() {
         with(userProfileBoardViewModel) {
             userPage.observe(viewLifecycleOwner) {
                 boardAdapter.submitList(it)
-                boardAdapter.notifyDataSetChanged()
             }
         }
     }
