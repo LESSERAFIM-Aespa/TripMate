@@ -96,24 +96,26 @@ class MainActivity : AppCompatActivity() {
         binding.tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val icon = when (tab?.position){
-                    0 -> R.drawable.budget
-                    1 -> R.drawable.community
-                    2 -> R.drawable.home
-                    3 -> R.drawable.scrap
-                    4 -> R.drawable.mypage
+                    0 -> R.drawable.budget2
+                    1 -> R.drawable.community2
+                    2 -> R.drawable.home2
+                    3 -> R.drawable.scrap2
+                    4 -> R.drawable.mypage2
                     else -> R.drawable.budget
             }
+                tab?.setIcon(icon)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 val icon = when (tab?.position){
                     0 -> R.drawable.budget
-                    0 -> R.drawable.community
-                    0 -> R.drawable.home
-                    0 -> R.drawable.scrap
-                    0 -> R.drawable.scrap
+                    1 -> R.drawable.community
+                    2 -> R.drawable.home
+                    3 -> R.drawable.scrap
+                    4 -> R.drawable.mypage
                     else -> R.drawable.budget // 기본이미지 대체는 어떻게 해야 좋을까 음..
                 }
+                tab?.setIcon(icon)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
