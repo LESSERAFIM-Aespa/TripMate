@@ -179,17 +179,6 @@
             </androidx.cardview.widget.CardView>
         </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/mypage_editmode_button_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-        </LinearLayout>
-
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/mypage_tablayout"
             android:layout_width="match_parent"
