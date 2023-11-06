@@ -63,9 +63,9 @@ class UserProfileBoardListAdapter(
                         )
                     }
                 }
-                setOnClickListener {
+            }
+            itemView.setOnClickListener{
                     onItemClicked(item, bindingAdapterPosition)
-                }
             }
             userboardMainProfileThumbnail.load(item.profileThumbnail)
             userboardMainViews.text = item.views.toString()
