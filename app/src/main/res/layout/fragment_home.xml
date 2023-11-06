@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/home_profile_title"
-                style="@style/HomeToolbarTextApperance"
+                style="@style/HomeToolbarNickApperance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -87,17 +87,30 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
+                        android:layout_marginStart="33dp"
                         android:text="@string/main_tab_title_my_scrap"
                         app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:id="@+id/home_move"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이동하기"
+                        android:textColor="@color/primary"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/home_scrap_recycler_view"
+                        app:layout_constraintEnd_toStartOf="@+id/home_arrow1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                     <ImageView
                         android:id="@+id/home_arrow1"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/homemove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_right"
+                        android:layout_marginEnd="7dp"
                         app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -116,6 +129,7 @@
                         android:id="@+id/home_scrap_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="33dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view1" />
@@ -144,7 +158,7 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
+                        android:layout_marginStart="33dp"
                         android:text="@string/popularposts"
                         app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
                         app:layout_constraintStart_toStartOf="parent"
@@ -173,6 +187,7 @@
                         android:id="@+id/home_board_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="33dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_view2" />
@@ -201,7 +216,7 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="35dp"
+                        android:layout_marginStart="33dp"
                         android:text="@string/budget_list_title"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@+id/home_recyclerView3"
@@ -230,6 +245,7 @@
                         android:id="@+id/home_recyclerView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="33dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view3" />
