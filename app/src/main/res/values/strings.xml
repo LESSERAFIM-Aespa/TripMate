@@ -57,6 +57,7 @@
     <string name="main_tab_title_blog">Blog</string>
     <string name="main_tab_title_mypage">MyPage</string>
     <string name="main_tab_title_my_scrap">내 스크랩</string>
+    <string name="main_tab_move_button">이동하기</string>
     <string name="pleaseentertitle">제목을 입력하세요.</string>
     <string name="pleaseenteryourdetails">내용을 입력해주세요</string>
     <string name="community_detail_title">디테일페이지제목</string>
