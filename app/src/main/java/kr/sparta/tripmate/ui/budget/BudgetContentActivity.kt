@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextUtils.replace
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -36,6 +37,7 @@ import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {
     companion object {
+        private const val TAG = "BudgetContentActivity"
         const val EXTRA_BUDGET_ENTRY_TYPE = "extra_budget_entry_type"
         const val EXTRA_BUDGET_NUM = "extra_budget_num"
 
@@ -339,15 +341,17 @@ class BudgetContentActivity : AppCompatActivity() {
     }
 
     private fun showColorPickerDialog(pos: Int, button: Button) {
-        val currentItem = categoryAdapter.currentList[pos]
+
         ColorPickerDialog
             .Builder(this)                        // Pass Activity Instance
             .setTitle("색상 선택")            // Default "Choose Color"
             .setPositiveButton("확인")
             .setNegativeButton("취소")
             .setColorShape(ColorShape.SQAURE)
-            .setDefaultColor(currentItem.color)
+            .setDefaultColor(categoryAdapter.saveList[pos].color)
             .setColorListener { _, colorHex ->
+
+                val currentItem = categoryAdapter.saveList[pos]
                 button.backgroundTintList =
                     ColorStateList.valueOf(Color.parseColor(colorHex))
                 categoryAdapter.saveList[pos] = currentItem.copy(color = colorHex)
