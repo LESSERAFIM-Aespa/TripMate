@@ -99,18 +99,19 @@
                         android:layout_height="wrap_content"
                         android:text="이동하기"
                         android:textColor="@color/primary"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/inter"
                         app:layout_constraintBottom_toTopOf="@+id/home_scrap_recycler_view"
                         app:layout_constraintEnd_toStartOf="@+id/home_arrow1"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/home_arrow1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="36dp"
                         android:src="@drawable/arrow_right"
-                        android:layout_marginEnd="7dp"
+                        android:layout_marginEnd="5dp"
                         app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
