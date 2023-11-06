@@ -262,10 +262,9 @@ class CommunityDetailActivity : AppCompatActivity() {
      * */
     private fun toggleBoardScrap(isBoardScrap: Boolean) = with(binding) {
         if (isBoardScrap) {
-            communityDetailLikeBtn.setImageResource(R.drawable.ic_star_filled)
+            communityDetailLikeBtn.setImageResource(R.drawable.star_filled)
         } else {
-            communityDetailLikeBtn.setImageResource(R.drawable.ic_star)
+            communityDetailLikeBtn.setImageResource(R.drawable.star)
         }
     }
-
 }

@@ -29,7 +29,7 @@ class UserProfileBoardListAdapter(
                 oldItem: CommunityEntity,
                 newItem: CommunityEntity
             ): Boolean {
-                return oldItem.key == newItem.key
+                return oldItem == newItem
             }
 
         }
