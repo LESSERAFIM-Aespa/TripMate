@@ -94,23 +94,24 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/home_move"
+                        android:id="@+id/home_move1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="이동하기"
+                        android:text="@string/main_tab_move_button"
                         android:textColor="@color/primary"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/inter"
                         app:layout_constraintBottom_toTopOf="@+id/home_scrap_recycler_view"
                         app:layout_constraintEnd_toStartOf="@+id/home_arrow1"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/home_arrow1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="30dp"
+                        android:layout_height="36dp"
                         android:src="@drawable/arrow_right"
-                        android:layout_marginEnd="7dp"
+                        android:layout_marginEnd="5dp"
                         app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -129,7 +130,7 @@
                         android:id="@+id/home_scrap_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="33dp"
+                        android:layout_marginStart="28dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view1" />
@@ -164,11 +165,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/popular_const" />
 
+
                     <ImageView
                         android:id="@+id/home_arrow2"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/homemove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_right"
+                        android:layout_marginEnd="5dp"
                         app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/popular_const" />
@@ -187,7 +190,7 @@
                         android:id="@+id/home_board_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="33dp"
+                        android:layout_marginStart="28dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_view2" />
@@ -224,9 +227,9 @@
 
                     <ImageView
                         android:id="@+id/home_arrow3"
-                        android:layout_width="80dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/homemove"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/arrow_right"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toTopOf="@+id/home_recyclerView3"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
@@ -245,7 +248,7 @@
                         android:id="@+id/home_recyclerView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="33dp"
+                        android:layout_marginStart="28dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view3" />
