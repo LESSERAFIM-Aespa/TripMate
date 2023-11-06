@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
             android:text="@string/mypage_toolbar_title"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/mypage_setting_button"
@@ -32,20 +32,22 @@
             android:layout_gravity="end|top"
             android:layout_marginHorizontal="7dp"
             android:background="@drawable/ic_setting"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
         <ImageView
             android:id="@+id/mypage_edit_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|top"
-            android:src="@drawable/arrow_left_white"/>
+            android:src="@drawable/arrow_left_white"
+            android:visibility="gone"/>
         <ImageView
             android:id="@+id/mypage_edit_submit_button"
             android:layout_width="34dp"
             android:layout_height="22dp"
             android:layout_marginEnd="13dp"
             android:layout_gravity="end|top"
-            android:src="@drawable/share_button"/>
+            android:src="@drawable/share_button"
+            android:visibility="gone"/>
 
     </androidx.appcompat.widget.Toolbar>
 

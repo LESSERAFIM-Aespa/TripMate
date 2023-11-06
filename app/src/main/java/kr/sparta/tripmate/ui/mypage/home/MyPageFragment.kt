@@ -108,11 +108,13 @@ class MyPageFragment : Fragment() {
         fun updateEditType(isEditMode: Boolean) {
             if (isEditMode) {
                 mypageEditmodeEdittextContainer.visibility = View.VISIBLE
-                mypageEditmodeButtonContainer.visibility = View.VISIBLE
+                mypageEditCancelButton.visibility = View.VISIBLE
+                mypageEditSubmitButton.visibility = View.VISIBLE
                 mypageProfileContentTextview.visibility = View.GONE
             } else {
                 mypageEditmodeEdittextContainer.visibility = View.GONE
-                mypageEditmodeButtonContainer.visibility = View.GONE
+                mypageEditCancelButton.visibility = View.GONE
+                mypageEditSubmitButton.visibility = View.GONE
                 mypageProfileContentTextview.visibility = View.VISIBLE
             }
         }
