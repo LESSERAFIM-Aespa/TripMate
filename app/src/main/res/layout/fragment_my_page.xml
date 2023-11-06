@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="101.03704dp"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="57dp"
         android:layout_marginEnd="26dp"
         android:padding="5dp"
         android:visibility="visible"
@@ -75,15 +75,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/mypage_profile_imageview"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="25dp"
+            <FrameLayout
+                android:id="@+id/mypage_profile_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@color/Pink200" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/mypage_profile_imageview"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="25dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@color/Pink200" />
+
+                <ImageView
+                    android:id="@+id/mypage_edit_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|bottom"
+                    android:background="@drawable/mypage_baseline_create25"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/mypage_profile_content_textview" />
+
+            </FrameLayout>
+
 
             <TextView
                 android:id="@+id/mypage_profile_nick_textview"
@@ -94,7 +114,7 @@
                 android:text="@string/community_detail_username"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/mypage_profile_imageview"
+                app:layout_constraintStart_toEndOf="@+id/mypage_profile_layout"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -102,22 +122,11 @@
                 android:layout_width="180dp"
                 android:layout_height="24.4dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="80dp"
-                android:gravity="start"
-                android:text="안녕하세요!"
+                android:layout_marginStart="11dp"
                 android:scrollbars="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:text="안녕하세요!"
+                app:layout_constraintStart_toEndOf="@+id/mypage_profile_layout"
                 app:layout_constraintTop_toBottomOf="@+id/mypage_profile_nick_textview" />
-
-            <ImageView
-                android:id="@+id/mypage_edit_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="18dp"
-                android:background="@drawable/mypage_baseline_create25"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/mypage_profile_content_textview" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
@@ -138,7 +147,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="20dp"
             android:background="@color/white">
 
         </FrameLayout>
