@@ -12,12 +12,16 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
+import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardViewModel
+import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetFactory
+import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
@@ -39,6 +43,16 @@ class HomeFragment : Fragment() {
 
     private val homeBoardViewModel: HomeBoardViewModel by viewModels {
         HomeBoardFactory()
+    }
+    private val homeBudgetViewModel: HomeBudgetViewModel by viewModels {
+        HomeBudgetFactory(BudgetRepositoryImpl(homeContext))
+    }
+    private val homeBudgetListAdapter: HomeBudgetListAdapter by lazy {
+        HomeBudgetListAdapter(
+            onItemClicked = {
+                startActivity(BudgetDetailActivity.newIntentForBudget(homeContext,it))
+            }
+        )
     }
 
     private val homeScrapListAdapter: HomeScrapListAdapter by lazy {
@@ -118,6 +132,11 @@ class HomeFragment : Fragment() {
             adapter = homeBoardListAdapter
             setHasFixedSize(true)
         }
+        homeBudgetRecyclerview.apply {
+            layoutManager = GridLayoutManager(homeContext, 1, GridLayoutManager.HORIZONTAL, false)
+            adapter = homeBudgetListAdapter
+            setHasFixedSize(true)
+        }
 
         val uid = SharedPreferences.getUid(homeContext)
         // 블로그 불러오기
@@ -169,6 +188,14 @@ class HomeFragment : Fragment() {
                     it.sortedByDescending { it1 -> it1?.likes }
                 }.orEmpty()
                 homeBoardListAdapter.submitList(sortedList)
+            }
+        }
+        with(homeBudgetViewModel) {
+            budgetLiveDataWhenBudgetChanged.observe(viewLifecycleOwner) {
+                homeBudgetListAdapter.submitList(it)
+            }
+            budgetLiveDataWhenProcedureChanged.observe(viewLifecycleOwner) {
+                homeBudgetListAdapter.submitList(it)
             }
         }
     }
