@@ -87,7 +87,7 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="15dp"
                         android:text="@string/main_tab_title_my_scrap"
                         app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                         app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +120,7 @@
                         android:id="@+id/home_scrap_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view1" />
@@ -149,7 +149,7 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="5dp"
                         android:text="@string/popularposts"
                         app:layout_constraintBottom_toTopOf="@+id/home_view2"
@@ -183,7 +183,7 @@
                         android:id="@+id/home_board_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_view2" />
@@ -212,10 +212,11 @@
                         style="@style/HomesubHeadingTextApperance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/budget_list_title"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toTopOf="@+id/home_recyclerView3"
+                        app:layout_constraintBottom_toTopOf="@+id/home_view3"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
 
 
@@ -245,7 +246,7 @@
                         android:id="@+id/home_recyclerView3"
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="15dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view3" />
