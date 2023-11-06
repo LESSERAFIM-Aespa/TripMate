@@ -173,4 +173,6 @@ class ScrapFragment : Fragment() {
             viewModel.searchAPIResult(searchQuery!!, requireContext())
         }
     }
+
+
 }
