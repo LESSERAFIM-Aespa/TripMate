@@ -51,11 +51,11 @@
     <string name="procedure_memo_text">메모</string>
     <string name="budget_category_input_name">카테고리 이름을 입력해 주세요</string>
     <string name="empty_view">결과가 없습니다.</string>
-    <string name="main_tab_title_budget">Budget</string>
-    <string name="main_tab_title_community">Commu</string>
-    <string name="main_tab_title_home">Home</string>
-    <string name="main_tab_title_blog">Blog</string>
-    <string name="main_tab_title_mypage">MyPage</string>
+    <string name="main_tab_title_budget">가계부</string>
+    <string name="main_tab_title_community">커뮤니티</string>
+    <string name="main_tab_title_home">홈</string>
+    <string name="main_tab_title_blog">블로그</string>
+    <string name="main_tab_title_mypage">내정보</string>
     <string name="main_tab_title_my_scrap">내 스크랩</string>
     <string name="main_tab_move_button">이동하기</string>
     <string name="pleaseentertitle">제목을 입력하세요.</string>

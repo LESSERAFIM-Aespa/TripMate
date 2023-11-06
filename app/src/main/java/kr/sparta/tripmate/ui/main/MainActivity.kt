@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewPager2State()
+        setupTabIcons()
 
         TabLayoutMediator(
             binding.tabLayout,
@@ -84,5 +86,41 @@ class MainActivity : AppCompatActivity() {
     fun moveTabFragment(title: Int) {
         val index = viewPagerAdapter.findFragmentTabIndex(title)
         binding.viewPager2.setCurrentItem(index, false)
+    }
+    /**
+     * 작성자: 윤동현
+     * 내용: 탭 레이아웃에 클릭이벤트 처리.
+     * 클릭된 텝레이아웃의 position을 받아와 클릭됬을때 이미지를 교체해줌.
+     * */
+    private fun setupTabIcons() {
+        binding.tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val icon = when (tab?.position){
+                    0 -> R.drawable.budget2
+                    1 -> R.drawable.community2
+                    2 -> R.drawable.home2
+                    3 -> R.drawable.scrap2
+                    4 -> R.drawable.mypage2
+                    else -> R.drawable.budget
+            }
+                tab?.setIcon(icon)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                val icon = when (tab?.position){
+                    0 -> R.drawable.budget
+                    1 -> R.drawable.community
+                    2 -> R.drawable.home
+                    3 -> R.drawable.scrap
+                    4 -> R.drawable.mypage
+                    else -> R.drawable.budget // 기본이미지 대체는 어떻게 해야 좋을까 음..
+                }
+                tab?.setIcon(icon)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //딱히 처리할게 없음
+            }
+        })
     }
 }
