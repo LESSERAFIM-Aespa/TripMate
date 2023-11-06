@@ -34,14 +34,14 @@
 
     <TextView
         android:id="@+id/home_grid_title"
-        android:layout_width="60dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:textColor="@color/Gray600"
-        android:textSize="15sp" />
+        android:textSize="10sp" />
 
 </LinearLayout>
