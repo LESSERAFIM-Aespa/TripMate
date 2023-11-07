@@ -71,10 +71,12 @@ class HomeFragment : Fragment() {
     private val homeBoardListAdapter: HomeBoardListAdapter by lazy {
         HomeBoardListAdapter(
             onItemClick = { model ->
-                val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model)
-                startActivity(intent)
-                // 조회수 업데이트
-                homeBoardViewModel.updateBoardView(model)
+                model.key?.let {
+                    val intent = CommunityDetailActivity.newIntentForEntity(homeContext, model.key)
+                    startActivity(intent)
+                    // 조회수 업데이트
+                    homeBoardViewModel.updateBoardView(model)
+                }
             }
         )
     }
