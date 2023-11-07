@@ -26,7 +26,8 @@ class CommunityDetailFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(CommunityDetailViewModel::class.java)) {
             return CommunityDetailViewModel(
                 UpdateBoardScrapUseCase(boardScrapRepository),
-                RemoveBoardUseCase(repository)
+                RemoveBoardUseCase(repository),
+                UpdateBoardLikeUseCase(repository)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
