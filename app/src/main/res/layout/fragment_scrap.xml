@@ -99,7 +99,7 @@
             android:id="@+id/scrap_recommand_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/scrap_search"
+            tools:text="검색하기"
             android:textColor="@color/black"
             android:textSize="20dp"
             android:textStyle="bold"
