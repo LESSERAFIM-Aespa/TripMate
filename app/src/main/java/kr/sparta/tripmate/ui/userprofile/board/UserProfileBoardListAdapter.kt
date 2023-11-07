@@ -48,7 +48,7 @@ class UserProfileBoardListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CommunityEntity) = with(binding) {
             fun toggleIsLikeIcon() {
-                val uid = SharedPreferences.getUidFromUser(itemView.context)
+                val uid = SharedPreferences.getUid(itemView.context)
                 val isLike = item.likeUsers.find { it == uid } ?: ""
 
                 if (isLike != "") {

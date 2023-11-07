@@ -50,7 +50,7 @@
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="원금"
@@ -61,10 +61,10 @@
 
             <TextView
                 android:id="@+id/home_budget_item_status_before_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="33dp"
                 android:fontFamily="@font/inter"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="15sp"
@@ -80,7 +80,7 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="남은 예산"
@@ -91,9 +91,10 @@
 
             <TextView
                 android:id="@+id/home_budget_item_status_after_textview"
-                android:layout_width="wrap_content"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="15sp"

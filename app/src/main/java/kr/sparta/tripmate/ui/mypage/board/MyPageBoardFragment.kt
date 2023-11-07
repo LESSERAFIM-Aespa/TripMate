@@ -27,12 +27,14 @@ class MyPageBoardFragment : Fragment() {
     private val boardAdapter by lazy {
         MyPageBoardListAdapter(
             onItemClicked = { model ->
-                // 조회수 업데이트
-                viewModel.updateBoardView(model)
+                model.key?.let {
+                    // 조회수 업데이트
+                    viewModel.updateBoardView(model)
 
-                // 게시글로 이동
-                val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
-                startActivity(intent)
+                    // 게시글로 이동
+                    val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model.key)
+                    startActivity(intent)
+                }
             },
             onLikeClicked = {model ->
                 val uid = SharedPreferences.getUid(boardContext)

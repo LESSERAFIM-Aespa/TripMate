@@ -92,11 +92,6 @@ class CommunityWriteViewModel(
                 setAddLoadingState(false)
             }else setEditLoadingState(false)
 
-            if (useCase == updateBoardUseCase::invoke) {
-                val intent = CommunityDetailActivity.newIntentForEntity(context, newItem)
-                (context as Activity).setResult(RESULT_OK, intent)
-            }
-
             isWindowTouchable(context, false)
             (context as Activity).finish()
         }
