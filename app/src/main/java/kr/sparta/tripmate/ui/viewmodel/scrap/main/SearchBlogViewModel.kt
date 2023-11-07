@@ -27,8 +27,8 @@ class SearchBlogViewModel(
 
     private val _isLoading = MutableLiveData<Boolean>()
 
-    private val _imageResult = MutableLiveData<List<ImageItemsEntity>>()
-    val imageResult :LiveData<List<ImageItemsEntity>> get() = _imageResult
+    private val _recommandImage = MutableLiveData<List<ImageItemsEntity>>()
+    val recommandImage :LiveData<List<ImageItemsEntity>> get() = _recommandImage
 
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -94,7 +94,7 @@ class SearchBlogViewModel(
                 for(i in it.indices){
                     imageItems.add(it[i])
                 }
-                _imageResult.value = imageItems
+                _recommandImage.value = imageItems
                 _isLoading.value = false
             }
         }.onFailure {
@@ -124,7 +124,11 @@ class SearchBlogViewModel(
         _searchList.value = list
     }
 
-    fun clearList() {
+    /**
+     * 작성자: 서정한
+     * 내용: 검색내역 Clear
+     * */
+    fun clearSearchList() {
         _searchList.value = listOf()
     }
 }
