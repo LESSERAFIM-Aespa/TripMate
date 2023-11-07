@@ -1,15 +1,11 @@
 package kr.sparta.tripmate.ui.scrap.main
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethod
-import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -92,24 +88,32 @@ class ScrapFragment : Fragment() {
         scrapRecyclerView.layoutManager = GridLayoutManager(context, 2)
         scrapRecyclerView.adapter = scrapAdapter
 
-//        scrapRecyclerView.addOnScrollListener(
-//            object: RecyclerView.OnScrollListener() {
-//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                    super.onScrolled(recyclerView, dx, dy)
-//
-//                    if (SearchBlogViewModel.currentDisplay in 0..100) {
-//                        if (searchLoading && !recyclerView.canScrollVertically(1)) {
-//                            val query = scrapSearchView.query
-//                            if (query.isNullOrEmpty()) {
-//                                Log.d("TripMates", "currentDisplay : ${SearchBlogViewModel.currentDisplay}")
-//                                SearchBlogViewModel.currentDisplay += 10
-//                                viewModel.searchAPIResult(query.toString(), scrapContext)
-//                            }
-//                        }
-//                    } else scrapContext.shortToast("한 번에 표시할 검색 결과 개수는 100개입니다.")
-//                }
-//            }
-//        )
+        scrapRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (SearchBlogViewModel.currentDisplay > 100) {
+                    scrapContext.shortToast("한 번에 표시할 검색 결과 개수는 100개입니다.")
+                    return
+                }
+
+                if (!scrapRecyclerView.canScrollVertically(1)) {
+                    if (SearchBlogViewModel.currentDisplay <= 90) {
+                        SearchBlogViewModel.currentDisplay += 10
+
+                        val query = scrapSearchView.query.toString()
+                        // query가 빈 값일경우 Pass
+                        if(query == "") {
+                            return
+                        }
+
+                        viewModel.searchAPIResult(query, scrapContext)
+                        return
+                    }
+                }
+            }
+        })
+
         scrapRecyclerView.setHasFixedSize(true)
 
         // SearchView
@@ -126,11 +130,11 @@ class ScrapFragment : Fragment() {
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     if (newText == "") {
-                        viewModel.clearList()
+                        viewModel.clearSearchList()
                         setRandomRecommandView()
-                        recommandviewVisibleController(true)
+                        recommandViewVisibleController(true)
                     } else {
-                        recommandviewVisibleController(false)
+                        recommandViewVisibleController(false)
                     }
                     return false
                 }
@@ -138,23 +142,32 @@ class ScrapFragment : Fragment() {
         )
     }
 
-    private fun setRandomRecommandView() {
-        fun getRandomIndex(size: Int): Int = Random().nextInt(size)
+    private fun setRandomRecommandView() = with(binding) {
+        /**
+         * 작성자: 서정한
+         * 내용: 검색어 제안값 랜덤출력
+         * */
+        fun getRandomItem(): String {
+            val suggestionItems: Array<String> =
+                resources.getStringArray(R.array.scrap_recommand_list)
+            val randomIndex = Random().nextInt(suggestionItems.size)
+            return suggestionItems[randomIndex]
+        }
 
-        val suggestionItems: Array<String> = resources.getStringArray(R.array.scrap_recommand_list)
-        val randomIndex = getRandomIndex(suggestionItems.size)
-        val randomItem = suggestionItems[randomIndex]
-
+        // 추천검색어 init
+        val randomItem = getRandomItem()
         viewModel.searchImageResult(randomItem)
-        binding.scrapRecommandTitle.text = randomItem + "은 어떤가요?"
-        binding.scrapRecommandContainer.setOnClickListener {
-            binding.scrapSearchView.setQuery(randomItem, true)
-//            viewModel.searchAPIResult(randomItem, scrapContext)
-            recommandviewVisibleController(false)
+        scrapRecommandTitle.text = randomItem + getString(R.string.scrap_recommand_text)
+
+        // 추천검색어 클릭
+        scrapRecommandContainer.setOnClickListener {
+            scrapSearchView.setQuery(randomItem, true)
+            recommandViewVisibleController(false)
         }
     }
 
     private fun initViewModel() = with(viewModel) {
+        // 검색 ViewModel
         searchList.observe(viewLifecycleOwner) {
 
             scrapAdapter.submitList(it)
@@ -164,7 +177,8 @@ class ScrapFragment : Fragment() {
             }
         }
 
-        imageResult.observe(viewLifecycleOwner) {
+        // 추천검색 이미지
+        recommandImage.observe(viewLifecycleOwner) {
             binding.scrapRecommandImage.load(it[0].thumbnail)
             isLoading.observe(viewLifecycleOwner) { isLoading ->
                 binding.scrapLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -173,7 +187,11 @@ class ScrapFragment : Fragment() {
 
     }
 
-    private fun recommandviewVisibleController(isVisible: Boolean) {
+    /**
+     * 작성자: 서정한
+     * 내용: 추천검색화면 Visible 컨트롤러
+     * */
+    private fun recommandViewVisibleController(isVisible: Boolean) {
         binding.scrapRecommandContainer.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }
