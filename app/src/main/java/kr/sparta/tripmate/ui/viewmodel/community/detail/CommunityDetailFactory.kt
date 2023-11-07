@@ -27,7 +27,8 @@ class CommunityDetailFactory : ViewModelProvider.Factory {
             return CommunityDetailViewModel(
                 UpdateBoardScrapUseCase(boardScrapRepository),
                 RemoveBoardUseCase(repository),
-                UpdateBoardLikeUseCase(repository)
+                UpdateBoardLikeUseCase(repository),
+                GetAllBoardsUseCase(repository)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
