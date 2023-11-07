@@ -36,9 +36,11 @@ class UserProfileBoardFragment : Fragment() {
     private val boardAdapter by lazy {
         UserProfileBoardListAdapter(
             onItemClicked = { model, position ->
-                userProfileBoardViewModel.updateView(model)
-                val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model)
-                startActivity(intent)
+                model.key?.let {
+                    userProfileBoardViewModel.updateView(model)
+                    val intent = CommunityDetailActivity.newIntentForEntity(boardContext, model.key)
+                    startActivity(intent)
+                }
             },
             onLikeClicked = { model, position ->
                 model.key?.let {
