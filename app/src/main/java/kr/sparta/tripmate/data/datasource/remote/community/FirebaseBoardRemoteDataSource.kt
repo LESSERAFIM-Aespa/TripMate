@@ -44,11 +44,12 @@ class FirebaseBoardRemoteDataSource {
      * 작성자: 서정한
      * 내용: 커뮤니티 게시글 가져오기
      * */
-    private fun getBoard(key: String): Flow<CommunityModel?> {
-        val ref = getReference().child(key)
-
-        return ref.snapshots.mapNotNull {
-            it.getValue<CommunityModel>()
+    fun getBoard(key: String): Flow<CommunityModel?> {
+        val ref = getReference()
+        return ref.snapshots.map { snapshot ->
+            snapshot.children.mapNotNull {
+                it.getValue<CommunityModel>()
+            }.find { it.key == key }
         }
     }
 
@@ -99,7 +100,7 @@ class FirebaseBoardRemoteDataSource {
      * */
     fun removeBoard(key: String) {
         val ref = getReference()
-        ref.get().addOnSuccessListener {snapshot ->
+        ref.get().addOnSuccessListener { snapshot ->
             val boards = snapshot.children.map {
                 it.getValue(CommunityModel::class.java)
             }.toMutableList()
