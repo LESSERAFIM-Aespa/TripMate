@@ -36,9 +36,11 @@ class ScrapAdapter(
             itemView.setOnClickListener {
                 onItemClick(items)
             }
+
             scrapLike.setOnClickListener {
                 onLikeClick(items, bindingAdapterPosition)
             }
+
             items.isLike.let { scrapLike.likeChange(it) }
         }
     }
