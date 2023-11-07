@@ -46,4 +46,6 @@ interface FirebaseBoardRepository {
     fun getKey(): String
 
     fun updateBoard(item: CommunityEntity)
+
+    fun getBoard(key: String): Flow<CommunityModel?>
 }
