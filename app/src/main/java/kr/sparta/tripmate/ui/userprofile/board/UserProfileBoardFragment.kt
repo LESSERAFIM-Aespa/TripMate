@@ -25,7 +25,7 @@ class UserProfileBoardFragment : Fragment() {
         fun newInstance(): UserProfileBoardFragment = UserProfileBoardFragment()
     }
 
-    private lateinit var uid: String
+    private lateinit var userUid: String
     private val userProfileBoardViewModel: UserProfileBoardViewModel by viewModels {
         UserProfileBoardFactory()
     }
@@ -42,6 +42,7 @@ class UserProfileBoardFragment : Fragment() {
             },
             onLikeClicked = { model, position ->
                 model.key?.let {
+                    val uid = SharedPreferences.getUid(boardContext)
                     userProfileBoardViewModel.updateCommuIsLike(uid, it)
                 }
             }
@@ -51,7 +52,7 @@ class UserProfileBoardFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         boardContext = context
-        uid = SharedPreferences.getUidFromUser(boardContext)
+        userUid = SharedPreferences.getUidFromUser(boardContext)
     }
 
     override fun onCreateView(
@@ -91,7 +92,7 @@ class UserProfileBoardFragment : Fragment() {
     }
 
     fun callDataSource() {
-        userProfileBoardViewModel.getFirebaseBoardData(uid)
+        userProfileBoardViewModel.getFirebaseBoardData(userUid)
     }
 
     override fun onDestroy() {
