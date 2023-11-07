@@ -46,5 +46,10 @@ class CommunityDetailViewModel(
     fun updateBoardLike(uid: String, model: CommunityEntity) = viewModelScope.launch {
         updateBoardLikeUseCase(uid, model.key?:"")
     }
+    suspend fun getAllBoards(){
+        getAllBoardsUseCase.invoke().collect() {
+            _boards.value = it.toEntity()
+        }
+    }
 
 }
