@@ -62,4 +62,5 @@ class FirebaseBoardRepositoryImpl(
     override fun getKey(): String = remoteSource.getKey()
 
     override fun updateBoard(item: CommunityEntity) = remoteSource.updateBoard(item.toModel())
+    override fun getBoard(key: String) : Flow<CommunityModel?>  = remoteSource.getBoard(key)
 }
