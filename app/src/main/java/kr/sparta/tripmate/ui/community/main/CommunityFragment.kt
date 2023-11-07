@@ -66,9 +66,7 @@ class CommunityFragment : Fragment() {
 
                 // 게시글 상세페이지 이동
                 val intent = CommunityDetailActivity.newIntentForEntity(
-                    communityContext, model.copy(
-                        views = model.views
-                    )
+                    communityContext, model.key!!
                 )
                 startActivity(intent)
             },
