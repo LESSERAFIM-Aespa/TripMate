@@ -96,10 +96,23 @@
                 tools:text="2021.08.09, 2:05 PM " />
 
             <TextView
+                android:id="@+id/textView18"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/inter"
+                android:text="메모"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/procedure_time_textview" />
+
+            <TextView
                 android:id="@+id/procedure_description_textview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/background_budget_view_type5"
                 android:fontFamily="@font/inter"
                 android:minLines="1"
@@ -108,7 +121,7 @@
                 android:textColor="#555555"
                 app:layout_constraintEnd_toEndOf="@+id/procedure_time_textview"
                 app:layout_constraintStart_toStartOf="@+id/procedure_time_textview"
-                app:layout_constraintTop_toBottomOf="@id/procedure_time_textview"
+                app:layout_constraintTop_toBottomOf="@+id/textView18"
                 tools:text="비행기 표 한국 -> 일본 \n50만원은 너무 비싼거 아님ㅋㅋ" />
 
 
@@ -117,7 +130,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/inter"
                 android:text="@string/budget_procedure_spend_text"
                 android:textColor="@color/black"

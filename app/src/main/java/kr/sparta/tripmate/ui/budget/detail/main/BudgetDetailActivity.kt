@@ -6,8 +6,11 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -16,8 +19,6 @@ import kr.sparta.tripmate.ui.budget.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.main.BudgetDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.main.BudgetDetailViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
 
 /**
  * 작성자: 서정한
@@ -38,7 +39,7 @@ class BudgetDetailActivity : AppCompatActivity() {
         ActivityBudgetDetailBinding.inflate(layoutInflater)
     }
 
-    private val adapter by lazy {
+    private val viewPagerAdapter by lazy {
         BudgetDetailViewPagerAdapter(budget?.num!!,this@BudgetDetailActivity)
     }
 
@@ -64,9 +65,21 @@ class BudgetDetailActivity : AppCompatActivity() {
 
     private fun initViews() = with(binding) {
         // TabLayout x ViewPager2
-        budgetDetailViewpager.adapter = adapter
+        budgetDetailViewpager.apply {
+            adapter = viewPagerAdapter
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    if (position == 1) {
+                        budgetDetailFloatingactionbutton.hide()
+                    } else {
+                        budgetDetailFloatingactionbutton.show()
+                    }
+                }
+            })
+        }
         TabLayoutMediator(budgetDetailTablayout, budgetDetailViewpager) { tab, position ->
-            tab.setText(adapter.getTitle(position))
+            tab.setText(viewPagerAdapter.getTitle(position))
         }.attach()
 
         // 추가하기 FAB

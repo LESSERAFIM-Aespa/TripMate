@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Environment.isExternalStorageRemovable
@@ -22,6 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -60,8 +63,6 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     companion object {
         private const val TAG = "BudgetDetailStatisticsFragment"
-        private const val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        private const val requestCode = 1001
         fun newInstance(budgetNum: Int) = BudgetDetailStatisticsFragment().apply {
             arguments = Bundle().apply {
                 putInt(ARG_BUDGET_NUM, budgetNum)
@@ -85,6 +86,14 @@ class BudgetDetailStatisticsFragment : Fragment() {
         BudgetDetailStatisticsListAdapter()
     private val incomeListAdapter: BudgetDetailStatisticsListAdapter =
         BudgetDetailStatisticsListAdapter()
+
+    private  val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()) {
+        when(it) {
+            true -> { captureScrollableContent() }
+            false -> { }
+        }
+    }
 
     fun PieDataSet.toCustomFormat() = this.apply {
         valueTextSize = 16f
@@ -332,8 +341,15 @@ class BudgetDetailStatisticsFragment : Fragment() {
                 }
 
                 binding.budgetStatisticsShareImageview.setOnClickListener {
+
+                    val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        Manifest.permission.READ_MEDIA_IMAGES
+                    } else {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    }
+
                     if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), requestCode)
+                        requestPermission.launch(permission)
                     } else {
                         captureScrollableContent()
                     }
