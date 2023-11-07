@@ -15,12 +15,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            style="@style/ScrapToolbarTextApperance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/blog_toolbar_title"
-            style="@style/ScrapToolbarTextApperance"
             android:layout_marginHorizontal="23dp"
             android:layout_marginTop="15dp"
+            android:text="@string/blog_toolbar_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,8 +32,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="23dp"
-        android:layout_marginTop="0dp"
         android:background="@drawable/scrap_content_outline"
+        app:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrap_toolbar"
@@ -43,89 +43,13 @@
         android:id="@+id/scrap_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/white"
         android:layout_marginTop="14dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrap_SearchView"
         tools:listitem="@layout/scraptitems" />
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/scrap_imagelayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="14dp"
-        android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrap_SearchView"
-        app:layout_constraintVertical_bias="0.0">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/scrap_imageframe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/scrap_imagelayout"
-            app:layout_constraintEnd_toEndOf="@+id/scrap_imagelayout"
-            app:layout_constraintStart_toStartOf="@+id/scrap_imagelayout"
-            app:layout_constraintTop_toTopOf="@+id/scrap_imagelayout">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/scrap_imagesearch_view"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginVertical="30dp"
-                android:scaleType="centerCrop"
-                android:layout_gravity="center"
-                app:layout_constraintEnd_toEndOf="@+id/scrap_imageframe"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="@+id/scrap_imageframe"
-                app:layout_constraintTop_toTopOf="@+id/scrap_imageframe"
-                tools:src="@drawable/addimage" />
-
-            <LinearLayout
-                android:id="@+id/text_and_image_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/scrap_imageframe"
-                app:layout_constraintStart_toStartOf="@+id/scrap_imageframe"
-                app:layout_constraintTop_toBottomOf="@+id/scrap_imagesearch_view"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="54dp"
-                    android:layout_height="37dp"
-                    android:layout_marginTop="25dp"
-                    android:src="@drawable/search" />
-
-                <TextView
-                    android:id="@+id/scrap_imagesearch_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:textColor="@color/black"
-                    android:text="@string/scrap_search"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/scrap_recommand_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/click_on_the_image_to_search"
-                android:textSize="13sp"
-                android:textColor="@color/sub_text_color"
-                app:layout_constraintBottom_toTopOf="@+id/scrap_imagesearch_view"
-                app:layout_constraintEnd_toEndOf="@+id/scrap_imageframe"
-                app:layout_constraintStart_toStartOf="@+id/scrap_imageframe"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
         android:id="@+id/scrap_loading"
@@ -138,5 +62,53 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/scrap_recommand_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/scrap_recyclerView"
+        app:layout_constraintEnd_toEndOf="@id/scrap_recyclerView"
+        app:layout_constraintStart_toStartOf="@id/scrap_recyclerView"
+        app:layout_constraintTop_toTopOf="@id/scrap_recyclerView">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/scrap_recommand_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginVertical="30dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/addimage" />
+
+        <ImageView
+            android:id="@+id/scrap_recommand_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/search"
+            app:layout_constraintEnd_toStartOf="@+id/scrap_recommand_title"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/scrap_recommand_image"
+            />
+
+        <TextView
+            android:id="@+id/scrap_recommand_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="검색하기"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/scrap_recommand_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/scrap_recommand_icon"
+            app:layout_constraintTop_toTopOf="@+id/scrap_recommand_icon" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

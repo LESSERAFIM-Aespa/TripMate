@@ -2,6 +2,7 @@ package kr.sparta.tripmate.ui.scrap.detail
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +19,7 @@ import kr.sparta.tripmate.databinding.ActivityScrapDetailBinding
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.ui.viewmodel.scrap.detail.ScrapDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.detail.ScrapDetailViewModel
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class ScrapDetailActivity : AppCompatActivity() {
@@ -59,10 +61,10 @@ class ScrapDetailActivity : AppCompatActivity() {
          * 내용: 웹뷰가 로딩중일경우 프로그레스바를 보여줍니다.
          * 로딩이끝나면 프로그레스바를 화면에서 Gone합니다.
          * */
-        fun isLoadingWebView(isLoading: Boolean)=with(binding) {
-            if(isLoading){
+        fun isLoadingWebView(isLoading: Boolean) = with(binding) {
+            if (isLoading) {
                 scrapDetailProgressbar.visibility = View.VISIBLE
-            }else {
+            } else {
                 scrapDetailProgressbar.visibility = View.GONE
             }
         }
@@ -75,13 +77,24 @@ class ScrapDetailActivity : AppCompatActivity() {
         //WebView
         scrapDetailWebview.run {
             model?.let {
-                webViewClient = object: WebViewClient() {
+                webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(
                         view: WebView?,
                         request: WebResourceRequest?
                     ): Boolean {
                         isLoadingWebView(true)
-                       return super.shouldOverrideUrlLoading(view, request)
+                        // 사용자가 다른페이지로 이동을 요청할경우 원래 블로그페이지를 다시 불러옴
+                        model?.let { searchBlogEntity ->
+                            if (url != searchBlogEntity.link) {
+                                view?.loadUrl(searchBlogEntity.link ?: "about:blank")
+                                context.shortToast(getString(R.string.scrap_detail_no_move_page))
+                            }
+                        }
+                        return super.shouldOverrideUrlLoading(view, request)
+                    }
+
+                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
                     }
 
                     override fun onPageFinished(view: WebView?, url: String?) {
@@ -111,7 +124,7 @@ class ScrapDetailActivity : AppCompatActivity() {
 
             // 현재 블로그스크랩상태를 불러온 후 토글
             val nowIsScraped = viewModel.isScrap.value
-            nowIsScraped?.let{
+            nowIsScraped?.let {
                 viewModel.updateIsScraped(!it)
             }
 
