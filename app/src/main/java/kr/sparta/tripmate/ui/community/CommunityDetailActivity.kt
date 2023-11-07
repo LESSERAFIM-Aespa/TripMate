@@ -15,19 +15,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
+import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailViewModel
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityDetailActivity : AppCompatActivity() {
     companion object {
-        const val EXTRA_ENTITY = "extra_entity"
-        fun newIntentForEntity(context: Context, model: CommunityEntity): Intent =
+        const val EXTRA_KEY = "extra_key"
+        fun newIntentForEntity(context: Context, boardKey: String): Intent =
             Intent(context, CommunityDetailActivity::class.java).apply {
-                putExtra(EXTRA_ENTITY, model)
+                putExtra(EXTRA_KEY, boardKey)
             }
     }
 
@@ -39,12 +39,8 @@ class CommunityDetailActivity : AppCompatActivity() {
         CommunityDetailFactory()
     }
 
-    private val model by lazy {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(EXTRA_ENTITY, CommunityEntity::class.java)
-        } else {
-            intent.getParcelableExtra(EXTRA_ENTITY)
-        }
+    private val boardKey by lazy {
+        intent.getStringExtra(EXTRA_KEY)
     }
 
     private val editLauncher =
@@ -53,11 +49,11 @@ class CommunityDetailActivity : AppCompatActivity() {
                 // Write의 Model 받아오기
                 val edit = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {
                     result.data?.getParcelableExtra(
-                        EXTRA_ENTITY,
+                        EXTRA_KEY,
                         CommunityEntity::class.java
                     )
                 } else {
-                    result.data?.getParcelableExtra(EXTRA_ENTITY)
+                    result.data?.getParcelableExtra(EXTRA_KEY)
                 }
             }
         }
@@ -67,7 +63,7 @@ class CommunityDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViewModel()
-        updateUI()
+        getAllBoards()
     }
 
 
@@ -98,30 +94,66 @@ class CommunityDetailActivity : AppCompatActivity() {
             communityDetailLikecount.text = it.likes.toString()
             communityTvDetailViewcount.text = it.views.toString()
         }
-        val comparedScrapUid =
-            item.scrapUsers.any { it == SharedPreferences.getUid(this@CommunityDetailActivity) }
-        val comparedLikeUid =
-            item.likeUsers.any { it == SharedPreferences.getUid(this@CommunityDetailActivity) }
+
+        val comparedLikeUid = comparedUid(item.likeUsers)
+        val comparedScrapUid = comparedUid(item.scrapUsers)
         toggleBoardScrap(comparedScrapUid)  //북마크 아이콘 상태
         toggleIsLikeIcon(comparedLikeUid)  //좋아요 아이콘 상태
+
+        // 게시글을 수정하는 클릭 이벤트
+        btnCommunityDetailEdit(item)
+
+        // 게시글을 북마크하는 클릭 이벤트
+        btnCommunityDetailLikeBtn(item)
+
+        // 게시글을 삭제하는 기능을 가진 클릭 이벤트
+        btnCommunityDetailRemove(item)
+
+        // 좋아요 기능 클릭 이벤트
+        btnCommunityIvLike(item)
+
+        //
+        btnCommunityUserprofile(item)
+
+
         // 뒤로가기
         communityDetailToolbar.setNavigationOnClickListener {
             finish()
         }
+    }
 
-        // 수정하기
-        communityDetailEdit.setOnClickListener {
-            val intent = model?.let { it1 ->
+    private fun btnCommunityUserprofile(item: CommunityEntity) {
+        binding.communityUserprofile.setOnClickListener {
+            val intent = UserProfileActivity.newIntentForGetUserProfile(
+                this@CommunityDetailActivity,
+                item
+            )
+            startActivity(intent)
+        }
+    }
+
+    /**
+     * 작성자 : 서정한
+     * 내용 : 게시글을 수정하는 클릭이벤트 입니다.
+     */
+    private fun btnCommunityDetailEdit(item: CommunityEntity) {
+        binding.communityDetailEdit.setOnClickListener {
+            val intent = item.let { it1 ->
                 CommunityWriteActivity.newIntentForEdit(
                     this@CommunityDetailActivity,
-                    it1.copy(views = (it1.views ?: 0) + 1)
+                    it1
                 )
             }
             editLauncher.launch(intent)
         }
+    }
 
-        // 게시글 Scrap 버튼
-        communityDetailLikeBtn.setOnClickListener {
+    /**
+     * 작성자 : 서정한
+     * 내용 : 게시글을 북마크 기능을 하는 클릭 이벤트 입니다.
+     */
+    private fun btnCommunityDetailLikeBtn(item: CommunityEntity) {
+        binding.communityDetailLikeBtn.setOnClickListener {
             item.let { communityEntity ->
                 val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
 
@@ -131,9 +163,14 @@ class CommunityDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-        // 삭제하기
-        communityDetailRemove.setOnClickListener {
+    /**
+     * 작성자 : 서정한
+     * 내용 : 게시글을 삭제하는 클릭 이벤트 입니다.
+     */
+    private fun btnCommunityDetailRemove(item: CommunityEntity) {
+        binding.communityDetailRemove.setOnClickListener {
             val builder = AlertDialog.Builder(this@CommunityDetailActivity)
             builder.setTitle(getString(R.string.budget_detail_dialog_title))
             builder.setMessage(getString(R.string.budget_detail_dialog_message))
@@ -163,9 +200,14 @@ class CommunityDetailActivity : AppCompatActivity() {
 
             builder.show()
         }
+    }
 
-        //좋아요 기능
-        communityIvLike.setOnClickListener {
+    /**
+     * 작성자 : 박성수
+     * 내용 : 좋아요 기능 클릭 이벤트 입니다.
+     */
+    private fun btnCommunityIvLike(item: CommunityEntity) {
+        binding.communityIvLike.setOnClickListener {
             item.let {
                 val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
 
@@ -177,15 +219,18 @@ class CommunityDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun comparedUid(uidList: List<String>): Boolean =
+        uidList.any { it == SharedPreferences.getUid(this@CommunityDetailActivity) }
+
+
     private fun initViewModel() = with(viewModel) {
         /**
          * 작성자 : 박성수
          * 내용 : RDB데이터를 관찰하고, 업데이트 합니다.
          */
-        boards.observe(this@CommunityDetailActivity) { boardItems ->
-            val item = boardItems.find { it?.key == model?.key }
-            item?.let {
-                initView(item)
+        boards.observe(this@CommunityDetailActivity) { CommunityEntity ->
+            CommunityEntity?.let {
+                initView(it)
             }
         }
     }
@@ -231,15 +276,25 @@ class CommunityDetailActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 작성자 : 박성수
+     * 내용 : 좋아요 버튼 토글 기능입니다.
+     */
     private fun toggleIsLikeIcon(compareUid: Boolean) = with(binding) {
         if (compareUid) {
-            binding.communityIvLike.setImageResource(R.drawable.paintedheart)
+            communityIvLike.setImageResource(R.drawable.paintedheart)
         } else {
-            binding.communityIvLike.setImageResource(R.drawable.heart)
+            communityIvLike.setImageResource(R.drawable.heart)
         }
     }
 
-    private fun updateUI() = CoroutineScope(Dispatchers.Main).launch {
-        viewModel.getAllBoards()
+    /**
+     * 작성자 : 박성수
+     * 내용 : RDB데이터를 가져옵니다.
+     */
+    private fun getAllBoards() = CoroutineScope(Dispatchers.Main).launch {
+        boardKey?.let {
+            viewModel.getBoard(it)
+        }
     }
 }
