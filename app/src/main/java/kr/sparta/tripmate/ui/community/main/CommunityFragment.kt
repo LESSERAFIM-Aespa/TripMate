@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView.OnQueryTextListener
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.util.query
+import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -66,9 +69,7 @@ class CommunityFragment : Fragment() {
 
                 // 게시글 상세페이지 이동
                 val intent = CommunityDetailActivity.newIntentForEntity(
-                    communityContext, model.copy(
-                        views = model.views
-                    )
+                    communityContext, model.key!!
                 )
                 startActivity(intent)
             },
@@ -114,11 +115,41 @@ class CommunityFragment : Fragment() {
         commuFloatBtn()
         initView()
         initViewModel()
+        communitySearchView()
     }
 
-    private fun initViewModel() {
-        commuViewModel.boards.observe(viewLifecycleOwner) {
-            commuAdapter.submitList(it)
+    private fun communitySearchView() {
+        with(binding) {
+            communityMainSearchView.isSubmitButtonEnabled = true
+            communityMainSearchView.setOnQueryTextListener(object :
+                androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        commuViewModel.getFilteredBoard(query)
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+
+            })
+        }
+    }
+
+    private fun initViewModel() = with(binding) {
+        commuViewModel.boards.observe(viewLifecycleOwner) { communityData ->
+            val query = communityMainSearchView.query.toString()
+            if (query.isNullOrBlank()) {
+                commuAdapter.submitList(communityData)
+            }
+        }
+        commuViewModel.filteredBoard.observe(viewLifecycleOwner) {
+            val query = communityMainSearchView.query.toString()
+            if (!query.isNullOrBlank()) {
+                commuAdapter.submitList(it)
+            }
         }
         commuViewModel.isLoading.observe(viewLifecycleOwner) {
             binding.communityLoading.visibility = if (it) View.VISIBLE else View.GONE
@@ -142,10 +173,10 @@ class CommunityFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        updateUI()
+        getAllBoards()
     }
 
-    private fun updateUI() = CoroutineScope(Dispatchers.Main).launch {
+    private fun getAllBoards() = CoroutineScope(Dispatchers.Main).launch {
         commuViewModel.getAllBoards()
     }
 

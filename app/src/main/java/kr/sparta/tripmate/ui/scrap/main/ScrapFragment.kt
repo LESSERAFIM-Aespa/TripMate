@@ -1,8 +1,7 @@
-package kr.sparta.tripmate.ui.scrap
+package kr.sparta.tripmate.ui.scrap.main
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
-import kr.sparta.tripmate.ui.scrap.main.ScrapAdapter
-import kr.sparta.tripmate.ui.scrap.main.SearchScrollListener
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 import java.util.Random
 
@@ -29,86 +29,11 @@ class ScrapFragment : Fragment() {
 
     var searchLoading = false
     private lateinit var scrapContext: Context
+
     private val binding by lazy { FragmentScrapBinding.inflate(layoutInflater) }
 
-    private lateinit var scrapAdapter: ScrapAdapter
-    private val scrapResults =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
-            }
-        }
-
-    private val viewModel: SearchBlogViewModel by viewModels { SearchBlogFactory() }
-
-    var searchQuery: String? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        scrapContext = context
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
-        setUpView()
-        searchView()
-        initImage()
-        return binding.root
-    }
-
-    private fun initImage() {
-        val suggestionItems: ArrayList<String> = arrayListOf("울산 관광", "부산 관광", "인천 관광", "대구 관광", "서울 관광", "대전 관광", "광주 관광", "세종 관광", "여수 관광", "제주 관광", "전주 관광" )
-        val random = Random()
-        val randomIndex = random.nextInt(suggestionItems.size)
-        val randomItem = suggestionItems[randomIndex]
-
-        viewModel.searchImageResult(randomItem)
-        binding.scrapImagesearchTextview.text = randomItem + "은 어떤가요?"
-        binding.scrapImagelayout.setOnClickListener {
-            viewModel.searchAPIResult(randomItem, scrapContext)
-            setUpLayout(true)
-        }
-    }
-    override fun onPause() {
-        super.onPause()
-        viewModel.resetList()
-        initSearchQuery()
-        setUpLayout(false)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initImage()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        observeViewModel()
-
-    }
-
-    private fun observeViewModel() = with(viewModel) {
-        searchList.observe(viewLifecycleOwner) {
-
-            scrapAdapter.submitList(it)
-
-            isLoading.observe(viewLifecycleOwner) { isLoading ->
-                binding.scrapLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-        }
-        imageResult.observe(viewLifecycleOwner){
-            binding.scrapImagesearchView.load(it[0].thumbnail)
-            isLoading.observe(viewLifecycleOwner) { isLoading ->
-                binding.scrapLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-        }
-
-    }
-
-    private fun searchView() {
-        scrapAdapter = ScrapAdapter(
+    private val scrapAdapter by lazy {
+        ScrapAdapter(
             onItemClick = { model ->
                 val intent = ScrapDetailActivity.newIntentForScrap(scrapContext, model)
                 scrapResults.launch(intent)
@@ -125,54 +50,148 @@ class ScrapFragment : Fragment() {
                 viewModel.updateBlogScrap(uid, model)
             }
         )
-
-        binding.scrapRecyclerView.apply {
-            layoutManager = GridLayoutManager(context, 2)
-            adapter = scrapAdapter
-            binding.scrapRecyclerView.addOnScrollListener(
-                SearchScrollListener(
-                    viewModel,
-                    this@ScrapFragment, scrapContext
-                )
-            )
-            setHasFixedSize(true)
-        }
     }
 
-    private fun setUpView() {
-        binding.scrapSearchView.apply {
-            isSubmitButtonEnabled = true
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    private val scrapResults =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+            }
+        }
+
+    private val viewModel: SearchBlogViewModel by viewModels { SearchBlogFactory() }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        scrapContext = context
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+        initViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setRandomRecommandView()
+    }
+
+    private fun initView() = with(binding) {
+        // RecyclerView
+        scrapRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        scrapRecyclerView.adapter = scrapAdapter
+
+        scrapRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (SearchBlogViewModel.currentDisplay > 100) {
+                    scrapContext.shortToast("한 번에 표시할 검색 결과 개수는 100개입니다.")
+                    return
+                }
+
+                if (!scrapRecyclerView.canScrollVertically(1)) {
+                    if (SearchBlogViewModel.currentDisplay <= 90) {
+                        SearchBlogViewModel.currentDisplay += 10
+
+                        val query = scrapSearchView.query.toString()
+                        // query가 빈 값일경우 Pass
+                        if(query == "") {
+                            return
+                        }
+
+                        viewModel.searchAPIResult(query, scrapContext)
+                        return
+                    }
+                }
+            }
+        })
+
+        scrapRecyclerView.setHasFixedSize(true)
+
+        // SearchView
+        scrapSearchView.isSubmitButtonEnabled = true
+        scrapSearchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     query?.let {
-                        searchQuery = it.trim()
-                        Log.d("TripMates", "검색어 : $searchQuery")
-                        setupListeners()
+                        viewModel.searchAPIResult(query.trim(), scrapContext)
                         searchLoading = !searchLoading
                     }
-                    setUpLayout(true)
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText == "") {
+                        viewModel.clearSearchList()
+                        setRandomRecommandView()
+                        recommandViewVisibleController(true)
+                    } else {
+                        recommandViewVisibleController(false)
+                    }
                     return false
                 }
+            }
+        )
+    }
 
-            })
+    private fun setRandomRecommandView() = with(binding) {
+        /**
+         * 작성자: 서정한
+         * 내용: 검색어 제안값 랜덤출력
+         * */
+        fun getRandomItem(): String {
+            val suggestionItems: Array<String> =
+                resources.getStringArray(R.array.scrap_recommand_list)
+            val randomIndex = Random().nextInt(suggestionItems.size)
+            return suggestionItems[randomIndex]
+        }
+
+        // 추천검색어 init
+        val randomItem = getRandomItem()
+        viewModel.searchImageResult(randomItem)
+        scrapRecommandTitle.text = randomItem + getString(R.string.scrap_recommand_text)
+
+        // 추천검색어 클릭
+        scrapRecommandContainer.setOnClickListener {
+            scrapSearchView.setQuery(randomItem, true)
+            recommandViewVisibleController(false)
         }
     }
 
-    private fun setupListeners() {
-        searchQuery?.let {
-            viewModel.searchAPIResult(searchQuery!!, scrapContext)
+    private fun initViewModel() = with(viewModel) {
+        // 검색 ViewModel
+        searchList.observe(viewLifecycleOwner) {
+
+            scrapAdapter.submitList(it)
+
+            isLoading.observe(viewLifecycleOwner) { isLoading ->
+                binding.scrapLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
         }
+
+        // 추천검색 이미지
+        recommandImage.observe(viewLifecycleOwner) {
+            binding.scrapRecommandImage.load(it[0].thumbnail)
+            isLoading.observe(viewLifecycleOwner) { isLoading ->
+                binding.scrapLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+        }
+
     }
-    private fun setUpLayout(isVisible: Boolean) {
-        binding.scrapRecyclerView.visibility = if (isVisible) View.VISIBLE else View.GONE
-        binding.scrapImagelayout.visibility = if (!isVisible) View.VISIBLE else View.GONE
-    }
-    private fun initSearchQuery(){
-        binding.scrapSearchView.setQuery("", false)
-        searchQuery = null
+
+    /**
+     * 작성자: 서정한
+     * 내용: 추천검색화면 Visible 컨트롤러
+     * */
+    private fun recommandViewVisibleController(isVisible: Boolean) {
+        binding.scrapRecommandContainer.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 }

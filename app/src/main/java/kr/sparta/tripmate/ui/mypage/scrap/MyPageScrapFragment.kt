@@ -50,11 +50,13 @@ class MyPageScrapFragment : Fragment() {
                     )
                     bookmarkResults.launch(intent)
                 } else if (model is CommunityEntity) {
-                    // 조회수 증가
-                    viewModel.updateBoardViews(model.copy())
+                   model.key?.let {
+                       // 조회수 증가
+                       viewModel.updateBoardViews(model.copy())
 
-                    val intent = CommunityDetailActivity.newIntentForEntity(scrapContext, model)
-                    startActivity(intent)
+                       val intent = CommunityDetailActivity.newIntentForEntity(scrapContext, model.key)
+                       startActivity(intent)
+                   }
                 }
 //                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
 //                viewModel.updateBoardDataView(model.toCommunityEntity(), position)

@@ -18,7 +18,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/arrow_left">
+            app:navigationIcon="@drawable/arrow_left_white">
 
             <ImageView
                 android:id="@+id/community_detail_like_btn"

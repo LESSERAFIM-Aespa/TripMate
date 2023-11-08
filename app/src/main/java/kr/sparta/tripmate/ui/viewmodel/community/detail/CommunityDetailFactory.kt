@@ -8,6 +8,7 @@ import kr.sparta.tripmate.data.repository.community.FirebaseBoardScrapRepository
 import kr.sparta.tripmate.domain.repository.community.FirebaseBoardRepository
 import kr.sparta.tripmate.domain.repository.community.FirebaseBoardScrapRepository
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetAllBoardsUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.RemoveBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScrapUseCase
@@ -26,7 +27,9 @@ class CommunityDetailFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(CommunityDetailViewModel::class.java)) {
             return CommunityDetailViewModel(
                 UpdateBoardScrapUseCase(boardScrapRepository),
-                RemoveBoardUseCase(repository)
+                RemoveBoardUseCase(repository),
+                UpdateBoardLikeUseCase(repository),
+                GetBoardUseCase(repository)
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")

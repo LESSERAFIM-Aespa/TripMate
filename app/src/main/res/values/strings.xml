@@ -75,6 +75,20 @@
     <string name="user_profile_tab_title">작성한 글 목록</string>
     <string name="community_write_post_text">게시</string>
     <string name="click_on_the_image_to_search">이미지를 클릭하면 검색 됩니다!</string>
-    <string name="scrap_search">검색하기</string>
+    <string name="scrap_recommand_text">은 어떤가요?</string>
+    <string name="scrap_detail_no_move_page">현재 보고계신 글 외에 다른 페이지로 이동이 불가능합니다.</string>
 
+    <string-array name="scrap_recommand_list">
+        <item>울산 관광</item>
+        <item>부산 관광</item>
+        <item>인천 관광</item>
+        <item>대구 관광</item>
+        <item>서울 관광</item>
+        <item>대전 관광</item>
+        <item>광주 관광</item>
+        <item>세종 관광</item>
+        <item>여수 관광</item>
+        <item>제주 관광</item>
+        <item>전주 관광</item>
+    </string-array>
 </resources>
