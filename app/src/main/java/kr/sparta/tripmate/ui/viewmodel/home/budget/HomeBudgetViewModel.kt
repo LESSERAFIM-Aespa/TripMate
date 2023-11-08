@@ -4,11 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenBudgetChangedUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenProcedureChangedUseCase
 
-class HomeBudgetViewModel(repository: BudgetRepository) : ViewModel() {
+class HomeBudgetViewModel(
+    getAllBudgetsToFlowWhenBudgetChangedUseCase: GetAllBudgetsToFlowWhenBudgetChangedUseCase,
+    getAllBudgetsToFlowWhenProcedureChangedUseCase:GetAllBudgetsToFlowWhenProcedureChangedUseCase,
+) : ViewModel() {
     val budgetLiveDataWhenBudgetChanged: LiveData<List<Budget>> =
-        repository.getAllBudgetsToFlowWhenBugetsChanged().asLiveData()
+        getAllBudgetsToFlowWhenBudgetChangedUseCase().asLiveData()
     val budgetLiveDataWhenProcedureChanged: LiveData<List<Budget>> =
-        repository.getAllBugetsToFlowWhenProceduresChanged().asLiveData()
+        getAllBudgetsToFlowWhenProcedureChangedUseCase().asLiveData()
 }

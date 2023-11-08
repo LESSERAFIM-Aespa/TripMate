@@ -12,9 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
-import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
+import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
@@ -45,7 +44,7 @@ class HomeFragment : Fragment() {
         HomeBoardFactory()
     }
     private val homeBudgetViewModel: HomeBudgetViewModel by viewModels {
-        HomeBudgetFactory(BudgetRepositoryImpl(homeContext))
+        HomeBudgetFactory()
     }
     private val homeBudgetListAdapter: HomeBudgetListAdapter by lazy {
         HomeBudgetListAdapter(
