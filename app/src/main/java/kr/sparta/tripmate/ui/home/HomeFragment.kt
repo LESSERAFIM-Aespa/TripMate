@@ -111,10 +111,6 @@ class HomeFragment : Fragment() {
         initViewModel()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun initView() = with(binding) {
         // 상단 프로필 이미지 && 닉네임
         val profileImg = SharedPreferences.getProfile(homeContext)
