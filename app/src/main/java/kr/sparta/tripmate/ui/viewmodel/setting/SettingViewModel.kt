@@ -9,16 +9,17 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.model.user.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.LogoutUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserDataUseCase
 
 class SettingViewModel(
     private val getUserDataUseCase: GetUserDataUseCase,
-    private val updateUserData: UpdateUserDataUseCase,
-    private val saveUserDataUseCase: SaveUserDataUseCase,
-    private val withdrawalUserDataUseCase: WithdrawalUserDataUseCase
-) : ViewModel() {
+    private val logoutUseCase: LogoutUseCase,
+    private val withdrawalUserDataUseCase: WithdrawalUserDataUseCase,
+
+    ) : ViewModel() {
     private val _settingUserData: MutableLiveData<UserDataEntity?> = MutableLiveData()
     val settingUserData get() = _settingUserData
 
@@ -28,7 +29,8 @@ class SettingViewModel(
         }
     }
 
-    fun saveUserData(model: UserDataEntity) = saveUserDataUseCase(model)
 
     fun removeUserData(uid: String) = withdrawalUserDataUseCase(uid)
+
+    fun logout() = logoutUseCase()
 }

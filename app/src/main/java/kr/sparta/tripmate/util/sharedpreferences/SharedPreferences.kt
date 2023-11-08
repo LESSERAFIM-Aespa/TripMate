@@ -49,4 +49,11 @@ object SharedPreferences {
         return spf.getString("uidFromUser", "") ?: ""
     }
 
+    fun removeKey(context: Context) {
+        val edit = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        edit.clear()
+        edit.commit()
+    }
+
+
 }

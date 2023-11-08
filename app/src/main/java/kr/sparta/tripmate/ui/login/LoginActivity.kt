@@ -9,7 +9,6 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.widget.doAfterTextChanged
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -18,6 +17,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityLoginBinding
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
@@ -48,9 +50,18 @@ class LoginActivity : AppCompatActivity() {
              * */
             fun layoutVisibleController(isLoginSuccessful: Boolean) = with(binding) {
                 if (isLoginSuccessful) {
-                    loginCenterConstraint.visibility = View.GONE
-                    nickCenterConstraint.visibility = View.VISIBLE
-                    shortToast("닉네임을 입력해주세요")
+                    if (!SharedPreferences.getUid(this@LoginActivity).isNullOrBlank()) {
+                        loginCenterConstraint.visibility = View.VISIBLE
+                        nickCenterConstraint.visibility = View.GONE
+                        shortToast("${SharedPreferences.getNickName(this@LoginActivity)}의 계정으로 로그인 되었습니다.")
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        loginCenterConstraint.visibility = View.GONE
+                        nickCenterConstraint.visibility = View.VISIBLE
+                        shortToast("닉네임을 입력해주세요")
+                    }
                 } else {
                     loginCenterConstraint.visibility = View.VISIBLE
                     nickCenterConstraint.visibility = View.GONE
@@ -69,47 +80,53 @@ class LoginActivity : AppCompatActivity() {
                  * */
                 fun confirmNickname() {
                     binding.nickBtn.setOnClickListener {
-                        val nickname = binding.nickEdit.text.toString()
-
-                        if (nickname.trim().isEmpty()) {
-                            shortToast(getString(R.string.login_exception_empty_nickname))
-                            return@setOnClickListener
-                        }
-
-                        viewModel.getCurrentUser()?.let { user ->
-                            // 서버 업로드
-                            viewModel.saveCurrentUser(
-                                model = UserDataEntity(
-                                    type = "Google",
-                                    email = user.email.toString(),
-                                    nickname = nickname,
-                                    profileImg = user.photoUrl?.toString(),
-                                    uid = user.uid,
-                                    comment = "",
-                                )
-                            )
-
-                            // 기기 저장
-                            SharedPreferences.apply {
-                                // uid
-                                saveUid(
-                                    this@LoginActivity,
-                                    user.uid
-                                )
-                                // profile Image
-                                user.photoUrl?.toString()?.let { url ->
-                                    saveProfile(this@LoginActivity, url)
-                                }
-                                // nickname
-                                saveNickName(
-                                    this@LoginActivity,
-                                    nickname
-                                )
+                        CoroutineScope(Dispatchers.Main).launch{
+                            val nickName = binding.nickEdit.text.toString()
+                            val isExist = viewModel.getNickNameData(nickName)
+                            if (!isExist) {
+                                shortToast("닉네임이 존재합니다.")
+                                return@launch}
+                            if (nickName.trim().isEmpty()) {
+                                shortToast(getString(R.string.login_exception_empty_nickname))
+                                return@launch
                             }
 
-                            longToast("${nickname}의 계정으로 로그인 되었습니다.")
-                            startActivity(Intent(this, MainActivity::class.java))
+                            viewModel.getCurrentUser()?.let { user ->
+                                // 서버 업로드
+                                viewModel.saveCurrentUser(
+                                    model = UserDataEntity(
+                                        type = "Google",
+                                        email = user.email.toString(),
+                                        nickname = nickName,
+                                        profileImg = user.photoUrl?.toString(),
+                                        uid = user.uid,
+                                        comment = "",
+                                    )
+                                )
+
+                                // 기기 저장
+                                SharedPreferences.apply {
+                                    // uid
+                                    saveUid(
+                                        this@LoginActivity,
+                                        user.uid
+                                    )
+                                    // profile Image
+                                    user.photoUrl?.toString()?.let { url ->
+                                        saveProfile(this@LoginActivity, url)
+                                    }
+                                    // nickname
+                                    saveNickName(
+                                        this@LoginActivity,
+                                        nickName
+                                    )
+                                }
+
+                                longToast("${nickName}의 계정으로 로그인 되었습니다.")
+                        }
+                           startActivity( MainActivity.newIntent(this@LoginActivity))
                             finish()
+
                         }
                     }
                 }

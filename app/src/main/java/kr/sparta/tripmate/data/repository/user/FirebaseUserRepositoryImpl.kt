@@ -23,4 +23,8 @@ class FirebaseUserRepositoryImpl(private val remoteSource: FirebaseUserRemoteDat
     override fun updateUserData(model: UserDataEntity) = remoteSource.saveUserData(model.toModel())
 
     override fun withdrawalUserData(uid: String) = remoteSource.withdrawalUserData(uid)
+
+    override fun logout() = remoteSource.logout()
+
+    override suspend fun getNickNameData(nickName: String) : Boolean = remoteSource.getNickNameData(nickName)
 }
