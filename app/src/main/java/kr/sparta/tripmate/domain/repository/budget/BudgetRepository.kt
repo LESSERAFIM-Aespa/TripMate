@@ -8,7 +8,7 @@ interface BudgetRepository {
     suspend fun updateBudgets(vararg budgets: Budget)
     suspend fun deleteBugets(vararg budgets: Budget)
 
-    fun getAllBudgetsToFlowWhenBugetsChanged(): Flow<List<Budget>>
+    fun getAllBudgetsToFlowWhenBudgetChanged(): Flow<List<Budget>>
     fun getAllBugetsToFlowWhenProceduresChanged(): Flow<List<Budget>>
     fun getBugetToFlowWhenBudgetChangedWithNum(num: Int): Flow<Budget>
     suspend fun getLastBudget(): List<Budget>
