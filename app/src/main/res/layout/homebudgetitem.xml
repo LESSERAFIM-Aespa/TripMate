@@ -5,109 +5,120 @@
     android:id="@+id/home_budget_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/background_budget_view_type5"
+    android:layout_marginEnd="15dp"
     android:paddingHorizontal="15dp"
-    android:paddingVertical="10dp"
-   android:layout_margin="10dp"
-    android:background="@drawable/background_budget_view_type5">
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/home_budget_item_title_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background_budget_view_type2"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="7dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/home_budget_item_title_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/background_budget_view_type2"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="7dp"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/view"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            tools:text="스페인  여행 가계부" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="스페인  여행 가계부" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/home_budget_layout"
-        app:layout_constraintStart_toStartOf="@+id/home_budget_layout"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_budget_item_title_textview"
+        >
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            >
 
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="70dp"
+                android:id="@+id/home_budget_amount"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="원금"
+                android:textAlignment="textStart"
                 android:textColor="#555555"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/view2"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/home_budget_item_status_before_textview"
-                android:layout_width="130dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
+                android:layout_marginStart="20dp"
                 android:ellipsize="end"
+                android:fontFamily="@font/inter"
                 android:maxLines="1"
+                android:textAlignment="textEnd"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                tools:text="5,000,000,000 원" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/home_budget_amount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="5,000,000 원" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            >
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="70dp"
+                android:id="@+id/home_remain_budget_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="남은 예산"
+                android:textAlignment="textStart"
                 android:textColor="#555555"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/home_budget_item_status_after_textview"
-                android:layout_width="130dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
+                android:layout_marginStart="20dp"
                 android:ellipsize="end"
+                android:fontFamily="@font/inter"
                 android:maxLines="1"
+                android:textAlignment="textEnd"
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                tools:text="5,000,000,000 원" />
-
-        </LinearLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/home_remain_budget_text"
+                tools:text="5,000,000 원" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_margin="15dp"
+            android:layout_margin="10dp"
             android:background="@color/Gray300" />
 
         <TextView
@@ -121,14 +132,11 @@
             android:textSize="12sp"
             tools:text="2023.12.09 ~ 2023.12.21" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/home_budget_guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
+<!--        <androidx.constraintlayout.widget.Guideline-->
+<!--            android:id="@+id/home_budget_guideline2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layout_constraintGuide_percent="0.5" />-->
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
