@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget.detail.statistics
+package kr.sparta.tripmate.ui.budget.budgetdetail.statistics
 
 import android.graphics.Canvas
 import com.github.mikephil.charting.charts.PieChart

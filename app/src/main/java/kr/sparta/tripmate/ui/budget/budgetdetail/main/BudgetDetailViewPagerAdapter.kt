@@ -1,11 +1,11 @@
-package kr.sparta.tripmate.ui.budget.detail.main
+package kr.sparta.tripmate.ui.budget.budgetdetail.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.ui.budget.detail.procedure.BudgetDetailProcedureFragment
-import kr.sparta.tripmate.ui.budget.detail.statistics.BudgetDetailStatisticsFragment
+import kr.sparta.tripmate.ui.budget.budgetdetail.procedure.BudgetDetailProcedureFragment
+import kr.sparta.tripmate.ui.budget.budgetdetail.statistics.BudgetDetailStatisticsFragment
 
 class BudgetDetailViewPagerAdapter(budgetNum: Int, fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {

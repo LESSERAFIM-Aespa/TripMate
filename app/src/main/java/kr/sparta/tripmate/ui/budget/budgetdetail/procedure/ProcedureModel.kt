@@ -1,7 +1,4 @@
-package kr.sparta.tripmate.ui.budget.detail.procedure
-
-import kr.sparta.tripmate.data.model.budget.Category
-import java.util.Date
+package kr.sparta.tripmate.ui.budget.budgetdetail.procedure
 
 /**
  * 작성자: 서정한

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kr.sparta.tripmate.ui.budget.detail.procedure.ProcedureModel
+import kr.sparta.tripmate.ui.budget.budgetdetail.procedure.ProcedureModel
 
 /**
  * 작성자 : 김성환

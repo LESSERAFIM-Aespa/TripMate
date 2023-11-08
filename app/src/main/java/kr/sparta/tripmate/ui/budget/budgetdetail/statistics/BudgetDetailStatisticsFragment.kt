@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget.detail.statistics
+package kr.sparta.tripmate.ui.budget.budgetdetail.statistics
 
 import android.Manifest
 import android.content.Intent
@@ -29,8 +29,8 @@ import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import java.io.File
 import java.io.FileOutputStream

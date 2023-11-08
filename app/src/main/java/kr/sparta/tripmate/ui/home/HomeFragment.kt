@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentHomeBinding
-import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
+import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity

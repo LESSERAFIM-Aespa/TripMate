@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget.detail.main
+package kr.sparta.tripmate.ui.budget.budgetdetail.main
 
 import androidx.fragment.app.Fragment
 

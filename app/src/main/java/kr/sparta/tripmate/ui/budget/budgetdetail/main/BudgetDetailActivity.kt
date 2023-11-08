@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget.detail.main
+package kr.sparta.tripmate.ui.budget.budgetdetail.main
 
 import android.content.Context
 import android.content.DialogInterface
@@ -6,8 +6,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
@@ -17,8 +15,8 @@ import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
 import kr.sparta.tripmate.ui.budget.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.main.BudgetDetailFactory
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.main.BudgetDetailViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailViewModel
 
 /**
  * 작성자: 서정한

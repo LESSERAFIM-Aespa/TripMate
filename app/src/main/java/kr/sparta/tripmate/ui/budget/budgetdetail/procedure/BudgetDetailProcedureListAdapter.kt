@@ -1,22 +1,13 @@
-package kr.sparta.tripmate.ui.budget.detail.procedure
+package kr.sparta.tripmate.ui.budget.budgetdetail.procedure
 
-import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemProcedureBinding
-import kr.sparta.tripmate.util.TripMateApp
-import kr.sparta.tripmate.util.method.setCommaForMoneeyText
 import kr.sparta.tripmate.util.method.toMoneyFormat
 
 /**

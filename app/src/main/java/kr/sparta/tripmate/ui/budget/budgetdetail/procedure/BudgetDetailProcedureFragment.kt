@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget.detail.procedure
+package kr.sparta.tripmate.ui.budget.budgetdetail.procedure
 
 
 import android.content.Context
@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.ProcedureDetailActivity
-import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsFactory
+import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 
 

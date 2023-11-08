@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics
+package kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.data.model.budget.toModel
 import kr.sparta.tripmate.domain.usecase.budgettotalrepository.GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase
-import kr.sparta.tripmate.ui.budget.detail.procedure.ProcedureModel
+import kr.sparta.tripmate.ui.budget.budgetdetail.procedure.ProcedureModel
 
 class BudgetStatisticsViewModel(
     getBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase: GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase,
