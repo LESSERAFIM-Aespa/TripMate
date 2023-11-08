@@ -2,8 +2,12 @@ package kr.sparta.tripmate.data.repository.user
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kr.sparta.tripmate.data.datasource.remote.user.FirebaseUserRemoteDataSource
+import kr.sparta.tripmate.data.model.user.UserData
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
+import kr.sparta.tripmate.domain.model.user.toModel
 import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
 
 /**
@@ -12,19 +16,11 @@ import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
  * */
 class FirebaseUserRepositoryImpl(private val remoteSource: FirebaseUserRemoteDataSource) :
     FirebaseUserRepository {
-    override fun updateUserData(uid: String, userLiveData: MutableLiveData<UserDataEntity?>) {
-        remoteSource.updateUserData(uid, userLiveData)
-    }
+    override fun getUserData(uid: String): Flow<UserData> = remoteSource.getUserData(uid)
 
-    override fun saveUserData(
-        model: UserDataEntity,
-        context: Context,
-        userLiveData: MutableLiveData<UserDataEntity?>
-    ) {
-        remoteSource.saveUserData(model, context, userLiveData)
-    }
+    override fun saveUserData(model: UserDataEntity) = remoteSource.saveUserData(model.toModel())
 
-    override fun resignUserData(context: Context) {
-        remoteSource.resignUserData(context)
-    }
+    override fun updateUserData(model: UserDataEntity) = remoteSource.saveUserData(model.toModel())
+
+    override fun withdrawalUserData(uid: String) = remoteSource.withdrawalUserData(uid)
 }
