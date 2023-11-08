@@ -3,12 +3,21 @@ package kr.sparta.tripmate.domain.model.user
 import kr.sparta.tripmate.data.model.user.UserData
 
 fun UserData.toEntity() = UserDataEntity(
-    login_type = login_type,
-    login_Id = login_Id,
-    login_NickName = login_NickName,
-    login_Uid = login_Uid,
-    login_profile = login_profile,
-    login_coment = login_coment
+    type = login_type,
+    email = login_Id,
+    nickname = login_NickName,
+    uid = login_Uid,
+    profileImg = login_profile,
+    comment = login_coment
+)
+
+fun UserDataEntity.toModel() = UserData(
+    login_type = type,
+    login_Id = email,
+    login_NickName = nickname,
+    login_Uid = uid,
+    login_profile = profileImg,
+    login_coment = comment
 )
 
 fun List<UserData>.toEntity() :List<UserDataEntity>{

@@ -3,7 +3,6 @@ package kr.sparta.tripmate.ui.community.main
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -77,7 +76,7 @@ class CommunityFragment : Fragment() {
             { model, position ->
                 // 유저프로필 클릭시 유저정보페이지로 이동.
                 // 단 내 프로필일경우 myPage로 이동.
-                if (model.id == uid) {
+                if (model.userid == uid) {
                     (activity).moveTabFragment(R.string.main_tab_title_mypage)
                 } else {
                     val intent = UserProfileActivity.newIntentForGetUserProfile(

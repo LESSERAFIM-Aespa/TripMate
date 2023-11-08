@@ -3,7 +3,7 @@ package kr.sparta.tripmate.domain.model.community
 import kr.sparta.tripmate.data.model.community.CommunityModel
 
 fun CommunityModel.toEntity(): CommunityEntity = CommunityEntity(
-    id = id,// 게시글 id
+    userid = userid,// 게시글 id
     title = title, // 제목
     content = content, // 게시글 내용
     profileNickname = profileNickname, // 프로필 닉네임
@@ -18,7 +18,7 @@ fun CommunityModel.toEntity(): CommunityEntity = CommunityEntity(
 )
 
 fun CommunityEntity.toModel() = CommunityModel(
-    id = id,// 게시글 id
+    userid = userid,// 게시글 id
     title = title, // 제목
     content = content, // 게시글 내용
     profileNickname = profileNickname, // 프로필 닉네임

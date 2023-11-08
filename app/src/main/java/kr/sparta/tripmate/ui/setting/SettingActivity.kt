@@ -44,20 +44,19 @@ class SettingActivity : AppCompatActivity() {
         settingViewModel.settingUserData.observe(this) {
             setUpView(it)   //레이아웃에 데이터를 넣어줍니다.
 
-            deleteBtn()     //회원탈퇴 버튼입니다.
         }
     }
     //레이아웃에 데이터를 넣어줍니다.
     private fun setUpView(it: UserDataEntity?) {
-        binding.settingProfileImage.load(it?.login_profile)
-        binding.settingLoginType.text = it?.login_type
-        binding.settingId.text = it?.login_Id
+        binding.settingProfileImage.load(it?.profileImg)
+        binding.settingLoginType.text = it?.type
+        binding.settingId.text = it?.email
     }
 
     private fun initview() = with(binding) {
         //뷰모델 데이터를 가져옵니다.
         val uid = SharedPreferences.getUid(this@SettingActivity)
-        settingViewModel.updateUserData(uid)
+        settingViewModel.getUserData(uid)
 
         // 뒤로가기 버튼 입니다.
         settingToolbar.setNavigationOnClickListener {
@@ -70,11 +69,10 @@ class SettingActivity : AppCompatActivity() {
             shortToast("로그아웃 되었습니다.")
             moveLogin()
         }
-    }
-    // 회원탈퇴 버튼입니다.
-    private fun deleteBtn() {
+
+        // 회원탈퇴 버튼입니다.
         binding.settingWithdrawal.setOnClickListener {
-            settingViewModel.removeUserData(this)
+            settingViewModel.removeUserData(uid)
             auth.signOut()  //로그아웃 됩니다.
             moveLogin()     //회원탈퇴 후 로그인화면으로 이동됩니다.
         }

@@ -66,23 +66,21 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        myPageViewModel.updateUserData(
+        myPageViewModel.getUserData(
             SharedPreferences.getUid(myPageContext)
-
-
         )
+
         initView()
         initViewModel()
-
     }
 
     private fun initViewModel() {
         with(myPageViewModel) {
             userData.observe(viewLifecycleOwner) {
                 with(binding) {
-                    mypageProfileImageview.load(it?.login_profile)
-                    mypageProfileNickTextview.text = it?.login_NickName
-                    mypageProfileContentTextview.text = it?.login_coment
+                    mypageProfileImageview.load(it?.profileImg)
+                    mypageProfileNickTextview.text = it?.nickname
+                    mypageProfileContentTextview.text = it?.comment
                 }
             }
         }
@@ -145,7 +143,6 @@ class MyPageFragment : Fragment() {
 
             val input_EditText = binding.mypageProfileContentEdittext.text.toString()
             myPageViewModel.saveUserData(
-                myPageContext,
                 UserDataEntity(
                     "Google",
                     user?.email.toString(), nickName,
