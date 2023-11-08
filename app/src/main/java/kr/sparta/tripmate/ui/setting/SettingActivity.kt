@@ -40,7 +40,7 @@ class SettingActivity : AppCompatActivity() {
 
         initview()
         initViewModel()
-        setBannerAds()
+        setBannerAds()  //하단 배너 광고
 
     }
     private fun initViewModel() {
@@ -92,6 +92,10 @@ class SettingActivity : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * 작성자 : 박성수
+     * 하단 배너 광고 입니다.
+     */
     private fun setBannerAds(){
         MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()
