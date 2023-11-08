@@ -4,17 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.google.android.play.integrity.internal.c
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.data.model.budget.toModel
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import kr.sparta.tripmate.domain.repository.budget.SaveRepository
+import kr.sparta.tripmate.domain.usecase.budgettotalrepository.GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase
 import kr.sparta.tripmate.ui.budget.detail.procedure.ProcedureModel
 
-class BudgetStatisticsViewModel(budgetNum: Int, repository: BudgetRepository) : ViewModel() {
+class BudgetStatisticsViewModel(
+    getBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase: GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase,
+    budgetNum: Int,
+) : ViewModel() {
     private val _budgetLiveData: MutableLiveData<Budget> = MutableLiveData()
     val budgetLiveData get() = _budgetLiveData
 
@@ -23,7 +25,7 @@ class BudgetStatisticsViewModel(budgetNum: Int, repository: BudgetRepository) : 
 
     val budgetTotal: LiveData<Triple<Budget, List<Category>, List<Procedure>>> =
         flow {
-            repository.getBudgetTotalToFlowWhenProccessChangedWithBudgetNum(budgetNum)
+            getBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase(budgetNum)
                 .collect { triple ->
                     val budget = triple.first
                     val categories = triple.second
