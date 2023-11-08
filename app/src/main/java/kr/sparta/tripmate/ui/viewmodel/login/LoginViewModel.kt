@@ -37,12 +37,5 @@ class LoginViewModel(
      * */
     fun saveCurrentUser(model: UserDataEntity) = saveUserDataUseCase(model)
 
-    suspend fun getNickNameData(nickName: String): Boolean =
-        getNickNameDataUseCase(nickName)
-
-   fun getUserData(uid: String) = viewModelScope.launch{
-       getUserDataUseCase(uid).collect() {
-           _userDatas.value = it.toEntity()
-       }
-    }
+    suspend fun getNickNameData(nickName: String): Boolean =  getNickNameDataUseCase(nickName)
 }
