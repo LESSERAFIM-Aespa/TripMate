@@ -25,6 +25,9 @@ class CommunityViewModel(
     private val _boards: MutableLiveData<List<CommunityEntity?>> = MutableLiveData()
     val boards get() = _boards
 
+    private val _filteredBoards : MutableLiveData<List<CommunityEntity?>> = MutableLiveData()
+    val filteredBoard get() = _filteredBoards
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -36,6 +39,14 @@ class CommunityViewModel(
         Log.d("tripmatessss", "getAllBoards이 호출되고있냐?")
         getAllBoardsUseCase.invoke().collect() {
             _boards.value = it.toEntity()
+        }
+    }
+
+    fun getFilteredBoard(query:String){
+        val allList = _boards.value
+        val filteredList = allList?.filter { it?.title?.contains(query) == true || it?.content?.contains(query) == true }
+        filteredList?.let {
+            _filteredBoards.value = it
         }
     }
 
