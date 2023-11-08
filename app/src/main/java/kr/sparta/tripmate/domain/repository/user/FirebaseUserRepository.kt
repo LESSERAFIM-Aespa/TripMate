@@ -1,6 +1,5 @@
 package kr.sparta.tripmate.domain.repository.user
 
-import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.user.UserData
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
@@ -17,4 +16,8 @@ interface FirebaseUserRepository {
     fun updateUserData(model: UserDataEntity)
 
     fun withdrawalUserData(uid: String)
+
+    fun logout()
+
+    suspend fun getNickNameData(nickname: String) : Boolean
 }
