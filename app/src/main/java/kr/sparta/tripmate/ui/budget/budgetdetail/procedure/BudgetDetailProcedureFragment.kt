@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
-import kr.sparta.tripmate.ui.budget.ProcedureDetailActivity
+import kr.sparta.tripmate.ui.budget.proceduredetail.ProcedureDetailActivity
 import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory

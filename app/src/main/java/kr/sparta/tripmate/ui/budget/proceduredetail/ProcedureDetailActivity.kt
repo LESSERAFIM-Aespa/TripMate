@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.proceduredetail
 
 import android.content.Context
 import android.content.Intent
@@ -10,8 +10,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 import kr.sparta.tripmate.ui.budget.procedurecontent.ProcedureContentActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail.ProcedureDetailViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail.ProcedureDetailFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import kotlin.math.abs
 

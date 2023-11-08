@@ -1,8 +1,7 @@
-package kr.sparta.tripmate.ui.viewmodel.budget
+package kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.data.datasource.local.budget.BudgetCategoriesLocalDataSource
 import kr.sparta.tripmate.data.datasource.local.budget.CategoryLocalDataSource
 import kr.sparta.tripmate.data.datasource.local.budget.ProcedureLocalDataSource
 import kr.sparta.tripmate.data.repository.budget.CategoryRepositoryImpl
