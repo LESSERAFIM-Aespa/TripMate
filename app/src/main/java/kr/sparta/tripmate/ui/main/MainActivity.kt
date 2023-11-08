@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                     3 -> R.drawable.scrap2
                     4 -> R.drawable.mypage2
                     else -> R.drawable.budget
-            }
+                }
                 tab?.setIcon(icon)
             }
 
