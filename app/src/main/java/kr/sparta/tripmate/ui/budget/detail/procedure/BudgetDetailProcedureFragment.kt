@@ -3,20 +3,16 @@ package kr.sparta.tripmate.ui.budget.detail.procedure
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.ProcedureDetailActivity
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureFactory
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.procedure.BudgetProcedureViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModelFactory
-import kr.sparta.tripmate.util.method.setCommaForMoneeyText
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 
 
@@ -62,7 +58,7 @@ class BudgetDetailProcedureFragment : Fragment() {
     }
 
     private val viewModel: BudgetStatisticsViewModel by activityViewModels {
-        BudgetStatisticsViewModelFactory(budgetNum)
+        BudgetStatisticsFactory(budgetNum)
     }
 
     override fun onAttach(context: Context) {

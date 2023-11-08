@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
-import android.text.TextUtils.replace
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -24,15 +22,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
-import com.google.android.datatransport.runtime.util.PriorityMapping.toInt
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
-import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.budget.SaveRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModelFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentFactory
 import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {
@@ -58,7 +55,7 @@ class BudgetContentActivity : AppCompatActivity() {
     }
 
     private val contentViewModel: BudgetContentViewModel by viewModels {
-        BudgetContentViewModelFactory(entryType!!, BudgetRepositoryImpl(this), budgetNum)
+        BudgetContentFactory(entryType!!, budgetNum)
     }
 
     private val entryType by lazy {
@@ -112,7 +109,6 @@ class BudgetContentActivity : AppCompatActivity() {
     }
 
 
-
     private fun initViews() = with(binding) {
         when (entryType) {
             BudgetContentType.ADD -> {
@@ -145,11 +141,11 @@ class BudgetContentActivity : AppCompatActivity() {
         budgetCategoryRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@BudgetContentActivity)
             adapter = categoryAdapter
-            if (entryType == BudgetContentType.ADD){
+            if (entryType == BudgetContentType.ADD) {
                 val list = listOf<Category>(
-                    Category(budgetNum, "교통비", "#F4A261",-1),
-                    Category(budgetNum, "식비", "#E76F51",-2),
-                    Category(budgetNum, "기타", "#D9D9D9",-3),
+                    Category(budgetNum, "교통비", "#F4A261", -1),
+                    Category(budgetNum, "식비", "#E76F51", -2),
+                    Category(budgetNum, "기타", "#D9D9D9", -3),
                 )
                 categoryAdapter.saveList = list.toMutableList()
                 categoryAdapter.submitList(list)
@@ -164,7 +160,7 @@ class BudgetContentActivity : AppCompatActivity() {
         var saveCategoryNum = -4
         budgetCategoryFloatingactionbutton.setOnClickListener {
             val currentList = categoryAdapter.currentList.toMutableList()
-            val category = Category(budgetNum, "", "#D9D9D9",saveCategoryNum--)
+            val category = Category(budgetNum, "", "#D9D9D9", saveCategoryNum--)
             currentList.add(category)
             categoryAdapter.saveList.add(category)
             categoryAdapter.submitList(currentList)
@@ -181,13 +177,17 @@ class BudgetContentActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != resultMoney){
-                    if(charSequence.toString().any { it == '.' }){
-                        resultMoney = decimalFormat.format(charSequence.toString().replace(".","").toDouble())
+                if (!TextUtils.isEmpty(charSequence.toString()) && charSequence.toString() != resultMoney) {
+                    if (charSequence.toString().any { it == '.' }) {
+                        resultMoney = decimalFormat.format(
+                            charSequence.toString().replace(".", "").toDouble()
+                        )
                         budgetMoneyEdittext.setText(resultMoney)
                         budgetMoneyEdittext.setSelection(resultMoney.length)
-                    }else{
-                        resultMoney = decimalFormat.format(charSequence.toString().replace(",","").toDouble())
+                    } else {
+                        resultMoney = decimalFormat.format(
+                            charSequence.toString().replace(",", "").toDouble()
+                        )
                         budgetMoneyEdittext.setText(resultMoney)
                         budgetMoneyEdittext.setSelection(resultMoney.length)
                     }
@@ -242,7 +242,7 @@ class BudgetContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                !budgetMoneyEdittext.text.toString().replace(",","").isDigitsOnly() -> {
+                !budgetMoneyEdittext.text.toString().replace(",", "").isDigitsOnly() -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
                         "소수와 음수는 원금으로 사용할수없습니다.",
@@ -250,13 +250,14 @@ class BudgetContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                budgetMoneyEdittext.text.toString().replace(",","").length > 9 -> {
+                budgetMoneyEdittext.text.toString().replace(",", "").length > 9 -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
                         "최대범위를 넘었습니다. 10억 미만으로 입력해주세요",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
                 categoryAdapter.saveList.any { it.name.isBlank() || it.name.length > 10 } -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
@@ -264,12 +265,13 @@ class BudgetContentActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                else ->{
+
+                else -> {
                     val budget = Budget(
                         name = budgetNameEdittext.text.toString(),
                         startDate = budgetStartdateTextview.text.toString(),
                         endDate = budgetEnddateTextview.text.toString(),
-                        money = budgetMoneyEdittext.text.toString().replace(",","").toInt()
+                        money = budgetMoneyEdittext.text.toString().replace(",", "").toInt()
                     )
                     val categories = categoryAdapter.saveList
                     when (entryType) {
@@ -280,7 +282,10 @@ class BudgetContentActivity : AppCompatActivity() {
 
                         BudgetContentType.EDIT -> {
                             lifecycleScope.launch {
-                                contentViewModel.updateBudgetAndCategories(budget.copy(num = budgetNum), categories)
+                                contentViewModel.updateBudgetAndCategories(
+                                    budget.copy(num = budgetNum),
+                                    categories
+                                )
                                 finish()
                             }
                         }
@@ -295,8 +300,8 @@ class BudgetContentActivity : AppCompatActivity() {
     private fun initViewModels() {
         when (entryType) {
             BudgetContentType.EDIT -> {
-                with(contentViewModel){
-                    budgetCategories.observe(this@BudgetContentActivity){
+                with(contentViewModel) {
+                    budgetCategories.observe(this@BudgetContentActivity) {
                         val budgetCategory = it.orEmpty()[0]
                         val budget = budgetCategory.budget
                         binding.budgetNameEdittext.setText(budget.name)
@@ -309,6 +314,7 @@ class BudgetContentActivity : AppCompatActivity() {
                     }
                 }
             }
+
             else -> {}
         }
     }

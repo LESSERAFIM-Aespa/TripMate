@@ -1,37 +1,22 @@
 package kr.sparta.tripmate.ui.budget.detail.statistics
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Rect
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Environment.isExternalStorageRemovable
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.PixelCopy
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
-import androidx.core.view.doOnLayout
-import androidx.core.view.isEmpty
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,22 +25,16 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.google.android.play.integrity.internal.c
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsViewModelFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.detail.statistics.BudgetStatisticsFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.IllegalArgumentException
 import java.text.NumberFormat
-import kotlin.random.Random
 
 private const val ARG_BUDGET_NUM = "budgetNum"
 
@@ -79,7 +58,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
         get() = _binding!!
 
     private val viewModel: BudgetStatisticsViewModel by activityViewModels {
-        BudgetStatisticsViewModelFactory(budgetNum)
+        BudgetStatisticsFactory(budgetNum)
     }
 
     private val expenditureListAdapter: BudgetDetailStatisticsListAdapter =

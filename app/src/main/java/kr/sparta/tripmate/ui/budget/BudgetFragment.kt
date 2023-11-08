@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.budget.SaveRepositoryImpl
 import kr.sparta.tripmate.databinding.FragmentBudgetBinding
 import kr.sparta.tripmate.ui.budget.detail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.BudgetViewModelFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.BudgetFactory
 
 class BudgetFragment : Fragment() {
     companion object {
@@ -39,7 +39,7 @@ class BudgetFragment : Fragment() {
     }
 
     private val budgetViewModel: BudgetViewModel by activityViewModels {
-        BudgetViewModelFactory(BudgetRepositoryImpl(requireContext()))
+        BudgetFactory()
     }
 
     override fun onCreateView(

@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
+import kr.sparta.tripmate.data.repository.budget.SaveRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModelFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import kotlin.math.abs
 
@@ -38,8 +38,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
     }
 
     private val procedureDetailViewModel: ProcedureDetailViewModel by viewModels {
-        ProcedureDetailViewModelFactory(
-            BudgetRepositoryImpl(this@ProcedureDetailActivity),
+        ProcedureDetailFactory(
             budgetNum,
             procedureNum
         )
