@@ -1,5 +1,6 @@
 package kr.sparta.tripmate.ui.scrap.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
@@ -59,6 +63,9 @@ class ScrapFragment : Fragment() {
         }
 
     private val viewModel: SearchBlogViewModel by viewModels { SearchBlogFactory() }
+    private val uid by lazy {
+        SharedPreferences.getUid(scrapContext)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -78,9 +85,11 @@ class ScrapFragment : Fragment() {
         initViewModel()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         setRandomRecommandView()
+        scrapAdapter.notifyDataSetChanged()
     }
 
     private fun initView() = with(binding) {
@@ -103,11 +112,10 @@ class ScrapFragment : Fragment() {
 
                         val query = scrapSearchView.query.toString()
                         // query가 빈 값일경우 Pass
-                        if(query == "") {
+                        if (query == "") {
                             return
                         }
-
-                        viewModel.searchAPIResult(query, scrapContext)
+                        viewModel.searchAPIResult(query, uid)
                         return
                     }
                 }
@@ -122,7 +130,7 @@ class ScrapFragment : Fragment() {
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     query?.let {
-                        viewModel.searchAPIResult(query.trim(), scrapContext)
+                        viewModel.searchAPIResult(query.trim(), uid)
                         searchLoading = !searchLoading
                     }
                     return false

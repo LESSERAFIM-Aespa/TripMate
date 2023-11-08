@@ -40,13 +40,12 @@ class SearchBlogViewModel(
      * 작성자: 박성수
      * 내용: 네이버 API로 블로그 검색한 결과를 받아옴
      * */
-    fun searchAPIResult(q: String, context: Context) = viewModelScope.launch {
+    fun searchAPIResult(q: String, uid: String) = viewModelScope.launch {
         /**
          * 작성자: 서정한
          * 내용: 검색결과에 내가 스크랩한 블로그 표시
          * */
         suspend fun applyBlogScraps(scrapItems: ArrayList<SearchBlogEntity>) {
-            val uid = SharedPreferences.getUid(context)
             getAllBlogScraps(uid).collect() { blogs ->
                 val scraps = blogs.toMutableList().toEntity()
 
