@@ -6,9 +6,8 @@ import kr.sparta.tripmate.data.datasource.remote.user.FirebaseUserRemoteDataSour
 import kr.sparta.tripmate.data.repository.user.FirebaseUserRepositoryImpl
 import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.LogoutUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserDataUseCase
 
 class SettingFactory : ViewModelProvider.Factory {
     private val repository: FirebaseUserRepository by lazy {
@@ -19,8 +18,7 @@ class SettingFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(SettingViewModel::class.java)) {
             return SettingViewModel(
                 GetUserDataUseCase(repository),
-                UpdateUserDataUseCase(repository),
-                SaveUserDataUseCase(repository),
+                LogoutUseCase(repository),
                 WithdrawalUserDataUseCase(repository)
             ) as T
         }
