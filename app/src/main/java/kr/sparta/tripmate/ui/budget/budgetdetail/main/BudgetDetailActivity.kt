@@ -9,6 +9,10 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -59,6 +63,7 @@ class BudgetDetailActivity : AppCompatActivity() {
 
         initViews()
         initViewModels()
+        setBannerAds()
     }
 
     private fun initViews() = with(binding) {
@@ -145,5 +150,11 @@ class BudgetDetailActivity : AppCompatActivity() {
         builder.setNegativeButton(getString(R.string.budget_detail_dialog_negative_text), listener)
 
         builder.show()
+    }
+
+    private fun setBannerAds(){
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.budgetDetailAdsBanner.loadAd(adRequest)
     }
 }
