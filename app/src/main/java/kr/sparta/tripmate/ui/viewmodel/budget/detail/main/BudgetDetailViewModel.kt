@@ -7,14 +7,22 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import kr.sparta.tripmate.domain.repository.budget.SaveRepository
+import kr.sparta.tripmate.domain.usecase.budgetrepository.DeleteBudgetsUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBugetToFlowWhenBudgetChangedWithNumUseCase
 
 /**
  * 작성자: 서정한
  * 내용: 가계부 과정Fragment의 ViewModel
  * */
-class BudgetDetailViewModel(private val repository: BudgetRepository,private val budgetNum : Int) : ViewModel() {
-    val budgetLiveData : LiveData<Budget> = repository.getBugetToFlowWhenBudgetChangedWithNum(budgetNum).asLiveData()
+class BudgetDetailViewModel(
+    private val deleteBudgetsUseCase: DeleteBudgetsUseCase,
+    getBugetToFlowWhenBudgetChangedWithNumUseCase: GetBugetToFlowWhenBudgetChangedWithNumUseCase,
+    budgetNum: Int,
+) : ViewModel() {
+    val budgetLiveData: LiveData<Budget> =
+        getBugetToFlowWhenBudgetChangedWithNumUseCase(budgetNum).asLiveData()
+
     /**
      * 작성자: 서정한
      * 내용: 현재 가계부를 삭제합니다.
@@ -22,11 +30,10 @@ class BudgetDetailViewModel(private val repository: BudgetRepository,private val
     fun deleteBudget(budget: Budget) {
         kotlin.runCatching {
             viewModelScope.launch {
-                repository.deleteBugets(budget)
+                deleteBudgetsUseCase(budget)
             }
+        }.onFailure {
+            Log.e("TripMate", "error: $it")
         }
-            .onFailure {
-                Log.e("TripMate", "error: $it")
-            }
     }
 }
