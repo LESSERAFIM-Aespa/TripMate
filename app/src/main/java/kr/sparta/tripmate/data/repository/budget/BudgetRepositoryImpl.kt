@@ -39,7 +39,7 @@ class BudgetRepositoryImpl(
         }
     }
 
-    override fun getAllBugetsToFlowWhenProceduresChanged() = flow {
+    override fun getAllBudgetsToFlowWhenProcedureChanged() = flow {
         procedureDataSource.getAllProceduresToFlow().collect {
             val list = budgetDataSource.getAllBudgetsOrederByDate().map { budget ->
                 val categoryProceduresList =

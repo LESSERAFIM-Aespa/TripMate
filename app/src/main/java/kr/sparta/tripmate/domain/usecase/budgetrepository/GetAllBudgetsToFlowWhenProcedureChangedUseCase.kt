@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
 
-class GetAllBugetsToFlowWhenProceduresChangedUseCase(private val repository: BudgetRepository) {
+class GetAllBudgetsToFlowWhenProcedureChangedUseCase(private val repository: BudgetRepository) {
     operator fun invoke(): Flow<List<Budget>> =
-        repository.getAllBugetsToFlowWhenProceduresChanged()
+        repository.getAllBudgetsToFlowWhenProcedureChanged()
 }

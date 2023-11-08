@@ -7,7 +7,7 @@ import kr.sparta.tripmate.data.datasource.local.budget.CategoryProceduresLocalDa
 import kr.sparta.tripmate.data.datasource.local.budget.ProcedureLocalDataSource
 import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenBudgetChangedUseCase
-import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBugetsToFlowWhenProceduresChangedUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenProcedureChangedUseCase
 import kr.sparta.tripmate.util.TripMateApp
 
 
@@ -24,7 +24,7 @@ class BudgetFactory : ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(BudgetViewModel::class.java)) {
             return BudgetViewModel(
                 GetAllBudgetsToFlowWhenBudgetChangedUseCase(budgetRepository),
-                GetAllBugetsToFlowWhenProceduresChangedUseCase(budgetRepository),
+                GetAllBudgetsToFlowWhenProcedureChangedUseCase(budgetRepository),
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel Class")
