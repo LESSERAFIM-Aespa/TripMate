@@ -106,4 +106,7 @@ dependencies {
     // Rx Kotlin
     implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
     implementation ("io.reactivex.rxjava3:rxkotlin:3.0.0")
+
+    //addmob
+    implementation("com.google.android.gms:play-services-ads:22.5.0")
 }
