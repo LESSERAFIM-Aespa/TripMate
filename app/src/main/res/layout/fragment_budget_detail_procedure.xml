@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.budget.detail.procedure.BudgetDetailProcedureFragment">
+    tools:context=".ui.budget.budgetdetail.procedure.BudgetDetailProcedureFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
