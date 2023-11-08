@@ -4,10 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
 
-class UpdateUserData(private val repository: FirebaseUserRepository) {
-    operator fun invoke(
-        uid: String, userLiveData:
-        MutableLiveData<UserDataEntity?>
-    ) =
-        repository.updateUserData(uid,userLiveData)
+class UpdateUserDataUseCase(private val repository: FirebaseUserRepository) {
+    operator fun invoke(model: UserDataEntity) = repository.saveUserData(model)
 }
