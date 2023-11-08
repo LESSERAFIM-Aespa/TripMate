@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
 import kr.sparta.tripmate.data.model.budget.Category
-import kr.sparta.tripmate.domain.repository.budget.SaveRepository
 import kr.sparta.tripmate.domain.usecase.budgetcategoriesrepository.GetBudgetCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetLastBudgetUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.InsertBudgetsUseCase

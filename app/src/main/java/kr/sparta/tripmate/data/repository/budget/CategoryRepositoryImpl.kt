@@ -1,6 +1,5 @@
 package kr.sparta.tripmate.data.repository.budget
 
-import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.data.datasource.local.budget.CategoryLocalDataSource
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.domain.repository.budget.CategoryRepository
@@ -20,15 +19,6 @@ class CategoryRepositoryImpl(
         categoryDataSource.deleteCategories(*categories)
     }
 
-    override fun getCategoriesToFlowWhenCategoriesChanged(num: Int) = flow {
-        categoryDataSource.getAllCategoriesToFlowWithBudgetNum(num).collect {
-            emit(it)
-        }
-    }
-
     override suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category> =
         categoryDataSource.getAllCategoriesWithBudgetNum(budgetNum)
-
-    override suspend fun getAllCategoriesForNum(num: Int): List<Category> =
-        categoryDataSource.getAllCategoriesWithNum(num)
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.domain.repository.budget.SaveRepository
 import kr.sparta.tripmate.domain.usecase.budgetrepository.DeleteBudgetsUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBugetToFlowWhenBudgetChangedWithNumUseCase
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import kr.sparta.tripmate.data.model.budget.Budget
-import kr.sparta.tripmate.domain.repository.budget.SaveRepository
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenBugetsChangedUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBugetsToFlowWhenProceduresChangedUseCase
 

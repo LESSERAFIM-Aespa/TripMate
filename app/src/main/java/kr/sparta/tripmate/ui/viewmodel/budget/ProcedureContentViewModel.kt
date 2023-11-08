@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
 import kr.sparta.tripmate.data.model.budget.Procedure
-import kr.sparta.tripmate.domain.repository.budget.SaveRepository
 import kr.sparta.tripmate.domain.usecase.budgetcategoriesrepository.GetBudgetCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProceduresWithNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.InsertProceduresUseCase

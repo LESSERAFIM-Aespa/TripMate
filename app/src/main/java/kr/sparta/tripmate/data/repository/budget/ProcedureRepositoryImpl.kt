@@ -8,7 +8,6 @@ import kr.sparta.tripmate.domain.repository.budget.ProcedureRepository
 
 class ProcedureRepositoryImpl(
     private val procedureDataSource: ProcedureLocalDataSource,
-    private val budgetCategoriesDataSource: BudgetCategoriesLocalDataSource,
 ) : ProcedureRepository {
     override suspend fun insertProcedures(vararg procedures: Procedure) {
         procedureDataSource.insertProcedures(*procedures)
@@ -21,14 +20,6 @@ class ProcedureRepositoryImpl(
     override suspend fun deleteProcedures(vararg procedures: Procedure) {
         procedureDataSource.deleteProcedures(*procedures)
     }
-
-    override suspend fun getAllProceduresWithBudgetNum(num: Int): List<Procedure> =
-        procedureDataSource.getAllProcedures().run {
-            val list = budgetCategoriesDataSource.getAllBudgetCategories(num).map { categoryList ->
-                categoryList.categories.orEmpty().map { it.num }
-            }.reduce { acc, ints -> acc + ints }
-            procedureDataSource.getAllProceduresOrderByTimeWithCategoryNums(list)
-        }
 
     override suspend fun getProceduresWithNum(num: Int): List<Procedure> =
         procedureDataSource.getAllProceduresWithNum(num)

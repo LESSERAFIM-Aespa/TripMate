@@ -11,7 +11,6 @@ import kr.sparta.tripmate.data.repository.budget.BudgetCategoriesRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.CategoryRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.ProcedureRepositoryImpl
-import kr.sparta.tripmate.domain.repository.budget.SaveRepository
 import kr.sparta.tripmate.domain.usecase.budgetcategoriesrepository.GetBudgetCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetLastBudgetUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.InsertBudgetsUseCase
@@ -48,7 +47,6 @@ class BudgetContentFactory(
     private val procedureRepository by lazy {
         ProcedureRepositoryImpl(
             ProcedureLocalDataSource(TripMateApp.getApp().applicationContext),
-            BudgetCategoriesLocalDataSource(TripMateApp.getApp().applicationContext),
         )
     }
 

@@ -27,7 +27,6 @@ class ProcedureContentFactory(
     private val procedureRepository by lazy {
         ProcedureRepositoryImpl(
             ProcedureLocalDataSource(TripMateApp.getApp().applicationContext),
-            BudgetCategoriesLocalDataSource(TripMateApp.getApp().applicationContext),
         )
     }
 

@@ -11,7 +11,6 @@ import kr.sparta.tripmate.data.repository.budget.BudgetCategoriesRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.CategoryRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.ProcedureRepositoryImpl
-import kr.sparta.tripmate.domain.repository.budget.SaveRepository
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenBugetsChangedUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBugetsToFlowWhenProceduresChangedUseCase
 import kr.sparta.tripmate.util.TripMateApp

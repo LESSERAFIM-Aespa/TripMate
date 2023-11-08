@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import kr.sparta.tripmate.data.repository.budget.SaveRepositoryImpl
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureDetailFactory
