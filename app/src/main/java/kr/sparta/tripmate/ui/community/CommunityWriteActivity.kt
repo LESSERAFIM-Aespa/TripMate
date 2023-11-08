@@ -141,7 +141,7 @@ class CommunityWriteActivity : AppCompatActivity() {
                 likeUsers: List<String>
             ): CommunityEntity =
                 CommunityEntity(
-                    id = SharedPreferences.getUid(this@CommunityWriteActivity),
+                    userid = SharedPreferences.getUid(this@CommunityWriteActivity),
                     key = model?.key ?: key,
                     title = binding.communityWriteTitle.text.toString(),
                     content = binding.communityWriteDescription.text.toString(),

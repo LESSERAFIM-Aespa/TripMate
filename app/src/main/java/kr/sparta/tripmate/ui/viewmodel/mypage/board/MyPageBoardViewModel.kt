@@ -26,7 +26,7 @@ class MyPageBoardViewModel(
      * */
     fun getAllMyBoards(uid: String)= CoroutineScope(Dispatchers.Main).launch {
         getAllBoardsUseCase().collect() { boards ->
-            val myBoard = boards.filter { it?.id == uid }
+            val myBoard = boards.filter { it?.userid == uid }
 
             _myBoards.value = myBoard.toEntity()
         }
