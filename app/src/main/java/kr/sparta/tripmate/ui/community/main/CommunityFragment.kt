@@ -130,9 +130,13 @@ class CommunityFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
+                    CoroutineScope(Dispatchers.Main).launch{
+                        if(newText == ""){
+                            commuViewModel.getAllBoards()
+                        }
+                    }
                     return false
                 }
-
             })
         }
     }

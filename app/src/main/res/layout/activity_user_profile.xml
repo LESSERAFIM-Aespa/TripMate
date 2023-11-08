@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/white"
-        app:navigationIcon="@drawable/arrow_left">
+        app:navigationIcon="@drawable/arrow_left_white">
 
         <TextView
             android:id="@+id/user_info_tv"

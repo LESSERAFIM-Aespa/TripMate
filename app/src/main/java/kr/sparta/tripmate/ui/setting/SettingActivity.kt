@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import coil.load
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -38,6 +40,7 @@ class SettingActivity : AppCompatActivity() {
 
         initview()
         initViewModel()
+        setBannerAds()  //하단 배너 광고
 
     }
     private fun initViewModel() {
@@ -87,5 +90,15 @@ class SettingActivity : AppCompatActivity() {
         }
         startActivity(intent)
         finish()
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 하단 배너 광고 입니다.
+     */
+    private fun setBannerAds(){
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.settingAdsBanner.loadAd(adRequest)
     }
 }

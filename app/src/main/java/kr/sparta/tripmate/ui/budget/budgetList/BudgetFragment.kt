@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.FragmentBudgetBinding
 import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentActivity
@@ -55,6 +57,7 @@ class BudgetFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModels()
+        setBannerAds()  //상단 배너 광고
     }
 
 
@@ -78,6 +81,16 @@ class BudgetFragment : Fragment() {
                 budgetAdapter.submitList(it)
             }
         }
+    }
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 상단 배너 광고입니다.
+     */
+    private fun setBannerAds(){
+        MobileAds.initialize(requireContext())
+        val adRequest = AdRequest.Builder().build()
+        binding.budgetListAdsBanner.loadAd(adRequest)
     }
 
 

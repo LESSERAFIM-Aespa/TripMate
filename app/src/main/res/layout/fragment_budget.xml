@@ -19,6 +19,18 @@
         app:titleMarginStart="20dp"
         app:titleTextAppearance="@style/toolbarMenuTheme.title" />
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads = "http://schemas.android.com/apk/res-auto"
+        android:id="@+id/budget_list_ads_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budget_list_toolbar"
+        ads:adSize="BANNER"
+        ads:adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/budget_list_recyclerview"
         android:layout_width="0dp"
@@ -27,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/budget_list_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/budget_list_ads_banner"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_budget" />
 
