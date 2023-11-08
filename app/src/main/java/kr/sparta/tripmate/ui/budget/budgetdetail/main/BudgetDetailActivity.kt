@@ -63,7 +63,6 @@ class BudgetDetailActivity : AppCompatActivity() {
 
         initViews()
         initViewModels()
-        setBannerAds()
     }
 
     private fun initViews() = with(binding) {
@@ -150,11 +149,5 @@ class BudgetDetailActivity : AppCompatActivity() {
         builder.setNegativeButton(getString(R.string.budget_detail_dialog_negative_text), listener)
 
         builder.show()
-    }
-
-    private fun setBannerAds(){
-        MobileAds.initialize(this)
-        val adRequest = AdRequest.Builder().build()
-        binding.budgetDetailAdsBanner.loadAd(adRequest)
     }
 }
