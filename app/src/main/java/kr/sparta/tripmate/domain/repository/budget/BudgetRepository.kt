@@ -10,6 +10,6 @@ interface BudgetRepository {
 
     fun getAllBudgetsToFlowWhenBudgetChanged(): Flow<List<Budget>>
     fun getAllBudgetsToFlowWhenProcedureChanged(): Flow<List<Budget>>
-    fun getBugetToFlowWhenBudgetChangedWithNum(num: Int): Flow<Budget>
+    fun getBudgetToFlowWhenBudgetChangedWithNum(num: Int): Flow<Budget>
     suspend fun getLastBudget(): List<Budget>
 }

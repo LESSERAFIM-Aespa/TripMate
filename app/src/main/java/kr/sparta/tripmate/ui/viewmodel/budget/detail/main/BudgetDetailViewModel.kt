@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.domain.usecase.budgetrepository.DeleteBudgetsUseCase
-import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBugetToFlowWhenBudgetChangedWithNumUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBudgetToFlowWhenBudgetChangedWithNumUseCase
 
 /**
  * 작성자: 서정한
@@ -16,11 +16,11 @@ import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBugetToFlowWhenBudg
  * */
 class BudgetDetailViewModel(
     private val deleteBudgetsUseCase: DeleteBudgetsUseCase,
-    getBugetToFlowWhenBudgetChangedWithNumUseCase: GetBugetToFlowWhenBudgetChangedWithNumUseCase,
+    getBudgetToFlowWhenBudgetChangedWithNumUseCase: GetBudgetToFlowWhenBudgetChangedWithNumUseCase,
     budgetNum: Int,
 ) : ViewModel() {
     val budgetLiveData: LiveData<Budget> =
-        getBugetToFlowWhenBudgetChangedWithNumUseCase(budgetNum).asLiveData()
+        getBudgetToFlowWhenBudgetChangedWithNumUseCase(budgetNum).asLiveData()
 
     /**
      * 작성자: 서정한

@@ -6,9 +6,8 @@ import kr.sparta.tripmate.data.datasource.local.budget.BudgetLocalDataSource
 import kr.sparta.tripmate.data.datasource.local.budget.CategoryProceduresLocalDataSource
 import kr.sparta.tripmate.data.datasource.local.budget.ProcedureLocalDataSource
 import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
 import kr.sparta.tripmate.domain.usecase.budgetrepository.DeleteBudgetsUseCase
-import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBugetToFlowWhenBudgetChangedWithNumUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBudgetToFlowWhenBudgetChangedWithNumUseCase
 import kr.sparta.tripmate.util.TripMateApp
 
 class BudgetDetailFactory(private val budgetNum: Int) : ViewModelProvider.Factory {
@@ -24,7 +23,7 @@ class BudgetDetailFactory(private val budgetNum: Int) : ViewModelProvider.Factor
         if (modelClass.isAssignableFrom(BudgetDetailViewModel::class.java)) {
             return BudgetDetailViewModel(
                 DeleteBudgetsUseCase(budgetRepository),
-                GetBugetToFlowWhenBudgetChangedWithNumUseCase(budgetRepository),
+                GetBudgetToFlowWhenBudgetChangedWithNumUseCase(budgetRepository),
                 budgetNum
             ) as T
         } else {

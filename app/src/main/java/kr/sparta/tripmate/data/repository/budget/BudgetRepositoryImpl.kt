@@ -54,7 +54,7 @@ class BudgetRepositoryImpl(
         }
     }
 
-    override fun getBugetToFlowWhenBudgetChangedWithNum(num: Int) = flow {
+    override fun getBudgetToFlowWhenBudgetChangedWithNum(num: Int) = flow {
         budgetDataSource.getAllBudgetsToFlowWithNum(num).collect {
             if (it.isNotEmpty()) emit(it.first())
         }
