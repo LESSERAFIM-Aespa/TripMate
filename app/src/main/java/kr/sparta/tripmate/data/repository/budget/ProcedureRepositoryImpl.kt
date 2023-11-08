@@ -27,7 +27,7 @@ class ProcedureRepositoryImpl(
     override suspend fun getAllProceduresWithCategoryNum(num: Int): List<Procedure> =
         procedureDataSource.getAllProceduresWithCategoryNum(num)
 
-    override suspend fun getAllProceuduresWithCategoryNums(nums: List<Int>): List<Procedure> =
+    override suspend fun getAllProceduresWithCategoryNums(nums: List<Int>): List<Procedure> =
         procedureDataSource.getAllProceduresWithCategoryNums(nums)
 
     override fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>> =

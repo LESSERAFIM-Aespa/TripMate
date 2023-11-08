@@ -10,6 +10,6 @@ interface ProcedureRepository {
 
     suspend fun getProceduresWithNum(num: Int): List<Procedure>
     suspend fun getAllProceduresWithCategoryNum(num: Int): List<Procedure>
-    suspend fun getAllProceuduresWithCategoryNums(nums: List<Int>): List<Procedure>
+    suspend fun getAllProceduresWithCategoryNums(nums: List<Int>): List<Procedure>
     fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>>
 }

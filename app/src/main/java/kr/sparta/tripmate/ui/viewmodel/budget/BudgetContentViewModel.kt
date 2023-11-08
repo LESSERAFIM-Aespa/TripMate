@@ -16,7 +16,7 @@ import kr.sparta.tripmate.domain.usecase.budgetrepository.UpdateBudgetsUseCase
 import kr.sparta.tripmate.domain.usecase.categoryrepository.DeleteCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.categoryrepository.InsertCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.categoryrepository.UpdateCategoriesUseCase
-import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceuduresWithCategoryNumsUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumsUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.BudgetContentType
@@ -31,7 +31,7 @@ class BudgetContentViewModel(
     private val getBudgetCategoriesUseCase : GetBudgetCategoriesUseCase,
     private val getLastBudgetUseCase: GetLastBudgetUseCase,
     private val getAllProceduresWithCategoryNumUseCase : GetAllProceduresWithCategoryNumUseCase,
-    private val getAllProceduresWithCategoryNumsUseCase : GetAllProceuduresWithCategoryNumsUseCase,
+    private val getAllProceduresWithCategoryNumsUseCase : GetAllProceduresWithCategoryNumsUseCase,
 
     private val entryType: BudgetContentType,
     private val budgetNum: Int = 0,
