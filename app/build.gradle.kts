@@ -74,8 +74,8 @@ dependencies {
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.cardview:cardview:1.0.0")
