@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.budget.ProcedureContentActivity">
+    tools:context=".ui.budget.procedurecontent.ProcedureContentActivity">
 
 
     <androidx.appcompat.widget.Toolbar

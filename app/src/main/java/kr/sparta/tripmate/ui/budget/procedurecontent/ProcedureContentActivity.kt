@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.procedurecontent
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -23,8 +23,8 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
-import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.ProcedureContentFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentFactory
 import kr.sparta.tripmate.util.method.toTimeFormat
 import kotlin.math.abs
 

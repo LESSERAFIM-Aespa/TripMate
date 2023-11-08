@@ -22,7 +22,7 @@
             android:name=".ui.userprofile.main.UserProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.budget.ProcedureContentActivity"
+            android:name=".ui.budget.procedurecontent.ProcedureContentActivity"
             android:exported="false" />
         <activity
             android:name=".ui.budget.ProcedureDetailActivity"
