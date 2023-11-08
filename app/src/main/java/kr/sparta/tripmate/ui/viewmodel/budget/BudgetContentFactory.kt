@@ -19,7 +19,7 @@ import kr.sparta.tripmate.domain.usecase.categoryrepository.DeleteCategoriesUseC
 import kr.sparta.tripmate.domain.usecase.categoryrepository.InsertCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.categoryrepository.UpdateCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceuduresWithCategoryNumsUseCase
-import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedouresWithCategoryNumUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.BudgetContentType
 import kr.sparta.tripmate.util.TripMateApp
@@ -67,7 +67,7 @@ class BudgetContentFactory(
                 UpdateProceduresUseCase(procedureRepository),
                 GetBudgetCategoriesUseCase(budgetCategoriesRepository),
                 GetLastBudgetUseCase(budgetRepository),
-                GetProcedouresWithCategoryNumUseCase(procedureRepository),
+                GetAllProceduresWithCategoryNumUseCase(procedureRepository),
                 GetAllProceuduresWithCategoryNumsUseCase(procedureRepository),
                 entryType,
                 budgetNum

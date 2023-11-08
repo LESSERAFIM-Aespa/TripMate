@@ -9,7 +9,7 @@ interface ProcedureRepository {
     suspend fun deleteProcedures(vararg procedures: Procedure)
 
     suspend fun getProceduresWithNum(num: Int): List<Procedure>
-    suspend fun getProcedouresWithCategoryNum(num: Int): List<Procedure>
+    suspend fun getAllProceduresWithCategoryNum(num: Int): List<Procedure>
     suspend fun getAllProceuduresWithCategoryNums(nums: List<Int>): List<Procedure>
     fun getProcedureToFlowWithNum(num: Int): Flow<List<Procedure>>
 }

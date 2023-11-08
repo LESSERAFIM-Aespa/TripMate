@@ -17,7 +17,7 @@ import kr.sparta.tripmate.domain.usecase.categoryrepository.DeleteCategoriesUseC
 import kr.sparta.tripmate.domain.usecase.categoryrepository.InsertCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.categoryrepository.UpdateCategoriesUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceuduresWithCategoryNumsUseCase
-import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedouresWithCategoryNumUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.BudgetContentType
 
@@ -30,7 +30,7 @@ class BudgetContentViewModel(
     private val updateProceduresUseCase:UpdateProceduresUseCase,
     private val getBudgetCategoriesUseCase : GetBudgetCategoriesUseCase,
     private val getLastBudgetUseCase: GetLastBudgetUseCase,
-    private val getProcedouresWithCategoryNumUseCase : GetProcedouresWithCategoryNumUseCase,
+    private val getAllProceduresWithCategoryNumUseCase : GetAllProceduresWithCategoryNumUseCase,
     private val getAllProceduresWithCategoryNumsUseCase : GetAllProceuduresWithCategoryNumsUseCase,
 
     private val entryType: BudgetContentType,
@@ -117,7 +117,7 @@ class BudgetContentViewModel(
             checkedArr.forEachIndexed { index, b ->
                 if (!b){
                     val currentCategory = beforeCategories[index]
-                    val procedures = getProcedouresWithCategoryNumUseCase(currentCategory.num)
+                    val procedures = getAllProceduresWithCategoryNumUseCase(currentCategory.num)
                         .map { it.copy(categoryNum = etcNum) }.toTypedArray()
                     updateProceduresUseCase(*procedures)
                     deleteCategoriesUseCase(currentCategory)
