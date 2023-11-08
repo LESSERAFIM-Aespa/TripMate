@@ -9,10 +9,15 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import kr.sparta.tripmate.domain.repository.budget.SaveRepository
+import kr.sparta.tripmate.domain.usecase.categoryrepository.GetAllCategoriesWithBudgetNumUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.DeleteProceduresUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedureToFlowWithNumUseCase
 
 class ProcedureDetailViewModel(
-    private val repository: BudgetRepository,
+    private val deleteProceduresUseCase: DeleteProceduresUseCase,
+    private val getProcedureToFlowWithNumUseCase: GetProcedureToFlowWithNumUseCase,
+    private val getAllCategoriesWithBudgetNumUseCase: GetAllCategoriesWithBudgetNumUseCase,
     private val budgetNum: Int,
     private val procedureNum: Int,
 ) : ViewModel() {
@@ -25,16 +30,17 @@ class ProcedureDetailViewModel(
     val categories: LiveData<List<Category>>
         get() = _categories
 
-    val procedure: LiveData<List<Procedure>> = flow{
-        _categories.value = repository.getAllCategoriesWithBudgetNum(budgetNum)
-        repository.getProcedureToFlowWithNum(procedureNum).collect{
+    val procedure: LiveData<List<Procedure>> = flow {
+        val value = getAllCategoriesWithBudgetNumUseCase(budgetNum)
+        _categories.value = value
+        getProcedureToFlowWithNumUseCase(procedureNum).collect {
             emit(it)
         }
     }.asLiveData()
 
 
     fun deleteProcedure() = viewModelScope.launch {
-        repository.deleteProcedures(procedure.value.orEmpty().first())
+        deleteProceduresUseCase(procedure.value.orEmpty().first())
     }
 
 }
