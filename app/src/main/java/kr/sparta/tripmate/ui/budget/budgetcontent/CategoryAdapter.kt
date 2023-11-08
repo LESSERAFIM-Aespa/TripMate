@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.budgetcontent
 
 import android.content.res.ColorStateList
 import android.graphics.Color

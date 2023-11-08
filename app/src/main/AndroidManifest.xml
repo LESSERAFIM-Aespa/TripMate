@@ -31,7 +31,7 @@
             android:name=".ui.budget.budgetdetail.main.BudgetDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.budget.BudgetContentActivity"
+            android:name=".ui.budget.budgetcontent.BudgetContentActivity"
             android:exported="false" />
         <activity
             android:name=".ui.setting.SettingActivity"

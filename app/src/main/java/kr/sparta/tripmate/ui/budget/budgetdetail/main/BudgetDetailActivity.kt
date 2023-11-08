@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
-import kr.sparta.tripmate.ui.budget.BudgetContentActivity
+import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.ProcedureContentActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailViewModel

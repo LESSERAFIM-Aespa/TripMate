@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.FragmentBudgetBinding
+import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.BudgetFactory

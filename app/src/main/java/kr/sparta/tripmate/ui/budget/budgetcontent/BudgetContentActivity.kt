@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.budgetcontent
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -27,8 +27,8 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
-import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.BudgetContentFactory
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentFactory
 import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.viewmodel.budget
+package kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -19,7 +19,7 @@ import kr.sparta.tripmate.domain.usecase.categoryrepository.UpdateCategoriesUseC
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumsUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
-import kr.sparta.tripmate.ui.budget.BudgetContentType
+import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentType
 
 class BudgetContentViewModel(
     private val insertBudgetUsecase : InsertBudgetsUseCase,

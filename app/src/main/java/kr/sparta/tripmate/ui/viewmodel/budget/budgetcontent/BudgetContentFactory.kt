@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.viewmodel.budget
+package kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +21,7 @@ import kr.sparta.tripmate.domain.usecase.categoryrepository.UpdateCategoriesUseC
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumsUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
-import kr.sparta.tripmate.ui.budget.BudgetContentType
+import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentType
 import kr.sparta.tripmate.util.TripMateApp
 
 
