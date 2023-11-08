@@ -29,7 +29,6 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="centerCrop" />
-
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -56,22 +55,25 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/home_body_const_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="@+id/home_toolbar">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="14dp"
-                app:cardElevation="25dp"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/scrap_const"
@@ -93,13 +95,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-
                     <ImageView
                         android:id="@+id/home_arrow1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/arrow_right"
                         android:layout_marginEnd="15dp"
+                        android:src="@drawable/arrow_right"
                         app:layout_constraintBottom_toBottomOf="@+id/home_view1"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -108,9 +109,8 @@
                         android:id="@+id/home_view1"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="5dp"
                         android:background="@color/Brown100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -121,6 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view1" />
@@ -131,9 +132,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="14dp"
-                app:cardElevation="25dp"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/popular_const"
@@ -161,8 +163,8 @@
                         android:id="@+id/home_arrow2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/arrow_right"
                         android:layout_marginEnd="15dp"
+                        android:src="@drawable/arrow_right"
                         app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/popular_const" />
@@ -171,9 +173,8 @@
                         android:id="@+id/home_view2"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="5dp"
                         android:background="@color/Brown100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -184,6 +185,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/home_view2" />
@@ -195,9 +197,10 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_margin="14dp"
-                app:cardElevation="25dp"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/budget_const"
@@ -215,8 +218,8 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="5dp"
                         android:text="@string/budget_list_title"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@+id/home_view3"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
 
 
@@ -224,19 +227,18 @@
                         android:id="@+id/home_arrow3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/arrow_right"
                         android:layout_marginEnd="15dp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:src="@drawable/arrow_right"
                         app:layout_constraintBottom_toTopOf="@+id/home_budget_recyclerview"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/budget_const" />
 
                     <View
                         android:id="@+id/home_view3"
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="5dp"
                         android:background="@color/Brown100"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -247,6 +249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="180dp"
                         android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/home_view3" />
