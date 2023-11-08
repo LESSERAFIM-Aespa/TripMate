@@ -36,6 +36,18 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads = "http://schemas.android.com/apk/res-auto"
+        android:id="@+id/budget_detail_ads_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/budget_detail_toolbar"
+        ads:adSize="BANNER"
+        ads:adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        />
+
     <View
         android:id="@+id/view5"
         android:layout_width="270dp"
@@ -45,7 +57,7 @@
         android:background="@drawable/shape_budget_detail_tab_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/budget_detail_toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/budget_detail_ads_banner" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/budget_detail_tablayout"
