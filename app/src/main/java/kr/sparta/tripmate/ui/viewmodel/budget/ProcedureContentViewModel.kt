@@ -7,11 +7,18 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
 import kr.sparta.tripmate.data.model.budget.Procedure
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import kr.sparta.tripmate.domain.repository.budget.SaveRepository
+import kr.sparta.tripmate.domain.usecase.budgetcategoriesrepository.GetBudgetCategoriesUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProceduresWithNumUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.InsertProceduresUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.ProcedureContentType
 
 class ProcedureContentViewModel(
-    private val repository: BudgetRepository,
+    private val insertProceduresUseCase: InsertProceduresUseCase,
+    private val updateProceduresUseCase: UpdateProceduresUseCase,
+    private val getBudgetCategoriesUseCase: GetBudgetCategoriesUseCase,
+    private val getProceduresWithNumUsecase: GetProceduresWithNumUseCase,
     private val entryType: ProcedureContentType,
     private val budgetNum: Int,
     private val procedureNum: Int = 0,
@@ -27,20 +34,22 @@ class ProcedureContentViewModel(
 
     init {
         viewModelScope.launch {
-            _budgetCategories.value = repository.getBudgetCategories(budgetNum)
+            val budgetCategoriesValue = getBudgetCategoriesUseCase(budgetNum)
+            _budgetCategories.value = budgetCategoriesValue
             if (entryType == ProcedureContentType.EDIT) {
-                _procedures.value = repository.getProceduresWithNum(procedureNum)
+                val proceduresValue = getProceduresWithNumUsecase(procedureNum)
+                _procedures.value = proceduresValue
             }
         }
     }
 
-    fun inserProcedure(procedure: Procedure) = viewModelScope.launch{
-        repository.insertProcedures(procedure)
+    fun inserProcedure(procedure: Procedure) = viewModelScope.launch {
+        insertProceduresUseCase(procedure)
     }
 
     fun updateProcedure(procedure: Procedure) = viewModelScope.launch {
-        if(procedures.value.orEmpty().first() != procedure){
-            repository.updateProcedures(procedure)
+        if (procedures.value.orEmpty().first() != procedure) {
+            updateProceduresUseCase(procedure)
         }
     }
 }
