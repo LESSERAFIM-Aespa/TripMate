@@ -1,7 +1,8 @@
 package kr.sparta.tripmate.domain.repository.user
 
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.Flow
+import kr.sparta.tripmate.data.model.user.UserData
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 
 /**
@@ -9,15 +10,11 @@ import kr.sparta.tripmate.domain.model.user.UserDataEntity
  * 내용: 유저 Repository
  * */
 interface FirebaseUserRepository {
-    fun updateUserData(
-        uid: String, userLiveData: MutableLiveData<UserDataEntity?>
-    )
+    fun getUserData(uid: String): Flow<UserData>
 
-    fun saveUserData(
-        model: UserDataEntity, context: Context, userLiveData: MutableLiveData<UserDataEntity?>
-    )
+    fun saveUserData(model: UserDataEntity)
 
-    fun resignUserData(
-        context: Context
-    )
+    fun updateUserData(model: UserDataEntity)
+
+    fun withdrawalUserData(uid: String)
 }

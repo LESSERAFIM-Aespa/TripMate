@@ -3,28 +3,32 @@ package kr.sparta.tripmate.ui.viewmodel.setting
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.ResignUserData
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserData
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserData
+import kr.sparta.tripmate.domain.model.user.toEntity
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserDataUseCase
 
 class SettingViewModel(
-    private val updateUserData: UpdateUserData,
-    private val saveUserData: SaveUserData,
-    private val resignUserData: ResignUserData
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val updateUserData: UpdateUserDataUseCase,
+    private val saveUserDataUseCase: SaveUserDataUseCase,
+    private val withdrawalUserDataUseCase: WithdrawalUserDataUseCase
 ) : ViewModel() {
     private val _settingUserData: MutableLiveData<UserDataEntity?> = MutableLiveData()
     val settingUserData get() = _settingUserData
 
-    fun updateUserData(uid: String) {
-        updateUserData(uid, _settingUserData)
+    fun getUserData(uid: String) = viewModelScope.launch{
+        getUserDataUseCase(uid).collect() {
+            _settingUserData.value = it.toEntity()
+        }
     }
 
-    fun saveUserData(model: UserDataEntity, context: Context) {
-        saveUserData(model, context, _settingUserData)
-    }
+    fun saveUserData(model: UserDataEntity) = saveUserDataUseCase(model)
 
-    fun removeUserData(context: Context) {
-        resignUserData(context)
-    }
+    fun removeUserData(uid: String) = withdrawalUserDataUseCase(uid)
 }

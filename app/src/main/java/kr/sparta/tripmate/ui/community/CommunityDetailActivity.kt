@@ -255,7 +255,7 @@ class CommunityDetailActivity : AppCompatActivity() {
      * */
     private fun checkIsMyPost(model: CommunityEntity) = with(binding) {
         val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
-        if (model.id == uid) {
+        if (model.userid == uid) {
             communityDetailEdit.visibility = View.VISIBLE
             communityDetailRemove.visibility = View.VISIBLE
         } else {

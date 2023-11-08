@@ -49,7 +49,7 @@ class UserProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        model?.id?.let { SharedPreferences.saveUidFromUser(this, it) }
+        model?.userid?.let { SharedPreferences.saveUidFromUser(this, it) }
         initView()
         initViewModel()
         callDataSource()
@@ -57,7 +57,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun callDataSource() {
         model?.let {
-            model?.id?.let { it1 -> userProfileViewModel.updateUserData(it1) }
+            model?.userid?.let { it1 -> userProfileViewModel.getUserData(it1) }
         }
     }
 
@@ -65,9 +65,9 @@ class UserProfileActivity : AppCompatActivity() {
         with(userProfileViewModel) {
             userProfileResult.observe(this@UserProfileActivity) {
                 with(binding) {
-                    userProfileThumbnail.load(it?.login_profile)
-                    userProfileNickTextview.text = it?.login_NickName
-                    userProfileContentTextview.text = it?.login_coment
+                    userProfileThumbnail.load(it?.profileImg)
+                    userProfileNickTextview.text = it?.nickname
+                    userProfileContentTextview.text = it?.comment
                 }
             }
         }
