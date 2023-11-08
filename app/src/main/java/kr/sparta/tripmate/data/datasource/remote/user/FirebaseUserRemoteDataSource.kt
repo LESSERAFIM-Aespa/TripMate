@@ -90,7 +90,7 @@ class FirebaseUserRemoteDataSource {
                 nickRef.get().addOnSuccessListener { snapshot ->
                     val isExist = snapshot.children.mapNotNull {
                         it.getValue(String::class.java)
-                    }.toMutableList().find { it == nickName }.isNullOrEmpty()
+                    }.toMutableList().find { it == nickName }.isNullOrBlank()
                     continuation.resume(isExist)
                 }
             }
