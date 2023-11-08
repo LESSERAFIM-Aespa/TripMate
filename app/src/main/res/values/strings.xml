@@ -78,7 +78,6 @@
     <string name="scrap_recommand_text">은 어떤가요?</string>
     <string name="scrap_detail_no_move_page">현재 보고계신 글 외에 다른 페이지로 이동이 불가능합니다.</string>
     <string name="login_exception_empty_nickname">닉네임을 입력해주세요</string>
-    <string name="APPLICATION_ID">ca-app-pub-2379317981763771~6922033973</string>
 
     <string-array name="scrap_recommand_list">
         <item>울산 관광</item>
