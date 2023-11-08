@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.budget
+package kr.sparta.tripmate.ui.budget.budgetList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

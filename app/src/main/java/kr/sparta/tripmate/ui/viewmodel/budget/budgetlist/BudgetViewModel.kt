@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.ui.viewmodel.budget
+package kr.sparta.tripmate.ui.viewmodel.budget.budgetlist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
