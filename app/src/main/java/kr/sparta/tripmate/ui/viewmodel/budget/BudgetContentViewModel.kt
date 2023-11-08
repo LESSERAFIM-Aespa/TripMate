@@ -9,12 +9,32 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
 import kr.sparta.tripmate.data.model.budget.Category
-import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import kr.sparta.tripmate.domain.repository.budget.SaveRepository
+import kr.sparta.tripmate.domain.usecase.budgetcategoriesrepository.GetBudgetCategoriesUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetLastBudgetUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.InsertBudgetsUseCase
+import kr.sparta.tripmate.domain.usecase.budgetrepository.UpdateBudgetsUseCase
+import kr.sparta.tripmate.domain.usecase.categoryrepository.DeleteCategoriesUseCase
+import kr.sparta.tripmate.domain.usecase.categoryrepository.InsertCategoriesUseCase
+import kr.sparta.tripmate.domain.usecase.categoryrepository.UpdateCategoriesUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceuduresWithCategoryNumsUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedouresWithCategoryNumUseCase
+import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.BudgetContentType
 
 class BudgetContentViewModel(
+    private val insertBudgetUsecase : InsertBudgetsUseCase,
+    private val updateBudgetUsecase : UpdateBudgetsUseCase,
+    private val insertCategoriesUseCase: InsertCategoriesUseCase,
+    private val updateCategoriesUseCase: UpdateCategoriesUseCase,
+    private val deleteCategoriesUseCase: DeleteCategoriesUseCase,
+    private val updateProceduresUseCase:UpdateProceduresUseCase,
+    private val getBudgetCategoriesUseCase : GetBudgetCategoriesUseCase,
+    private val getLastBudgetUseCase: GetLastBudgetUseCase,
+    private val getProcedouresWithCategoryNumUseCase : GetProcedouresWithCategoryNumUseCase,
+    private val getAllProceduresWithCategoryNumsUseCase : GetAllProceuduresWithCategoryNumsUseCase,
+
     private val entryType: BudgetContentType,
-    private val repository: BudgetRepository,
     private val budgetNum: Int = 0,
 ) : ViewModel() {
     companion object{
@@ -29,7 +49,8 @@ class BudgetContentViewModel(
         when (entryType) {
             BudgetContentType.EDIT -> {
                 viewModelScope.launch {
-                    _budgetCategories.value = repository.getBudgetCategories(budgetNum)
+                    val value = getBudgetCategoriesUseCase(budgetNum)
+                    _budgetCategories.value = value
                 }
             }
 
@@ -39,22 +60,22 @@ class BudgetContentViewModel(
 
     fun inserBudgetAndCategories(budget: Budget, categories: List<Category>) =
         viewModelScope.launch {
-            repository.insertBudgets(budget)
-            val currentNum = repository.getLastBudget().first().num
+            insertBudgetUsecase(budget)
+            val currentNum = getLastBudgetUseCase().first().num
             val arr = categories.map { it.copy(budgetNum = currentNum, num = 0) }.toTypedArray()
-            repository.insertCategories(*arr)
+            insertCategoriesUseCase(*arr)
         }
 
     fun updateBudgetAndCategories(budget: Budget, categories: List<Category>) =
         viewModelScope.launch {
             Log.d(TAG, "updateBudgetAndCategories: start")
-            repository.updateBudgets(budget)
+            updateBudgetUsecase(budget)
             val beforeCategories = budgetCategories.value.orEmpty().first().categories.orEmpty()
 
             val startTime = budget.startDate + " 00:00"
             val endTime = budget.endDate + " 23:59"
             Log.d(TAG, "updateBudgetAndCategories: $startTime $endTime")
-            val beforeProcedures = repository.getAllProceuduresWithCategoryNums(beforeCategories.map { it.num })
+            val beforeProcedures = getAllProceduresWithCategoryNumsUseCase(beforeCategories.map { it.num })
                 .map {
                     Log.d(TAG, "updateBudgetAndCategories: $it")
                 when{
@@ -74,7 +95,7 @@ class BudgetContentViewModel(
                 }
             }.toTypedArray()
             
-            repository.updateProcedures(*beforeProcedures)
+            updateProceduresUseCase(*beforeProcedures)
 
             Log.d(TAG, "updateBudgetAndCategories: mid1")
             val checkedArr = BooleanArray(beforeCategories.size) { false }
@@ -85,22 +106,22 @@ class BudgetContentViewModel(
                             checkedArr[idx] = true
                             continue@after
                         }
-                        repository.updateCategories(category)
+                        updateCategoriesUseCase(category)
                         checkedArr[idx] = true
                         continue@after
                     }
                 }
-                repository.insertCategories(category.copy(num = 0))
+                insertCategoriesUseCase(category.copy(num = 0))
             }
             Log.d(TAG, "updateBudgetAndCategories: mid2")
             val etcNum = beforeCategories[2].num // 기타 카테고리
             checkedArr.forEachIndexed { index, b ->
                 if (!b){
                     val currentCategory = beforeCategories[index]
-                    val procedures = repository.getPrcedouresWithCategoryNum(currentCategory.num)
+                    val procedures = getProcedouresWithCategoryNumUseCase(currentCategory.num)
                         .map { it.copy(categoryNum = etcNum) }.toTypedArray()
-                    repository.updateProcedures(*procedures)
-                    repository.deleteCategories(currentCategory)
+                    updateProceduresUseCase(*procedures)
+                    deleteCategoriesUseCase(currentCategory)
                 }
             }
             Log.d(TAG, "updateBudgetAndCategories: finish")
