@@ -61,6 +61,15 @@ class FirebaseBoardRepositoryImpl(
      * */
     override fun getKey(): String = remoteSource.getKey()
 
+    /**
+     * 작성자 : 박성수
+     * 게시글의 변동사항을 저장합니다.
+     */
     override fun updateBoard(item: CommunityEntity) = remoteSource.updateBoard(item.toModel())
+
+    /**
+     * 작성자 : 박성수
+     * 내용 : 선택한 게시글 1개만 얻어옵니다.
+     */
     override fun getBoard(key: String) : Flow<CommunityModel?>  = remoteSource.getBoard(key)
 }
