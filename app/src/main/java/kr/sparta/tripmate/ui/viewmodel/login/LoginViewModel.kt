@@ -15,8 +15,7 @@ import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseC
 
 class LoginViewModel(
     private val saveUserDataUseCase: SaveUserDataUseCase,
-    private val getNickNameDataUseCase: GetNickNameDataUseCase,
-    private val getUserDataUseCase: GetUserDataUseCase
+    private val getNickNameDataUseCase: GetNickNameDataUseCase
 
 ) :
     ViewModel() {

@@ -18,8 +18,7 @@ class LoginFactory : ViewModelProvider.Factory {
         if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
             return LoginViewModel(
                 SaveUserDataUseCase(repository),
-                GetNickNameDataUseCase(repository),
-                GetUserDataUseCase(repository)
+                GetNickNameDataUseCase(repository)
             ) as T
         }
         throw IllegalArgumentException("에러")
