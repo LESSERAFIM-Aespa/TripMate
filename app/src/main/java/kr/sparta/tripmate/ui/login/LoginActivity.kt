@@ -50,10 +50,10 @@ class LoginActivity : AppCompatActivity() {
              * */
             fun layoutVisibleController(isLoginSuccessful: Boolean) = with(binding) {
                 if (isLoginSuccessful) {
-                    if (!SharedPreferences.getUid(this@LoginActivity).isNullOrEmpty()) {
+                    if (!SharedPreferences.getUid(this@LoginActivity).isNullOrBlank()) {
                         loginCenterConstraint.visibility = View.VISIBLE
                         nickCenterConstraint.visibility = View.GONE
-                        shortToast("로그인 되었습니다.")
+                        shortToast("${SharedPreferences.getNickName(this@LoginActivity)}의 계정으로 로그인 되었습니다.")
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
