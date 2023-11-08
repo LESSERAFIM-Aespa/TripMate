@@ -45,7 +45,15 @@ interface FirebaseBoardRepository {
      * */
     fun getKey(): String
 
+    /**
+     * 작성자 : 박성수
+     * 게시글의 변동사항을 저장합니다.
+     */
     fun updateBoard(item: CommunityEntity)
 
+    /**
+     * 작성자 : 박성수
+     * 내용 : 선택한 게시글 1개만 얻어옵니다.
+     */
     fun getBoard(key: String): Flow<CommunityModel?>
 }
