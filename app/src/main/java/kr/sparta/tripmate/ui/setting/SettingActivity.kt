@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import coil.load
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -27,14 +27,12 @@ class SettingActivity : AppCompatActivity() {
 
     private val settingViewModel: SettingViewModel by viewModels { SettingFactory() }
     private lateinit var setting_Database: DatabaseReference
-    private lateinit var auth: FirebaseAuth
     private val binding by lazy {
         ActivitySettingBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
         setting_Database = Firebase.database.reference
         setContentView(binding.root)
 
@@ -68,15 +66,16 @@ class SettingActivity : AppCompatActivity() {
 
         // 로그아웃 버튼입니다.
         settingLogout.setOnClickListener {
-            auth.signOut()
+            settingViewModel.logout()
             shortToast("로그아웃 되었습니다.")
             moveLogin()
         }
 
         // 회원탈퇴 버튼입니다.
         binding.settingWithdrawal.setOnClickListener {
+            SharedPreferences.removeKey(this@SettingActivity)
             settingViewModel.removeUserData(uid)
-            auth.signOut()  //로그아웃 됩니다.
+            settingViewModel.logout() //로그아웃 됩니다.
             moveLogin()     //회원탈퇴 후 로그인화면으로 이동됩니다.
         }
     }
