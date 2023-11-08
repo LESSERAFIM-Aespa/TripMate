@@ -6,7 +6,7 @@ import kr.sparta.tripmate.util.ScrapInterface
 
 @Parcelize
 data class CommunityEntity(
-    val id: String?, // 게시글 id
+    val userid: String?, // 게시글 id
     val key: String?, // 게시판 Unique key
     val title: String?, // 제목
     val content: String?, // 게시글 내용
