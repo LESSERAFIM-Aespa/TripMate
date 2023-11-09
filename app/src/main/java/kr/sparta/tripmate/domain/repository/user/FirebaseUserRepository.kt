@@ -9,7 +9,7 @@ import kr.sparta.tripmate.domain.model.user.UserDataEntity
  * 내용: 유저 Repository
  * */
 interface FirebaseUserRepository {
-    fun getUserData(uid: String): Flow<UserData>
+    fun getUserData(uid: String): Flow<UserData?>
 
     fun saveUserData(model: UserDataEntity)
 
