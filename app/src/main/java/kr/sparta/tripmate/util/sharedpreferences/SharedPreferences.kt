@@ -1,0 +1,63 @@
+package kr.sparta.tripmate.util.sharedpreferences
+
+import android.content.Context
+
+object SharedPreferences {
+    const val USER_KEY = "TRIPMATE"
+
+    fun saveUid(context: Context, uid: String) {
+        val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        editor.putString("uid", uid)
+        editor.apply()
+    }
+
+    fun getUid(context: Context): String {
+        val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
+        return spf.getString("uid", "") ?: ""
+    }
+
+    fun saveProfile(context: Context, profile: String) {
+        val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        editor.putString("profile", profile)
+        editor.apply()
+    }
+
+    fun getProfile(context: Context): String {
+        val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
+        return spf.getString("profile", "") ?: ""
+    }
+
+    fun saveNickName(context: Context, nickName: String) {
+        val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        editor.putString("nickName", nickName)
+        editor.apply()
+    }
+
+    fun getNickName(context: Context): String {
+        val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
+        return spf.getString("nickName", "") ?: ""
+    }
+
+    fun saveUidFromUser(context: Context, uidFromUser: String) {
+        val editor = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        editor.putString("uidFromUser", uidFromUser)
+        editor.apply()
+    }
+
+    fun getUidFromUser(context: Context): String {
+        val spf = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE)
+        return spf.getString("uidFromUser", "") ?: ""
+    }
+
+    fun removeKey(context: Context) {
+        val edit = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        edit.remove("uid")
+        edit.remove("profile")
+        edit.remove("nickName")
+        edit.remove("uidFromUser")
+        edit.clear()
+        edit.apply()
+    }
+
+
+}

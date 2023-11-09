@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bookmark_cardview"
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/bookmark_image"
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:scaleType="centerCrop"
+            tools:src="@color/Gray" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/bookmark_title"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        tools:text="타이틀"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_cardview"
+        />
+
+    <TextView
+        android:id="@+id/bookmark_content"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/Gray500"
+        android:textSize="13sp"
+        tools:text="내용내용내용내용내용내용내용"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bookmark_title"/>
+
+    <ProgressBar
+        android:id="@+id/bookmark_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/primary"
+        app:layout_constraintStart_toStartOf="@id/bookmark_cardview"
+        app:layout_constraintEnd_toEndOf="@id/bookmark_cardview"
+        app:layout_constraintTop_toTopOf="@id/bookmark_cardview"
+        app:layout_constraintBottom_toBottomOf="@id/bookmark_cardview"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

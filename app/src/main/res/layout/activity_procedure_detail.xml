@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.budget.proceduredetail.ProcedureDetailActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/procedure_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/arrow_left"
+        app:titleTextAppearance="@style/toolbarMenuTheme.title"
+        tools:title="가계부 추가">
+
+        <ImageView
+            android:id="@+id/procedure_detail_delete_imageview"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_delete" />
+
+        <ImageView
+            android:id="@+id/procedure_detail_edit_imageview"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_edit" />
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/procedure_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="30dp">
+
+            <TextView
+                android:id="@+id/procedure_category_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
+                android:fontFamily="@font/inter"
+                android:paddingHorizontal="35dp"
+                android:paddingVertical="10dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:backgroundTint="@color/primary"
+                tools:text="교통비" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_procedure_time_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/procedure_category_name" />
+
+            <TextView
+                android:id="@+id/procedure_time_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_budget_view_type5"
+                android:fontFamily="@font/inter"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="20dp"
+                android:textColor="#555555"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                tools:text="2021.08.09, 2:05 PM " />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/inter"
+                android:text="메모"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/procedure_time_textview" />
+
+            <TextView
+                android:id="@+id/procedure_description_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_budget_view_type5"
+                android:fontFamily="@font/inter"
+                android:minLines="1"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="20dp"
+                android:textColor="#555555"
+                app:layout_constraintEnd_toEndOf="@+id/procedure_time_textview"
+                app:layout_constraintStart_toStartOf="@+id/procedure_time_textview"
+                app:layout_constraintTop_toBottomOf="@+id/textView18"
+                tools:text="비행기 표 한국 -> 일본 \n50만원은 너무 비싼거 아님ㅋㅋ" />
+
+
+            <TextView
+                android:id="@+id/procedure_money_state_textview"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_procedure_spend_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/procedure_description_textview" />
+
+            <TextView
+                android:id="@+id/procedure_money_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_budget_view_type5"
+                android:fontFamily="@font/inter"
+                android:gravity="end"
+                android:minLines="1"
+                android:paddingHorizontal="30dp"
+                android:paddingVertical="20dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/procedure_money_state_textview"
+                tools:text="500,000원" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

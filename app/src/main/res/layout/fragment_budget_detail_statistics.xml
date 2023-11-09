@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.budget.budgetdetail.statistics.BudgetDetailStatisticsFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/budget_statistics_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/budget_statistics_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="128dp">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/budget_detail_expenditure_piechart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="30dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/budget_detail_expenditure_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/expenditure_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="총 지출"
+                    android:textColor="#555555"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/expenditure_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/expenditure_textview" />
+
+                <TextView
+                    android:id="@+id/expenditure_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="1"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/expenditure_title_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1,000,000원" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/budget_detail_income_piechart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="30dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/budget_detail_income_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/income_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="총 소득"
+                    android:textColor="#555555"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/income_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/income_textview" />
+
+                <TextView
+                    android:id="@+id/income_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="1"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/income_title_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1,000,000원" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/budget_statistics_duration_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/inter"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="2021.08.09 ~ 2021.10.05" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/budget_statistics_money_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="원금"
+                    android:textColor="#555555"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/budget_statistics_money_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/budget_statistics_money_textview" />
+
+                <TextView
+                    android:id="@+id/budget_statistics_money_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="1"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/budget_statistics_money_title_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1,000,000원" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/budget_statistics_expenditure_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="지출금액"
+                    android:textColor="#555555"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/budget_statistics_expenditure_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/budget_statistics_expenditure_textview" />
+
+                <TextView
+                    android:id="@+id/budget_statistics_expenditure_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="1"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/budget_statistics_expenditure_title_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1,000,000원" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/budget_statistics_income_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="소득금액"
+                    android:textColor="#555555"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/budget_statistics_income_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/budget_statistics_income_textview" />
+
+                <TextView
+                    android:id="@+id/budget_statistics_income_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="1"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/budget_statistics_income_title_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1,000,000원" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/budget_statistics_remain_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="남은금액"
+                    android:textColor="#555555"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/budget_statistics_remain_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/budget_statistics_remain_textview" />
+
+                <TextView
+                    android:id="@+id/budget_statistics_remain_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLines="1"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/budget_statistics_remain_title_textview"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="1,000,000원" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp"
+                android:text="정산하기"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="8dp"
+                android:textColor="#555555"
+                android:text="여행은 즐거우셨나요?\n\n함께간 동행이 있다면 정산하기를 통하여\n정산금액을 공유해보세요!"
+                android:textSize="16sp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/budget_statistics_calculate_inputlayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="10dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/budget_statistics_calculate_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/budget_statistics_calculate_edittext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_budget_detail_tab_bg"
+                        android:fontFamily="@font/inter"
+                        android:hint="인원을 입력해주세요"
+                        android:inputType="numberDecimal"
+                        android:padding="10dp"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/searchoutline"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/budget_statistics_calculate_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/primary"
+                    android:text="1/N 정산하기"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#D9D9D9">
+
+                <TextView
+                    android:id="@+id/textView14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="16dp"
+                    android:text="정산금액"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/budget_statistics_calculate_textview"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:paddingBottom="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/budget_statistics_share_imageview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14"
+                    tools:text="1,000,000원" />
+
+                <ImageView
+                    android:id="@+id/budget_statistics_share_imageview"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_share"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</FrameLayout>

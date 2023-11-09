@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.budget.budgetdetail.main.BudgetDetailActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/budget_detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/arrow_left"
+        tools:title="일본 여행 가계부">
+
+        <ImageView
+            android:id="@+id/budget_detail_delete_imageview"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_delete" />
+
+        <ImageView
+            android:id="@+id/budget_detail_edit_imageview"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_edit"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="270dp"
+        android:layout_height="55dp"
+        android:layout_marginHorizontal="85dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/shape_budget_detail_tab_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/budget_detail_toolbar" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/budget_detail_tablayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/view5"
+        app:layout_constraintEnd_toEndOf="@+id/view5"
+        app:layout_constraintStart_toStartOf="@+id/view5"
+        app:layout_constraintTop_toTopOf="@+id/view5"
+        app:tabBackground="@drawable/selector_budget_detail_tab"
+        app:tabIndicatorHeight="0dp"
+        app:tabPadding="10dp"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabTextAppearance="@style/BudgetDetailTabDefault"
+        app:tabTextColor="@color/black" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/budget_detail_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/budget_detail_floatingactionbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/primary"
+        android:drawableTint="@color/black"
+        android:src="@drawable/ic_add"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp"
+        app:rippleColor="@color/primary_bold"
+        app:shapeAppearance="@style/ShapeAppearanceOverlayExtended" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

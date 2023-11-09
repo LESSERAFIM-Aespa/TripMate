@@ -2,4 +2,96 @@
     <string name="app_name">TripMate</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="splash_logo_text">TRIPMATE</string>
+    <string name="nick_title">닉네임을 \n입력해주세요!</string>
+    <string name="login_title">우리와 함께 여행을 \n즐겨보세요!</string>
+    <string name="Sign_in_with_Google">Sign in with Google</string>
+    <string name="Sign_in_with_Apple">Sign in with Apple</string>
+
+    <string name="mypage_tab_board">"내 글 목록"</string>
+    <string name="mypage_tab_scrap">"스크랩 목록"</string>
+    <string name="mypage_toolbar_title">내 정보</string>
+    <string name="mypage_edit_submit">확인</string>
+    <string name="mypage_edit_cancel">취소</string>
+    <string name="mypage_edit_text">Edit</string>
+    <string name="blog_toolbar_title">블로그</string>
+    <string name="scrap_bg_content_description">BackgroundImage</string>
+    <string name="community_bg_content_description">BackgroundImage</string>
+    <string name="default_web_client_id">""</string>
+    <string name="mypage_edittext_hint">간단한 자기소개를 작성해주세요(최대 30자)</string>
+    <string name="setting_toolbar_title">설정</string>
+    <string name="setting_logout_button_text">로그아웃</string>
+    <string name="setting_withdrawal_button_text">회원탈퇴</string>
+    <string name="community_main_title">커뮤니티</string>
+    <string name="welcome">환영 합니다!</string>
+    <string name="popularposts">인기글</string>
+    <string name="budgetmanagement">가계부</string>
+
+    <string name="budget_list_title">가계부 관리</string>
+    <string name="budget_status_text">과정</string>
+    <string name="budget_statistics_text">통계</string>
+    <string name="budget_principal_text">원금</string>
+    <string name="budget_balance_text">잔액</string>
+    <string name="budget_content_name">가계부 이름</string>
+    <string name="budget_content_input_name">이름을 입력해 주세요</string>
+    <string name="budget_content_startdate">시작 날짜</string>
+    <string name="budget_content_date">기간</string>
+    <string name="budget_content_enddate">종료 날짜</string>
+    <string name="budget_content_input_date">날짜를 입력해 주세요</string>
+    <string name="budget_content_money">원금</string>
+    <string name="budget_content_input_money">원금을 입력해 주세요</string>
+    <string name="budget_content_category">카테고리</string>
+    <string name="budget_content_cancel">취소</string>
+    <string name="budget_content_save">저장</string>
+    <string name="budget_category_color">색상</string>
+    <string name="budget_procedure_spend_text">지출</string>
+    <string name="budget_procedure_time_text">시간</string>
+    <string name="procedure_name_text">과정 이름</string>
+    <string name="procedure_time_text">시간</string>
+    <string name="procedure_memo_text">메모</string>
+    <string name="budget_category_input_name">카테고리 이름을 입력해 주세요</string>
+    <string name="empty_view">결과가 없습니다.</string>
+    <string name="main_tab_title_budget">가계부</string>
+    <string name="main_tab_title_community">커뮤니티</string>
+    <string name="main_tab_title_home">홈</string>
+    <string name="main_tab_title_blog">블로그</string>
+    <string name="main_tab_title_mypage">내정보</string>
+    <string name="main_tab_title_my_scrap">내 스크랩</string>
+    <string name="main_tab_move_button">이동하기</string>
+    <string name="pleaseentertitle">제목을 입력하세요.</string>
+    <string name="pleaseenteryourdetails">내용을 입력해주세요</string>
+    <string name="community_detail_title">디테일페이지제목</string>
+    <string name="community_detail_username">사용자닉네임</string>
+    <string name="community_detail_body">내용이 들어갈 자리</string>
+    <string name="community_detail_likecount">80k</string>
+    <string name="community_detail_viewcount">3.14k</string>
+    <string name="budget_detail_tab_procedure">과정</string>
+    <string name="budget_detail_tab_statistics">통계</string>
+    <string name="budget_detail_dialog_title">삭제하기</string>
+    <string name="budget_detail_dialog_message">삭제한 항목은 되돌릴 수 없습니다.\n삭제하시겠습니까?</string>
+    <string name="budget_detail_dialog_positive_text">확인</string>
+    <string name="budget_detail_dialog_negative_text">취소</string>
+    <string name="user_profile_toolbar_title">프로필</string>
+    <string name="user_profile_tab_title">작성한 글 목록</string>
+    <string name="community_write_post_text">게시</string>
+    <string name="click_on_the_image_to_search">이미지를 클릭하면 검색 됩니다!</string>
+    <string name="scrap_recommand_text">은 어떤가요?</string>
+    <string name="scrap_detail_no_move_page">현재 보고계신 글 외에 다른 페이지로 이동이 불가능합니다.</string>
+    <string name="login_exception_empty_nickname">닉네임을 입력해주세요</string>
+    <string name="privacy_url">https://wary-alto-0df.notion.site/59619eb40bfd4050bec9d2a6b2127c8b?pvs=4</string>
+    <string name="terms_url">https://wary-alto-0df.notion.site/c9a9499af04c433ea675545cf1757ab9?pvs=4</string>
+
+    <string-array name="scrap_recommand_list">
+        <item>울산 관광</item>
+        <item>부산 관광</item>
+        <item>인천 관광</item>
+        <item>대구 관광</item>
+        <item>서울 관광</item>
+        <item>대전 관광</item>
+        <item>광주 관광</item>
+        <item>세종 관광</item>
+        <item>여수 관광</item>
+        <item>제주 관광</item>
+        <item>전주 관광</item>
+    </string-array>
 </resources>

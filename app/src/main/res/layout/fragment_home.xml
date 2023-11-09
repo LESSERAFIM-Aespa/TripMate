@@ -1,14 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.home.HomeFragment">
+    android:background="@color/white"
+    tools:context=".ui.home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/home_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="75dp"
+        android:background="@color/primary"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_type_iconCardView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:cardCornerRadius="80dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/home_profile_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/home_profile_title"
+                style="@style/HomeToolbarNickApperance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/home_profile_content"
+                style="@style/HomeToolbarTextApperance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/home_body_const_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="14dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/scrap_const"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/popular_const"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/home_scrap"
+                        style="@style/HomesubHeadingTextApperance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/main_tab_title_my_scrap"
+                        app:layout_constraintBottom_toBottomOf="@+id/home_view1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/home_arrow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/home_view1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/home_view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/Brown100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_scrap" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_scrap_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_view1" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="14dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/popular_const"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/budget_const"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/scrap_const">
+
+                    <TextView
+                        android:id="@+id/home_popular"
+                        style="@style/HomesubHeadingTextApperance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/popularposts"
+                        app:layout_constraintBottom_toTopOf="@+id/home_view2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/popular_const" />
+
+
+                    <ImageView
+                        android:id="@+id/home_arrow2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/arrow_right"
+                        app:layout_constraintBottom_toTopOf="@+id/home_board_recyclerview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/popular_const" />
+
+                    <View
+                        android:id="@+id/home_view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/Brown100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_popular" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_board_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/home_view2" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="14dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="5dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/budget_const"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/popular_const">
+
+                    <TextView
+                        android:id="@+id/home_title3"
+                        style="@style/HomesubHeadingTextApperance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/budget_list_title"
+                        app:layout_constraintBottom_toTopOf="@+id/home_view3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/budget_const" />
+
+
+                    <ImageView
+                        android:id="@+id/home_arrow3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:src="@drawable/arrow_right"
+                        app:layout_constraintBottom_toTopOf="@+id/home_budget_recyclerview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/budget_const" />
+
+                    <View
+                        android:id="@+id/home_view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/Brown100"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_title3" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/home_budget_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/home_view3" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

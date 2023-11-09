@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.budget.budgetcontent.BudgetContentActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/budget_content_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="가계부 추가"
+        app:navigationIcon="@drawable/arrow_left"
+        app:titleTextAppearance="@style/toolbarMenuTheme.title" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budget_content_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_content_name"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/budget_name_inputlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/budget_name_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_budget_view_type5"
+                    android:fontFamily="@font/inter"
+                    android:hint="@string/budget_content_input_name"
+                    android:padding="10dp"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/searchoutline"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_content_date"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/budget_name_inputlayout" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_content_startdate"
+                android:textSize="16sp"
+                android:textColor="@color/searchoutline"
+                app:layout_constraintBottom_toBottomOf="@+id/budget_startdate_textview"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="@+id/budget_startdate_textview" />
+
+            <TextView
+                android:id="@+id/budget_startdate_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_budget_view_type5"
+                android:paddingVertical="10dp"
+                android:text="@string/budget_content_input_date"
+                android:textAlignment="center"
+                android:textColor="@color/searchoutline"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/budget_enddate_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_budget_view_type5"
+                android:paddingVertical="10dp"
+                android:text="@string/budget_content_input_date"
+                android:textAlignment="center"
+                android:textColor="@color/searchoutline"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/budget_startdate_textview" />
+
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_content_enddate"
+                android:textColor="@color/searchoutline"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/budget_enddate_textview"
+                app:layout_constraintStart_toStartOf="@+id/textView6"
+                app:layout_constraintTop_toTopOf="@+id/budget_enddate_textview" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_content_money"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/budget_enddate_textview" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/budget_money_inputlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/budget_money_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_budget_view_type5"
+                    android:fontFamily="@font/inter"
+                    android:hint="@string/budget_content_input_money"
+                    android:inputType="numberDecimal"
+                    android:padding="10dp"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/searchoutline"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/inter"
+                android:text="@string/budget_content_category"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/budget_money_inputlayout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/budget_category_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@id/textView9"
+                tools:listitem="@layout/item_category" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/budget_category_floatingactionbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:backgroundTint="#D9D9D9"
+                android:drawableTint="@color/black"
+                android:src="@drawable/ic_add"
+                app:borderWidth="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/budget_category_recyclerview"
+                app:maxImageSize="32dp"
+                app:rippleColor="#BFBFBF"
+                app:shapeAppearance="@style/ShapeAppearanceOverlayExtended" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:orientation="horizontal"
+                android:paddingBottom="40dp"
+                app:layout_constraintTop_toBottomOf="@id/budget_category_floatingactionbutton">
+
+                <Button
+                    android:id="@+id/budget_cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/secondary"
+                    android:backgroundTintMode="add"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/budget_content_cancel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/budget_save_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/primary"
+                    android:backgroundTintMode="add"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/budget_content_save"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

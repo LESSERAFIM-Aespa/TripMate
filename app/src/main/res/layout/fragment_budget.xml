@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.budget.BudgetFragment">
+    android:background="@color/white"
+    tools:context=".ui.budget.budgetList.BudgetFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/budget_list_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="?attr/actionBarSize"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="가계부 관리"
+        app:titleMarginStart="20dp"
+        app:titleTextAppearance="@style/toolbarMenuTheme.title" />
 
-</FrameLayout>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads = "http://schemas.android.com/apk/res-auto"
+        android:id="@+id/budget_list_ads_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budget_list_toolbar"
+        ads:adSize="BANNER"
+        ads:adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/budget_list_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budget_list_ads_banner"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/item_budget" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/budget_list_floatingactionbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/primary"
+        android:drawableTint="@color/black"
+        android:src="@drawable/ic_add"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp"
+        app:rippleColor="@color/primary_bold"
+        app:shapeAppearance="@style/ShapeAppearanceOverlayExtended" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

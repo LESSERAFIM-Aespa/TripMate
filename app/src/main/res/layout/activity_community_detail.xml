@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.community.CommunityDetailActivity"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/community_detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/arrow_left_white">
+
+            <ImageView
+                android:id="@+id/community_detail_like_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/star" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/community_detail_remove"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_delete" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/community_detail_edit"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_edit" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/community_tv_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/community_detail_toolbar"
+            tools:text="@string/community_detail_title" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/community_detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/community_tv_detail_title">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/community_userprofile"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_user_profile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/community_detail_layout" />
+
+            <TextView
+                android:id="@+id/community_tv_detail_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/community_detail_username"
+                android:textColor="@color/sub_text_color"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/community_userprofile"
+                app:layout_constraintStart_toEndOf="@+id/community_userprofile"
+                app:layout_constraintTop_toTopOf="@+id/community_userprofile" />
+
+            <LinearLayout
+                android:id="@+id/community_image_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:orientation="vertical"
+                android:paddingVertical="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/community_tv_detail_username">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/community_image_card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_margin="15dp"
+                    android:visibility="visible"
+                    app:cardCornerRadius="30dp"
+                    app:cardElevation="5dp">
+
+
+                    <ImageView
+                        android:id="@+id/community_image_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/emptycommu" />
+
+                    <ProgressBar
+                        android:id="@+id/community_detail_image_progressbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/primary"
+                        android:visibility="gone" />
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/community_iv_like"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="@+id/community_detail_layout"
+                app:layout_constraintTop_toBottomOf="@+id/community_image_container"
+                app:srcCompat="@drawable/paintedheart" />
+
+            <TextView
+                android:id="@+id/community_detail_likecount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/sub_text_color"
+                app:layout_constraintBottom_toBottomOf="@+id/community_iv_like"
+                app:layout_constraintStart_toEndOf="@+id/community_iv_like"
+                app:layout_constraintTop_toTopOf="@+id/community_iv_like"
+                tools:text="@string/community_detail_likecount" />
+
+            <ImageView
+                android:id="@+id/community_iv_view"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/community_iv_like"
+                app:layout_constraintStart_toEndOf="@+id/community_detail_likecount"
+                app:layout_constraintTop_toTopOf="@+id/community_iv_like"
+                app:srcCompat="@drawable/witness" />
+
+            <TextView
+                android:id="@+id/community_tv_detail_viewcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:textColor="@color/sub_text_color"
+                app:layout_constraintBottom_toBottomOf="@+id/community_iv_like"
+                app:layout_constraintStart_toEndOf="@+id/community_iv_view"
+                app:layout_constraintTop_toTopOf="@+id/community_iv_like"
+                tools:text="@string/community_detail_viewcount" />
+
+            <TextView
+                android:id="@+id/community_tv_detail_description"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="30dp"
+                android:layout_marginStart="20dp"
+                android:lineSpacingExtra="8dp"
+                android:textColor="@color/sub_text_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/community_detail_layout"
+                app:layout_constraintStart_toStartOf="@+id/community_detail_layout"
+                app:layout_constraintTop_toBottomOf="@+id/community_tv_detail_viewcount"
+                tools:text="@string/community_detail_body" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
