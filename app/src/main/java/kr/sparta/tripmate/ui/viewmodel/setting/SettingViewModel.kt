@@ -25,7 +25,7 @@ class SettingViewModel(
 
     fun getUserData(uid: String) = viewModelScope.launch{
         getUserDataUseCase(uid).collect() {
-            _settingUserData.value = it.toEntity()
+            _settingUserData.value = it?.toEntity()
         }
     }
 
