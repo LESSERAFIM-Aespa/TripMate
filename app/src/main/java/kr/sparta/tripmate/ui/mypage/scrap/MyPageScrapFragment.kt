@@ -58,8 +58,6 @@ class MyPageScrapFragment : Fragment() {
                        startActivity(intent)
                    }
                 }
-//                bookmarkResults.launch(ScrapDetail.newIntentForScrap(bookmarkContext, model))
-//                viewModel.updateBoardDataView(model.toCommunityEntity(), position)
             }
         )
     }

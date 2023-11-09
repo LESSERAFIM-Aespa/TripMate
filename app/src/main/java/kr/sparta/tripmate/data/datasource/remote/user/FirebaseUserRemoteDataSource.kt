@@ -16,10 +16,15 @@ import kotlin.coroutines.resume
  * 내용: Firebase RDB의 User데이터 관리
  * */
 class FirebaseUserRemoteDataSource {
-    private fun getReference() = Firebase.database.getReference("UserData")
+    private final val REFERENCE_BLOG_SCRAP = "BlogScrap"
+    private final val REFERENCE_USER_DATA = "UserData"
+    private final val REFERENCE_NICKNAME = "NickNameData"
 
-    private fun getNickReference() = Firebase.database.getReference("NickNameData")
+    private fun getReference() = Firebase.database.getReference(REFERENCE_USER_DATA)
+    private fun getNickReference() = Firebase.database.getReference(REFERENCE_NICKNAME)
     private fun authReference() = FirebaseAuth.getInstance()
+    private fun getBlogScrapReference(uid: String) =
+        Firebase.database.getReference(REFERENCE_BLOG_SCRAP).child(uid)
 
     /**
      * 작성자 : 서정한
@@ -67,8 +72,10 @@ class FirebaseUserRemoteDataSource {
     fun withdrawalUserData(uid: String) {
         val user = authReference().currentUser
         val userRef = getReference().child(uid)
+        val blogRef = getBlogScrapReference(uid)
         user?.delete()
         userRef.removeValue()
+        blogRef.removeValue()
     }
 
     /**

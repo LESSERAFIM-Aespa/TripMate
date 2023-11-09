@@ -51,8 +51,12 @@ object SharedPreferences {
 
     fun removeKey(context: Context) {
         val edit = context.getSharedPreferences(USER_KEY, Context.MODE_PRIVATE).edit()
+        edit.remove("uid")
+        edit.remove("profile")
+        edit.remove("nickName")
+        edit.remove("uidFromUser")
         edit.clear()
-        edit.commit()
+        edit.apply()
     }
 
 

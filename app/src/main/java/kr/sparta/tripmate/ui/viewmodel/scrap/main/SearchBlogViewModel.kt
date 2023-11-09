@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.scrap.ImageItemsEntity
+import kr.sparta.tripmate.domain.model.scrap.ImageServerDataEntity
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.model.search.toEntity
 import kr.sparta.tripmate.domain.usecase.GetImageUseCase
@@ -28,7 +29,7 @@ class SearchBlogViewModel(
     private val _isLoading = MutableLiveData<Boolean>()
 
     private val _recommandImage = MutableLiveData<List<ImageItemsEntity>>()
-    val recommandImage :LiveData<List<ImageItemsEntity>> get() = _recommandImage
+    val recommandImage: LiveData<List<ImageItemsEntity>> get() = _recommandImage
 
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -40,13 +41,12 @@ class SearchBlogViewModel(
      * 작성자: 박성수
      * 내용: 네이버 API로 블로그 검색한 결과를 받아옴
      * */
-    fun searchAPIResult(q: String, context: Context) = viewModelScope.launch {
+    fun searchAPIResult(q: String, uid: String) = viewModelScope.launch {
         /**
          * 작성자: 서정한
          * 내용: 검색결과에 내가 스크랩한 블로그 표시
          * */
         suspend fun applyBlogScraps(scrapItems: ArrayList<SearchBlogEntity>) {
-            val uid = SharedPreferences.getUid(context)
             getAllBlogScraps(uid).collect() { blogs ->
                 val scraps = blogs.toMutableList().toEntity()
 
@@ -57,13 +57,15 @@ class SearchBlogViewModel(
                         scrapItems[i] = item.copy(
                             isLike = true
                         )
-                    }else {
+                    } else {
                         scrapItems[i] = item.copy(
                             isLike = false
                         )
                     }
                 }
-                _searchList.value = scrapItems
+                val newList = mutableListOf<SearchBlogEntity>()
+                newList.addAll(scrapItems)
+                _searchList.value = newList
 
                 // loading end
                 _isLoading.value = false
@@ -86,20 +88,15 @@ class SearchBlogViewModel(
     }
 
     fun searchImageResult(q: String) = viewModelScope.launch {
-        kotlin.runCatching {
-            _isLoading.value = true
-            val result = getImageUseCase(q)
-            val imageItems = ArrayList<ImageItemsEntity>()
-            result.items?.let {
-                for(i in it.indices){
-                    imageItems.add(it[i])
-                }
-                _recommandImage.value = imageItems
-                _isLoading.value = false
+        _isLoading.value = true
+        val result = getImageUseCase(q)
+        val imageItems = ArrayList<ImageItemsEntity>()
+        result.items?.let {
+            for(i in it.indices){
+                imageItems.add(it[i])
             }
-        }.onFailure {
+            _recommandImage.value = imageItems
             _isLoading.value = false
-            Log.e("tripmates", it.message.toString())
         }
     }
 
