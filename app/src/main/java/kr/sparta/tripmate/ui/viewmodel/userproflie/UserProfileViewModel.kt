@@ -16,7 +16,7 @@ class UserProfileViewModel(private val getUserDataUseCase: GetUserDataUseCase) :
 
     fun getUserData(uid: String) =viewModelScope.launch {
         getUserDataUseCase(uid).collect() {
-            _userProfileResults.value = it.toEntity()
+            _userProfileResults.value = it?.toEntity()
         }
     }
 }

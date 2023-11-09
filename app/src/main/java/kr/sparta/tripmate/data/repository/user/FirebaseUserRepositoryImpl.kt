@@ -16,7 +16,7 @@ import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
  * */
 class FirebaseUserRepositoryImpl(private val remoteSource: FirebaseUserRemoteDataSource) :
     FirebaseUserRepository {
-    override fun getUserData(uid: String): Flow<UserData> = remoteSource.getUserData(uid)
+    override fun getUserData(uid: String): Flow<UserData?> = remoteSource.getUserData(uid)
 
     override fun saveUserData(model: UserDataEntity) = remoteSource.saveUserData(model.toModel())
 

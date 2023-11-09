@@ -6,6 +6,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.database.ktx.snapshots
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kr.sparta.tripmate.data.model.user.UserData
@@ -30,9 +31,9 @@ class FirebaseUserRemoteDataSource {
      * 작성자 : 서정한
      * 내용 : 유저정보를 가져옵니다.
      */
-    fun getUserData(uid: String): Flow<UserData> {
+    fun getUserData(uid: String): Flow<UserData?> {
         val ref = getReference().child(uid)
-        return ref.snapshots.mapNotNull {
+        return ref.snapshots.map {
             it.getValue<UserData>()
         }
     }

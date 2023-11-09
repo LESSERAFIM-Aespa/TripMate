@@ -22,7 +22,7 @@ class MyPageViewModel(
 
     fun getUserData(uid: String) = viewModelScope.launch {
         getUserDataUseCase(uid).collect(){
-            _userData.value = it.toEntity()
+            _userData.value = it?.toEntity()
         }
     }
 
