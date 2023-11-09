@@ -15,6 +15,7 @@ import androidx.room.util.query
 import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
@@ -24,6 +25,7 @@ import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityFragment : Fragment() {
@@ -72,18 +74,21 @@ class CommunityFragment : Fragment() {
                 )
                 startActivity(intent)
             },
-            onUserProfileClicked =
-            { model, position ->
-                // 유저프로필 클릭시 유저정보페이지로 이동.
-                // 단 내 프로필일경우 myPage로 이동.
-                if (model.userid == uid) {
-                    (activity).moveTabFragment(R.string.main_tab_title_mypage)
-                } else {
-                    val intent = UserProfileActivity.newIntentForGetUserProfile(
-                        communityContext,
-                        model
-                    )
-                    startActivity(intent)
+            onUserProfileClicked = { model, position ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    commuViewModel.getUserData(model.userid ?: "").collect() {
+                        // 유저프로필 클릭시 유저정보페이지로 이동.
+                        // 탈퇴한 유저의 프로필을 클릭할경우 토스트메시지를 출력합니다.
+                        if (it == null) {
+                            communityContext.shortToast("탈퇴한 유저입니다.")
+                        } else {
+                            val intent = UserProfileActivity.newIntentForGetUserProfile(
+                                communityContext,
+                                model
+                            )
+                            startActivity(intent)
+                        }
+                    }
                 }
             },
             onLikeClicked = { model, position ->
@@ -130,8 +135,8 @@ class CommunityFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    CoroutineScope(Dispatchers.Main).launch{
-                        if(newText == ""){
+                    CoroutineScope(Dispatchers.Main).launch {
+                        if (newText == "") {
                             commuViewModel.getAllBoards()
                         }
                     }
