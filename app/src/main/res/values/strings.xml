@@ -78,6 +78,8 @@
     <string name="scrap_recommand_text">은 어떤가요?</string>
     <string name="scrap_detail_no_move_page">현재 보고계신 글 외에 다른 페이지로 이동이 불가능합니다.</string>
     <string name="login_exception_empty_nickname">닉네임을 입력해주세요</string>
+    <string name="privacy_url">https://wary-alto-0df.notion.site/59619eb40bfd4050bec9d2a6b2127c8b?pvs=4</string>
+    <string name="terms_url">https://wary-alto-0df.notion.site/c9a9499af04c433ea675545cf1757ab9?pvs=4</string>
 
     <string-array name="scrap_recommand_list">
         <item>울산 관광</item>

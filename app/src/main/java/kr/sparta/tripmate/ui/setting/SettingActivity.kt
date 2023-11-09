@@ -2,16 +2,14 @@ package kr.sparta.tripmate.ui.setting
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import coil.load
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivitySettingBinding
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.ui.login.LoginActivity
@@ -26,14 +24,13 @@ class SettingActivity : AppCompatActivity() {
     }
 
     private val settingViewModel: SettingViewModel by viewModels { SettingFactory() }
-    private lateinit var setting_Database: DatabaseReference
+
     private val binding by lazy {
         ActivitySettingBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setting_Database = Firebase.database.reference
         setContentView(binding.root)
 
         initview()
@@ -41,12 +38,14 @@ class SettingActivity : AppCompatActivity() {
         setBannerAds()  //하단 배너 광고
 
     }
+
     private fun initViewModel() {
         settingViewModel.settingUserData.observe(this) {
             setUpView(it)   //레이아웃에 데이터를 넣어줍니다.
 
         }
     }
+
     //레이아웃에 데이터를 넣어줍니다.
     private fun setUpView(it: UserDataEntity?) {
         binding.settingProfileImage.load(it?.profileImg)
@@ -62,6 +61,18 @@ class SettingActivity : AppCompatActivity() {
         // 뒤로가기 버튼 입니다.
         settingToolbar.setNavigationOnClickListener {
             finish()
+        }
+
+        // 이용약관
+        settingTerms.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_url)))
+            startActivity(intent)
+        }
+
+        // 개인정보처리방침
+        settingPrivacy.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_url)))
+            startActivity(intent)
         }
 
         // 로그아웃 버튼입니다.
@@ -95,7 +106,7 @@ class SettingActivity : AppCompatActivity() {
      * 작성자 : 박성수
      * 하단 배너 광고 입니다.
      */
-    private fun setBannerAds(){
+    private fun setBannerAds() {
         MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()
         binding.settingAdsBanner.loadAd(adRequest)
