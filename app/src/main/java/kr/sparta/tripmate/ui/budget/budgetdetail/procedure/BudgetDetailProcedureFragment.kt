@@ -100,6 +100,11 @@ class BudgetDetailProcedureFragment : Fragment() {
                 binding.budgetDetailStatusBalanceTextview.text = it.money.toMoneyFormat() + "원"
                 binding.budgetDetailStatusDurationTextView.text = it.startDate + " ~ " + it.endDate
             }
+            budgetFlowToLiveData.observe(viewLifecycleOwner) {
+                binding.budgetDetailStatusPrincipalTextview.text = it.money.toMoneyFormat() + "원"
+                binding.budgetDetailStatusBalanceTextview.text = it.money.toMoneyFormat() + "원"
+                binding.budgetDetailStatusDurationTextView.text = it.startDate + " ~ " + it.endDate
+            }
             procedureList.observe(viewLifecycleOwner) { list ->
                 adapter.submitList(list)
 
