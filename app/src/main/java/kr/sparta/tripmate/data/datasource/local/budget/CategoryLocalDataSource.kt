@@ -21,9 +21,6 @@ class CategoryLocalDataSource(context: Context) {
         categoryDao.deleteCategories(*category)
     }
 
-    suspend fun getAllCategoriesWithNum(num: Int): List<Category> =
-        categoryDao.getAllCategoriesWithNum(num)
-
     suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category> =
         categoryDao.getAllCategoriesWithBudgetNum(budgetNum)
 

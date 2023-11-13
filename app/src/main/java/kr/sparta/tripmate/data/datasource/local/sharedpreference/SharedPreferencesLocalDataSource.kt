@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.data.datasource.local.budget
+package kr.sparta.tripmate.data.datasource.local.sharedpreference
 
 import android.content.Context
 import android.content.SharedPreferences

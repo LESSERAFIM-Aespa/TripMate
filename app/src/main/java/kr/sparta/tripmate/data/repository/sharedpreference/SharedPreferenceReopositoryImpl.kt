@@ -1,6 +1,6 @@
 package kr.sparta.tripmate.data.repository.sharedpreference
 
-import kr.sparta.tripmate.data.datasource.local.budget.SharedPreferencesLocalDataSource
+import kr.sparta.tripmate.data.datasource.local.sharedpreference.SharedPreferencesLocalDataSource
 import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReopository
 
 class SharedPreferenceReopositoryImpl(

@@ -12,10 +12,6 @@ import kr.sparta.tripmate.data.model.budget.BudgetCategories
 @Dao
 interface BudgetCategoriesDao {
     @Transaction
-    @Query("SELECT * FROM BUDGET")
-    suspend fun getAllBudgetCategories(): List<BudgetCategories>
-
-    @Transaction
     @Query("SELECT * FROM BUDGET WHERE NUM = :num")
     suspend fun getAllBudgetCategories(num: Int): List<BudgetCategories>
 }

@@ -55,16 +55,6 @@ data class Procedure(
  * 작성자: 서정한
  * 내용: view에서 사용하기위해 ProcedureModel로 변환
  * */
-fun Procedure.toModel(model: ProcedureModel) = ProcedureModel(
-    num = model.num,
-    title = model.title,
-    price = model.price,
-    beforeMoney = model.beforeMoney,
-    totalAmount = model.totalAmount,
-    time = model.time,
-    categoryColor = model.categoryColor,
-    categoryName = model.categoryName,
-)
 
 fun Procedure.toModel() = ProcedureModel(
     num = num,

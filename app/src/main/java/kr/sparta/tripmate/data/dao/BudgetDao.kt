@@ -23,21 +23,11 @@ interface BudgetDao {
     @Delete
     suspend fun deleteBudgets(vararg budget: Budget)
 
-    @Query("SELECT * FROM BUDGET")
-    suspend fun getAllBudgets(): List<Budget>
-
     @Query("SELECT * FROM BUDGET ORDER BY START_DATE ASC , END_DATE ASC")
     suspend fun getAllBudgetsOrederByDate(): List<Budget>
 
     @Query("SELECT * FROM BUDGET ORDER BY START_DATE ASC , END_DATE ASC")
     fun getAllBudgetsOrederByDateToFlow(): Flow<List<Budget>>
-
-    /**
-     * 해당 기본키를 가지고있는 값을 가져옵니다.
-     * 반환은 size 가 0이거나 1이므로 isEmpty로 조건문을 확인할것
-     * */
-    @Query("SELECT * FROM BUDGET WHERE NUM =:num")
-    suspend fun getAllBudgetsWithNum(num: Int): List<Budget>
 
     @Query("SELECT * FROM BUDGET WHERE NUM =:num")
     fun getAllBudgetsToFlowWithNum(num: Int): Flow<List<Budget>>
