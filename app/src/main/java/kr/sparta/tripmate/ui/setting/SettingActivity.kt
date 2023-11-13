@@ -2,7 +2,6 @@ package kr.sparta.tripmate.ui.setting
 
 import android.content.Context
 import android.content.Intent
-import android.media.tv.AdRequest
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
