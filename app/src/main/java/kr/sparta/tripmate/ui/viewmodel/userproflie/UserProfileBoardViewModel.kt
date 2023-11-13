@@ -11,17 +11,21 @@ import kr.sparta.tripmate.domain.model.community.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetAllBoardsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidFromUserUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 
 class UserProfileBoardViewModel(
     private val getAllBoardsUseCase: GetAllBoardsUseCase,
     private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,
+    private val getUidUseCase: GetUidUseCase,
+    private val getUidFromUserUseCase: GetUidFromUserUseCase,
 ) : ViewModel() {
     private val _userPage: MutableLiveData<List<CommunityEntity?>> = MutableLiveData()
     val userPage get() = _userPage
 
     fun getFirebaseBoardData(uid: String) = CoroutineScope(Dispatchers.Main).launch {
-        getAllBoardsUseCase().collect() {userData ->
+        getAllBoardsUseCase().collect() { userData ->
             val filterData = userData.filter { it?.userid == uid }
             _userPage.value = filterData.toEntity()
         }
@@ -35,4 +39,7 @@ class UserProfileBoardViewModel(
     fun updateCommuIsLike(uid: String, key: String) = viewModelScope.launch {
         updateBoardLikeUseCase(uid, key)
     }
+
+    fun getUid(): String = getUidUseCase()
+    fun getUidFromUser() : String = getUidFromUserUseCase()
 }

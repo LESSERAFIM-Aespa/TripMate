@@ -1,23 +1,23 @@
 package kr.sparta.tripmate.ui.viewmodel.setting
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.model.user.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.LogoutUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.UpdateUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.RemoveKeyUseCase
 
 class SettingViewModel(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val withdrawalUserDataUseCase: WithdrawalUserDataUseCase,
+    private val getUidUseCase: GetUidUseCase,
+    private val removeKeyUseCase: RemoveKeyUseCase,
 
     ) : ViewModel() {
     private val _settingUserData: MutableLiveData<UserDataEntity?> = MutableLiveData()
@@ -33,4 +33,7 @@ class SettingViewModel(
     fun removeUserData(uid: String) = withdrawalUserDataUseCase(uid)
 
     fun logout() = logoutUseCase()
+
+    fun getUid() : String = getUidUseCase()
+    fun removeKey() = removeKeyUseCase()
 }

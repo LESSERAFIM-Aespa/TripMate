@@ -16,7 +16,6 @@ import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.viewmodel.setting.SettingFactory
 import kr.sparta.tripmate.ui.viewmodel.setting.SettingViewModel
 import kr.sparta.tripmate.util.method.shortToast
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class SettingActivity : AppCompatActivity() {
     companion object {
@@ -55,7 +54,7 @@ class SettingActivity : AppCompatActivity() {
 
     private fun initview() = with(binding) {
         //뷰모델 데이터를 가져옵니다.
-        val uid = SharedPreferences.getUid(this@SettingActivity)
+        val uid = settingViewModel.getUid()
         settingViewModel.getUserData(uid)
 
         // 뒤로가기 버튼 입니다.
@@ -84,7 +83,7 @@ class SettingActivity : AppCompatActivity() {
 
         // 회원탈퇴 버튼입니다.
         binding.settingWithdrawal.setOnClickListener {
-            SharedPreferences.removeKey(this@SettingActivity)
+            settingViewModel.removeKey()
             settingViewModel.removeUserData(uid)
             settingViewModel.logout() //로그아웃 됩니다.
             moveLogin()     //회원탈퇴 후 로그인화면으로 이동됩니다.

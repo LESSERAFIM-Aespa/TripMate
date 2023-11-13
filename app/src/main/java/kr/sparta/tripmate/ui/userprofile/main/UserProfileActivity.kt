@@ -13,7 +13,6 @@ import kr.sparta.tripmate.databinding.ActivityUserProfileBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileFactory
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 /**
  * 작성자: 서정한
@@ -49,7 +48,7 @@ class UserProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        model?.userid?.let { SharedPreferences.saveUidFromUser(this, it) }
+        model?.userid?.let { userProfileViewModel.saveUidFromUser(it) }
         initView()
         initViewModel()
         callDataSource()

@@ -5,17 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.model.community.toEntity
-import kr.sparta.tripmate.domain.model.user.UserDataEntity
-import kr.sparta.tripmate.domain.model.user.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetAllBoardsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScrapUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 
 class CommunityViewModel(
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,
@@ -23,6 +21,7 @@ class CommunityViewModel(
     private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,
     private val updateBoardScrapUseCase: UpdateBoardScrapUseCase,
     private val getUserDataUseCase: GetUserDataUseCase,
+    private val getUidUseCase: GetUidUseCase,
 ) :
     ViewModel() {
 
@@ -90,4 +89,6 @@ class CommunityViewModel(
      * 내용: 선택한 게시글을 스크랩목록에 추가합니다.
      * */
     fun addBoardScrap(uid: String, key: String) = updateBoardScrapUseCase(uid, key)
+    
+    fun getUid(): String = getUidUseCase()
 }

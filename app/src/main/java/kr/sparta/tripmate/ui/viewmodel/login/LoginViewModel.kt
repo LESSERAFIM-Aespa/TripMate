@@ -3,25 +3,31 @@ package kr.sparta.tripmate.ui.viewmodel.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
-import kr.sparta.tripmate.domain.model.user.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetNickNameDataUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveNickNameUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveProfileUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveUidUseCase
 
 class LoginViewModel(
     private val saveUserDataUseCase: SaveUserDataUseCase,
-    private val getNickNameDataUseCase: GetNickNameDataUseCase
+    private val getNickNameDataUseCase: GetNickNameDataUseCase,
+    private val saveUidUseCase: SaveUidUseCase,
+    private val saveProfileUseCase: SaveProfileUseCase,
+    private val saveNickNameUseCase: SaveNickNameUseCase,
+    private val getUidUseCase: GetUidUseCase,
+    private val getNickNameUseCase: GetNickNameUseCase,
 
-) :
+    ) :
     ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val _userDatas = MutableLiveData<UserDataEntity?>()
-    val userDatas : LiveData<UserDataEntity?> get() = _userDatas
+    val userDatas: LiveData<UserDataEntity?> get() = _userDatas
 
     /**
      * 작성자: 서정한
@@ -36,5 +42,11 @@ class LoginViewModel(
      * */
     fun saveCurrentUser(model: UserDataEntity) = saveUserDataUseCase(model)
 
-    suspend fun getNickNameData(nickName: String): Boolean =  getNickNameDataUseCase(nickName)
+    suspend fun getNickNameData(nickName: String): Boolean = getNickNameDataUseCase(nickName)
+
+    fun saveUid(uid: String) = saveUidUseCase(uid)
+    fun saveProfile(profile: String) = saveProfileUseCase(profile)
+    fun saveNickName(nickName: String) = saveNickNameUseCase(nickName)
+    fun getUid(): String = getUidUseCase()
+    fun getNickName(): String = getNickNameUseCase()
 }

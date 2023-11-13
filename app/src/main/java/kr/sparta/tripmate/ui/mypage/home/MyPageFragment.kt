@@ -25,7 +25,6 @@ import kr.sparta.tripmate.ui.mypage.scrap.MyPageScrapFragment
 import kr.sparta.tripmate.ui.setting.SettingActivity
 import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageFragment : Fragment() {
     companion object {
@@ -56,7 +55,7 @@ class MyPageFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         auth = FirebaseAuth.getInstance()
         _binding = FragmentMyPageBinding.inflate(inflater, container, false)
@@ -67,7 +66,7 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         myPageViewModel.getUserData(
-            SharedPreferences.getUid(myPageContext)
+            myPageViewModel.getUid()
         )
 
         initView()
@@ -139,7 +138,7 @@ class MyPageFragment : Fragment() {
         mypageEditSubmitButton.setOnClickListener {
 
             val user = auth.currentUser
-            val nickName = SharedPreferences.getNickName(myPageContext)
+            val nickName = myPageViewModel.getNickName()
 
             val input_EditText = binding.mypageProfileContentEdittext.text.toString()
             myPageViewModel.saveUserData(
@@ -180,7 +179,7 @@ class MyPageFragment : Fragment() {
     // EditText 수정중 뒤로가기 클릭시
     private fun editCancelDialog(
         positive: () -> Unit,
-        negative: () -> Unit
+        negative: () -> Unit,
     ) {
         val listener = DialogInterface.OnClickListener { _, p1 ->
             when (p1) {

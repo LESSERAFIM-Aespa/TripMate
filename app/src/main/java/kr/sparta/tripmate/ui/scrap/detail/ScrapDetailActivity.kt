@@ -20,7 +20,6 @@ import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.ui.viewmodel.scrap.detail.ScrapDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.detail.ScrapDetailViewModel
 import kr.sparta.tripmate.util.method.shortToast
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class ScrapDetailActivity : AppCompatActivity() {
     companion object {
@@ -116,7 +115,7 @@ class ScrapDetailActivity : AppCompatActivity() {
 
         // 블로그 스크랩버튼
         scrapDetailLikeBtn.setOnClickListener {
-            val uid = SharedPreferences.getUid(this@ScrapDetailActivity)
+            val uid = viewModel.getUid()
             // 현재 블로그 스크랩상태 업데이트
             model?.let {
                 viewModel.updateBlogScrap(uid, it)

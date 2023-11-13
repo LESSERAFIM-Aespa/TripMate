@@ -14,7 +14,6 @@ import kr.sparta.tripmate.databinding.FragmentUserProfileBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileBoardViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 /**
  * 작성자: 서정한
@@ -44,22 +43,23 @@ class UserProfileBoardFragment : Fragment() {
             },
             onLikeClicked = { model, position ->
                 model.key?.let {
-                    val uid = SharedPreferences.getUid(boardContext)
+                    val uid = userProfileBoardViewModel.getUid()
                     userProfileBoardViewModel.updateCommuIsLike(uid, it)
                 }
-            }
+            },
+            getUidFunction = { userProfileBoardViewModel.getUid() }
         )
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         boardContext = context
-        userUid = SharedPreferences.getUidFromUser(boardContext)
+        userUid = userProfileBoardViewModel.getUidFromUser()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentUserProfileBoardBinding.inflate(inflater, container, false)
         return binding.root
