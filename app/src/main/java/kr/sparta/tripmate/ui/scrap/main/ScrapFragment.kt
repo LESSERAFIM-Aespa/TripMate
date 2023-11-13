@@ -23,7 +23,6 @@ import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
 import kr.sparta.tripmate.util.method.shortToast
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 import java.util.Random
 
 class ScrapFragment : Fragment() {
@@ -50,7 +49,7 @@ class ScrapFragment : Fragment() {
                     position
                 )
 
-                val uid = SharedPreferences.getUid(scrapContext)
+                val uid = viewModel.getUid()
                 viewModel.updateBlogScrap(uid, model)
             }
         )
@@ -64,7 +63,7 @@ class ScrapFragment : Fragment() {
 
     private val viewModel: SearchBlogViewModel by viewModels { SearchBlogFactory() }
     private val uid by lazy {
-        SharedPreferences.getUid(scrapContext)
+        viewModel.getUid()
     }
 
     override fun onAttach(context: Context) {
@@ -74,7 +73,7 @@ class ScrapFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         return binding.root
     }
