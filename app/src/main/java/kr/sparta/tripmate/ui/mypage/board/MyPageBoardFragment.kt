@@ -12,7 +12,6 @@ import kr.sparta.tripmate.databinding.FragmentBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.mypage.board.MyPageBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.board.MyPageBoardViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageBoardFragment : Fragment() {
     companion object {
@@ -37,7 +36,7 @@ class MyPageBoardFragment : Fragment() {
                 }
             },
             onLikeClicked = {model ->
-                val uid = SharedPreferences.getUid(boardContext)
+                val uid = viewModel.getUid()
                 // 좋아요 업데이트
                 model.key?.let {
                     viewModel.updateBoardLikes(uid, it)
@@ -73,7 +72,7 @@ class MyPageBoardFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        val uid = SharedPreferences.getUid(boardContext)
+        val uid = viewModel.getUid()
         // 모든내 게시글 목록 가져오기
         viewModel.getAllMyBoards(uid)
     }
