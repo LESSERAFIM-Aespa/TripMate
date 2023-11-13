@@ -41,7 +41,8 @@ class MyPageBoardFragment : Fragment() {
                 model.key?.let {
                     viewModel.updateBoardLikes(uid, it)
                 }
-            }
+            },
+            getUidFunction = { viewModel.getUid() }
         )
     }
 
