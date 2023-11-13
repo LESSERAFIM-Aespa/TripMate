@@ -36,9 +36,6 @@ class CommunityWriteViewModel(
     private val _isEditLoading = MutableLiveData<Boolean>()
     val isEditLoading: LiveData<Boolean> get() = _isEditLoading
 
-    // 이벤트처리를위한 PublishSubject
-    val publishSubject: PublishSubject<CommunityEntity> = PublishSubject.create()
-
     /**
      * 작성자: 서정한
      * 내용: 현재 로딩상태를 변경하는데 사용

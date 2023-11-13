@@ -2,7 +2,7 @@ package kr.sparta.tripmate.ui.viewmodel.scrap.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kr.sparta.tripmate.data.datasource.local.budget.SharedPreferencesLocalDataSource
+import kr.sparta.tripmate.data.datasource.local.sharedpreference.SharedPreferencesLocalDataSource
 import kr.sparta.tripmate.data.datasource.remote.community.scrap.FirebaseBlogScrapRemoteDataSource
 import kr.sparta.tripmate.data.repository.community.FirebaseBlogScrapRepositoryImpl
 import kr.sparta.tripmate.data.repository.sharedpreference.SharedPreferenceReopositoryImpl

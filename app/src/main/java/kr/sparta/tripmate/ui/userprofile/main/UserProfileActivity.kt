@@ -27,7 +27,6 @@ class UserProfileActivity : AppCompatActivity() {
             }
     }
 
-    private lateinit var auth: FirebaseAuth
     private val binding by lazy {
         ActivityUserProfileBinding.inflate(layoutInflater)
     }

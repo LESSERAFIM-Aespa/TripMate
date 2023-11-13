@@ -15,7 +15,7 @@ import kr.sparta.tripmate.domain.usecase.budgettotalrepository.GetBudgetTotalToF
 import kr.sparta.tripmate.ui.budget.budgetdetail.procedure.ProcedureModel
 
 class BudgetStatisticsViewModel(
-    private val getBudgetToFlowWhenBudgetChangedWithNumUseCase: GetBudgetToFlowWhenBudgetChangedWithNumUseCase,
+    getBudgetToFlowWhenBudgetChangedWithNumUseCase: GetBudgetToFlowWhenBudgetChangedWithNumUseCase,
     getBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase: GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase,
     private val budgetNum: Int,
 ) : ViewModel() {

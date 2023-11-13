@@ -26,8 +26,6 @@ class LoginViewModel(
     ) :
     ViewModel() {
     private val auth = FirebaseAuth.getInstance()
-    private val _userDatas = MutableLiveData<UserDataEntity?>()
-    val userDatas: LiveData<UserDataEntity?> get() = _userDatas
 
     /**
      * 작성자: 서정한
