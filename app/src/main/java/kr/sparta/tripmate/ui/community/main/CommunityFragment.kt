@@ -3,21 +3,16 @@ package kr.sparta.tripmate.ui.community.main
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView.OnQueryTextListener
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.util.query
-import com.google.android.material.search.SearchView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
@@ -26,7 +21,6 @@ import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityFragment : Fragment() {
     companion object {
@@ -59,7 +53,7 @@ class CommunityFragment : Fragment() {
         super.onAttach(context)
         communityContext = context
         activity = requireActivity() as MainActivity
-        uid = SharedPreferences.getUid(communityContext)
+        uid = commuViewModel.getUid()
     }
 
     private val commuAdapter by lazy {      //1. 클릭 이벤트 구현
@@ -92,7 +86,7 @@ class CommunityFragment : Fragment() {
                 }
             },
             onLikeClicked = { model, position ->
-                val uid = SharedPreferences.getUid(communityContext)
+                val uid = commuViewModel.getUid()
                 commuViewModel.updateCommuIsLike(
                     uid = uid,
                     model = model,
