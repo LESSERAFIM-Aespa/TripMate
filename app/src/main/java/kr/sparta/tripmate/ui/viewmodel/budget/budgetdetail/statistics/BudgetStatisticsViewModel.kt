@@ -4,20 +4,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.data.model.budget.toModel
+import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBudgetToFlowWhenBudgetChangedWithNumUseCase
 import kr.sparta.tripmate.domain.usecase.budgettotalrepository.GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase
 import kr.sparta.tripmate.ui.budget.budgetdetail.procedure.ProcedureModel
 
 class BudgetStatisticsViewModel(
+    private val getBudgetToFlowWhenBudgetChangedWithNumUseCase: GetBudgetToFlowWhenBudgetChangedWithNumUseCase,
     getBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase: GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase,
-    budgetNum: Int,
+    private val budgetNum: Int,
 ) : ViewModel() {
     private val _budgetLiveData: MutableLiveData<Budget> = MutableLiveData()
     val budgetLiveData get() = _budgetLiveData
+
+    val budgetFlowToLiveData =
+        getBudgetToFlowWhenBudgetChangedWithNumUseCase(budgetNum).flatMapConcat {
+            flow {
+                if (procedureList.value.orEmpty().isEmpty()) emit(it)
+            }
+        }.asLiveData()
 
     private val _procedureList: MutableLiveData<List<ProcedureModel>> = MutableLiveData()
     val procedureList get() = _procedureList

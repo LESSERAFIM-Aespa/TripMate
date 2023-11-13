@@ -169,6 +169,13 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     private fun initViewModels() {
         with(viewModel) {
+            budgetFlowToLiveData.observe(viewLifecycleOwner){
+                binding.budgetStatisticsMoneyTextview.text = it.money.toMoneyFormat() + "원"
+                binding.budgetStatisticsRemainTextview.text = it.money.toMoneyFormat() + "원"
+                binding.budgetStatisticsDurationTextview.text =
+                    it.startDate + " ~ " + it.endDate
+            }
+
             budgetTotal.observe(viewLifecycleOwner) { budgetTotal ->
                 val budget: Budget = budgetTotal.first
                 val categories: List<Category> = budgetTotal.second
@@ -298,7 +305,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                 }
 
                 binding.budgetStatisticsDurationTextview.text =
-                    budget.startDate + "~" + budget.endDate
+                    budget.startDate + " ~ " + budget.endDate
                 binding.budgetStatisticsMoneyTextview.text = budget.money.toMoneyFormat() + "원"
                 binding.budgetStatisticsExpenditureTextview.text =
                     totalExpenditureSum.toMoneyFormat() + "원"
