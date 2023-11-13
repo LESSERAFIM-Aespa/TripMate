@@ -3,8 +3,6 @@ package kr.sparta.tripmate.ui.viewmodel.mypage.scrap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.model.community.toEntity
@@ -12,17 +10,19 @@ import kr.sparta.tripmate.domain.model.search.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetAllBoardsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.util.ScrapInterface
 
 class MyPageScrapViewModel(
     private val getAllBlogScrapsUseCase: GetAllBlogScrapsUseCase,
     private val getAllBoardsUseCase: GetAllBoardsUseCase,
-    private val updateBoardViewsUseCase: UpdateBoardViewsUseCase
+    private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,
+    private val getUidUseCase: GetUidUseCase,
 ) : ViewModel() {
     private val _totalScraps: MutableLiveData<List<ScrapInterface?>> = MutableLiveData()
     val totalScraps get() = _totalScraps
 
-    fun getAllScrapedData(uid: String) = viewModelScope.launch{
+    fun getAllScrapedData(uid: String) = viewModelScope.launch {
         val scrapBlogs = mutableListOf<ScrapInterface>()
         val scrapBoards = mutableListOf<ScrapInterface>()
 
@@ -34,7 +34,7 @@ class MyPageScrapViewModel(
             boards.forEachIndexed { index, communityModel ->
                 val boardScraps = communityModel?.scrapUsers?.toMutableList()
                 val result = boardScraps?.find { it == uid }
-                if(result != null) {
+                if (result != null) {
                     list.add(communityModel.toEntity())
                 }
             }
@@ -53,4 +53,5 @@ class MyPageScrapViewModel(
      * 내용: 조회수 증가
      * */
     fun updateBoardViews(model: CommunityEntity) = updateBoardViewsUseCase(model)
+    fun getUid(): String = getUidUseCase()
 }
