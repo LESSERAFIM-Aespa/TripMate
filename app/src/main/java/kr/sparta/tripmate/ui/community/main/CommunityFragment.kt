@@ -94,7 +94,10 @@ class CommunityFragment : Fragment() {
             },
             onItemLongClicked = { model, position ->
                 commuViewModel.addBoardScrap(uid, model.key.toString())
-            })
+            },
+            getUidFunction = { commuViewModel.getUid() }
+        )
+
     }
 
     override fun onCreateView(
