@@ -1,15 +1,11 @@
 package kr.sparta.tripmate.ui.viewmodel.community.write
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,24 +13,28 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.AddBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetCommunityKeyUseCase
-import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScrapUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebasestorage.UploadImageForFirebaseStorage
-import kr.sparta.tripmate.ui.community.CommunityDetailActivity
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetProfileUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.util.method.isWindowTouchable
 
 class CommunityWriteViewModel(
     private val addBoardUseCase: AddBoardUseCase,
     private val uploadImageForFirebaseStorage: UploadImageForFirebaseStorage,
     private val getCommunityKeyUseCase: GetCommunityKeyUseCase,
-    private val updateBoardUseCase: UpdateBoardUseCase
+    private val updateBoardUseCase: UpdateBoardUseCase,
+    private val getUidUseCase: GetUidUseCase,
+    private val getNickNameUseCase: GetNickNameUseCase,
+    private val getProfileUseCase: GetProfileUseCase,
 ) :
     ViewModel() {
 
     private val _isAddLoading = MutableLiveData<Boolean>()
     val isAddLoading: LiveData<Boolean> get() = _isAddLoading
     private val _isEditLoading = MutableLiveData<Boolean>()
-    val isEditLoading : LiveData<Boolean> get() = _isEditLoading
+    val isEditLoading: LiveData<Boolean> get() = _isEditLoading
 
     // 이벤트처리를위한 PublishSubject
     val publishSubject: PublishSubject<CommunityEntity> = PublishSubject.create()
@@ -46,7 +46,8 @@ class CommunityWriteViewModel(
     fun setAddLoadingState(isAddLoading: Boolean) {
         _isAddLoading.value = isAddLoading
     }
-    fun setEditLoadingState(isEditLoading:Boolean){
+
+    fun setEditLoadingState(isEditLoading: Boolean) {
         _isEditLoading.value = isEditLoading
     }
 
@@ -66,12 +67,12 @@ class CommunityWriteViewModel(
         image: Bitmap?,
         item: CommunityEntity,
         context: Context,
-        useCase: (CommunityEntity) -> Unit
+        useCase: (CommunityEntity) -> Unit,
     ) {
         CoroutineScope(Dispatchers.Main).launch {
             if (image == null) {
                 useCase.invoke(item)
-                if(useCase == addBoardUseCase::invoke){
+                if (useCase == addBoardUseCase::invoke) {
                     setAddLoadingState(false)
                 } else setEditLoadingState(false)
 
@@ -88,14 +89,15 @@ class CommunityWriteViewModel(
             val newItem = item.copy(image = url)
 
             useCase.invoke(newItem)
-            if(useCase == addBoardUseCase::invoke){
+            if (useCase == addBoardUseCase::invoke) {
                 setAddLoadingState(false)
-            }else setEditLoadingState(false)
+            } else setEditLoadingState(false)
 
             isWindowTouchable(context, false)
             (context as Activity).finish()
         }
     }
+
     /**
      * 작성자: 서정한
      * 내용: 게시글을 추가 했을때 업데이트 합니다.
@@ -104,7 +106,7 @@ class CommunityWriteViewModel(
         imgName: String,
         image: Bitmap?,
         item: CommunityEntity,
-        context: Context
+        context: Context,
     ) {
         updateCommunityWrite(imgName, image, item, context, addBoardUseCase::invoke)
     }
@@ -117,8 +119,12 @@ class CommunityWriteViewModel(
         imgName: String,
         image: Bitmap?,
         item: CommunityEntity,
-        context: Context
+        context: Context,
     ) {
         updateCommunityWrite(imgName, image, item, context, updateBoardUseCase::invoke)
     }
+
+    fun getUid(): String = getUidUseCase()
+    fun getNickName(): String = getNickNameUseCase()
+    fun getProfile(): String = getProfileUseCase()
 }

@@ -21,7 +21,6 @@ import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteViewModel
 import kr.sparta.tripmate.util.method.isWindowTouchable
 import kr.sparta.tripmate.util.method.shortToast
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 import java.util.regex.Pattern
 
 
@@ -104,7 +103,7 @@ class CommunityWriteActivity : AppCompatActivity() {
                 s: CharSequence?,
                 start: Int,
                 count: Int,
-                after: Int
+                after: Int,
             ) {
             }
 
@@ -138,15 +137,15 @@ class CommunityWriteActivity : AppCompatActivity() {
             fun editItem(
                 key: String,
                 scrapUsers: List<String>,
-                likeUsers: List<String>
+                likeUsers: List<String>,
             ): CommunityEntity =
                 CommunityEntity(
-                    userid = SharedPreferences.getUid(this@CommunityWriteActivity),
+                    userid = viewModel.getUid(),
                     key = model?.key ?: key,
                     title = binding.communityWriteTitle.text.toString(),
                     content = binding.communityWriteDescription.text.toString(),
-                    profileNickname = SharedPreferences.getNickName(this@CommunityWriteActivity),
-                    profileThumbnail = SharedPreferences.getProfile(this@CommunityWriteActivity),
+                    profileNickname = viewModel.getNickName(),
+                    profileThumbnail = viewModel.getProfile(),
                     views = model?.views ?: 0,
                     likes = model?.likes ?: 0,
                     image = "",
@@ -190,14 +189,15 @@ class CommunityWriteActivity : AppCompatActivity() {
                     viewModel.setEditLoadingState(true)
                 }
             }
+
             val titleRegex = "^[ㄱ-ㅣ가-힣a-zA-Z0-9\\s]*".toRegex()
             val communityWriteTitle = binding.communityWriteTitle.text.toString().trim()
-            val communityWriteDescription= binding.communityWriteDescription.text.toString().trim()
+            val communityWriteDescription = binding.communityWriteDescription.text.toString().trim()
             if (communityWriteTitle.isNullOrBlank() || communityWriteDescription.isNullOrBlank()
             ) {
                 shortToast("제목과 내용을 입력해주셔야 합니다.")
                 return@setOnClickListener
-            } else if(!communityWriteTitle.matches(titleRegex)){
+            } else if (!communityWriteTitle.matches(titleRegex)) {
                 shortToast("제목은 영어, 한글, 숫자만 입력 가능합니다.")
                 return@setOnClickListener
             }
