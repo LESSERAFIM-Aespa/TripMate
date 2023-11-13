@@ -46,7 +46,8 @@ class UserProfileBoardFragment : Fragment() {
                     val uid = userProfileBoardViewModel.getUid()
                     userProfileBoardViewModel.updateCommuIsLike(uid, it)
                 }
-            }
+            },
+            getUidFunction = { userProfileBoardViewModel.getUid() }
         )
     }
 
@@ -58,7 +59,7 @@ class UserProfileBoardFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentUserProfileBoardBinding.inflate(inflater, container, false)
         return binding.root

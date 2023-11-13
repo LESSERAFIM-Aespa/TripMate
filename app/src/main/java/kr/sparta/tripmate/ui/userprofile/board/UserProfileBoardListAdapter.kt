@@ -10,11 +10,11 @@ import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ItemUserProfileBoardBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class UserProfileBoardListAdapter(
     private val onItemClicked: (CommunityEntity, Int) -> Unit,
-    private val onLikeClicked: (CommunityEntity, Int) -> Unit
+    private val onLikeClicked: (CommunityEntity, Int) -> Unit,
+    private val getUidFunction : () -> String
 ) :
     ListAdapter<CommunityEntity, UserProfileBoardListAdapter.UserProfileHolder>(
         object : DiffUtil.ItemCallback<CommunityEntity>() {
@@ -48,7 +48,7 @@ class UserProfileBoardListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CommunityEntity) = with(binding) {
             fun toggleIsLikeIcon() {
-                val uid = SharedPreferences.getUid(itemView.context)
+                val uid = getUidFunction()
                 val isLike = item.likeUsers.find { it == uid } ?: ""
 
                 if (isLike != "") {
