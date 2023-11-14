@@ -21,9 +21,10 @@ import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetFactory
 import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetViewModel
+import kr.sparta.tripmate.ui.viewmodel.home.main.HomeFactory
+import kr.sparta.tripmate.ui.viewmodel.home.main.HomeViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class HomeFragment : Fragment() {
     companion object {
@@ -35,6 +36,10 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private val homeViewModel: HomeViewModel by viewModels {
+        HomeFactory()
+    }
 
     private val homeScrapViewModel: HomeBlogScrapViewModel by viewModels {
         HomeBlogScrapFactory()
@@ -49,7 +54,7 @@ class HomeFragment : Fragment() {
     private val homeBudgetListAdapter: HomeBudgetListAdapter by lazy {
         HomeBudgetListAdapter(
             onItemClicked = {
-                startActivity(BudgetDetailActivity.newIntentForBudget(homeContext,it))
+                startActivity(BudgetDetailActivity.newIntentForBudget(homeContext, it))
             }
         )
     }
@@ -96,7 +101,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -112,8 +117,8 @@ class HomeFragment : Fragment() {
 
     private fun initView() = with(binding) {
         // 상단 프로필 이미지 && 닉네임
-        val profileImg = SharedPreferences.getProfile(homeContext)
-        homeProfileTitle.text = "${SharedPreferences.getNickName(homeContext)} 님"
+        val profileImg = homeViewModel.getProfile()
+        homeProfileTitle.text = "${homeViewModel.getNickName()} 님"
         homeProfileImage.load(profileImg)
 
         // 블로그
@@ -135,7 +140,7 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
         }
 
-        val uid = SharedPreferences.getUid(homeContext)
+        val uid = homeViewModel.getUid()
         // 블로그 불러오기
         homeScrapViewModel.getAllBlogs(uid)
 

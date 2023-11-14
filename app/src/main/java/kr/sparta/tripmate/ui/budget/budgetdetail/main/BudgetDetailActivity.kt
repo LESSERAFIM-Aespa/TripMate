@@ -69,6 +69,7 @@ class BudgetDetailActivity : AppCompatActivity() {
         // TabLayout x ViewPager2
         budgetDetailViewpager.apply {
             adapter = viewPagerAdapter
+            offscreenPageLimit = viewPagerAdapter.itemCount
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)

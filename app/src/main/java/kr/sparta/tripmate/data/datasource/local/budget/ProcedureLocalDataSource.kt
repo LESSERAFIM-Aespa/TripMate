@@ -19,8 +19,6 @@ class ProcedureLocalDataSource(context: Context) {
     suspend fun deleteProcedures(vararg procedures: Procedure) {
         procedureDao.deleteProcedures(*procedures)
     }
-
-    suspend fun getAllProcedures(): List<Procedure> = procedureDao.getAllProcedures()
     suspend fun getAllProceduresWithNum(num: Int): List<Procedure> =
         procedureDao.getAllProceduresWithNum(num)
 
@@ -36,7 +34,4 @@ class ProcedureLocalDataSource(context: Context) {
     fun getAllProceduresToFlow(): Flow<List<Procedure>> = procedureDao.getAllProceduresToFlow()
     fun getAllProceduresWithNumToFlow(num: Int): Flow<List<Procedure>> =
         procedureDao.getAllProceduresWithNumToFlow(num)
-
-    fun getAllProceduresOrderByTimeWithCategoryNumsToFlow(categoryNums: List<Int>): Flow<List<Procedure>> =
-        procedureDao.getAllProceduresOrderByTimeWithCategoryNumsToFlow(categoryNums)
 }

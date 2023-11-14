@@ -24,14 +24,7 @@ interface ProcedureDao {
     suspend fun deleteProcedures(vararg procedures: Procedure)
 
     @Query("SELECT * FROM PROCEDURE")
-    suspend fun getAllProcedures(): List<Procedure>
-
-    @Query("SELECT * FROM PROCEDURE")
     fun getAllProceduresToFlow(): Flow<List<Procedure>>
-
-    @Query("SELECT * FROM PROCEDURE ORDER BY TIME ASC")
-    suspend fun getAllProceduresOrderByTime(): List<Procedure>
-
 
     /**
      * 해당 기본키를 가지고있는 값을 가져옵니다.
@@ -49,12 +42,6 @@ interface ProcedureDao {
     @Query("SELECT * FROM PROCEDURE WHERE CATEGORY_NUM IN (:categoryNums)")
     suspend fun getAllProceduresWithCategoryNums(categoryNums: List<Int>): List<Procedure>
 
-    @Query("SELECT * FROM PROCEDURE WHERE CATEGORY_NUM = :categoryNum ORDER BY TIME ASC")
-    suspend fun getAllProceduresOrderByTimeWithCategoryNum(categoryNum: Int): List<Procedure>
-
     @Query("SELECT * FROM PROCEDURE WHERE CATEGORY_NUM IN (:categoryNums) ORDER BY TIME ASC")
     suspend fun getAllProceduresOrderByTimeWithCategoryNums(categoryNums: List<Int>): List<Procedure>
-
-    @Query("SELECT * FROM PROCEDURE WHERE CATEGORY_NUM IN (:categoryNums) ORDER BY TIME ASC")
-    fun getAllProceduresOrderByTimeWithCategoryNumsToFlow(categoryNums: List<Int>): Flow<List<Procedure>>
 }

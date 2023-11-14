@@ -16,7 +16,8 @@ class CommunityListAdapter(
     private val onBoardClicked: (CommunityEntity, Int) -> Unit,
     private val onLikeClicked: (CommunityEntity, Int) -> Unit,
     private val onUserProfileClicked: (CommunityEntity, Int) -> Unit,
-    private val onItemLongClicked: (CommunityEntity, Int) -> Unit
+    private val onItemLongClicked: (CommunityEntity, Int) -> Unit,
+    private val getUidFunction : () -> String
 ) :
     ListAdapter<CommunityEntity, CommunityListAdapter.CommunityHolder>(
         object : DiffUtil.ItemCallback<CommunityEntity>() {
@@ -83,7 +84,7 @@ class CommunityListAdapter(
              * 내용: 좋아요버튼 클릭에따른 토글처리
              * */
             fun toggleIsLikeIcon() {
-                val uid = SharedPreferences.getUid(itemView.context)
+                val uid = getUidFunction()
                 val isLike = item.likeUsers.find { it == uid } ?: ""
 
                 if (isLike != "") {

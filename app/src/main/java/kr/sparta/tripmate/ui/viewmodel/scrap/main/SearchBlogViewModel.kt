@@ -1,27 +1,25 @@
 package kr.sparta.tripmate.ui.viewmodel.scrap.main
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.scrap.ImageItemsEntity
-import kr.sparta.tripmate.domain.model.scrap.ImageServerDataEntity
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.model.search.toEntity
 import kr.sparta.tripmate.domain.usecase.GetImageUseCase
 import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 
 class SearchBlogViewModel(
     private val searchBlog: GetSearchBlogUseCase,
     private val updateBlogScrapUseCase: UpdateBlogScrapUseCase,
     private val getAllBlogScraps: GetAllBlogScrapsUseCase,
-    private val getImageUseCase: GetImageUseCase
+    private val getImageUseCase: GetImageUseCase,
+    private val getUidUseCase: GetUidUseCase,
 ) : ViewModel() {
     private val _searchList = MutableLiveData<List<SearchBlogEntity>>()
     val searchList: LiveData<List<SearchBlogEntity>> get() = _searchList
@@ -92,7 +90,7 @@ class SearchBlogViewModel(
         val result = getImageUseCase(q)
         val imageItems = ArrayList<ImageItemsEntity>()
         result.items?.let {
-            for(i in it.indices){
+            for (i in it.indices) {
                 imageItems.add(it[i])
             }
             _recommandImage.value = imageItems
@@ -128,4 +126,6 @@ class SearchBlogViewModel(
     fun clearSearchList() {
         _searchList.value = listOf()
     }
+
+    fun getUid(): String = getUidUseCase()
 }

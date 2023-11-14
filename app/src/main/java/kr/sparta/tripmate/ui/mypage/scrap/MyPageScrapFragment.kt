@@ -20,7 +20,6 @@ import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageScrapFragment : Fragment() {
     companion object {
@@ -105,7 +104,7 @@ class MyPageScrapFragment : Fragment() {
      * 모든 스크랩된 데이터 가져오기
      * */
     fun getAllScrapedData() {
-        val uid = SharedPreferences.getUid(scrapContext)
+        val uid = viewModel.getUid()
         // 모든 스크렙데이터 가져오기
         viewModel.getAllScrapedData(uid)
     }

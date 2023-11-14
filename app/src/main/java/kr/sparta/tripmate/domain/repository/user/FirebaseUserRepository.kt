@@ -13,8 +13,6 @@ interface FirebaseUserRepository {
 
     fun saveUserData(model: UserDataEntity)
 
-    fun updateUserData(model: UserDataEntity)
-
     fun withdrawalUserData(uid: String)
 
     fun logout()

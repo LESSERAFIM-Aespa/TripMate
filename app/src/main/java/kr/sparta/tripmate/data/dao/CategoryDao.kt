@@ -23,12 +23,6 @@ interface CategoryDao {
     @Delete
     suspend fun deleteCategories(vararg category: Category)
 
-    @Query("SELECT * FROM CATEGORY")
-    suspend fun getAllCategories(): List<Category>
-
-    @Query("SELECT * FROM CATEGORY WHERE NUM = :num")
-    suspend fun getAllCategoriesWithNum(num: Int): List<Category>
-
     @Query("SELECT * FROM CATEGORY WHERE BUDGET_NUM = :budgetNum")
     suspend fun getAllCategoriesWithBudgetNum(budgetNum: Int): List<Category>
 

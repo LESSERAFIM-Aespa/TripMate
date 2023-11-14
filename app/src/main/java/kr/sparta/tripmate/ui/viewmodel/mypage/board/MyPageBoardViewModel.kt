@@ -10,11 +10,13 @@ import kr.sparta.tripmate.domain.model.community.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetAllBoardsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 
 class MyPageBoardViewModel(
     private val getAllBoardsUseCase: GetAllBoardsUseCase,
     private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,
+    private val getUidUseCase: GetUidUseCase,
 ) :
     ViewModel() {
     private val _myBoards: MutableLiveData<List<CommunityEntity?>> = MutableLiveData()
@@ -24,7 +26,7 @@ class MyPageBoardViewModel(
      * 작성자: 서정한
      * 내용: 모든 게시글 목록을 가져옵니다.
      * */
-    fun getAllMyBoards(uid: String)= CoroutineScope(Dispatchers.Main).launch {
+    fun getAllMyBoards(uid: String) = CoroutineScope(Dispatchers.Main).launch {
         getAllBoardsUseCase().collect() { boards ->
             val myBoard = boards.filter { it?.userid == uid }
 
@@ -47,4 +49,6 @@ class MyPageBoardViewModel(
     fun updateBoardLikes(uid: String, key: String) {
         updateBoardLikeUseCase(uid, key)
     }
+
+    fun getUid(): String = getUidUseCase()
 }

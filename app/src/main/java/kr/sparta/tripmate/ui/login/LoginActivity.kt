@@ -28,7 +28,6 @@ import kr.sparta.tripmate.ui.viewmodel.login.LoginFactory
 import kr.sparta.tripmate.ui.viewmodel.login.LoginViewModel
 import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.shortToast
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class LoginActivity : AppCompatActivity() {
     companion object {
@@ -50,10 +49,10 @@ class LoginActivity : AppCompatActivity() {
              * */
             fun layoutVisibleController(isLoginSuccessful: Boolean) = with(binding) {
                 if (isLoginSuccessful) {
-                    if (!SharedPreferences.getUid(this@LoginActivity).isNullOrBlank()) {
+                    if (!viewModel.getUid().isNullOrBlank()) {
                         loginCenterConstraint.visibility = View.VISIBLE
                         nickCenterConstraint.visibility = View.GONE
-                        shortToast("${SharedPreferences.getNickName(this@LoginActivity)}의 계정으로 로그인 되었습니다.")
+                        shortToast("${viewModel.getNickName()}의 계정으로 로그인 되었습니다.")
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -80,12 +79,13 @@ class LoginActivity : AppCompatActivity() {
                  * */
                 fun confirmNickname() {
                     binding.nickBtn.setOnClickListener {
-                        CoroutineScope(Dispatchers.Main).launch{
+                        CoroutineScope(Dispatchers.Main).launch {
                             val nickName = binding.nickEdit.text.toString()
                             val isExist = viewModel.getNickNameData(nickName)
                             if (!isExist) {
                                 shortToast("닉네임이 존재합니다.")
-                                return@launch}
+                                return@launch
+                            }
                             if (nickName.trim().isEmpty()) {
                                 shortToast(getString(R.string.login_exception_empty_nickname))
                                 return@launch
@@ -105,26 +105,24 @@ class LoginActivity : AppCompatActivity() {
                                 )
 
                                 // 기기 저장
-                                SharedPreferences.apply {
+                                with(viewModel) {
                                     // uid
                                     saveUid(
-                                        this@LoginActivity,
                                         user.uid
                                     )
                                     // profile Image
                                     user.photoUrl?.toString()?.let { url ->
-                                        saveProfile(this@LoginActivity, url)
+                                        saveProfile(url)
                                     }
                                     // nickname
                                     saveNickName(
-                                        this@LoginActivity,
                                         nickName
                                     )
                                 }
 
                                 longToast("${nickName}의 계정으로 로그인 되었습니다.")
-                        }
-                           startActivity( MainActivity.newIntent(this@LoginActivity))
+                            }
+                            startActivity(MainActivity.newIntent(this@LoginActivity))
                             finish()
 
                         }

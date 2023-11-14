@@ -10,11 +10,11 @@ import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentMyPageBoardItemBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class MyPageBoardListAdapter(
     private val onItemClicked: (CommunityEntity) -> Unit,
-    private val onLikeClicked: (CommunityEntity) -> Unit
+    private val onLikeClicked: (CommunityEntity) -> Unit,
+    private val getUidFunction: () -> String,
 ) :
     ListAdapter<CommunityEntity, MyPageBoardListAdapter.Holder>(object : DiffUtil
     .ItemCallback<CommunityEntity>() {
@@ -54,7 +54,7 @@ class MyPageBoardListAdapter(
              * 내용: 좋아요버튼 클릭에따른 토글처리
              * */
             fun toggleIsLikeIcon() {
-                val uid = SharedPreferences.getUid(itemView.context)
+                val uid = getUidFunction()
                 val isLike = item.likeUsers.find { it == uid } ?: ""
 
                 if (isLike != "") {

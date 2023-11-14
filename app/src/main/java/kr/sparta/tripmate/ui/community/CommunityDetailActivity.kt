@@ -20,7 +20,6 @@ import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailViewModel
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityDetailActivity : AppCompatActivity() {
     companion object {
@@ -155,7 +154,7 @@ class CommunityDetailActivity : AppCompatActivity() {
     private fun btnCommunityDetailLikeBtn(item: CommunityEntity) {
         binding.communityDetailLikeBtn.setOnClickListener {
             item.let { communityEntity ->
-                val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
+                val uid = viewModel.getUid()
 
                 // 스크랩 업데이트
                 communityEntity.key?.let { it1 ->
@@ -209,7 +208,7 @@ class CommunityDetailActivity : AppCompatActivity() {
     private fun btnCommunityIvLike(item: CommunityEntity) {
         binding.communityIvLike.setOnClickListener {
             item.let {
-                val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
+                val uid = viewModel.getUid()
 
                 viewModel.updateBoardLike(
                     uid,
@@ -220,7 +219,7 @@ class CommunityDetailActivity : AppCompatActivity() {
     }
 
     private fun comparedUid(uidList: List<String>): Boolean =
-        uidList.any { it == SharedPreferences.getUid(this@CommunityDetailActivity) }
+        uidList.any { it == viewModel.getUid() }
 
 
     private fun initViewModel() = with(viewModel) {
@@ -254,7 +253,7 @@ class CommunityDetailActivity : AppCompatActivity() {
      * 내용: 내가 쓴글인지 확인 후 수정 및 삭제버튼 생성
      * */
     private fun checkIsMyPost(model: CommunityEntity) = with(binding) {
-        val uid = SharedPreferences.getUid(this@CommunityDetailActivity)
+        val uid = viewModel.getUid()
         if (model.userid == uid) {
             communityDetailEdit.visibility = View.VISIBLE
             communityDetailRemove.visibility = View.VISIBLE

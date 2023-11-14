@@ -4,9 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 
 class ScrapDetailViewModel(
     private val updateBlogScrapUseCase: UpdateBlogScrapUseCase,
+    private val getUidUseCase: GetUidUseCase,
 ) : ViewModel() {
     private val _isScrap: MutableLiveData<Boolean> = MutableLiveData()
     val isScrap get() = _isScrap
@@ -26,4 +28,6 @@ class ScrapDetailViewModel(
      * 있는경우 제거합니다.
      * */
     fun updateBlogScrap(uid: String, model: SearchBlogEntity) = updateBlogScrapUseCase(uid, model)
+
+    fun getUid() : String = getUidUseCase()
 }

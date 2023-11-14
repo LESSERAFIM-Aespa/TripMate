@@ -10,12 +10,14 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.RemoveBoardUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScrapUseCase
+import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 
 class CommunityDetailViewModel(
     private val updateBoardScrapUseCase: UpdateBoardScrapUseCase,
     private val removeBoardUseCase: RemoveBoardUseCase,
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,
-    private val getBoardUseCase: GetBoardUseCase
+    private val getBoardUseCase: GetBoardUseCase,
+    private val getUidUseCase: GetUidUseCase
 ) : ViewModel() {
 
     /**
@@ -50,5 +52,7 @@ class CommunityDetailViewModel(
             _boards.value = it?.toEntity()
         }
     }
+
+    fun getUid() : String = getUidUseCase()
 
 }

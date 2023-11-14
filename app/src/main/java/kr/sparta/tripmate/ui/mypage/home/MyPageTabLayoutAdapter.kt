@@ -35,7 +35,4 @@ class MyPageTabLayoutAdapter(fragment: FragmentActivity) : FragmentStateAdapter(
     fun updateScrap(): Fragment {
         return fragments[1].fragment
     }
-    fun updateBoard():Fragment{
-        return fragments[0].fragment
-    }
 }

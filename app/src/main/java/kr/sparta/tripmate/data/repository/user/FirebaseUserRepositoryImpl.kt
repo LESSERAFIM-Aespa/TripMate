@@ -20,8 +20,6 @@ class FirebaseUserRepositoryImpl(private val remoteSource: FirebaseUserRemoteDat
 
     override fun saveUserData(model: UserDataEntity) = remoteSource.saveUserData(model.toModel())
 
-    override fun updateUserData(model: UserDataEntity) = remoteSource.saveUserData(model.toModel())
-
     override fun withdrawalUserData(uid: String) = remoteSource.withdrawalUserData(uid)
 
     override fun logout() = remoteSource.logout()

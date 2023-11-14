@@ -17,9 +17,11 @@ import kotlin.coroutines.resume
  * 내용: Firebase RDB의 User데이터 관리
  * */
 class FirebaseUserRemoteDataSource {
-    private final val REFERENCE_BLOG_SCRAP = "BlogScrap"
-    private final val REFERENCE_USER_DATA = "UserData"
-    private final val REFERENCE_NICKNAME = "NickNameData"
+    companion object{
+        private const val REFERENCE_BLOG_SCRAP = "BlogScrap"
+        private const val REFERENCE_USER_DATA = "UserData"
+        private const val REFERENCE_NICKNAME = "NickNameData"
+    }
 
     private fun getReference() = Firebase.database.getReference(REFERENCE_USER_DATA)
     private fun getNickReference() = Firebase.database.getReference(REFERENCE_NICKNAME)
