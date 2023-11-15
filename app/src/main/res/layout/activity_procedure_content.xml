@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
                 android:fontFamily="@font/inter"
-                android:text="과정 이름"
+                android:text="@string/income_expense_history"
                 android:textSize="16sp"
                 android:layout_marginStart="15dp"
                 android:textColor="@color/black"
