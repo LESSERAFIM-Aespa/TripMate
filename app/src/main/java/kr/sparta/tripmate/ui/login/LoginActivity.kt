@@ -2,6 +2,7 @@ package kr.sparta.tripmate.ui.login
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
@@ -220,6 +222,31 @@ class LoginActivity : AppCompatActivity() {
             setSize(SignInButton.SIZE_WIDE)
         }
     }
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this@LoginActivity)
+        builder.setTitle("앱 종료")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    viewModel.removeUserData("")
+                    super.onBackPressed()
+                }
 
+                DialogInterface.BUTTON_NEGATIVE -> {}
+            }
+        }
+
+        builder.setPositiveButton(
+            getString(R.string.budget_detail_dialog_positive_text),
+            listener
+        )
+        builder.setNegativeButton(
+            getString(R.string.budget_detail_dialog_negative_text),
+            listener
+        )
+
+        builder.show()
+    }
 
 }
