@@ -89,6 +89,7 @@
     <string name="please_enter_a_nickname_is_less_than_10_characters">닉네임은 10자 이내로 입력해주세요</string>
     <string name="spending_and_income">지출 &amp; 소득</string>
     <string name="spending">지출</string>
+    <string name="please_enter_the_number_of_people">인원을 입력해주세요(100명이내)</string>
 
     <string-array name="scrap_recommand_list">
         <item>울산 관광</item>

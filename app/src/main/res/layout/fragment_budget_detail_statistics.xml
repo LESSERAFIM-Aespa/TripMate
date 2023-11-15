@@ -312,7 +312,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/shape_budget_detail_tab_bg"
                         android:fontFamily="@font/inter"
-                        android:hint="인원을 입력해주세요"
+                        android:hint="@string/please_enter_the_number_of_people"
                         android:inputType="numberDecimal"
                         android:padding="10dp"
                         android:paddingHorizontal="20dp"
@@ -320,7 +320,7 @@
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textColorHint="@color/searchoutline"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                 </com.google.android.material.textfield.TextInputLayout>
 
