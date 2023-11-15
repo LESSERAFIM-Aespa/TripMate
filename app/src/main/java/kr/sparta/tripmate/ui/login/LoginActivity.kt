@@ -31,6 +31,7 @@ import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.viewmodel.login.LoginFactory
 import kr.sparta.tripmate.ui.viewmodel.login.LoginViewModel
 import kr.sparta.tripmate.util.method.longToast
+import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 
 class LoginActivity : AppCompatActivity() {
@@ -186,7 +187,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binding.nickEdit.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(10))
+        binding.nickEdit.setMaxLength(10)
         auth = FirebaseAuth.getInstance()
         login_Database = Firebase.database.reference
 
