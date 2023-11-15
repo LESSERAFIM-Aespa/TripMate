@@ -220,10 +220,10 @@ class ProcedureContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                procedureNameEdittext.text.toString().length >= 10 -> {
+                procedureNameEdittext.text.toString().length >= 20 -> {
                     Toast.makeText(
                         this@ProcedureContentActivity,
-                        "과정 이름은 10자이내로 적어주세요.",
+                        "과정 이름은 20자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
