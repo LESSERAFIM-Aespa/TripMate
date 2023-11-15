@@ -17,7 +17,7 @@ import kotlin.coroutines.resume
  * 내용: Firebase RDB의 User데이터 관리
  * */
 class FirebaseUserRemoteDataSource {
-    companion object{
+    companion object {
         private const val REFERENCE_BLOG_SCRAP = "BlogScrap"
         private const val REFERENCE_USER_DATA = "UserData"
         private const val REFERENCE_NICKNAME = "NickNameData"
@@ -96,14 +96,14 @@ class FirebaseUserRemoteDataSource {
     suspend fun getNickNameData(nickName: String): Boolean {
         val nickRef = getNickReference()
 
-            val result = suspendCancellableCoroutine<Boolean> {continuation ->
-                nickRef.get().addOnSuccessListener { snapshot ->
-                    val isExist = snapshot.children.mapNotNull {
-                        it.getValue(String::class.java)
-                    }.toMutableList().find { it == nickName }.isNullOrBlank()
-                    continuation.resume(isExist)
-                }
+        val result = suspendCancellableCoroutine<Boolean> { continuation ->
+            nickRef.get().addOnSuccessListener { snapshot ->
+                val isExist = snapshot.children.mapNotNull {
+                    it.getValue(String::class.java)
+                }.toMutableList().find { it == nickName }.isNullOrBlank()
+                continuation.resume(isExist)
             }
+        }
 
         return result
     }
