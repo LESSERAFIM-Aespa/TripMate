@@ -20,6 +20,7 @@ import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteViewModel
 import kr.sparta.tripmate.util.method.isWindowTouchable
+import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 import java.util.regex.Pattern
 
@@ -71,7 +72,7 @@ class CommunityWriteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        binding.communityWriteTitle.setMaxLength(34)
         initView()
         initViewModel()
     }
