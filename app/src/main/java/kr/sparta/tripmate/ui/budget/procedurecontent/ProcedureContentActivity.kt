@@ -25,6 +25,7 @@ import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentFactory
+import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toTimeFormat
 import kotlin.math.abs
@@ -85,9 +86,15 @@ class ProcedureContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        setEditTextView()
         initViews()
         initViewModels()
+    }
+
+    private fun setEditTextView() = with(binding) {
+        procedureMoneyEdittext.setMaxLength(13)
+        procedureNameEdittext.setMaxLength(19)
+        procedureMemoEdittext.setMaxLength(100)
     }
 
     private fun initViewModels() {
