@@ -59,6 +59,10 @@ class SettingActivity : AppCompatActivity() {
 
         // 뒤로가기 버튼 입니다.
         settingToolbar.setNavigationOnClickListener {
+            val intent = LoginActivity.newIntent(this@SettingActivity).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            }
+            startActivity(intent)
             finish()
         }
 
