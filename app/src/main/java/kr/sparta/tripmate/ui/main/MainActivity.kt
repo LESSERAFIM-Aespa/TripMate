@@ -3,13 +3,16 @@ package kr.sparta.tripmate.ui.main
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.R
+import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.ActivityMainBinding
 import kr.sparta.tripmate.util.method.shortToast
 
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         viewPager2State()
         setupTabIcons()
-
+        updateVersionCheck()
         TabLayoutMediator(
             binding.tabLayout,
             binding.viewPager2
@@ -138,6 +141,53 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 DialogInterface.BUTTON_NEGATIVE -> {}
+            }
+        }
+
+        builder.setPositiveButton(
+            getString(R.string.budget_detail_dialog_positive_text),
+            listener
+        )
+        builder.setNegativeButton(
+            getString(R.string.budget_detail_dialog_negative_text),
+            listener
+        )
+
+        builder.show()
+    }
+    private fun updateVersionCheck(){
+        val latestVersionCode = Constants.LatestVersionCode
+        val currentVersionCode = BuildConfig.VERSION_CODE
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setTitle("업데이트")
+        builder.setMessage("최신 버전이 있습니다. \n 업데이트를 해주세요")
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    if(currentVersionCode<=latestVersionCode){
+                        val packageName = "kr.sparta.tripmate" // 여기에 앱의 패키지 이름을 넣어주세요
+                        try {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("market://details?id=$packageName")
+                                )
+                            )
+                        } catch (e: android.content.ActivityNotFoundException) {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                                )
+                            )
+                        }
+                        super.onBackPressed()
+                    }
+                }
+
+                DialogInterface.BUTTON_NEGATIVE -> {
+                    super.onBackPressed()
+                }
             }
         }
 
