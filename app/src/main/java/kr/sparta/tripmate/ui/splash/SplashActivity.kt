@@ -1,11 +1,17 @@
 package kr.sparta.tripmate.ui.splash
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AlertDialog
+import kr.sparta.tripmate.BuildConfig
+import kr.sparta.tripmate.R
+import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.ActivitySplashBinding
 import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.main.MainActivity
@@ -24,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        startSplash()
+        updateCheck()
     }
 
     private fun startSplash() {
@@ -36,5 +42,59 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }, 1000)
+    }
+
+    private fun updateCheck(){
+        val latestVersionCode = Constants.LatestVersionCode
+        val currentVersionCode = BuildConfig.VERSION_CODE
+
+        if (currentVersionCode < latestVersionCode) {
+
+            val builder = AlertDialog.Builder(this@SplashActivity)
+            builder.setTitle("업데이트")
+            builder.setMessage("최신 버전이 있습니다. \n 업데이트를 해주세요")
+            val listener = DialogInterface.OnClickListener { p0, p1 ->
+                when (p1) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        updateVersionCheck()
+                        super.onBackPressed()
+                    }
+
+                    DialogInterface.BUTTON_NEGATIVE -> {
+                        super.onBackPressed()
+                    }
+                }
+            }
+            builder.setPositiveButton(
+                getString(R.string.budget_detail_dialog_positive_text),
+                listener
+            )
+            builder.setNegativeButton(
+                getString(R.string.budget_detail_dialog_negative_text),
+                listener
+            )
+            builder.setCancelable(false)
+            builder.show()
+        } else {
+            startSplash()
+        }
+    }
+    private fun updateVersionCheck() {
+        val packageName = "kr.sparta.tripmate"
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$packageName")
+                )
+            )
+        } catch (e: android.content.ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
+        }
     }
 }
