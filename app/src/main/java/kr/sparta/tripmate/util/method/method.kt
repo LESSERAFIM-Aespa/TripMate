@@ -2,7 +2,9 @@ package kr.sparta.tripmate.util.method
 
 import android.app.Activity
 import android.content.Context
+import android.text.InputFilter
 import android.view.WindowManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -40,4 +42,12 @@ fun isWindowTouchable(context: Context, isTouchable: Boolean) {
         // 화면터치 해제
         (context as Activity).window?.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
+}
+
+/**
+ * 작성자 : 박성수
+ * 내용 : EditText의 글자 수 제한
+ */
+fun EditText.setMaxLength(maxLength: Int) {
+    filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
 }
