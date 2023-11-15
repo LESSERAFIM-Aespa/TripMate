@@ -1,14 +1,17 @@
 package kr.sparta.tripmate.ui.main
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
+import kr.sparta.tripmate.util.method.shortToast
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -122,5 +125,31 @@ class MainActivity : AppCompatActivity() {
                 //딱히 처리할게 없음
             }
         })
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setTitle("앱 종료")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    super.onBackPressed()
+                }
+
+                DialogInterface.BUTTON_NEGATIVE -> {}
+            }
+        }
+
+        builder.setPositiveButton(
+            getString(R.string.budget_detail_dialog_positive_text),
+            listener
+        )
+        builder.setNegativeButton(
+            getString(R.string.budget_detail_dialog_negative_text),
+            listener
+        )
+
+        builder.show()
     }
 }
