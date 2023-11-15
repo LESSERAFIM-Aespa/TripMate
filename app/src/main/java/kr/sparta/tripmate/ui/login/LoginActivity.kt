@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -209,6 +210,10 @@ class LoginActivity : AppCompatActivity() {
 
         binding.loginGoogle.setOnClickListener {
             googleSignIn()
+        }
+        binding.loginGoogle.apply {
+            setColorScheme(SignInButton.COLOR_DARK)
+            setSize(SignInButton.SIZE_WIDE)
         }
     }
 
