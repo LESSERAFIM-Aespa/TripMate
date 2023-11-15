@@ -91,6 +91,10 @@ class LoginActivity : AppCompatActivity() {
                                 shortToast(getString(R.string.login_exception_empty_nickname))
                                 return@launch
                             }
+                            if(nickName.length >=10){
+                                shortToast(getString(R.string.please_enter_a_nickname_is_less_than_10_characters))
+                                return@launch
+                            }
 
                             viewModel.getCurrentUser()?.let { user ->
                                 // 서버 업로드
