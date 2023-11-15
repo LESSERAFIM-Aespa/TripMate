@@ -10,7 +10,6 @@ import coil.load
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentCommunityMainItemBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 class CommunityListAdapter(
     private val onBoardClicked: (CommunityEntity, Int) -> Unit,
