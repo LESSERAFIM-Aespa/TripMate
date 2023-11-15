@@ -221,7 +221,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_budget_view_type5"
                     android:fontFamily="@font/inter"
-                    android:hint="메모를 입력해주세요"
+                    android:hint="@string/please_enter_a_note"
                     android:padding="15dp"
                     android:textColor="@color/black"
                     android:textColorHint="@color/searchoutline"

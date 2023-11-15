@@ -81,6 +81,7 @@
     <string name="privacy_url">https://wary-alto-0df.notion.site/59619eb40bfd4050bec9d2a6b2127c8b?pvs=4</string>
     <string name="terms_url">https://wary-alto-0df.notion.site/c9a9499af04c433ea675545cf1757ab9?pvs=4</string>
     <string name="income_expense_history">소득/지출 내역</string>
+    <string name="please_enter_a_note">메모를 입력해주세요</string>
 
     <string-array name="scrap_recommand_list">
         <item>울산 관광</item>

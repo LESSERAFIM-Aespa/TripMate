@@ -25,6 +25,7 @@ import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentFactory
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toTimeFormat
 import kotlin.math.abs
 
@@ -226,6 +227,10 @@ class ProcedureContentActivity : AppCompatActivity() {
                         "과정 이름은 20자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
+                }
+
+                procedureMemoEdittext.text.toString().length >= 100 -> {
+                    this@ProcedureContentActivity.shortToast("메모는 100자 이내로 작성해주세요")
                 }
 
                 procedureTimeTextview.text.toString() == "시간과 날짜를 입력해 주세요" -> {
