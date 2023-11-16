@@ -134,7 +134,7 @@
     <color name="sub_text_color">#555</color>
 
 
-    <color name="positiveButtonTextColor">@color/black</color>
-    <color name="negativeButtonTextColor">@color/black</color>
+    <color name="positiveButtonTextColor">@color/Blue800</color>
+    <color name="negativeButtonTextColor">#810F0F</color>
     <color name="bottomSheetDividerColor">#F5F5F5</color>
 </resources>
