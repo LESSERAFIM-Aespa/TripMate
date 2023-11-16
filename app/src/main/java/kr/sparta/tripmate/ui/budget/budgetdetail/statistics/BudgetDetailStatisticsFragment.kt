@@ -119,7 +119,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
     private fun initViews() = with(binding) {
         binding.budgetDetailExpenditurePiechart.apply {
             renderer = CustomPieChartRenderer(this, 0f)
-            setExtraOffsets(40f, 12f, 40f, 12f)
+            setExtraOffsets(35f, 8f, 35f, 8f)
 
             isDrawHoleEnabled = true
             holeRadius = 50f
@@ -140,7 +140,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
         binding.budgetDetailIncomePiechart.apply {
             renderer = CustomPieChartRenderer(this, 10f)
-            setExtraOffsets(40f, 12f, 40f, 12f)
+            setExtraOffsets(35f, 8f, 35f, 8f)
 
             isDrawHoleEnabled = true
             holeRadius = 50f
@@ -249,7 +249,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val pieDataSet = PieDataSet(entries, "").apply {
                         colors = colorsItems
                         setValueTextColors(colorsItems)
-                    }.toCustomFormat()
+                    }
+                        //.toCustomFormat()
 
                     val pieData = PieData(pieDataSet)
                     binding.budgetDetailExpenditurePiechart.data = pieData
@@ -300,7 +301,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val pieDataSet = PieDataSet(entries, "").apply {
                         colors = colorsItems
                         setValueTextColors(colorsItems)
-                    }.toCustomFormat()
+                    }
+                        //.toCustomFormat()
 
                     val pieData = PieData(pieDataSet)
                     binding.budgetDetailIncomePiechart.data = pieData
