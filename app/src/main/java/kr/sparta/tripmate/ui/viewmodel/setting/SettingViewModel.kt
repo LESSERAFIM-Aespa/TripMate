@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.model.user.toEntity
+import kr.sparta.tripmate.domain.usecase.budgetrepository.DeleteAllBudgetsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.LogoutUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
@@ -18,7 +19,7 @@ class SettingViewModel(
     private val withdrawalUserDataUseCase: WithdrawalUserDataUseCase,
     private val getUidUseCase: GetUidUseCase,
     private val removeKeyUseCase: RemoveKeyUseCase,
-
+    private val deleteAllBudgetsUseCase: DeleteAllBudgetsUseCase,
     ) : ViewModel() {
     private val _settingUserData: MutableLiveData<UserDataEntity?> = MutableLiveData()
     val settingUserData get() = _settingUserData
@@ -29,7 +30,7 @@ class SettingViewModel(
         }
     }
 
-
+    fun deleteAllBudgets() = viewModelScope.launch { deleteAllBudgetsUseCase() }
     fun removeUserData(uid: String) = withdrawalUserDataUseCase(uid)
 
     fun logout() = logoutUseCase()
