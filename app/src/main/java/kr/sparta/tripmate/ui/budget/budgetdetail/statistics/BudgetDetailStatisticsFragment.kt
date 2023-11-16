@@ -68,11 +68,15 @@ class BudgetDetailStatisticsFragment : Fragment() {
     private val incomeListAdapter: BudgetDetailStatisticsListAdapter =
         BudgetDetailStatisticsListAdapter()
 
-    private  val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()) {
-        when(it) {
-            true -> { captureScrollableContent() }
-            false -> { }
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        when (it) {
+            true -> {
+                captureScrollableContent()
+            }
+
+            false -> {}
         }
     }
 
@@ -333,14 +337,11 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
                 binding.budgetStatisticsCalculateButton.setOnClickListener {
                     if (binding.budgetStatisticsCalculateEdittext.text.toString().isBlank()) {
-                        context?.shortToast("2 ~ 100명까지 입력할 수 있습니다.")
-                    } else if(binding.budgetStatisticsCalculateEdittext.text.toString()
-                            .toInt() in 2..100){
+
+                    } else {
                         val n = binding.budgetStatisticsCalculateEdittext.text.toString().toInt()
                         binding.budgetStatisticsCalculateTextview.text =
                             (totalExpenditureSum / n).toMoneyFormat() + "원"
-                    } else {
-                        context?.shortToast("2 ~ 100명까지 입력할 수 있습니다.")
                     }
                 }
 
@@ -394,7 +395,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.close()
 
-        val uri = FileProvider.getUriForFile(this.requireContext(), "kr.sparta.tripmate.provider", file)
+        val uri =
+            FileProvider.getUriForFile(this.requireContext(), "kr.sparta.tripmate.provider", file)
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_STREAM, uri)
