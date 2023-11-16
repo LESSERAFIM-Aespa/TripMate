@@ -100,7 +100,7 @@
 ## Room
 ![room](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/26cdcd3b-4435-4a0c-bf9e-00284838f0cc)
 
-## MVVM Design Pattern
+## MVVM
 ![MVVM](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/97b1667e-8504-406a-aa0f-0c71dca1d1b8)
 
 ## 폴더구조
