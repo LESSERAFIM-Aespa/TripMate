@@ -21,6 +21,8 @@ class BudgetLocalDataSource(context: Context) {
         budgetDao.deleteBudgets(*budget)
     }
 
+    suspend fun deleteAllBudgets() = budgetDao.deleteAllBudgets()
+
     suspend fun getAllBudgetsOrederByDate(): List<Budget> = budgetDao.getAllBudgetsOrederByDate()
     suspend fun getLastBudget(): List<Budget> = budgetDao.getLastBudget()
 

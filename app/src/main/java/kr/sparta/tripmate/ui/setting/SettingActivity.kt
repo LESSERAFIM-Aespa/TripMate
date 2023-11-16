@@ -87,6 +87,7 @@ class SettingActivity : AppCompatActivity() {
 
         // 회원탈퇴 버튼입니다.
         binding.settingWithdrawal.setOnClickListener {
+            settingViewModel.deleteAllBudgets()
             settingViewModel.removeKey()
             settingViewModel.removeUserData(uid)
             settingViewModel.logout() //로그아웃 됩니다.

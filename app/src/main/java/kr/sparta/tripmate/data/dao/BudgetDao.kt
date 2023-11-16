@@ -23,6 +23,9 @@ interface BudgetDao {
     @Delete
     suspend fun deleteBudgets(vararg budget: Budget)
 
+    @Query("DELETE FROM BUDGET")
+    suspend fun deleteAllBudgets()
+
     @Query("SELECT * FROM BUDGET ORDER BY START_DATE ASC , END_DATE ASC")
     suspend fun getAllBudgetsOrederByDate(): List<Budget>
 
