@@ -29,6 +29,7 @@ import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentFactory
+import kr.sparta.tripmate.util.method.setMaxLength
 import java.util.Calendar
 
 class BudgetContentActivity : AppCompatActivity() {
@@ -102,7 +103,7 @@ class BudgetContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        setEditTextView()
         initViews()
         initViewModels()
     }
@@ -209,10 +210,10 @@ class BudgetContentActivity : AppCompatActivity() {
 
                 }
 
-                budgetNameEdittext.text.toString().length >= 10 -> {
+                budgetNameEdittext.text.toString().length >= 14 -> {
                     Toast.makeText(
                         this@BudgetContentActivity,
-                        "가계부 이름은 10자이내로 적어주세요.",
+                        "가계부 이름은 13자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -362,6 +363,10 @@ class BudgetContentActivity : AppCompatActivity() {
                 categoryAdapter.saveList[pos] = currentItem.copy(color = colorHex)
             }
             .show()
+    }
+    private fun setEditTextView() = with(binding) {
+        budgetMoneyEdittext.setMaxLength(13)
+        budgetNameEdittext.setMaxLength(13)
     }
 }
 

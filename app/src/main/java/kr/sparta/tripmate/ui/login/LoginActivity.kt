@@ -2,15 +2,19 @@ package kr.sparta.tripmate.ui.login
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -27,6 +31,7 @@ import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.viewmodel.login.LoginFactory
 import kr.sparta.tripmate.ui.viewmodel.login.LoginViewModel
 import kr.sparta.tripmate.util.method.longToast
+import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 
 class LoginActivity : AppCompatActivity() {
@@ -88,6 +93,10 @@ class LoginActivity : AppCompatActivity() {
                             }
                             if (nickName.trim().isEmpty()) {
                                 shortToast(getString(R.string.login_exception_empty_nickname))
+                                return@launch
+                            }
+                            if(nickName.length >=10){
+                                shortToast(getString(R.string.please_enter_a_nickname_is_less_than_10_characters))
                                 return@launch
                             }
 
@@ -178,7 +187,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        binding.nickEdit.setMaxLength(10)
         auth = FirebaseAuth.getInstance()
         login_Database = Firebase.database.reference
 
@@ -210,7 +219,36 @@ class LoginActivity : AppCompatActivity() {
         binding.loginGoogle.setOnClickListener {
             googleSignIn()
         }
+        binding.loginGoogle.apply {
+            setColorScheme(SignInButton.COLOR_DARK)
+            setSize(SignInButton.SIZE_WIDE)
+        }
     }
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this@LoginActivity)
+        builder.setTitle("앱 종료")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    viewModel.removeUserData("")
+                    super.onBackPressed()
+                }
 
+                DialogInterface.BUTTON_NEGATIVE -> {}
+            }
+        }
+
+        builder.setPositiveButton(
+            getString(R.string.budget_detail_dialog_positive_text),
+            listener
+        )
+        builder.setNegativeButton(
+            getString(R.string.budget_detail_dialog_negative_text),
+            listener
+        )
+
+        builder.show()
+    }
 
 }

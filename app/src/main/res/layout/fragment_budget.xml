@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/budget_list_toolbar"
         ads:adSize="BANNER"
-        ads:adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId = "@string/ad_key"
         />
 
     <androidx.recyclerview.widget.RecyclerView

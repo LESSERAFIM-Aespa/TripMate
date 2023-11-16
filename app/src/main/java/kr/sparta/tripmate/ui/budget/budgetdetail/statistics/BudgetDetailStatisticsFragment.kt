@@ -31,6 +31,8 @@ import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory
+import kr.sparta.tripmate.util.method.setMaxLength
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import java.io.File
 import java.io.FileOutputStream
@@ -66,11 +68,15 @@ class BudgetDetailStatisticsFragment : Fragment() {
     private val incomeListAdapter: BudgetDetailStatisticsListAdapter =
         BudgetDetailStatisticsListAdapter()
 
-    private  val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()) {
-        when(it) {
-            true -> { captureScrollableContent() }
-            false -> { }
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        when (it) {
+            true -> {
+                captureScrollableContent()
+            }
+
+            false -> {}
         }
     }
 
@@ -102,6 +108,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentBudgetDetailStatisticsBinding.inflate(inflater, container, false)
+        binding.budgetStatisticsCalculateEdittext.setMaxLength(3)
         return binding.root
     }
 
@@ -169,7 +176,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     private fun initViewModels() {
         with(viewModel) {
-            budgetFlowToLiveData.observe(viewLifecycleOwner){
+            budgetFlowToLiveData.observe(viewLifecycleOwner) {
                 binding.budgetStatisticsMoneyTextview.text = it.money.toMoneyFormat() + "원"
                 binding.budgetStatisticsRemainTextview.text = it.money.toMoneyFormat() + "원"
                 binding.budgetStatisticsDurationTextview.text =
@@ -318,26 +325,39 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
                 binding.budgetStatisticsCalculateButton.setOnClickListener {
                     if (binding.budgetStatisticsCalculateEdittext.text.toString().isBlank()) {
-
-                    } else {
+                        context?.shortToast("2 ~ 100명까지 입력할 수 있습니다.")
+                    } else if(binding.budgetStatisticsCalculateEdittext.text.toString()
+                            .toInt() in 2..100){
                         val n = binding.budgetStatisticsCalculateEdittext.text.toString().toInt()
                         binding.budgetStatisticsCalculateTextview.text =
                             (totalExpenditureSum / n).toMoneyFormat() + "원"
+                    } else {
+                        context?.shortToast("2 ~ 100명까지 입력할 수 있습니다.")
                     }
                 }
 
                 binding.budgetStatisticsShareImageview.setOnClickListener {
+                    if (binding.budgetStatisticsCalculateEdittext.text.toString()
+                            .toInt() in 2..100
+                    ) {
+                        val permission =
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                Manifest.permission.READ_MEDIA_IMAGES
+                            } else {
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            }
 
-                    val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        Manifest.permission.READ_MEDIA_IMAGES
+                        if (ContextCompat.checkSelfPermission(
+                                requireContext(),
+                                permission
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            requestPermission.launch(permission)
+                        } else {
+                            captureScrollableContent()
+                        }
                     } else {
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    }
-
-                    if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermission.launch(permission)
-                    } else {
-                        captureScrollableContent()
+                        context?.shortToast(" 2 ~ 100명까지 입력할 수 있습니다.")
                     }
                 }
             }
@@ -358,7 +378,10 @@ class BudgetDetailStatisticsFragment : Fragment() {
     }
 
     private fun saveAndShareImage(bitmap: Bitmap) {
-        val file = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "scroll_capture.png")
+        val file = File(
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "scroll_capture.png"
+        )
         val fileOutputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.close()

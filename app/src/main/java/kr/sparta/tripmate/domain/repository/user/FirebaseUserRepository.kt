@@ -17,5 +17,5 @@ interface FirebaseUserRepository {
 
     fun logout()
 
-    suspend fun getNickNameData(nickname: String) : Boolean
+    suspend fun getNickNameData(nickname: String): Boolean
 }

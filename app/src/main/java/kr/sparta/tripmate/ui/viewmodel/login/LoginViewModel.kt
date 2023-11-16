@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetNickNameDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveNickNameUseCase
@@ -22,8 +23,8 @@ class LoginViewModel(
     private val saveNickNameUseCase: SaveNickNameUseCase,
     private val getUidUseCase: GetUidUseCase,
     private val getNickNameUseCase: GetNickNameUseCase,
-
-    ) :
+    private val withdrawalUserDataUseCase: WithdrawalUserDataUseCase
+) :
     ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
@@ -47,4 +48,6 @@ class LoginViewModel(
     fun saveNickName(nickName: String) = saveNickNameUseCase(nickName)
     fun getUid(): String = getUidUseCase()
     fun getNickName(): String = getNickNameUseCase()
+
+    fun removeUserData(uid: String) = withdrawalUserDataUseCase(uid)
 }
