@@ -74,11 +74,34 @@
 <img src="https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/6e2bbee0-7630-48b4-bb3a-400ba274a194" width="20%" height="20%"/>
 
 # 주요기능
+'트립메이트(TripMate)'는 여행예산을 편리하게 기록하고 공유할 수 있는 서비스입니다.
+
+## 가계부
+- 각 여행에 맞는 가계부를 만들고 그때그때의 수입 및 지출내역을 기록할 수 있습니다.
+- 지출 카테고리는 사용자가 직접 추가 혹은 수정이 가능하고 색상도 직접 선택가능합니다.
+- 각 가계부는 통계페이지를 제공하여 그래프로 지출내역을 손쉽게 확인가능합니다.
+- 여러사람과 함께 여행했을경우 지출금액에대한 정산 및 지출내역을 손쉽게 공유할 수 있습니다.
+- 각 수입/지출 항목에대하여 메모를 작성할 수 있어 해당 내역을 상세하게 기록할 수 있습니다.
+
+## 커뮤니티
+- 다른사람들이 올린 글을 보고 스크랩할 수 있습니다.
+- 다른사람의 글에 좋아요를 표시할 수 있고 좋아요 숫자가 표시됩니다.
+
+## 블로그 검색
+- 네이버블로그 API를 활용하여 블로그를 검색하고 여행에 필요한 블로그내용을 스크랩할 수 있습니다.
+
+## 내 정보
+- 내가 쓴 글과 내가 스크랩한 블로그, 커뮤니티 게시글을 확인할 수 있습니다.
+
+# 라이브러리
+
 
 # Architecture
 ## Room
-## Firebase RealtimeDatabase
+![room](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/26cdcd3b-4435-4a0c-bf9e-00284838f0cc)
+
 ## MVVM Design Pattern
+![MVVM](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/97b1667e-8504-406a-aa0f-0c71dca1d1b8)
 
 ## 폴더구조
 ```
