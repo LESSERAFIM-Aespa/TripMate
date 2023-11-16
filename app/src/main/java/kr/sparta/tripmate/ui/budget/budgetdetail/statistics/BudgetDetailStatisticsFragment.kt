@@ -289,14 +289,17 @@ class BudgetDetailStatisticsFragment : Fragment() {
                                 "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
                             )
                             colorsItems.add(Color.parseColor(categoryMap[key]?.color))
+                            Log.d(TAG, "test: $sum")
+                            Log.d(TAG, "test: $totalIncomeSum")
 
+                            Log.d(TAG, "test: ${sum / totalIncomeSum.toFloat() * 100}")
                             adapterPostItems.add(
                                 Pair(
                                     categoryMap[key]!!,
                                     "${
                                         String.format(
                                             "%.1f",
-                                            sum / totalExpenditureSum.toFloat() * 100
+                                            sum / totalIncomeSum.toFloat() * 100
                                         )
                                     }%, ${sum.toMoneyFormat()}원"
                                 )
