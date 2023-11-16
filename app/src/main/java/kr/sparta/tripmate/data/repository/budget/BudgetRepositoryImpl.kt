@@ -24,6 +24,10 @@ class BudgetRepositoryImpl(
         budgetDataSource.delteBudgets(*budgets)
     }
 
+    override suspend fun deleteAllBudgets() {
+        budgetDataSource.deleteAllBudgets()
+    }
+
     override fun getAllBudgetsToFlowWhenBudgetChanged() = flow {
         budgetDataSource.getAllBudgetsOrederByDateToFlow().collect { budgets ->
             val list = budgets.map { budget ->
