@@ -231,7 +231,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                         adapterPostItems.add(
                             Pair(
                                 categoryMap[key]!!,
-                                "${(sum / totalExpenditureSum.toFloat() * 100).toInt()}%, ${sum.toMoneyFormat()}원"
+                                "${String.format("%.1f",sum / totalExpenditureSum.toFloat() * 100)}%, ${sum.toMoneyFormat()}원"
                             )
                         )
                     }
@@ -277,7 +277,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
                         adapterPostItems.add(
                             Pair(
                                 categoryMap[key]!!,
-                                "${(sum / totalIncomeSum.toFloat() * 100).toInt()}%, ${sum.toMoneyFormat()}원"
+                                "${String.format("%.1f",sum / totalExpenditureSum.toFloat() * 100)}%, ${sum.toMoneyFormat()}원"
                             )
                         )
                     }
