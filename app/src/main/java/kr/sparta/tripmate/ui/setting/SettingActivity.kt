@@ -125,6 +125,7 @@ class SettingActivity : AppCompatActivity() {
             when (p1) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     super.onBackPressed()
+                    finish()
                 }
 
                 DialogInterface.BUTTON_NEGATIVE -> {}
