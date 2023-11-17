@@ -25,6 +25,7 @@ import kr.sparta.tripmate.ui.viewmodel.home.main.HomeFactory
 import kr.sparta.tripmate.ui.viewmodel.home.main.HomeViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapViewModel
+import kr.sparta.tripmate.util.method.shortToast
 
 class HomeFragment : Fragment() {
     companion object {
@@ -103,6 +104,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        homeContext.shortToast("${homeViewModel.getNickName()} 의 계정으로 로그인 되었습니다.")
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
