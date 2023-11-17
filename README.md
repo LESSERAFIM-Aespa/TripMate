@@ -95,44 +95,18 @@
 
 # 라이브러리
 - **Firebase**: Firebase Authentication을 통한 사용자 인증 및 Firebase Realtime Database 사용
-
 - **GoogleLogin**: Google 계정을 활용한 서비스 인증 및 로그인 기능 구현.
-
 - **Retrofit2**: 통신 및 JSON 직렬화 및 역 직렬화
-
 - **Coil**: Coil을 사용하여 이미지 로딩 및 표시
-
-- **Fragment**: Fragment를 활용한 UI 구성 및 모듈화
-
 - **Circleimageview**: 둥근 프로필 이미지 표시
-
 - **Coroutines**: 비동기 코드 작성(비동기 작업을 더 쉽게 처리)
-
-- **Lifecycle**: 앱의 수명 주기와 관련된 작업을 처리
-
-- **Cardview**: UI 디자인
-
 - **Spinner**: 사용자에게 선택 옵션을 제공하기 위한 Spinner(드롭다운 목록) 구현
-
 - **Room**: 안드로이드의 SQLite 데이터베이스 추상화 계층인 Room을 사용한 로컬 데이터베이스 구현
-
 - **Livedata**: LiveData를 활용하여 데이터 관찰 및 업데이트
-
 - **Colorpicker dialog**: 컬러 선택을 위한 다이얼로그를 제공하는 ColorPicker 라이브러리 사용
-
 - **Chart**: 그래프 및 차트를 표현
-
-- **Rx Kotlin**: 리액티브 프로그래밍
-
 - **Addmob**: Google AdMob을 통한 광고 플랫폼 사용
-
-- **Google play store**: 구글 플레이스토어에서 최신 업데이트 버전 확인(앱의 업데이트를 확인하고 적용)
-
 - **ViewBinding**: 뷰 바인딩 및 레이아웃 관리
-
-- **DataBinding**: UI 컴포넌트와 데이터 바인딩
-
-- **Parcelize**: Intent나 Bundle 등을 통해 데이터를 직렬화하여 전달하기 위한 Parcelize 사용
 
 ## 폴더구조
 ```
