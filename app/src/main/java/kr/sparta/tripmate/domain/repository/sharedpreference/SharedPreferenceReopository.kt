@@ -1,7 +1,6 @@
 package kr.sparta.tripmate.domain.repository.sharedpreference
 
 import android.content.Context
-import kr.sparta.tripmate.util.sharedpreferences.SharedPreferences
 
 interface SharedPreferenceReopository {
     fun saveUid(uid: String)

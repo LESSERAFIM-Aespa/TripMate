@@ -25,6 +25,8 @@ import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentFactory
+import kr.sparta.tripmate.util.method.setMaxLength
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toTimeFormat
 import kotlin.math.abs
 
@@ -84,9 +86,15 @@ class ProcedureContentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
+        setEditTextView()
         initViews()
         initViewModels()
+    }
+
+    private fun setEditTextView() = with(binding) {
+        procedureMoneyEdittext.setMaxLength(13)
+        procedureNameEdittext.setMaxLength(19)
+        procedureMemoEdittext.setMaxLength(99)
     }
 
     private fun initViewModels() {
@@ -220,12 +228,16 @@ class ProcedureContentActivity : AppCompatActivity() {
                     ).show()
                 }
 
-                procedureNameEdittext.text.toString().length >= 10 -> {
+                procedureNameEdittext.text.toString().length >= 20 -> {
                     Toast.makeText(
                         this@ProcedureContentActivity,
-                        "과정 이름은 10자이내로 적어주세요.",
+                        "과정 이름은 20자이내로 적어주세요.",
                         Toast.LENGTH_SHORT
                     ).show()
+                }
+
+                procedureMemoEdittext.text.toString().length >= 100 -> {
+                    this@ProcedureContentActivity.shortToast("메모는 100자 이내로 작성해주세요")
                 }
 
                 procedureTimeTextview.text.toString() == "시간과 날짜를 입력해 주세요" -> {

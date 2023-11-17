@@ -14,8 +14,8 @@ android {
         applicationId = "kr.sparta.tripmate"
         minSdk = 31
         targetSdk = 33
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 6
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -109,4 +109,8 @@ dependencies {
 
     //addmob
     implementation("com.google.android.gms:play-services-ads:22.5.0")
+
+    //google play store
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation("com.google.android.play:app-update:2.1.0")
 }

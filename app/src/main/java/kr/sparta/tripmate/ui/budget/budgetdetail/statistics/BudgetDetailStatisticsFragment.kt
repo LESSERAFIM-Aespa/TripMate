@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -31,6 +32,8 @@ import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory
+import kr.sparta.tripmate.util.method.setMaxLength
+import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import java.io.File
 import java.io.FileOutputStream
@@ -66,11 +69,15 @@ class BudgetDetailStatisticsFragment : Fragment() {
     private val incomeListAdapter: BudgetDetailStatisticsListAdapter =
         BudgetDetailStatisticsListAdapter()
 
-    private  val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()) {
-        when(it) {
-            true -> { captureScrollableContent() }
-            false -> { }
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        when (it) {
+            true -> {
+                captureScrollableContent()
+            }
+
+            false -> {}
         }
     }
 
@@ -102,6 +109,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentBudgetDetailStatisticsBinding.inflate(inflater, container, false)
+        binding.budgetStatisticsCalculateEdittext.setMaxLength(3)
         return binding.root
     }
 
@@ -115,8 +123,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     private fun initViews() = with(binding) {
         binding.budgetDetailExpenditurePiechart.apply {
-            renderer = CustomPieChartRenderer(this, 10f)
-            setExtraOffsets(40f, 12f, 40f, 12f)
+            renderer = CustomPieChartRenderer(this, 0f)
+            setExtraOffsets(35f, 8f, 35f, 8f)
 
             isDrawHoleEnabled = true
             holeRadius = 50f
@@ -137,7 +145,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
         binding.budgetDetailIncomePiechart.apply {
             renderer = CustomPieChartRenderer(this, 10f)
-            setExtraOffsets(40f, 12f, 40f, 12f)
+            setExtraOffsets(35f, 8f, 35f, 8f)
 
             isDrawHoleEnabled = true
             holeRadius = 50f
@@ -169,7 +177,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
 
     private fun initViewModels() {
         with(viewModel) {
-            budgetFlowToLiveData.observe(viewLifecycleOwner){
+            budgetFlowToLiveData.observe(viewLifecycleOwner) {
                 binding.budgetStatisticsMoneyTextview.text = it.money.toMoneyFormat() + "원"
                 binding.budgetStatisticsRemainTextview.text = it.money.toMoneyFormat() + "원"
                 binding.budgetStatisticsDurationTextview.text =
@@ -220,28 +228,35 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val colorsItems = ArrayList<Int>()
 
                     val adapterPostItems = mutableListOf<Pair<Category, String>>()
-                    totalExpenditureData.forEach { key, sum ->
-                        entries.add(PieEntry(sum.toFloat(), categoryMap[key]?.name))
-                        Log.d(
-                            TAG,
-                            "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
-                        )
-                        colorsItems.add(Color.parseColor(categoryMap[key]?.color))
-
-                        adapterPostItems.add(
-                            Pair(
-                                categoryMap[key]!!,
-                                "${(sum / totalExpenditureSum.toFloat() * 100).toInt()}%, ${sum.toMoneyFormat()}원"
+                    totalExpenditureData.toList().sortedByDescending { it.second }
+                        .forEach { (key, sum) ->
+                            entries.add(PieEntry(sum.toFloat(), ""))
+                            Log.d(
+                                TAG,
+                                "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
                             )
-                        )
-                    }
+                            colorsItems.add(Color.parseColor(categoryMap[key]?.color))
+
+                            adapterPostItems.add(
+                                Pair(
+                                    categoryMap[key]!!,
+                                    "${
+                                        String.format(
+                                            "%.1f",
+                                            sum / totalExpenditureSum.toFloat() * 100
+                                        )
+                                    }%, ${sum.toMoneyFormat()}원"
+                                )
+                            )
+                        }
 
                     expenditureListAdapter.submitList(adapterPostItems)
 
                     val pieDataSet = PieDataSet(entries, "").apply {
                         colors = colorsItems
                         setValueTextColors(colorsItems)
-                    }.toCustomFormat()
+                    }
+                    //.toCustomFormat()
 
                     val pieData = PieData(pieDataSet)
                     binding.budgetDetailExpenditurePiechart.data = pieData
@@ -266,28 +281,38 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     val colorsItems = ArrayList<Int>()
 
                     val adapterPostItems = mutableListOf<Pair<Category, String>>()
-                    totalIncomeData.forEach { key, sum ->
-                        entries.add(PieEntry(sum.toFloat(), categoryMap[key]?.name))
-                        Log.d(
-                            TAG,
-                            "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
-                        )
-                        colorsItems.add(Color.parseColor(categoryMap[key]?.color))
-
-                        adapterPostItems.add(
-                            Pair(
-                                categoryMap[key]!!,
-                                "${(sum / totalIncomeSum.toFloat() * 100).toInt()}%, ${sum.toMoneyFormat()}원"
+                    totalIncomeData.toList().sortedByDescending { it.second }
+                        .forEach { (key, sum) ->
+                            entries.add(PieEntry(sum.toFloat(), ""))
+                            Log.d(
+                                TAG,
+                                "initViewModels: currentEntry ${entries.last().value} ${entries.last().label}"
                             )
-                        )
-                    }
+                            colorsItems.add(Color.parseColor(categoryMap[key]?.color))
+                            Log.d(TAG, "test: $sum")
+                            Log.d(TAG, "test: $totalIncomeSum")
+
+                            Log.d(TAG, "test: ${sum / totalIncomeSum.toFloat() * 100}")
+                            adapterPostItems.add(
+                                Pair(
+                                    categoryMap[key]!!,
+                                    "${
+                                        String.format(
+                                            "%.1f",
+                                            sum / totalIncomeSum.toFloat() * 100
+                                        )
+                                    }%, ${sum.toMoneyFormat()}원"
+                                )
+                            )
+                        }
 
                     incomeListAdapter.submitList(adapterPostItems)
 
                     val pieDataSet = PieDataSet(entries, "").apply {
                         colors = colorsItems
                         setValueTextColors(colorsItems)
-                    }.toCustomFormat()
+                    }
+                    //.toCustomFormat()
 
                     val pieData = PieData(pieDataSet)
                     binding.budgetDetailIncomePiechart.data = pieData
@@ -317,24 +342,34 @@ class BudgetDetailStatisticsFragment : Fragment() {
                     totalExpenditureSum.toMoneyFormat() + "원"
 
                 binding.budgetStatisticsCalculateButton.setOnClickListener {
-                    if (binding.budgetStatisticsCalculateEdittext.text.toString().isBlank()) {
-
-                    } else {
-                        val n = binding.budgetStatisticsCalculateEdittext.text.toString().toInt()
+                    if (binding.budgetStatisticsCalculateEdittext.text.toString()
+                            .any { it !in '0'..'9' }
+                    ) {
+                        context?.shortToast(" 숫자만 입력해주세요.")
+                    } else if (binding.budgetStatisticsCalculateEdittext.text.toString()
+                            .toInt() in 2..100
+                    ) {
+                        val n =
+                            binding.budgetStatisticsCalculateEdittext.text.toString().toInt()
                         binding.budgetStatisticsCalculateTextview.text =
                             (totalExpenditureSum / n).toMoneyFormat() + "원"
+                    } else {
+                        context?.shortToast(" 2 ~ 100명까지 입력할 수 있습니다.")
                     }
                 }
 
                 binding.budgetStatisticsShareImageview.setOnClickListener {
-
-                    val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        Manifest.permission.READ_MEDIA_IMAGES
-                    } else {
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    }
-
-                    if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                    val permission =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            Manifest.permission.READ_MEDIA_IMAGES
+                        } else {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        }
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            permission
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         requestPermission.launch(permission)
                     } else {
                         captureScrollableContent()
@@ -358,12 +393,16 @@ class BudgetDetailStatisticsFragment : Fragment() {
     }
 
     private fun saveAndShareImage(bitmap: Bitmap) {
-        val file = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "scroll_capture.png")
+        val file = File(
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+            "scroll_capture.png"
+        )
         val fileOutputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.close()
 
-        val uri = FileProvider.getUriForFile(this.requireContext(), "kr.sparta.tripmate.provider", file)
+        val uri =
+            FileProvider.getUriForFile(this.requireContext(), "kr.sparta.tripmate.provider", file)
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_STREAM, uri)

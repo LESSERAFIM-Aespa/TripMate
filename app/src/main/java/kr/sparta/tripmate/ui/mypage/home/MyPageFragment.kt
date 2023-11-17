@@ -102,6 +102,7 @@ class MyPageFragment : Fragment() {
         mypageSettingButton.setOnClickListener {
             val intent: Intent = SettingActivity.newIntent(requireContext())
             settingLauncher.launch(intent)
+            requireActivity().finish()
         }
 
         // Edit 버튼클릭시 viewType변경

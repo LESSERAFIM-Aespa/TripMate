@@ -56,7 +56,14 @@ class BudgetDetailProcedureListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProcedureModel) = with(binding) {
             budgetProcedureBeforeMoneyTextview.text = item.beforeMoney.toMoneyFormat() + "원"
-            budgetProcedurePriceTextview.text = item.price.toMoneyFormat() + "원"
+
+            if (item.price > 0){
+                textView15.text =  "지출"
+                budgetProcedurePriceTextview.text = item.price.toMoneyFormat() + "원"
+            }else{
+                textView15.text =  "소득"
+                budgetProcedurePriceTextview.text = (-item.price).toMoneyFormat() + "원"
+            }
             budgetProcedureTotalAmountTextview.text = item.totalAmount.toMoneyFormat() + "원"
             budgetProcedureTitleTextview.text = item.title
             budgetProcedureTimeTextview.text = item.time

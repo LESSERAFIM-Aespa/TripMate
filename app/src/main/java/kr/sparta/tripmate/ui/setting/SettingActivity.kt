@@ -1,11 +1,13 @@
 package kr.sparta.tripmate.ui.setting
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import coil.load
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -59,6 +61,10 @@ class SettingActivity : AppCompatActivity() {
 
         // 뒤로가기 버튼 입니다.
         settingToolbar.setNavigationOnClickListener {
+            val intent = LoginActivity.newIntent(this@SettingActivity).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            }
+            startActivity(intent)
             finish()
         }
 
@@ -83,6 +89,7 @@ class SettingActivity : AppCompatActivity() {
 
         // 회원탈퇴 버튼입니다.
         binding.settingWithdrawal.setOnClickListener {
+            settingViewModel.deleteAllBudgets()
             settingViewModel.removeKey()
             settingViewModel.removeUserData(uid)
             settingViewModel.logout() //로그아웃 됩니다.
@@ -109,5 +116,31 @@ class SettingActivity : AppCompatActivity() {
         MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()
         binding.settingAdsBanner.loadAd(adRequest)
+    }
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this@SettingActivity)
+        builder.setTitle("앱 종료")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    super.onBackPressed()
+                    finish()
+                }
+
+                DialogInterface.BUTTON_NEGATIVE -> {}
+            }
+        }
+
+        builder.setPositiveButton(
+            getString(R.string.budget_detail_dialog_positive_text),
+            listener
+        )
+        builder.setNegativeButton(
+            getString(R.string.budget_detail_dialog_negative_text),
+            listener
+        )
+
+        builder.show()
     }
 }

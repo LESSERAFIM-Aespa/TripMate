@@ -9,7 +9,9 @@ import kr.sparta.tripmate.data.repository.user.FirebaseUserRepositoryImpl
 import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReopository
 import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetNickNameDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
+import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveNickNameUseCase
@@ -35,7 +37,9 @@ class LoginFactory : ViewModelProvider.Factory {
                 SaveProfileUseCase(sharedPreferenceReopository),
                 SaveNickNameUseCase(sharedPreferenceReopository),
                 GetUidUseCase(sharedPreferenceReopository),
-                GetNickNameUseCase(sharedPreferenceReopository)
+                GetNickNameUseCase(sharedPreferenceReopository),
+                WithdrawalUserDataUseCase(firebaseUserRepository),
+                GetUserDataUseCase(firebaseUserRepository)
             ) as T
         }
         throw IllegalArgumentException("에러")

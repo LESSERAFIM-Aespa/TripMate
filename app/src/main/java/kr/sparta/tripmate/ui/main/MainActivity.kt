@@ -1,9 +1,11 @@
 package kr.sparta.tripmate.ui.main
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
         viewPager2State()
         setupTabIcons()
-
         TabLayoutMediator(
             binding.tabLayout,
             binding.viewPager2
@@ -93,9 +94,9 @@ class MainActivity : AppCompatActivity() {
      * 클릭된 텝레이아웃의 position을 받아와 클릭됬을때 이미지를 교체해줌.
      * */
     private fun setupTabIcons() {
-        binding.tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val icon = when (tab?.position){
+                val icon = when (tab?.position) {
                     0 -> R.drawable.budget2
                     1 -> R.drawable.community2
                     2 -> R.drawable.home2
@@ -107,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                val icon = when (tab?.position){
+                val icon = when (tab?.position) {
                     0 -> R.drawable.budget
                     1 -> R.drawable.community
                     2 -> R.drawable.home
@@ -122,5 +123,32 @@ class MainActivity : AppCompatActivity() {
                 //딱히 처리할게 없음
             }
         })
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setTitle("앱 종료")
+        builder.setMessage("앱을 종료하시겠습니까?")
+        val listener = DialogInterface.OnClickListener { p0, p1 ->
+            when (p1) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    super.onBackPressed()
+                    finish()
+                }
+
+                DialogInterface.BUTTON_NEGATIVE -> {}
+            }
+        }
+
+        builder.setPositiveButton(
+            getString(R.string.budget_detail_dialog_positive_text),
+            listener
+        )
+        builder.setNegativeButton(
+            getString(R.string.budget_detail_dialog_negative_text),
+            listener
+        )
+
+        builder.show()
     }
 }
