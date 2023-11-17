@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/home_budget_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="원금"
@@ -68,7 +68,7 @@
                 android:maxLines="1"
                 android:textAlignment="textEnd"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/home_budget_amount"
@@ -86,7 +86,7 @@
 
             <TextView
                 android:id="@+id/home_remain_budget_text"
-                android:layout_width="wrap_content"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:text="남은 예산"
@@ -106,7 +106,7 @@
                 android:maxLines="1"
                 android:textAlignment="textEnd"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
