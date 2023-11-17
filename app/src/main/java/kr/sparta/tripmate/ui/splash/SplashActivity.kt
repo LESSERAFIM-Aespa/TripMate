@@ -60,11 +60,11 @@ class SplashActivity : AppCompatActivity() {
                     when (p1) {
                         DialogInterface.BUTTON_POSITIVE -> {
                             updateVersionCheck()
-                            super.onBackPressed()
+                            finish()
                         }
 
                         DialogInterface.BUTTON_NEGATIVE -> {
-                            super.onBackPressed()
+                            finish()
                         }
                     }
                 }
@@ -82,6 +82,7 @@ class SplashActivity : AppCompatActivity() {
                 startSplash()
             }
         }
+//        startSplash()
     }
     private fun updateVersionCheck() {
         val packageName = "kr.sparta.tripmate"
