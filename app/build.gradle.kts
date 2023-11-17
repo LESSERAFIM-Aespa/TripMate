@@ -109,4 +109,8 @@ dependencies {
 
     //addmob
     implementation("com.google.android.gms:play-services-ads:22.5.0")
+
+    //google play store
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation("com.google.android.play:app-update:2.1.0")
 }
