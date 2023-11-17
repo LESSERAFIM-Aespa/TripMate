@@ -57,14 +57,43 @@ class LoginActivity : AppCompatActivity() {
                     if (!viewModel.getUid().isNullOrBlank()) {
                         loginCenterConstraint.visibility = View.VISIBLE
                         nickCenterConstraint.visibility = View.GONE
-                        shortToast("${viewModel.getNickName()}의 계정으로 로그인 되었습니다.")
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        loginCenterConstraint.visibility = View.GONE
-                        nickCenterConstraint.visibility = View.VISIBLE
-                        shortToast("닉네임을 입력해주세요")
+                        //sharedpreference에 저장된 uid가 없을때( 신규가입이거나,앱을 삭제하거나, 회원탈퇴를하거나, 구글로그인을했는데 닉네임을 입력안했을떄)
+                        CoroutineScope(Dispatchers.Main).launch{
+                            viewModel.getCurrentUser()?.uid?.let { currentUser ->
+                                viewModel.getUserData(currentUser).collect(){user ->
+                                    if(user == null){
+                                        loginCenterConstraint.visibility = View.GONE
+                                        nickCenterConstraint.visibility = View.VISIBLE
+                                        shortToast("닉네임을 입력해주세요")
+                                    } else {
+                                        with(viewModel) {
+                                            user.login_Uid?.let {
+                                                saveUid(it)
+                                            }
+                                            // profile Image
+                                            user.login_profile?.let {
+                                                saveProfile(it)
+                                            }
+                                            user.login_NickName?.let{
+                                                saveNickName(it)
+                                            }
+                                        }
+                                        loginCenterConstraint.visibility = View.GONE
+                                        nickCenterConstraint.visibility = View.GONE
+                                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                }
+                            }
+                            loginCenterConstraint.visibility = View.GONE
+                            nickCenterConstraint.visibility = View.VISIBLE
+                            shortToast("닉네임을 입력해주세요")
+                        }
                     }
                 } else {
                     loginCenterConstraint.visibility = View.VISIBLE
@@ -95,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
                                 shortToast(getString(R.string.login_exception_empty_nickname))
                                 return@launch
                             }
-                            if(nickName.length >=10){
+                            if (nickName.length >= 10) {
                                 shortToast(getString(R.string.please_enter_a_nickname_is_less_than_10_characters))
                                 return@launch
                             }
@@ -128,8 +157,6 @@ class LoginActivity : AppCompatActivity() {
                                         nickName
                                     )
                                 }
-
-                                longToast("${nickName}의 계정으로 로그인 되었습니다.")
                             }
                             startActivity(MainActivity.newIntent(this@LoginActivity))
                             finish()
@@ -210,11 +237,11 @@ class LoginActivity : AppCompatActivity() {
             googleLogin.launch(signInIntent)
         }
 
-        if (viewModel.getCurrentUser() != null) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        if (viewModel.getCurrentUser() != null) {
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
 
         binding.loginGoogle.setOnClickListener {
             googleSignIn()
