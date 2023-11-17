@@ -8,16 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.R
-import kr.sparta.tripmate.api.Constants
 import kr.sparta.tripmate.databinding.ActivitySplashBinding
 import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.main.MainActivity
+import kr.sparta.tripmate.ui.viewmodel.splash.SplashFactory
+import kr.sparta.tripmate.ui.viewmodel.splash.SplashViewModel
 
 /**
  * 작성자: 서정한
@@ -27,6 +28,9 @@ import kr.sparta.tripmate.ui.main.MainActivity
 class SplashActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
+    }
+    private val viewModel: SplashViewModel by viewModels() {
+        SplashFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,20 +43,29 @@ class SplashActivity : AppCompatActivity() {
     private fun startSplash() {
         val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            val intent = LoginActivity.newIntent(this@SplashActivity).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            if(viewModel.getUid().isNullOrEmpty()){
+                val intent = LoginActivity.newIntent(this@SplashActivity).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                }
+                startActivity(intent)
+            } else {
+                val intent = MainActivity.newIntent(this@SplashActivity).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
             finish()
         }, 1000)
     }
 
-    private fun updateCheck(){
+    private fun updateCheck() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && appUpdateInfo.isUpdateTypeAllowed(
-                    AppUpdateType.IMMEDIATE)) {
+                    AppUpdateType.IMMEDIATE
+                )
+            ) {
                 val builder = AlertDialog.Builder(this@SplashActivity)
                 builder.setTitle("업데이트")
                 builder.setMessage("최신 버전이 있습니다. \n 업데이트를 해주세요")
@@ -60,11 +73,11 @@ class SplashActivity : AppCompatActivity() {
                     when (p1) {
                         DialogInterface.BUTTON_POSITIVE -> {
                             updateVersionCheck()
-                            super.onBackPressed()
+                            finish()
                         }
 
                         DialogInterface.BUTTON_NEGATIVE -> {
-                            super.onBackPressed()
+                            finish()
                         }
                     }
                 }
@@ -82,7 +95,9 @@ class SplashActivity : AppCompatActivity() {
                 startSplash()
             }
         }
+//        startSplash()
     }
+
     private fun updateVersionCheck() {
         val packageName = "kr.sparta.tripmate"
         try {
