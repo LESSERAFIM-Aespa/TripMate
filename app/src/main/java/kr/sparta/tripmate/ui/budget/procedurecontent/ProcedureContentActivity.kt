@@ -94,7 +94,7 @@ class ProcedureContentActivity : AppCompatActivity() {
     private fun setEditTextView() = with(binding) {
         procedureMoneyEdittext.setMaxLength(13)
         procedureNameEdittext.setMaxLength(19)
-        procedureMemoEdittext.setMaxLength(100)
+        procedureMemoEdittext.setMaxLength(99)
     }
 
     private fun initViewModels() {
