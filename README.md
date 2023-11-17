@@ -94,21 +94,18 @@
 - 내가 쓴 글과 내가 스크랩한 블로그, 커뮤니티 게시글을 확인할 수 있습니다.
 
 # 라이브러리
-## Core Libraries
-```gradle
-implementation "androidx.core:core-ktx:1.9.0"
-implementation "androidx.appcompat:appcompat:1.6.1"
-implementation "com.google.android.material:material:1.10.0"
-implementation "androidx.constraintlayout:constraintlayout:2.1.4"
-
-# Architecture
-## Room
-![room](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/26cdcd3b-4435-4a0c-bf9e-00284838f0cc)
-
-## MVVM
-![MVVM](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/97b1667e-8504-406a-aa0f-0c71dca1d1b8)
-
-## 폴더구조
+| ---- | ---- | ---- | ---- | ---- |
+| implementation "androidx.core:core-ktx:1.9.0" | implementation "androidx.appcompat:appcompat:1.6.1" | implementation "com.google.android.material:material:1.10.0" | implementation "androidx.constraintlayout:constraintlayout:2.1.4" |
+| implementation "com.google.firebase:firebase-crashlytics:18.4.3" | implementation "com.google.firebase:firebase-analytics:21.3.0" | implementation "com.google.firebase:firebase-auth-ktx:22.1.2" | implementation "com.google.android.gms:play-services-auth:20.7.0" |
+| implementation "com.google.firebase:firebase-database-ktx:20.2.2" | implementation "com.google.firebase:firebase-storage-ktx:20.2.1" | testImplementation "junit:junit:4.13.2" | androidTestImplementation "androidx.test.ext:junit:1.1.5" |
+| androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1" | implementation "com.google.code.gson:gson:2.10.1" | implementation "com.squareup.retrofit2:retrofit:2.9.0" | implementation "com.squareup.retrofit2:converter-gson:2.9.0" |
+| implementation "com.squareup.okhttp3:okhttp:4.10.0" | implementation "com.squareup.okhttp3:logging-interceptor:4.11.0" | implementation "io.coil-kt:coil:2.5.0" | implementation "com.github.bumptech.glide:glide:4.16.0" |
+| implementation "androidx.fragment:fragment-ktx:1.6.1" | implementation "de.hdodenhof:circleimageview:3.1.0" | implementation "androidx.cardview:cardview:1.0.0" | implementation "com.github.skydoves:powerspinner:1.2.7" |
+| implementation "com.github.Dhaval2404:ColorPicker:2.3" | implementation "com.github.PhilJay:MPAndroidChart:v3.1.0" | implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3" | implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3" |
+| implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2" | implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2" | val room_version = "2.5.2" | implementation "androidx.room:room-runtime:$room_version" |
+| annotationProcessor "androidx.room:room-compiler:$room_version" | kapt "androidx.room:room-compiler:$room_version" | implementation "androidx.room:room-ktx:$room_version" | testImplementation "androidx.room:room-testing:$room_version" |
+| implementation "io.reactivex.rxjava3:rxjava:3.0.0" | implementation "io.reactivex.rxjava3:rxkotlin:3.0.0" | implementation "com.google.android.gms:play-services-ads:22.5.0" | implementation "com.google.android.play:app-update-ktx:2.1.0" |
+| implementation "com.google.android.play:app-update:2.1.0" | ---- | ---- | ---- | ---- |
 ```
 📦 
 .github
