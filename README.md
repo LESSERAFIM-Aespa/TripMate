@@ -133,6 +133,8 @@
 - **DataBinding**: UI 컴포넌트와 데이터 바인딩
 
 - **Parcelize**: Intent나 Bundle 등을 통해 데이터를 직렬화하여 전달하기 위한 Parcelize 사용
+
+## 폴더구조
 ```
 📦 
 .github
