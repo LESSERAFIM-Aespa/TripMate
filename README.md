@@ -94,7 +94,12 @@
 - 내가 쓴 글과 내가 스크랩한 블로그, 커뮤니티 게시글을 확인할 수 있습니다.
 
 # 라이브러리
-
+## Core Libraries
+```gradle
+implementation "androidx.core:core-ktx:1.9.0"
+implementation "androidx.appcompat:appcompat:1.6.1"
+implementation "com.google.android.material:material:1.10.0"
+implementation "androidx.constraintlayout:constraintlayout:2.1.4"
 
 # Architecture
 ## Room
