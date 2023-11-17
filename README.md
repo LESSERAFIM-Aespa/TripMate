@@ -94,18 +94,45 @@
 - 내가 쓴 글과 내가 스크랩한 블로그, 커뮤니티 게시글을 확인할 수 있습니다.
 
 # 라이브러리
-| ---- | ---- | ---- | ---- | ---- |
-| implementation "androidx.core:core-ktx:1.9.0" | implementation "androidx.appcompat:appcompat:1.6.1" | implementation "com.google.android.material:material:1.10.0" | implementation "androidx.constraintlayout:constraintlayout:2.1.4" |
-| implementation "com.google.firebase:firebase-crashlytics:18.4.3" | implementation "com.google.firebase:firebase-analytics:21.3.0" | implementation "com.google.firebase:firebase-auth-ktx:22.1.2" | implementation "com.google.android.gms:play-services-auth:20.7.0" |
-| implementation "com.google.firebase:firebase-database-ktx:20.2.2" | implementation "com.google.firebase:firebase-storage-ktx:20.2.1" | testImplementation "junit:junit:4.13.2" | androidTestImplementation "androidx.test.ext:junit:1.1.5" |
-| androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1" | implementation "com.google.code.gson:gson:2.10.1" | implementation "com.squareup.retrofit2:retrofit:2.9.0" | implementation "com.squareup.retrofit2:converter-gson:2.9.0" |
-| implementation "com.squareup.okhttp3:okhttp:4.10.0" | implementation "com.squareup.okhttp3:logging-interceptor:4.11.0" | implementation "io.coil-kt:coil:2.5.0" | implementation "com.github.bumptech.glide:glide:4.16.0" |
-| implementation "androidx.fragment:fragment-ktx:1.6.1" | implementation "de.hdodenhof:circleimageview:3.1.0" | implementation "androidx.cardview:cardview:1.0.0" | implementation "com.github.skydoves:powerspinner:1.2.7" |
-| implementation "com.github.Dhaval2404:ColorPicker:2.3" | implementation "com.github.PhilJay:MPAndroidChart:v3.1.0" | implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3" | implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3" |
-| implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2" | implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2" | val room_version = "2.5.2" | implementation "androidx.room:room-runtime:$room_version" |
-| annotationProcessor "androidx.room:room-compiler:$room_version" | kapt "androidx.room:room-compiler:$room_version" | implementation "androidx.room:room-ktx:$room_version" | testImplementation "androidx.room:room-testing:$room_version" |
-| implementation "io.reactivex.rxjava3:rxjava:3.0.0" | implementation "io.reactivex.rxjava3:rxkotlin:3.0.0" | implementation "com.google.android.gms:play-services-ads:22.5.0" | implementation "com.google.android.play:app-update-ktx:2.1.0" |
-| implementation "com.google.android.play:app-update:2.1.0" | ---- | ---- | ---- | ---- |
+- **Firebase**: Firebase Authentication을 통한 사용자 인증 및 Firebase Realtime Database 사용
+
+- **GoogleLogin**: Google 계정을 활용한 서비스 인증 및 로그인 기능 구현.
+
+- **Retrofit2**: 통신 및 JSON 직렬화 및 역 직렬화
+
+- **Coil**: Coil을 사용하여 이미지 로딩 및 표시
+
+- **Fragment**: Fragment를 활용한 UI 구성 및 모듈화
+
+- **Circleimageview**: 둥근 프로필 이미지 표시
+
+- **Coroutines**: 비동기 코드 작성(비동기 작업을 더 쉽게 처리)
+
+- **Lifecycle**: 앱의 수명 주기와 관련된 작업을 처리
+
+- **Cardview**: UI 디자인
+
+- **Spinner**: 사용자에게 선택 옵션을 제공하기 위한 Spinner(드롭다운 목록) 구현
+
+- **Room**: 안드로이드의 SQLite 데이터베이스 추상화 계층인 Room을 사용한 로컬 데이터베이스 구현
+
+- **Livedata**: LiveData를 활용하여 데이터 관찰 및 업데이트
+
+- **Colorpicker dialog**: 컬러 선택을 위한 다이얼로그를 제공하는 ColorPicker 라이브러리 사용
+
+- **Chart**: 그래프 및 차트를 표현
+
+- **Rx Kotlin**: 리액티브 프로그래밍
+
+- **Addmob**: Google AdMob을 통한 광고 플랫폼 사용
+
+- **Google play store**: 구글 플레이스토어에서 최신 업데이트 버전 확인(앱의 업데이트를 확인하고 적용)
+
+- **ViewBinding**: 뷰 바인딩 및 레이아웃 관리
+
+- **DataBinding**: UI 컴포넌트와 데이터 바인딩
+
+- **Parcelize**: Intent나 Bundle 등을 통해 데이터를 직렬화하여 전달하기 위한 Parcelize 사용
 ```
 📦 
 .github
