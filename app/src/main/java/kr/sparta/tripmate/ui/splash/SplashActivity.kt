@@ -9,6 +9,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AlertDialog
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import kr.sparta.tripmate.BuildConfig
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.api.Constants
@@ -45,38 +48,39 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun updateCheck(){
-        val latestVersionCode = Constants.LatestVersionCode
-        val currentVersionCode = BuildConfig.VERSION_CODE
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && appUpdateInfo.isUpdateTypeAllowed(
+                    AppUpdateType.IMMEDIATE)) {
+                val builder = AlertDialog.Builder(this@SplashActivity)
+                builder.setTitle("업데이트")
+                builder.setMessage("최신 버전이 있습니다. \n 업데이트를 해주세요")
+                val listener = DialogInterface.OnClickListener { p0, p1 ->
+                    when (p1) {
+                        DialogInterface.BUTTON_POSITIVE -> {
+                            updateVersionCheck()
+                            super.onBackPressed()
+                        }
 
-        if (currentVersionCode < latestVersionCode) {
-
-            val builder = AlertDialog.Builder(this@SplashActivity)
-            builder.setTitle("업데이트")
-            builder.setMessage("최신 버전이 있습니다. \n 업데이트를 해주세요")
-            val listener = DialogInterface.OnClickListener { p0, p1 ->
-                when (p1) {
-                    DialogInterface.BUTTON_POSITIVE -> {
-                        updateVersionCheck()
-                        super.onBackPressed()
-                    }
-
-                    DialogInterface.BUTTON_NEGATIVE -> {
-                        super.onBackPressed()
+                        DialogInterface.BUTTON_NEGATIVE -> {
+                            super.onBackPressed()
+                        }
                     }
                 }
+                builder.setPositiveButton(
+                    getString(R.string.budget_detail_dialog_positive_text),
+                    listener
+                )
+                builder.setNegativeButton(
+                    getString(R.string.budget_detail_dialog_negative_text),
+                    listener
+                )
+                builder.setCancelable(false)
+                builder.show()
+            } else {
+                startSplash()
             }
-            builder.setPositiveButton(
-                getString(R.string.budget_detail_dialog_positive_text),
-                listener
-            )
-            builder.setNegativeButton(
-                getString(R.string.budget_detail_dialog_negative_text),
-                listener
-            )
-            builder.setCancelable(false)
-            builder.show()
-        } else {
-            startSplash()
         }
     }
     private fun updateVersionCheck() {
