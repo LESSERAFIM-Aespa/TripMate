@@ -108,6 +108,10 @@
 - **Admob**: Google AdMob을 통한 광고 플랫폼 사용
 - **ViewBinding**: 뷰 바인딩 및 레이아웃 관리
 
+# 아키텍처: MVVM + Clean Architecture
+![image](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/f824893e-d247-4a9a-8211-343655cf285b)
+
+
 ## 폴더구조
 ```
 📦 
