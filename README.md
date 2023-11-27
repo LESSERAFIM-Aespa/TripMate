@@ -105,7 +105,7 @@
 - **Livedata**: LiveData를 활용하여 데이터 관찰 및 업데이트
 - **Colorpicker dialog**: 컬러 선택을 위한 다이얼로그를 제공하는 ColorPicker 라이브러리 사용
 - **Chart**: 그래프 및 차트를 표현
-- **Addmob**: Google AdMob을 통한 광고 플랫폼 사용
+- **Admob**: Google AdMob을 통한 광고 플랫폼 사용
 - **ViewBinding**: 뷰 바인딩 및 레이아웃 관리
 
 ## 폴더구조
