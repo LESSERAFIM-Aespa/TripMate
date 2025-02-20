@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.roborazzi) apply false
     alias(libs.plugins.room) apply false
-//    id("com.google.gms.google-services") apply false
-//    id("com.google.firebase.crashlytics") apply false
+    alias(libs.plugins.play.service) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }
