@@ -6,6 +6,8 @@ cardview = "1.0.0"
 circleimageview = "3.1.0"
 colorpicker = "2.3"
 constraintlayout = "2.2.0"
+converterGson = "2.11.0"
+firebase = "3.0.3"
 firebaseAnalytics = "22.2.0"
 firebaseAuthKtx = "23.2.0"
 firebaseCrashlytics = "19.4.0"
@@ -13,6 +15,7 @@ firebaseDatabaseKtx = "21.0.0"
 firebaseStorageKtx = "21.0.1"
 fragmentKtx = "1.8.6"
 glide = "4.16.0"
+gson = "2.12.1"
 kotlin = "2.1.0"
 activityCompose = "1.10.0"
 appcompat = "1.7.0"
@@ -32,6 +35,7 @@ material = "1.12.0"
 ksp = "2.1.0-1.0.29"
 hilt = "2.55"
 mpandroidchart = "v3.1.0"
+playServices = "4.4.2"
 playServicesAds = "23.6.0"
 playServicesAuth = "21.3.0"
 powerspinner = "1.2.7"
@@ -48,6 +52,7 @@ androidxTestRunner = "1.6.2"
 kotlinxCoroutines = "1.10.1"
 okhttp = "4.12.0"
 robolectric = "4.14.1"
+recyclerview = "1.4.0"
 
 
 [bundles]
@@ -62,12 +67,14 @@ app-update = { module = "com.google.android.play:app-update", version.ref = "app
 app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.ref = "appUpdateKtx" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview" }
 colorpicker = { module = "com.github.Dhaval2404:ColorPicker", version.ref = "colorpicker" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
@@ -136,6 +143,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -149,3 +157,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 room = { id = "androidx.room", version.ref = "room" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+play-service = {id = "com.google.gms.google-services", version.ref = "playServices"}
+firebase-crashlytics = {id = "com.google.firebase.crashlytics", version.ref ="firebase"}
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
