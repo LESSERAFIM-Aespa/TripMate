@@ -1,9 +1,13 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-//    id("com.google.gms.google-services")
-//    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.play.service)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.kotlin.android)
+    id("kotlin-parcelize")
 }
 android {
     namespace = "kr.sparta.tripmate"
@@ -38,10 +42,19 @@ android {
         dataBinding = true
         buildConfig = true
     }
+
+    packaging {
+        exclude("META-INF/gradle/incremental.annotation.processors")
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.material)
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)
     implementation(libs.androidx.compose.material3.adaptive.navigation)
@@ -52,6 +65,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.kt)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.gson)
 
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.crashlytics)
@@ -60,6 +74,8 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
 
     testImplementation(libs.junit)
     testImplementation(libs.androidx.junit)
@@ -73,7 +89,7 @@ dependencies {
 
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation (libs.glide)
+    implementation(libs.glide)
 
     implementation(libs.androidx.fragment.ktx)
 
@@ -88,10 +104,11 @@ dependencies {
     implementation(libs.powerspinner)
 
     implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.okhttp.logging)
 
-    implementation(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     implementation(libs.room.runtime)
 
@@ -99,7 +116,7 @@ dependencies {
     implementation(libs.colorpicker)
 
     // use chart
-    implementation (libs.mpandroidchart)
+    implementation(libs.mpandroidchart)
 
     //addmob
     implementation(libs.play.services.ads)
