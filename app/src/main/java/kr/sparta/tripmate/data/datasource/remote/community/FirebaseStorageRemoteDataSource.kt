@@ -1,14 +1,9 @@
 package kr.sparta.tripmate.data.datasource.remote.community
 
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.util.Log
-import android.widget.ImageView
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.subjects.PublishSubject
 import java.io.ByteArrayOutputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

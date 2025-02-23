@@ -37,7 +37,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        updateCheck()
+//        updateCheck()
+        startSplash()
     }
 
     private fun startSplash() {
