@@ -1,7 +1,9 @@
-package kr.sparta.tripmate.util
+package kr.sparta.tripmate.di
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class TripMateApp : Application(){
     companion object {
         @Volatile
