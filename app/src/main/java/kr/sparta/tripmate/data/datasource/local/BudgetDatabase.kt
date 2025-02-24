@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.data.room
+package kr.sparta.tripmate.data.datasource.local
 
 import android.content.Context
 import androidx.room.Database

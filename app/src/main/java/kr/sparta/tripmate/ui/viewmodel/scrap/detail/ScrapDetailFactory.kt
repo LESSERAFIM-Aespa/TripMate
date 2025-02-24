@@ -10,7 +10,7 @@ import kr.sparta.tripmate.domain.repository.community.FirebaseBlogScrapRepositor
 import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReopository
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class ScrapDetailFactory : ViewModelProvider.Factory {
     private val firebaseBlogScrapRepository: FirebaseBlogScrapRepository by lazy {

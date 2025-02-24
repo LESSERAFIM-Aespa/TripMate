@@ -19,7 +19,7 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScra
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class CommunityFactory : ViewModelProvider.Factory {
     private val firebaseBoardRepository : FirebaseBoardRepository by lazy {

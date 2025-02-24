@@ -18,7 +18,7 @@ import kr.sparta.tripmate.domain.usecase.firebasestorage.UploadImageForFirebaseS
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetProfileUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class CommunityWriteFactory : ViewModelProvider.Factory {
     // RDB 레퍼지토리

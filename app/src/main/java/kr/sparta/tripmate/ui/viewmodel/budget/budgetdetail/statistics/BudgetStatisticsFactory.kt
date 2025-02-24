@@ -10,7 +10,7 @@ import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.data.repository.budget.BudgetTotalRepositoryImpl
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBudgetToFlowWhenBudgetChangedWithNumUseCase
 import kr.sparta.tripmate.domain.usecase.budgettotalrepository.GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class BudgetStatisticsFactory(val budgetNum: Int) : ViewModelProvider.Factory {
     private val budgetRepository by lazy {

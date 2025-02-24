@@ -4,7 +4,7 @@ import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.dao.CategoryDao
 import kr.sparta.tripmate.data.model.budget.Category
-import kr.sparta.tripmate.data.room.BudgetDatabase
+import kr.sparta.tripmate.data.datasource.local.BudgetDatabase
 
 class CategoryLocalDataSource(context: Context) {
     private val categoryDao: CategoryDao = BudgetDatabase.getDatabsae(context).getCategoryDao()

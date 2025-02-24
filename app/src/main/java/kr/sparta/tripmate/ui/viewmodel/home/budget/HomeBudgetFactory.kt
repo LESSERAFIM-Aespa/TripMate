@@ -8,7 +8,7 @@ import kr.sparta.tripmate.data.datasource.local.budget.ProcedureLocalDataSource
 import kr.sparta.tripmate.data.repository.budget.BudgetRepositoryImpl
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenBudgetChangedUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenProcedureChangedUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class HomeBudgetFactory : ViewModelProvider.Factory {
     private val budgetRepository by lazy {

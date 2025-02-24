@@ -10,7 +10,7 @@ import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReo
 import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveUidFromUserUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class UserProfileFactory : ViewModelProvider.Factory {
     private val firebaseUserRepository: FirebaseUserRepository by lazy {

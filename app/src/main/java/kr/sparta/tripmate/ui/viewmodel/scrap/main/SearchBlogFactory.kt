@@ -18,7 +18,7 @@ import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class SearchBlogFactory : ViewModelProvider.Factory {
     private val searchRepository: SearchRepository = SearchRepositoryImpl(

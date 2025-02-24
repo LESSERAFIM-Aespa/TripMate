@@ -18,7 +18,7 @@ import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.LogoutUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.WithdrawalUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.RemoveKeyUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class SettingFactory : ViewModelProvider.Factory {
     private val firebaseUserRepository: FirebaseUserRepository by lazy {

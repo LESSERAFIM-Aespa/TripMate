@@ -9,7 +9,7 @@ import kr.sparta.tripmate.data.repository.budget.ProcedureRepositoryImpl
 import kr.sparta.tripmate.domain.usecase.categoryrepository.GetAllCategoriesWithBudgetNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.DeleteProceduresUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedureToFlowWithNumUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class ProcedureDetailFactory(
     private val budgetNum: Int,

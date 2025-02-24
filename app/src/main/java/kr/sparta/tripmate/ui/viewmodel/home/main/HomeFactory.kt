@@ -8,7 +8,7 @@ import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReo
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetProfileUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class HomeFactory : ViewModelProvider.Factory {
     private val sharedPreferenceReopository: SharedPreferenceReopository by lazy {

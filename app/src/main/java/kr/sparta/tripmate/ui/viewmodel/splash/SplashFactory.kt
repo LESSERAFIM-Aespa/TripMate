@@ -6,7 +6,7 @@ import kr.sparta.tripmate.data.datasource.local.sharedpreference.SharedPreferenc
 import kr.sparta.tripmate.data.repository.sharedpreference.SharedPreferenceReopositoryImpl
 import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReopository
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class SplashFactory : ViewModelProvider.Factory {
     private val repository : SharedPreferenceReopository by lazy {

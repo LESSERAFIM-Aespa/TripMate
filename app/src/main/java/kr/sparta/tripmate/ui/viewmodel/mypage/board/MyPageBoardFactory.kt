@@ -12,7 +12,7 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.GetAllBoardsUse
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class MyPageBoardFactory : ViewModelProvider.Factory {
     private val firebaseBoardRepository : FirebaseBoardRepository by lazy {

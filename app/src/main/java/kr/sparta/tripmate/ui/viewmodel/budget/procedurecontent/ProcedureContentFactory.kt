@@ -11,7 +11,7 @@ import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedureWithNum
 import kr.sparta.tripmate.domain.usecase.procedurerepository.InsertProceduresUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.procedurecontent.ProcedureContentType
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 
 class ProcedureContentFactory(

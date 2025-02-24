@@ -12,7 +12,7 @@ import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCa
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 class MyPageFactory : ViewModelProvider.Factory {
     private val firebaseUserRepository: FirebaseUserRepository by lazy {

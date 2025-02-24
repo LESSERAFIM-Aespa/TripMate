@@ -22,7 +22,7 @@ import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWit
 import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWithCategoryNumUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentType
-import kr.sparta.tripmate.util.TripMateApp
+import kr.sparta.tripmate.di.TripMateApp
 
 
 class BudgetContentFactory(
