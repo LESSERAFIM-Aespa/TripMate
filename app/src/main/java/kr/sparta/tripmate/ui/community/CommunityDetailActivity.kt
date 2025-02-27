@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import coil.load
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailViewModel
 
+@AndroidEntryPoint
 class CommunityDetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_KEY = "extra_key"

@@ -19,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
@@ -30,6 +31,7 @@ import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toTimeFormat
 import kotlin.math.abs
 
+@AndroidEntryPoint
 class ProcedureContentActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "ProcedureContentActivit"

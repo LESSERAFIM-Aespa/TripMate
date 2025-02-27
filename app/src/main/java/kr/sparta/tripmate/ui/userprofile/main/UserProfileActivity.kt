@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import coil.load
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.databinding.ActivityUserProfileBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileFactory
@@ -18,6 +19,7 @@ import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileViewModel
  * 작성자: 서정한
  * 내용: 사용자 프로필 Activity
  * */
+@AndroidEntryPoint
 class UserProfileActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_MODEL = "extra_model"

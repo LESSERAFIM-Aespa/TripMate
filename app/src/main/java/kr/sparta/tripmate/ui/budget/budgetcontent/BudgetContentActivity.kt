@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -32,6 +33,7 @@ import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentFactory
 import kr.sparta.tripmate.util.method.setMaxLength
 import java.util.Calendar
 
+@AndroidEntryPoint
 class BudgetContentActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "BudgetContentActivity"

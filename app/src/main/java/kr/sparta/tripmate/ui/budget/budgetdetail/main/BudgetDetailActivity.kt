@@ -14,6 +14,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
@@ -26,6 +27,7 @@ import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailView
  * 작성자: 서정한
  * 내용: 가계부 세부과정 Activity
  * */
+@AndroidEntryPoint
 class BudgetDetailActivity : AppCompatActivity() {
 
     companion object {

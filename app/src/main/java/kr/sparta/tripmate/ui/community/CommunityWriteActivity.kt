@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import coil.load
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
@@ -30,6 +31,7 @@ import java.util.regex.Pattern
  * 1~14까지 확인하시고 이상한거 있으면 말씀해주세요
  * 기존의 코드는 주석처리해놨습니다. 확인하시고 말씀해주시면 삭제하겠습니다.
  */
+@AndroidEntryPoint
 class CommunityWriteActivity : AppCompatActivity() {
     companion object {
         const val MODEL_EDIT = "model_edit"

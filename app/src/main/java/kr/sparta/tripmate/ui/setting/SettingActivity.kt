@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import coil.load
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivitySettingBinding
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
@@ -19,6 +20,7 @@ import kr.sparta.tripmate.ui.viewmodel.setting.SettingFactory
 import kr.sparta.tripmate.ui.viewmodel.setting.SettingViewModel
 import kr.sparta.tripmate.util.method.shortToast
 
+@AndroidEntryPoint
 class SettingActivity : AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, SettingActivity::class.java)

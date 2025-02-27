@@ -21,6 +21,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,6 +35,7 @@ import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, LoginActivity::class.java)

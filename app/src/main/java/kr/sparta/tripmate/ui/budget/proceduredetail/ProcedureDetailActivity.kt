@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 import kr.sparta.tripmate.ui.budget.procedurecontent.ProcedureContentActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail.ProcedureDetailViewModel
@@ -15,6 +16,7 @@ import kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail.ProcedureDetailFac
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import kotlin.math.abs
 
+@AndroidEntryPoint
 class ProcedureDetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_BUDGET_NUM = "extra_budget_num"
