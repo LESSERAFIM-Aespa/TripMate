@@ -17,19 +17,21 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.colorpicker.ColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.databinding.ActivityBudgetContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent.BudgetContentFactory
 import kr.sparta.tripmate.util.method.setMaxLength
 import java.util.Calendar
 
@@ -56,10 +58,6 @@ class BudgetContentActivity : AppCompatActivity() {
         ActivityBudgetContentBinding.inflate(layoutInflater)
     }
 
-    private val contentViewModel: BudgetContentViewModel by viewModels {
-        BudgetContentFactory(entryType!!, budgetNum)
-    }
-
     private val entryType by lazy {
         BudgetContentType.from(
             intent.getStringExtra(
@@ -69,6 +67,8 @@ class BudgetContentActivity : AppCompatActivity() {
     }
 
     private val budgetNum by lazy { intent.getIntExtra(EXTRA_BUDGET_NUM, 0) }
+
+    private val contentViewModel: BudgetContentViewModel by viewModels()
     private val categoryAdapter by lazy {
         CategoryAdapter(object : CategoryAdapter.CategoryListEventListener {
             override fun onDeleteButtonClicked(pos: Int) {

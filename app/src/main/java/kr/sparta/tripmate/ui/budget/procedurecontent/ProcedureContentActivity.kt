@@ -19,13 +19,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.ActivityProcedureContentBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent.ProcedureContentFactory
 import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toTimeFormat
@@ -71,14 +73,7 @@ class ProcedureContentActivity : AppCompatActivity() {
     private lateinit var startDate: String
     private lateinit var endDate: String
 
-
-    private val procedureContentViewModel: ProcedureContentViewModel by viewModels {
-        ProcedureContentFactory(
-            entryType!!,
-            budgetNum,
-            procedureNum
-        )
-    }
+    private val procedureContentViewModel: ProcedureContentViewModel by viewModels()
 
     private lateinit var arrayAdapter: ArrayAdapter<Category>
 

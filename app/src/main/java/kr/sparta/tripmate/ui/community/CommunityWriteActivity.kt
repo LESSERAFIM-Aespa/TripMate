@@ -18,7 +18,6 @@ import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.databinding.ActivityCommunityWriteBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteFactory
 import kr.sparta.tripmate.ui.viewmodel.community.write.CommunityWriteViewModel
 import kr.sparta.tripmate.util.method.isWindowTouchable
 import kr.sparta.tripmate.util.method.setMaxLength
@@ -49,9 +48,7 @@ class CommunityWriteActivity : AppCompatActivity() {
         ActivityCommunityWriteBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: CommunityWriteViewModel by viewModels() {
-        CommunityWriteFactory()
-    }
+    private val viewModel: CommunityWriteViewModel by viewModels()
 
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {

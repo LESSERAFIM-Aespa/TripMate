@@ -12,7 +12,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.databinding.FragmentUserProfileBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileBoardViewModel
 
 /**
@@ -25,9 +24,7 @@ class UserProfileBoardFragment : Fragment() {
     }
 
     private lateinit var userUid: String
-    private val userProfileBoardViewModel: UserProfileBoardViewModel by viewModels {
-        UserProfileBoardFactory()
-    }
+    private val userProfileBoardViewModel: UserProfileBoardViewModel by viewModels()
     private lateinit var boardContext: Context
     private var _binding: FragmentUserProfileBoardBinding? = null
     private val binding get() = _binding!!

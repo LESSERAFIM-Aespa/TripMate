@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityScrapDetailBinding
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
-import kr.sparta.tripmate.ui.viewmodel.scrap.detail.ScrapDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.detail.ScrapDetailViewModel
 import kr.sparta.tripmate.util.method.shortToast
 
@@ -32,9 +31,7 @@ class ScrapDetailActivity : AppCompatActivity() {
             }
     }
 
-    private val viewModel: ScrapDetailViewModel by viewModels {
-        ScrapDetailFactory()
-    }
+    private val viewModel: ScrapDetailViewModel by viewModels()
 
     private val binding by lazy {
         ActivityScrapDetailBinding.inflate(layoutInflater)

@@ -12,7 +12,6 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.databinding.ActivityUserProfileBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
-import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileFactory
 import kr.sparta.tripmate.ui.viewmodel.userproflie.UserProfileViewModel
 
 /**
@@ -36,7 +35,7 @@ class UserProfileActivity : AppCompatActivity() {
     private val adapter by lazy {
         UserProfileTabLayoutAdapter(this@UserProfileActivity)
     }
-    private val userProfileViewModel: UserProfileViewModel by viewModels { UserProfileFactory() }
+    private val userProfileViewModel: UserProfileViewModel by viewModels()
 
     private val model by lazy {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU) {

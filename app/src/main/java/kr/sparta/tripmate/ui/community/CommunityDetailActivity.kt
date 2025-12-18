@@ -19,7 +19,6 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityCommunityDetailBinding
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
-import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.community.detail.CommunityDetailViewModel
 
 @AndroidEntryPoint
@@ -36,9 +35,7 @@ class CommunityDetailActivity : AppCompatActivity() {
         ActivityCommunityDetailBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: CommunityDetailViewModel by viewModels {
-        CommunityDetailFactory()
-    }
+    private val viewModel: CommunityDetailViewModel by viewModels()
 
     private val boardKey by lazy {
         intent.getStringExtra(EXTRA_KEY)

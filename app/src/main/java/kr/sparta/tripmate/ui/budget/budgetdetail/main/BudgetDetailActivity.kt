@@ -8,20 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.databinding.ActivityBudgetDetailBinding
 import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.procedurecontent.ProcedureContentActivity
-import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailFactory
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.main.BudgetDetailViewModel
+import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
 
 /**
  * 작성자: 서정한
@@ -32,23 +31,17 @@ class BudgetDetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_BUDGET = "extra_budget"
+        const val EXTRA_BUDGET_NUM = "extra_budget_num"
 
         fun newIntentForBudget(context: Context, model: Budget) =
             Intent(context, BudgetDetailActivity::class.java).apply {
                 putExtra(EXTRA_BUDGET, model)
+                putExtra(EXTRA_BUDGET_NUM, model.num)
             }
     }
 
     private val binding by lazy {
         ActivityBudgetDetailBinding.inflate(layoutInflater)
-    }
-
-    private val viewPagerAdapter by lazy {
-        BudgetDetailViewPagerAdapter(budget?.num!!,this@BudgetDetailActivity)
-    }
-
-    private val viewModel: BudgetDetailViewModel by viewModels() {
-        BudgetDetailFactory(budget?.num!!)
     }
 
     val budget by lazy {
@@ -58,6 +51,17 @@ class BudgetDetailActivity : AppCompatActivity() {
             intent.getParcelableExtra(EXTRA_BUDGET)
         }
     }
+
+    private val budgetNum by lazy { budget?.num ?: 0 }
+
+    private val viewPagerAdapter by lazy {
+        BudgetDetailViewPagerAdapter(budgetNum, this@BudgetDetailActivity)
+    }
+
+    private val viewModel: BudgetDetailViewModel by viewModels()
+
+    // Fragment에서 activityViewModels로 접근할 수 있도록 Activity에 선언
+    private val statisticsViewModel: BudgetStatisticsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

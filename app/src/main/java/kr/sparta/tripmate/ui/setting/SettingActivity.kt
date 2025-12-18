@@ -16,7 +16,6 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivitySettingBinding
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.ui.login.LoginActivity
-import kr.sparta.tripmate.ui.viewmodel.setting.SettingFactory
 import kr.sparta.tripmate.ui.viewmodel.setting.SettingViewModel
 import kr.sparta.tripmate.util.method.shortToast
 
@@ -26,7 +25,7 @@ class SettingActivity : AppCompatActivity() {
         fun newIntent(context: Context): Intent = Intent(context, SettingActivity::class.java)
     }
 
-    private val settingViewModel: SettingViewModel by viewModels { SettingFactory() }
+    private val settingViewModel: SettingViewModel by viewModels()
 
     private val binding by lazy {
         ActivitySettingBinding.inflate(layoutInflater)

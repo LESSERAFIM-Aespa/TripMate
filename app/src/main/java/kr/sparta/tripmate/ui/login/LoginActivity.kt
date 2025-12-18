@@ -29,7 +29,6 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityLoginBinding
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.login.LoginFactory
 import kr.sparta.tripmate.ui.viewmodel.login.LoginViewModel
 import kr.sparta.tripmate.util.method.longToast
 import kr.sparta.tripmate.util.method.setMaxLength
@@ -44,9 +43,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var login_Database: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
-    private val viewModel: LoginViewModel by viewModels() {
-        LoginFactory()
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
     private val googleLogin: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

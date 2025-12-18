@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.databinding.FragmentBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.mypage.board.MyPageBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.board.MyPageBoardViewModel
 
 class MyPageBoardFragment : Fragment() {
@@ -21,7 +20,7 @@ class MyPageBoardFragment : Fragment() {
     private var _binding: FragmentBoardBinding? = null
 
     private val binding get() = _binding!!
-    private val viewModel: MyPageBoardViewModel by viewModels { MyPageBoardFactory() }
+    private val viewModel: MyPageBoardViewModel by viewModels()
 
     private val boardAdapter by lazy {
         MyPageBoardListAdapter(

@@ -18,7 +18,6 @@ import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivitySplashBinding
 import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.splash.SplashFactory
 import kr.sparta.tripmate.ui.viewmodel.splash.SplashViewModel
 
 /**
@@ -31,9 +30,7 @@ class SplashActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
     }
-    private val viewModel: SplashViewModel by viewModels() {
-        SplashFactory()
-    }
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

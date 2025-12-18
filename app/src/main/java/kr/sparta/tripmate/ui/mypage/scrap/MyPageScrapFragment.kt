@@ -18,7 +18,6 @@ import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapViewModel
 
 class MyPageScrapFragment : Fragment() {
@@ -60,9 +59,7 @@ class MyPageScrapFragment : Fragment() {
             }
         )
     }
-    private val viewModel: MyPageScrapViewModel by viewModels() {
-        MyPageScrapFactory()
-    }
+    private val viewModel: MyPageScrapViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
