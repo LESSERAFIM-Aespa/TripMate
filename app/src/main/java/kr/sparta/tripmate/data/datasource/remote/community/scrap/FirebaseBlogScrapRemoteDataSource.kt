@@ -9,7 +9,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kr.sparta.tripmate.data.model.community.CommunityModel
-import kr.sparta.tripmate.data.model.search.SearchBlogModel
+import kr.sparta.tripmate.remote.model.search.SearchBlogModel
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 
 /**

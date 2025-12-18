@@ -5,8 +5,9 @@ import kr.sparta.tripmate.data.datasource.local.budget.BudgetCategoriesLocalData
 import kr.sparta.tripmate.data.datasource.local.budget.ProcedureLocalDataSource
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.domain.repository.budget.ProcedureRepository
+import javax.inject.Inject
 
-class ProcedureRepositoryImpl(
+class ProcedureRepositoryImpl @Inject constructor(
     private val procedureDataSource: ProcedureLocalDataSource,
 ) : ProcedureRepository {
     override suspend fun insertProcedures(vararg procedures: Procedure) {

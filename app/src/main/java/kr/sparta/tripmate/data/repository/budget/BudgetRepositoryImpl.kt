@@ -6,8 +6,9 @@ import kr.sparta.tripmate.data.datasource.local.budget.CategoryProceduresLocalDa
 import kr.sparta.tripmate.data.datasource.local.budget.ProcedureLocalDataSource
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.domain.repository.budget.BudgetRepository
+import javax.inject.Inject
 
-class BudgetRepositoryImpl(
+class BudgetRepositoryImpl @Inject constructor(
     private val budgetDataSource: BudgetLocalDataSource,
     private val procedureDataSource: ProcedureLocalDataSource,
     private val categoryProceduresDataSource: CategoryProceduresLocalDataSource,
