@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.play.service)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
     id("kotlin-parcelize")
 }
 android {
@@ -128,6 +129,6 @@ dependencies {
     // hilt
     implementation(libs.hilt.core)
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     testImplementation(libs.hilt.android.testing)
 }
