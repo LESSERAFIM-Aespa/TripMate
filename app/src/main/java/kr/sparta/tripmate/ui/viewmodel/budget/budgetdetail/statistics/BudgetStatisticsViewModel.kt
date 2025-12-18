@@ -2,8 +2,10 @@ package kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.data.model.budget.Budget
@@ -13,12 +15,17 @@ import kr.sparta.tripmate.data.model.budget.toModel
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetBudgetToFlowWhenBudgetChangedWithNumUseCase
 import kr.sparta.tripmate.domain.usecase.budgettotalrepository.GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase
 import kr.sparta.tripmate.ui.budget.budgetdetail.procedure.ProcedureModel
+import javax.inject.Inject
 
-class BudgetStatisticsViewModel(
+@HiltViewModel
+class BudgetStatisticsViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     getBudgetToFlowWhenBudgetChangedWithNumUseCase: GetBudgetToFlowWhenBudgetChangedWithNumUseCase,
     getBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase: GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase,
-    private val budgetNum: Int,
 ) : ViewModel() {
+    
+    private val budgetNum: Int = savedStateHandle.get<Int>("extra_budget_num") ?: 0
+
     private val _budgetLiveData: MutableLiveData<Budget> = MutableLiveData()
     val budgetLiveData get() = _budgetLiveData
 

@@ -10,8 +10,11 @@ import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCa
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.SaveUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MyPageViewModel(
+@HiltViewModel
+class MyPageViewModel @Inject constructor(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val saveUserDataUseCase: SaveUserDataUseCase,
     private val getUidUseCase: GetUidUseCase,

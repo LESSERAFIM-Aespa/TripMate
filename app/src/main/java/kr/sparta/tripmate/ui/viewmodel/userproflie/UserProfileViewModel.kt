@@ -8,8 +8,11 @@ import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.model.user.toEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveUidFromUserUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserProfileViewModel(
+@HiltViewModel
+class UserProfileViewModel @Inject constructor(
     private val getUserDataUseCase: GetUserDataUseCase,
     private val saveUidFromUserUseCase: SaveUidFromUserUseCase,
 ) : ViewModel() {

@@ -13,8 +13,11 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLike
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidFromUserUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class UserProfileBoardViewModel(
+@HiltViewModel
+class UserProfileBoardViewModel @Inject constructor(
     private val getAllBoardsUseCase: GetAllBoardsUseCase,
     private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,
