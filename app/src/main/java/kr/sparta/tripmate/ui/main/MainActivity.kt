@@ -9,9 +9,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivityMainBinding
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(context, MainActivity::class.java)

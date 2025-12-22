@@ -8,13 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
 import kr.sparta.tripmate.databinding.ActivityProcedureDetailBinding
 import kr.sparta.tripmate.ui.budget.procedurecontent.ProcedureContentActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail.ProcedureDetailViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.proceduredetail.ProcedureDetailFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 import kotlin.math.abs
 
+@AndroidEntryPoint
 class ProcedureDetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_BUDGET_NUM = "extra_budget_num"
@@ -37,12 +41,7 @@ class ProcedureDetailActivity : AppCompatActivity() {
         intent.getIntExtra(EXTRA_PROCEDURE_NUM, 0)
     }
 
-    private val procedureDetailViewModel: ProcedureDetailViewModel by viewModels {
-        ProcedureDetailFactory(
-            budgetNum,
-            procedureNum
-        )
-    }
+    private val procedureDetailViewModel: ProcedureDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

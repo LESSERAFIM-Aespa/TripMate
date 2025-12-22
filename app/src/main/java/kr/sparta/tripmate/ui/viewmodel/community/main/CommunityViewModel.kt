@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.model.community.toEntity
@@ -14,8 +15,10 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScra
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardViewsUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import javax.inject.Inject
 
-class CommunityViewModel(
+@HiltViewModel
+class CommunityViewModel @Inject constructor(
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,
     private val getAllBoardsUseCase: GetAllBoardsUseCase,
     private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,

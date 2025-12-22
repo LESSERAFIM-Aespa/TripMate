@@ -1,7 +1,7 @@
 package kr.sparta.tripmate.domain.model.scrap
 
-import kr.sparta.tripmate.data.model.scrap.ImageItems
-import kr.sparta.tripmate.data.model.scrap.ImageServerData
+import kr.sparta.tripmate.remote.model.search.ImageItems
+import kr.sparta.tripmate.remote.model.search.ImageServerData
 
 
 fun ImageServerData.toEntity() :ImageServerDataEntity = ImageServerDataEntity(

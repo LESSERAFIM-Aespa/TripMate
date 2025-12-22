@@ -1,7 +1,7 @@
 package kr.sparta.tripmate.data.datasource.remote.search
 
 import kr.sparta.tripmate.api.Constants
-import kr.sparta.tripmate.data.model.search.SearchBlogServerData
+import kr.sparta.tripmate.remote.model.search.SearchBlogServerData
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query

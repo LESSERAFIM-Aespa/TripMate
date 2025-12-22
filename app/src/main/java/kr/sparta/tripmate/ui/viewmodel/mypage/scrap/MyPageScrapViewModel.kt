@@ -12,8 +12,12 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardView
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.util.ScrapInterface
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MyPageScrapViewModel(
+
+@HiltViewModel
+class MyPageScrapViewModel @Inject constructor(
     private val getAllBlogScrapsUseCase: GetAllBlogScrapsUseCase,
     private val getAllBoardsUseCase: GetAllBoardsUseCase,
     private val updateBoardViewsUseCase: UpdateBoardViewsUseCase,

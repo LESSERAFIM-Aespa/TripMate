@@ -1,7 +1,7 @@
 package kr.sparta.tripmate.data.datasource.remote
 
 import kr.sparta.tripmate.api.Constants
-import kr.sparta.tripmate.data.model.scrap.ImageServerData
+import kr.sparta.tripmate.remote.model.search.ImageServerData
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query

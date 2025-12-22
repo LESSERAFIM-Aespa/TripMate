@@ -19,7 +19,6 @@ import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityWriteActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
-import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityFactory
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
 
@@ -31,7 +30,7 @@ class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!!
     private lateinit var uid: String
-    private val commuViewModel: CommunityViewModel by viewModels { CommunityFactory() }
+    private val commuViewModel: CommunityViewModel by viewModels()
 
     private lateinit var activity: MainActivity
     private lateinit var communityContext: Context

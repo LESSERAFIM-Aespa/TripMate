@@ -23,7 +23,6 @@ import kr.sparta.tripmate.databinding.FragmentMyPageBinding
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.ui.mypage.scrap.MyPageScrapFragment
 import kr.sparta.tripmate.ui.setting.SettingActivity
-import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.main.MyPageViewModel
 
 class MyPageFragment : Fragment() {
@@ -32,9 +31,7 @@ class MyPageFragment : Fragment() {
     }
 
     private lateinit var auth: FirebaseAuth
-    private val myPageViewModel: MyPageViewModel by viewModels {
-        MyPageFactory()
-    }
+    private val myPageViewModel: MyPageViewModel by viewModels()
     private lateinit var myPageContext: Context
     private var _binding: FragmentMyPageBinding? = null
     private val binding get() = _binding!!

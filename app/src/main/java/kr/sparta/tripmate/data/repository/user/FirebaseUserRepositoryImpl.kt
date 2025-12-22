@@ -9,12 +9,13 @@ import kr.sparta.tripmate.data.model.user.UserData
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.model.user.toModel
 import kr.sparta.tripmate.domain.repository.user.FirebaseUserRepository
+import javax.inject.Inject
 
 /**
  * 작성자: 서정한
  * 내용: 유저 Repository
  * */
-class FirebaseUserRepositoryImpl(private val remoteSource: FirebaseUserRemoteDataSource) :
+class FirebaseUserRepositoryImpl @Inject constructor(private val remoteSource: FirebaseUserRemoteDataSource) :
     FirebaseUserRepository {
     override fun getUserData(uid: String): Flow<UserData?> = remoteSource.getUserData(uid)
 

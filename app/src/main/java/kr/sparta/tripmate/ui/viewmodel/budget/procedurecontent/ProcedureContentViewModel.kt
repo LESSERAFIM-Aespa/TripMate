@@ -2,8 +2,10 @@ package kr.sparta.tripmate.ui.viewmodel.budget.procedurecontent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
 import kr.sparta.tripmate.data.model.budget.Procedure
@@ -12,16 +14,20 @@ import kr.sparta.tripmate.domain.usecase.procedurerepository.GetProcedureWithNum
 import kr.sparta.tripmate.domain.usecase.procedurerepository.InsertProceduresUseCase
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.procedurecontent.ProcedureContentType
+import javax.inject.Inject
 
-class ProcedureContentViewModel(
+@HiltViewModel
+class ProcedureContentViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val insertProceduresUseCase: InsertProceduresUseCase,
     private val updateProceduresUseCase: UpdateProceduresUseCase,
     private val getBudgetCategoriesUseCase: GetBudgetCategoriesUseCase,
     private val getProcedureWithNumUsecase: GetProcedureWithNumUseCase,
-    private val entryType: ProcedureContentType,
-    private val budgetNum: Int,
-    private val procedureNum: Int = 0,
 ) : ViewModel() {
+    
+    private val entryType: String? = savedStateHandle.get<String>("extra_procedure_entry_type")
+    private val budgetNum: Int = savedStateHandle.get<Int>("extra_budget_num") ?: -1
+    private val procedureNum: Int = savedStateHandle.get<Int>("extra_procedure_num") ?: -1
 
     private val _budgetCategories: MutableLiveData<List<BudgetCategories>> = MutableLiveData()
     val budgetCategories: LiveData<List<BudgetCategories>>
@@ -35,7 +41,7 @@ class ProcedureContentViewModel(
         viewModelScope.launch {
             val budgetCategoriesValue = getBudgetCategoriesUseCase(budgetNum)
             _budgetCategories.value = budgetCategoriesValue
-            if (entryType == ProcedureContentType.EDIT) {
+            if (entryType?.uppercase() == "EDIT") {
                 val proceduresValue = getProcedureWithNumUsecase(procedureNum)
                 _procedures.value = proceduresValue
             }

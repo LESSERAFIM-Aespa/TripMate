@@ -12,7 +12,6 @@ import kr.sparta.tripmate.databinding.FragmentBudgetDetailProcedureBinding
 import kr.sparta.tripmate.ui.budget.proceduredetail.ProcedureDetailActivity
 import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory
 import kr.sparta.tripmate.util.method.toMoneyFormat
 
 
@@ -57,9 +56,7 @@ class BudgetDetailProcedureFragment : Fragment() {
         )
     }
 
-    private val viewModel: BudgetStatisticsViewModel by activityViewModels {
-        BudgetStatisticsFactory(budgetNum)
-    }
+    private val viewModel: BudgetStatisticsViewModel by activityViewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

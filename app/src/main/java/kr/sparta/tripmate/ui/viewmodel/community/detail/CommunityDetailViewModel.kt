@@ -11,8 +11,11 @@ import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.RemoveBoardUseC
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardLikeUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseboardrepository.UpdateBoardScrapUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CommunityDetailViewModel(
+@HiltViewModel
+class CommunityDetailViewModel @Inject constructor(
     private val updateBoardScrapUseCase: UpdateBoardScrapUseCase,
     private val removeBoardUseCase: RemoveBoardUseCase,
     private val updateBoardLikeUseCase: UpdateBoardLikeUseCase,

@@ -2,8 +2,9 @@ package kr.sparta.tripmate.data.repository.sharedpreference
 
 import kr.sparta.tripmate.data.datasource.local.sharedpreference.SharedPreferencesLocalDataSource
 import kr.sparta.tripmate.domain.repository.sharedpreference.SharedPreferenceReopository
+import javax.inject.Inject
 
-class SharedPreferenceReopositoryImpl(
+class SharedPreferenceReopositoryImpl @Inject constructor(
     private val sharedPreferencesDataSource: SharedPreferencesLocalDataSource,
 ) : SharedPreferenceReopository {
     override fun saveUid(uid: String) {

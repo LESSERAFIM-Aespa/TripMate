@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ScrapDetailViewModel(
+@HiltViewModel
+class ScrapDetailViewModel @Inject constructor(
     private val updateBlogScrapUseCase: UpdateBlogScrapUseCase,
     private val getUidUseCase: GetUidUseCase,
 ) : ViewModel() {

@@ -3,7 +3,7 @@ package kr.sparta.tripmate.data.datasource.local.budget
 import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.model.budget.Procedure
-import kr.sparta.tripmate.data.room.BudgetDatabase
+import kr.sparta.tripmate.data.datasource.local.BudgetDatabase
 
 class ProcedureLocalDataSource(context: Context) {
     private val procedureDao = BudgetDatabase.getDatabsae(context).getProcedureDao()

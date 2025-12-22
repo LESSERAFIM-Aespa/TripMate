@@ -31,7 +31,6 @@ import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.databinding.FragmentBudgetDetailStatisticsBinding
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.budgetdetail.statistics.BudgetStatisticsFactory
 import kr.sparta.tripmate.util.method.setMaxLength
 import kr.sparta.tripmate.util.method.shortToast
 import kr.sparta.tripmate.util.method.toMoneyFormat
@@ -60,9 +59,7 @@ class BudgetDetailStatisticsFragment : Fragment() {
     private val binding: FragmentBudgetDetailStatisticsBinding
         get() = _binding!!
 
-    private val viewModel: BudgetStatisticsViewModel by activityViewModels {
-        BudgetStatisticsFactory(budgetNum)
-    }
+    private val viewModel: BudgetStatisticsViewModel by activityViewModels()
 
     private val expenditureListAdapter: BudgetDetailStatisticsListAdapter =
         BudgetDetailStatisticsListAdapter()

@@ -17,13 +17,9 @@ import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardFactory
 import kr.sparta.tripmate.ui.viewmodel.home.board.HomeBoardViewModel
-import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetFactory
 import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetViewModel
-import kr.sparta.tripmate.ui.viewmodel.home.main.HomeFactory
 import kr.sparta.tripmate.ui.viewmodel.home.main.HomeViewModel
-import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapViewModel
 import kr.sparta.tripmate.util.method.shortToast
 
@@ -38,20 +34,13 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel: HomeViewModel by viewModels {
-        HomeFactory()
-    }
+    private val homeViewModel: HomeViewModel by viewModels()
 
-    private val homeScrapViewModel: HomeBlogScrapViewModel by viewModels {
-        HomeBlogScrapFactory()
-    }
+    private val homeScrapViewModel: HomeBlogScrapViewModel by viewModels()
 
-    private val homeBoardViewModel: HomeBoardViewModel by viewModels {
-        HomeBoardFactory()
-    }
-    private val homeBudgetViewModel: HomeBudgetViewModel by viewModels {
-        HomeBudgetFactory()
-    }
+    private val homeBoardViewModel: HomeBoardViewModel by viewModels()
+    
+    private val homeBudgetViewModel: HomeBudgetViewModel by viewModels()
     private val homeBudgetListAdapter: HomeBudgetListAdapter by lazy {
         HomeBudgetListAdapter(
             onItemClicked = {
