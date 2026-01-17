@@ -3,9 +3,11 @@ default_platform(:android)
 platform :android do
   desc "Deploy a new version to Google Play Internal Testing"
   lane :internal do
+    aab_path = ENV['AAB_PATH'] || '../app/build/outputs/bundle/release/app-release.aab'
+
     upload_to_play_store(
       track: 'internal',
-      aab: '../app/build/outputs/bundle/release/app-release.aab',
+      aab: aab_path,
       skip_upload_metadata: true,
       skip_upload_images: true,
       skip_upload_screenshots: true

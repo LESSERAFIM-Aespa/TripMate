@@ -46,6 +46,17 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew bundleRelease
 
+      - name: Extract version name
+        id: version
+        run: |
+          VERSION_NAME=$(grep 'versionName = ' app/build.gradle.kts | sed 's/.*versionName = "\(.*\)"/\1/')
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION_NAME"
+
+      - name: Rename AAB file
+        run: |
+          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -63,11 +74,12 @@ jobs:
       - name: Deploy to Google Play Internal Testing
         env:
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH: /tmp/google-play-service-account.json
+          AAB_PATH: app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
         run: fastlane internal
 
       - name: Upload AAB to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          files: app/build/outputs/bundle/release/app-release.aab
+          files: app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
