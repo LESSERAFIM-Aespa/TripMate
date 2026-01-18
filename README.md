@@ -21,6 +21,11 @@
  $ git clone https://github.com/LESSERAFIM-Aespa/TripMate.git
 ```
 
+# 배포 파이프라인
+- develop 대상 PR: Android Build 워크플로우 실행 (AAB 빌드 및 아티팩트 업로드)
+- main 대상 PR: Android Deploy 워크플로우 실행 (AAB 빌드, Fastlane internal 배포, GitHub Release 업로드)
+- GitHub Release 업로드는 태그(`vX.Y.Z`)가 필요하므로 배포 커밋에 태그를 생성/푸시해야 합니다.
+
 # Stacks
 ## Environment
 <img src="https://img.shields.io/badge/androidstudio-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white"><img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white"><img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white">
