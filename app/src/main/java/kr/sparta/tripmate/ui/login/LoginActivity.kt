@@ -47,6 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
     private val googleLogin: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            android.util.Log.d("LoginActivity", "Google Login Result: resultCode=${result.resultCode}, RESULT_OK=${Activity.RESULT_OK}")
             /**
              * 작성자: 박성수
              * 내용: 로그인 성공시 혹은 실패시 보여줄 레이아웃의 Visible을 로그인 성공여부에따라 반응함
@@ -171,8 +172,14 @@ class LoginActivity : AppCompatActivity() {
                 )
 
                 //credential을 이용해서 firebase로 해당 유저를 로그인한다.
+                android.util.Log.d("LoginActivity", "Starting Firebase auth with credential")
                 auth.signInWithCredential(credential)
                     .addOnCompleteListener(this) { task ->
+                        android.util.Log.d("LoginActivity", "Firebase auth completed: success=${task.isSuccessful}")
+                        if (!task.isSuccessful) {
+                            android.util.Log.e("LoginActivity", "Firebase auth failed", task.exception)
+                            shortToast("Firebase 인증 실패: ${task.exception?.message}")
+                        }
                         // 로그인 성공여부에따른 화면분기점
                         layoutVisibleController(task.isSuccessful)
                         //
@@ -185,26 +192,44 @@ class LoginActivity : AppCompatActivity() {
              * 내용: 로그인요청결과 인증작업
              * */
             fun handleSignInResult(data: Intent) {
+                android.util.Log.d("LoginActivity", "handleSignInResult called")
                 kotlin.runCatching {
                     //구글 로그인 액티비티에서 반환된 data에서 사용자 정보를 불러온다.
                     GoogleSignIn.getSignedInAccountFromIntent(data)
 
                 }
                     .onSuccess { result ->
+                        android.util.Log.d("LoginActivity", "Google SignIn task successful")
                         val account = result.getResult(ApiException::class.java)
+                        android.util.Log.d("LoginActivity", "Account: email=${account.email}, idToken=${account.idToken != null}")
                         account.idToken?.let { it ->
                             //로그인에 성공했을때 구글에서 사용자를 구별할 수 있도록 보내주는 토큰이다. 위에 gso에 담긴 토큰값과 다른것이다.
+                            android.util.Log.d("LoginActivity", "Calling firebaseAuthWithGoogle")
                             firebaseAuthWithGoogle(it)
+                        } ?: run {
+                            android.util.Log.e("LoginActivity", "idToken is null!")
+                            shortToast("ID Token을 받지 못했습니다.")
                         }
                     }
                     .onFailure {
+                        android.util.Log.e("LoginActivity", "Google sign in failed", it)
                         shortToast("Google sign in failed: ${it.message}")
                     }
             }
 
             if (result.resultCode == Activity.RESULT_OK) {
+                android.util.Log.d("LoginActivity", "Result OK, processing data")
                 result.data?.let {
                     handleSignInResult(it)
+                } ?: run {
+                    android.util.Log.e("LoginActivity", "Result data is null!")
+                    shortToast("로그인 데이터를 받지 못했습니다.")
+                }
+            } else {
+                android.util.Log.e("LoginActivity", "Result not OK: resultCode=${result.resultCode}")
+                when (result.resultCode) {
+                    Activity.RESULT_CANCELED -> shortToast("로그인이 취소되었습니다.")
+                    else -> shortToast("로그인 실패: 코드 ${result.resultCode}")
                 }
             }
         }
