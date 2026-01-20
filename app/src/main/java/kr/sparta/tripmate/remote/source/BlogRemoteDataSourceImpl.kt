@@ -1,6 +1,7 @@
 package kr.sparta.tripmate.remote.source
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kr.sparta.tripmate.remote.SearchBlogApiService
 import kr.sparta.tripmate.remote.model.search.ImageServerData
 import kr.sparta.tripmate.remote.model.search.SearchBlogServerData
@@ -22,7 +23,7 @@ class BlogRemoteDataSourceImpl @Inject constructor(private val api: SearchBlogAp
             "Display must be between 1 and 100"
         }
 
-        return api.searchBlogs(query, sort, display)
+        return flow { emit(api.searchBlogs(query, sort, display)) }
     }
 
     override suspend fun getImage(query: String, sort: String): Flow<ImageServerData> {
@@ -30,6 +31,6 @@ class BlogRemoteDataSourceImpl @Inject constructor(private val api: SearchBlogAp
             "Query must not be empty"
         }
 
-        return api.getImage(query, sort)
+        return flow { emit(api.getImage(query, sort)) }
     }
 }

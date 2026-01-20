@@ -7,8 +7,8 @@ import okhttp3.Response
 class HeaderInterceptor() : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = chain.request().newBuilder()
-            .addHeader(name = "X-Naver-Client-Id:", value = Constants.client_id)
-            .addHeader(name = "X-Naver-Client-Secret:", value = Constants.client_secret)
+            .addHeader(name = "X-Naver-Client-Id", value = Constants.client_id)
+            .addHeader(name = "X-Naver-Client-Secret", value = Constants.client_secret)
             .build()
         return chain.proceed(newRequest)
     }

@@ -1,6 +1,5 @@
 package kr.sparta.tripmate.remote
 
-import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.remote.model.search.ImageServerData
 import kr.sparta.tripmate.remote.model.search.SearchBlogServerData
 import retrofit2.http.GET
@@ -23,9 +22,9 @@ interface SearchBlogApiService {
     @GET("search/blog.json")
     suspend fun searchBlogs(
         @Query("query") query : String,
-        @Query("sort") sort: String = "accuracy",
+        @Query("sort") sort: String = "sim",
         @Query("display") display: Int = 10,
-    ): Flow<SearchBlogServerData>
+    ): SearchBlogServerData
 
     /**
      * Get image
@@ -38,5 +37,5 @@ interface SearchBlogApiService {
     suspend fun getImage(
         @Query("query") query : String,
         @Query("sort") sort: String
-    ): Flow<ImageServerData>
+    ): ImageServerData
 }
