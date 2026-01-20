@@ -22,7 +22,9 @@ import kr.sparta.tripmate.ui.viewmodel.home.budget.HomeBudgetViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.main.HomeViewModel
 import kr.sparta.tripmate.ui.viewmodel.home.scrap.HomeBlogScrapViewModel
 import kr.sparta.tripmate.util.method.shortToast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     companion object {
         fun newInstance(): HomeFragment = HomeFragment()

@@ -14,7 +14,9 @@ import kr.sparta.tripmate.databinding.FragmentBudgetBinding
 import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetlist.BudgetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BudgetFragment : Fragment() {
     companion object {
         fun newInstance() = BudgetFragment()

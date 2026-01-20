@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kr.sparta.tripmate.databinding.FragmentBoardBinding
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.mypage.board.MyPageBoardViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyPageBoardFragment : Fragment() {
     companion object {
         fun newInstance(): MyPageBoardFragment = MyPageBoardFragment()

@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +22,7 @@ import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapViewModel
 
+@AndroidEntryPoint
 class MyPageScrapFragment : Fragment() {
     companion object {
         fun newInstance(): MyPageScrapFragment = MyPageScrapFragment()

@@ -21,7 +21,9 @@ import kr.sparta.tripmate.ui.main.MainActivity
 import kr.sparta.tripmate.ui.userprofile.main.UserProfileActivity
 import kr.sparta.tripmate.ui.viewmodel.community.main.CommunityViewModel
 import kr.sparta.tripmate.util.method.shortToast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CommunityFragment : Fragment() {
     companion object {
         fun newInstance(): CommunityFragment = CommunityFragment()

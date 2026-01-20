@@ -19,8 +19,10 @@ import kr.sparta.tripmate.databinding.FragmentScrapBinding
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
 import kr.sparta.tripmate.util.method.shortToast
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
 
+@AndroidEntryPoint
 class ScrapFragment : Fragment() {
     companion object {
         fun newInstance(): ScrapFragment = ScrapFragment()
