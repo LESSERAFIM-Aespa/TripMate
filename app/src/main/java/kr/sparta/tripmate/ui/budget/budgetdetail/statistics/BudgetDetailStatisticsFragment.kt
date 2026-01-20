@@ -1,21 +1,16 @@
 package kr.sparta.tripmate.ui.budget.budgetdetail.statistics
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -65,18 +60,6 @@ class BudgetDetailStatisticsFragment : Fragment() {
         BudgetDetailStatisticsListAdapter()
     private val incomeListAdapter: BudgetDetailStatisticsListAdapter =
         BudgetDetailStatisticsListAdapter()
-
-    private val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {
-        when (it) {
-            true -> {
-                captureScrollableContent()
-            }
-
-            false -> {}
-        }
-    }
 
     fun PieDataSet.toCustomFormat() = this.apply {
         valueTextSize = 16f
@@ -356,21 +339,8 @@ class BudgetDetailStatisticsFragment : Fragment() {
                 }
 
                 binding.budgetStatisticsShareImageview.setOnClickListener {
-                    val permission =
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            Manifest.permission.READ_MEDIA_IMAGES
-                        } else {
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        }
-                    if (ContextCompat.checkSelfPermission(
-                            requireContext(),
-                            permission
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        requestPermission.launch(permission)
-                    } else {
-                        captureScrollableContent()
-                    }
+                    // getExternalFilesDir() 사용으로 권한 불필요
+                    captureScrollableContent()
                 }
             }
         }
