@@ -20,12 +20,16 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
         run: |
           [ -n "$GOOGLE_SERVICES_JSON" ] || { echo "Missing secret: GOOGLE_SERVICES_JSON"; exit 1; }
           [ -n "$KEYSTORE_FILE" ] || { echo "Missing secret: KEYSTORE_FILE"; exit 1; }
           [ -n "$KEYSTORE_PASSWORD" ] || { echo "Missing secret: KEYSTORE_PASSWORD"; exit 1; }
           [ -n "$KEY_ALIAS" ] || { echo "Missing secret: KEY_ALIAS"; exit 1; }
           [ -n "$KEY_PASSWORD" ] || { echo "Missing secret: KEY_PASSWORD"; exit 1; }
+          [ -n "$NAVER_CLIENT_ID" ] || { echo "Missing secret: NAVER_CLIENT_ID"; exit 1; }
+          [ -n "$NAVER_CLIENT_SECRET" ] || { echo "Missing secret: NAVER_CLIENT_SECRET"; exit 1; }
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -53,6 +57,8 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
         run: ./gradlew bundleRelease
 
       - name: Extract version name

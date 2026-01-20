@@ -12,14 +12,22 @@ plugins {
 }
 android {
     namespace = "kr.sparta.tripmate"
-    compileSdk = 35
+    compileSdk = 36
+
+    fun getSecret(name: String): String =
+        (project.findProperty(name) as String?) ?: System.getenv(name) ?: ""
 
     defaultConfig {
         applicationId = "kr.sparta.tripmate"
         minSdk = 27
-        targetSdk = 35
-        versionCode = 10
-        versionName = "1.0.7"
+        targetSdk = 36
+        versionCode = 11
+        versionName = "1.0.8"
+
+        val naverClientId = getSecret("NAVER_CLIENT_ID")
+        val naverClientSecret = getSecret("NAVER_CLIENT_SECRET")
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"$naverClientId\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"$naverClientSecret\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

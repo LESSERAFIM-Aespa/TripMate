@@ -21,10 +21,44 @@
  $ git clone https://github.com/LESSERAFIM-Aespa/TripMate.git
 ```
 
+# 프로젝트 셋업(로컬/CI 공통)
+## 필수 API 키 및 파일
+### Naver Search API
+- 필요 값: `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`
+- 로컬 개발:
+```
+// ~/.gradle/gradle.properties 또는 프로젝트 gradle.properties
+NAVER_CLIENT_ID=발급받은_ID
+NAVER_CLIENT_SECRET=발급받은_SECRET
+```
+- GitHub Actions(Secrets):
+  - `NAVER_CLIENT_ID`
+  - `NAVER_CLIENT_SECRET`
+
+### Firebase
+- 필요 파일: `app/google-services.json`
+- 로컬 개발:
+  - Firebase 콘솔에서 `google-services.json` 다운로드 후 `app/`에 위치
+- GitHub Actions(Secrets):
+  - `GOOGLE_SERVICES_JSON` (파일 내용을 base64 또는 raw 문자열로 저장)
+
+### Release Keystore(배포 빌드)
+- GitHub Actions(Secrets):
+  - `KEYSTORE_FILE` (base64 인코딩된 keystore)
+  - `KEYSTORE_PASSWORD`
+  - `KEY_ALIAS`
+  - `KEY_PASSWORD`
+- 로컬 개발(선택):
+  - 환경 변수로 동일 이름 세팅 또는 `KEYSTORE_PATH` 지정
+
+## 빌드 확인
+```
+./gradlew assembleDebug
+```
+
 # 배포 파이프라인
-- develop 대상 PR: Android Build 워크플로우 실행 (AAB 빌드 및 아티팩트 업로드)
-- main 대상 PR: Android Deploy 워크플로우 실행 (AAB 빌드, Fastlane internal 배포, GitHub Release 업로드)
-- GitHub Release 업로드는 태그(`vX.Y.Z`)가 필요하므로 배포 커밋에 태그를 생성/푸시해야 합니다.
+- dev 대상 PR: 빌드만 수행 (Android Build 워크플로우)
+- dev → main PR: 빌드 + 스토어 내부테스트 배포 (Android Deploy 워크플로우)
 
 # Stacks
 ## Environment
