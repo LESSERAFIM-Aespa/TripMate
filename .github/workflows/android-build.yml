@@ -71,10 +71,3 @@ jobs:
       - name: Rename AAB file
         run: |
           mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
-
-      - name: Upload AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: tripmate-${{ steps.version.outputs.VERSION_NAME }}
-          path: app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
-          retention-days: 30

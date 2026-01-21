@@ -12,8 +12,48 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read app version
+        id: version
+        run: |
+          VERSION_NAME=$(grep 'versionName = ' app/build.gradle.kts | sed 's/.*versionName = "\(.*\)"/\1/')
+          VERSION_CODE=$(grep 'versionCode = ' app/build.gradle.kts | sed 's/.*versionCode = \(.*\)/\1/' | tr -d '[:space:]')
+          if [ -z "$VERSION_NAME" ] || [ -z "$VERSION_CODE" ]; then
+            echo "Failed to parse version. name=$VERSION_NAME code=$VERSION_CODE"
+            exit 1
+          fi
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+
+      - name: Check version update vs origin/main
+        id: version_check
+        run: |
+          git fetch origin main
+          BASE_VERSION_NAME=$(git show "origin/main:app/build.gradle.kts" | grep 'versionName = ' | sed 's/.*versionName = "\(.*\)"/\1/')
+          BASE_VERSION_CODE=$(git show "origin/main:app/build.gradle.kts" | grep 'versionCode = ' | sed 's/.*versionCode = \(.*\)/\1/' | tr -d '[:space:]')
+          if [ -z "$BASE_VERSION_NAME" ] || [ -z "$BASE_VERSION_CODE" ]; then
+            echo "Failed to parse base version. name=$BASE_VERSION_NAME code=$BASE_VERSION_CODE"
+            exit 1
+          fi
+          if [ "${BASE_VERSION_NAME}" = "${{ steps.version.outputs.version_name }}" ] && [ "${BASE_VERSION_CODE}" = "${{ steps.version.outputs.version_code }}" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate tag for release
+        if: steps.version_check.outputs.changed == 'true'
+        run: |
+          TAG=$(git tag --points-at HEAD | head -n 1)
+          if [ -z "$TAG" ]; then
+            echo "Release requires a tag on HEAD commit."
+            exit 1
+          fi
 
       - name: Validate required secrets
+        if: steps.version_check.outputs.changed == 'true'
         env:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
           KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
@@ -34,6 +74,7 @@ jobs:
           [ -n "$NAVER_CLIENT_SECRET" ] || { echo "Missing secret: NAVER_CLIENT_SECRET"; exit 1; }
 
       - name: Set up JDK 17
+        if: steps.version_check.outputs.changed == 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -41,19 +82,23 @@ jobs:
           cache: gradle
 
       - name: Create google-services.json
+        if: steps.version_check.outputs.changed == 'true'
         env:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: echo "$GOOGLE_SERVICES_JSON" > ./app/google-services.json
 
       - name: Decode Keystore
+        if: steps.version_check.outputs.changed == 'true'
         env:
           KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
         run: echo "$KEYSTORE_FILE" | base64 -d > /tmp/release.jks
 
       - name: Grant execute permission for gradlew
+        if: steps.version_check.outputs.changed == 'true'
         run: chmod +x gradlew
 
       - name: Build Release AAB
+        if: steps.version_check.outputs.changed == 'true'
         env:
           KEYSTORE_PATH: /tmp/release.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -64,32 +109,46 @@ jobs:
         run: ./gradlew bundleRelease
 
       - name: Extract version name
-        id: version
+        if: steps.version_check.outputs.changed == 'true'
+        id: version_out
         run: |
           VERSION_NAME=$(grep 'versionName = ' app/build.gradle.kts | sed 's/.*versionName = "\(.*\)"/\1/')
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "Version: $VERSION_NAME"
 
       - name: Rename AAB file
+        if: steps.version_check.outputs.changed == 'true'
         run: |
-          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
+          mv app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/tripmate-${{ steps.version_out.outputs.VERSION_NAME }}.aab
 
       - name: Set up Ruby
+        if: steps.version_check.outputs.changed == 'true'
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: false
 
       - name: Install Fastlane
+        if: steps.version_check.outputs.changed == 'true'
         run: gem install fastlane
 
       - name: Create Google Play Service Account JSON
+        if: steps.version_check.outputs.changed == 'true'
         env:
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
         run: echo "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" > /tmp/google-play-service-account.json
 
       - name: Deploy to Google Play Internal Testing
+        if: steps.version_check.outputs.changed == 'true'
         env:
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH: /tmp/google-play-service-account.json
-          AAB_PATH: app/build/outputs/bundle/release/tripmate-${{ steps.version.outputs.VERSION_NAME }}.aab
+          AAB_PATH: app/build/outputs/bundle/release/tripmate-${{ steps.version_out.outputs.VERSION_NAME }}.aab
         run: fastlane internal
+
+      - name: Upload AAB Artifact
+        if: steps.version_check.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tripmate-${{ steps.version_out.outputs.VERSION_NAME }}
+          path: app/build/outputs/bundle/release/tripmate-${{ steps.version_out.outputs.VERSION_NAME }}.aab
+          retention-days: 30
