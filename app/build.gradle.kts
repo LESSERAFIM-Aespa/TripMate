@@ -1,23 +1,44 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.play.service)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
     id("kotlin-parcelize")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
 }
 android {
     namespace = "kr.sparta.tripmate"
-    compileSdk = 34
+    compileSdk = 36
+
+    fun getSecret(name: String): String =
+        (project.findProperty(name) as String?) ?: System.getenv(name) ?: ""
 
     defaultConfig {
         applicationId = "kr.sparta.tripmate"
-        minSdk = 31
-        targetSdk = 33
-        versionCode = 6
-        versionName = "1.0.4"
+        minSdk = 27
+        targetSdk = 36
+        versionCode = 11
+        versionName = "1.0.8"
+
+        val naverClientId = getSecret("NAVER_CLIENT_ID")
+        val naverClientSecret = getSecret("NAVER_CLIENT_SECRET")
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"$naverClientId\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"$naverClientSecret\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(System.getenv("KEYSTORE_PATH") ?: "release.jks")
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
+        }
     }
 
     buildTypes {
@@ -27,6 +48,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -34,83 +56,97 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
     buildFeatures {
         viewBinding = true
         dataBinding = true
         buildConfig = true
     }
+
+    packaging {
+        exclude("META-INF/gradle/incremental.annotation.processors")
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.material)
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.compose.material3.adaptive.layout)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil.kt)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.gson)
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.firebase:firebase-crashlytics:18.4.3")
-    implementation("com.google.firebase:firebase-analytics:21.3.0")
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
-    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
 
-    implementation ("com.google.code.gson:gson:2.10.1")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    testImplementation(libs.junit)
+    testImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.test.runner)
 
-    implementation("io.coil-kt:coil:2.5.0")
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.svg)
+    implementation(libs.kotlinx.serialization.json)
 
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation("androidx.fragment:fragment-ktx:1.6.1")
+    implementation(libs.glide)
 
-    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation(libs.androidx.fragment.ktx)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation(libs.circleimageview)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.github.skydoves:powerspinner:1.2.7")
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
 
-    //use room
-    val room_version = "2.5.2"
+    implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.cardview)
+    implementation(libs.powerspinner)
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    // To use Kotlin annotation processing tool (kapt)
-    kapt("androidx.room:room-compiler:$room_version")
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
-    // optional - Test helpers
-    testImplementation("androidx.room:room-testing:$room_version")
+    implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.okhttp.logging)
 
-
-    // use aslivedata
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
 
     // use colorpicker dialog
-    implementation("com.github.Dhaval2404:ColorPicker:2.3")
+    implementation(libs.colorpicker)
 
     // use chart
-    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // Rx Kotlin
-    implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
-    implementation ("io.reactivex.rxjava3:rxkotlin:3.0.0")
+    implementation(libs.mpandroidchart)
 
     //addmob
-    implementation("com.google.android.gms:play-services-ads:22.5.0")
+    implementation(libs.play.services.ads)
 
     //google play store
-    implementation("com.google.android.play:app-update-ktx:2.1.0")
-    implementation("com.google.android.play:app-update:2.1.0")
+    implementation(libs.app.update.ktx)
+    implementation(libs.app.update)
+
+    // hilt
+    implementation(libs.hilt.core)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    testImplementation(libs.hilt.android.testing)
 }

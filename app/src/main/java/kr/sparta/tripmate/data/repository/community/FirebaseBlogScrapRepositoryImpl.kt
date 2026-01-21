@@ -2,16 +2,17 @@ package kr.sparta.tripmate.data.repository.community
 
 import kotlinx.coroutines.flow.Flow
 import kr.sparta.tripmate.data.datasource.remote.community.scrap.FirebaseBlogScrapRemoteDataSource
-import kr.sparta.tripmate.data.model.search.SearchBlogModel
+import kr.sparta.tripmate.remote.model.search.SearchBlogModel
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.model.search.toModel
 import kr.sparta.tripmate.domain.repository.community.FirebaseBlogScrapRepository
+import javax.inject.Inject
 
 /**
  * 작성자: 서정한
  * 내용: 유저가 스크랩한 블로그 Repository
  * */
-class FirebaseBlogScrapRepositoryImpl(
+class FirebaseBlogScrapRepositoryImpl @Inject constructor(
     private val remoteSource: FirebaseBlogScrapRemoteDataSource,
 ) :
     FirebaseBlogScrapRepository {

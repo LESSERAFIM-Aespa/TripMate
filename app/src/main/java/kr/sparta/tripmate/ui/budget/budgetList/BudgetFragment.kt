@@ -14,8 +14,9 @@ import kr.sparta.tripmate.databinding.FragmentBudgetBinding
 import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentActivity
 import kr.sparta.tripmate.ui.budget.budgetdetail.main.BudgetDetailActivity
 import kr.sparta.tripmate.ui.viewmodel.budget.budgetlist.BudgetViewModel
-import kr.sparta.tripmate.ui.viewmodel.budget.budgetlist.BudgetFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BudgetFragment : Fragment() {
     companion object {
         fun newInstance() = BudgetFragment()
@@ -40,9 +41,7 @@ class BudgetFragment : Fragment() {
         })
     }
 
-    private val budgetViewModel: BudgetViewModel by activityViewModels {
-        BudgetFactory()
-    }
+    private val budgetViewModel: BudgetViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

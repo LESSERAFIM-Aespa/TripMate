@@ -1,4 +1,4 @@
-package kr.sparta.tripmate.data.model.scrap
+package kr.sparta.tripmate.remote.model.search
 
 data class ImageServerData(
     val title: String?,
@@ -10,6 +10,7 @@ data class ImageServerData(
     val display: Int?,
     val items: ArrayList<ImageItems>?
 )
+
 data class ImageItems(
     val title: String?,
     val link: String?,

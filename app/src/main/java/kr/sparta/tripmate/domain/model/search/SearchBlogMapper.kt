@@ -1,7 +1,7 @@
 package kr.sparta.tripmate.domain.model.search
 
-import kr.sparta.tripmate.data.model.search.SearchBlogModel
-import kr.sparta.tripmate.data.model.search.SearchBlogServerData
+import kr.sparta.tripmate.remote.model.search.SearchBlogModel
+import kr.sparta.tripmate.remote.model.search.SearchBlogServerData
 
 
 fun SearchBlogServerData.toEntity(): SearchBlogServerDataEntity = SearchBlogServerDataEntity(

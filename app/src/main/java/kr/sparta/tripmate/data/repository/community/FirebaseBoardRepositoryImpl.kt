@@ -6,12 +6,13 @@ import kr.sparta.tripmate.data.model.community.CommunityModel
 import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.model.community.toModel
 import kr.sparta.tripmate.domain.repository.community.FirebaseBoardRepository
+import javax.inject.Inject
 
 /**
  * 작성자: 서정한
  * 내용: 커뮤니티 게시판 Repository
  * */
-class FirebaseBoardRepositoryImpl(
+class FirebaseBoardRepositoryImpl @Inject constructor(
     private val remoteSource: FirebaseBoardRemoteDataSource
 ) : FirebaseBoardRepository {
 

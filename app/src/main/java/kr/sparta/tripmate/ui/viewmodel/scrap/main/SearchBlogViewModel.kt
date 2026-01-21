@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.scrap.ImageItemsEntity
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
@@ -13,8 +14,10 @@ import kr.sparta.tripmate.domain.usecase.GetSearchBlogUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.UpdateBlogScrapUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
+import javax.inject.Inject
 
-class SearchBlogViewModel(
+@HiltViewModel
+class SearchBlogViewModel @Inject constructor(
     private val searchBlog: GetSearchBlogUseCase,
     private val updateBlogScrapUseCase: UpdateBlogScrapUseCase,
     private val getAllBlogScraps: GetAllBlogScrapsUseCase,
@@ -44,7 +47,7 @@ class SearchBlogViewModel(
          * 작성자: 서정한
          * 내용: 검색결과에 내가 스크랩한 블로그 표시
          * */
-        suspend fun applyBlogScraps(scrapItems: ArrayList<SearchBlogEntity>) {
+        suspend fun applyBlogScraps(scrapItems: MutableList<SearchBlogEntity>) {
             getAllBlogScraps(uid).collect() { blogs ->
                 val scraps = blogs.toMutableList().toEntity()
 
@@ -73,31 +76,32 @@ class SearchBlogViewModel(
         // loading start
         _isLoading.value = true
 
-        val result = searchBlog(q, currentDisplay)
-        val scrapItems = ArrayList<SearchBlogEntity>()
-        result.items?.let { searchList ->
-            for (i in searchList.indices) {
-                scrapItems.add(searchList[i])
-            }
+        val scrapItems = mutableListOf<SearchBlogEntity>()
+        searchBlog(q, currentDisplay).collect { result ->
+            result.items?.let { searchList ->
+                for (i in searchList.indices) {
+                    scrapItems.add(searchList[i])
+                }
 
-            // 블로그 검색결과에 내가 스크랩한 블로그 표시
-            applyBlogScraps(scrapItems)
+                // 블로그 검색결과에 내가 스크랩한 블로그 표시
+                applyBlogScraps(scrapItems)
+            }
         }
     }
 
     fun searchImageResult(q: String) = viewModelScope.launch {
         _isLoading.value = true
-        val result = getImageUseCase(q)
-        val imageItems = ArrayList<ImageItemsEntity>()
-        result.items?.let {
-            for (i in it.indices) {
-                imageItems.add(it[i])
+        val imageItems = mutableListOf<ImageItemsEntity>()
+        getImageUseCase(q).collect { result ->
+            result.items?.let {
+                for (i in it.indices) {
+                    imageItems.add(it[i])
+                }
+                _recommandImage.value = imageItems
+                _isLoading.value = false
             }
-            _recommandImage.value = imageItems
-            _isLoading.value = false
         }
     }
-
 
     /**
      * 작성자: 서정한

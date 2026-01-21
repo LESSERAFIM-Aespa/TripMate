@@ -10,12 +10,15 @@ import kotlinx.coroutines.launch
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.domain.model.search.toEntity
 import kr.sparta.tripmate.domain.usecase.firebasescraprepository.GetAllBlogScrapsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * 작성자: 서정한
  * 내용: HomeFragment의 블로그 탭 ViewModel
  * */
-class HomeBlogScrapViewModel(private val getAllBlogScraps: GetAllBlogScrapsUseCase) : ViewModel() {
+@HiltViewModel
+class HomeBlogScrapViewModel @Inject constructor(private val getAllBlogScraps: GetAllBlogScrapsUseCase) : ViewModel()  {
     private val _blogScraps : MutableLiveData<List<SearchBlogEntity?>> = MutableLiveData()
     val blogScraps get() = _blogScraps
 

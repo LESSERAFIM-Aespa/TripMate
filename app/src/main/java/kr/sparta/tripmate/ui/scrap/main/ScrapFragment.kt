@@ -14,17 +14,15 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.FragmentScrapBinding
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogFactory
 import kr.sparta.tripmate.ui.viewmodel.scrap.main.SearchBlogViewModel
 import kr.sparta.tripmate.util.method.shortToast
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Random
 
+@AndroidEntryPoint
 class ScrapFragment : Fragment() {
     companion object {
         fun newInstance(): ScrapFragment = ScrapFragment()
@@ -61,7 +59,7 @@ class ScrapFragment : Fragment() {
             }
         }
 
-    private val viewModel: SearchBlogViewModel by viewModels { SearchBlogFactory() }
+    private val viewModel: SearchBlogViewModel by viewModels()
     private val uid by lazy {
         viewModel.getUid()
     }

@@ -6,8 +6,11 @@ import androidx.lifecycle.asLiveData
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenBudgetChangedUseCase
 import kr.sparta.tripmate.domain.usecase.budgetrepository.GetAllBudgetsToFlowWhenProcedureChangedUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeBudgetViewModel(
+@HiltViewModel
+class HomeBudgetViewModel @Inject constructor(
     getAllBudgetsToFlowWhenBudgetChangedUseCase: GetAllBudgetsToFlowWhenBudgetChangedUseCase,
     getAllBudgetsToFlowWhenProcedureChangedUseCase:GetAllBudgetsToFlowWhenProcedureChangedUseCase,
 ) : ViewModel() {

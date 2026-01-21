@@ -3,8 +3,9 @@ package kr.sparta.tripmate.data.repository.budget
 import kr.sparta.tripmate.data.datasource.local.budget.CategoryLocalDataSource
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.domain.repository.budget.CategoryRepository
+import javax.inject.Inject
 
-class CategoryRepositoryImpl(
+class CategoryRepositoryImpl @Inject constructor(
     private val categoryDataSource: CategoryLocalDataSource,
 ) : CategoryRepository {
     override suspend fun insertCategories(vararg categories: Category) {

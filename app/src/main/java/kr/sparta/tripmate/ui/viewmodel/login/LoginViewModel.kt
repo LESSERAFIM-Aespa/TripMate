@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kr.sparta.tripmate.domain.model.user.UserDataEntity
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetNickNameDataUseCase
 import kr.sparta.tripmate.domain.usecase.firebaseuserrepository.GetUserDataUseCase
@@ -15,8 +16,10 @@ import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveProfileUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.SaveUidUseCase
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val saveUserDataUseCase: SaveUserDataUseCase,
     private val getNickNameDataUseCase: GetNickNameDataUseCase,
     private val saveUidUseCase: SaveUidUseCase,

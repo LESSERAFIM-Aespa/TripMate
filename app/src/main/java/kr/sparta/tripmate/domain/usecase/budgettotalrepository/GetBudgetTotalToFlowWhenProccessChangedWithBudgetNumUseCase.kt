@@ -5,8 +5,9 @@ import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.Category
 import kr.sparta.tripmate.data.model.budget.Procedure
 import kr.sparta.tripmate.domain.repository.budget.BudgetTotalRepository
+import javax.inject.Inject
 
-class GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase(private val repository: BudgetTotalRepository) {
+class GetBudgetTotalToFlowWhenProccessChangedWithBudgetNumUseCase @Inject constructor(private val repository: BudgetTotalRepository) {
     operator fun invoke(num: Int): Flow<Triple<Budget, List<Category>, List<Procedure>>> =
         repository.getBudgetTotalToFlowWhenProccessChangedWithBudgetNum(num)
 }

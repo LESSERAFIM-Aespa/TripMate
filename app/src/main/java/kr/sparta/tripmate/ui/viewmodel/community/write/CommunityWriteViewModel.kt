@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,8 +18,11 @@ import kr.sparta.tripmate.domain.usecase.sharedpreference.GetNickNameUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetProfileUseCase
 import kr.sparta.tripmate.domain.usecase.sharedpreference.GetUidUseCase
 import kr.sparta.tripmate.util.method.isWindowTouchable
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CommunityWriteViewModel(
+@HiltViewModel
+class CommunityWriteViewModel @Inject constructor(
     private val addBoardUseCase: AddBoardUseCase,
     private val uploadImageForFirebaseStorage: UploadImageForFirebaseStorage,
     private val getCommunityKeyUseCase: GetCommunityKeyUseCase,

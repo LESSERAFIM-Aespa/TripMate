@@ -13,11 +13,11 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import dagger.hilt.android.AndroidEntryPoint
 import kr.sparta.tripmate.R
 import kr.sparta.tripmate.databinding.ActivitySplashBinding
 import kr.sparta.tripmate.ui.login.LoginActivity
 import kr.sparta.tripmate.ui.main.MainActivity
-import kr.sparta.tripmate.ui.viewmodel.splash.SplashFactory
 import kr.sparta.tripmate.ui.viewmodel.splash.SplashViewModel
 
 /**
@@ -25,19 +25,19 @@ import kr.sparta.tripmate.ui.viewmodel.splash.SplashViewModel
  * 내용: 스플레시 화면구성.
  * */
 @SuppressLint("CustomSplashScreen")
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
     }
-    private val viewModel: SplashViewModel by viewModels() {
-        SplashFactory()
-    }
+    private val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        updateCheck()
+//        updateCheck()
+        startSplash()
     }
 
     private fun startSplash() {

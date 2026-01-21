@@ -1,7 +1,7 @@
 package kr.sparta.tripmate.domain.repository.community
 
 import kotlinx.coroutines.flow.Flow
-import kr.sparta.tripmate.data.model.search.SearchBlogModel
+import kr.sparta.tripmate.remote.model.search.SearchBlogModel
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 
 /**

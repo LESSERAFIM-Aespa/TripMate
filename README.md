@@ -21,6 +21,45 @@
  $ git clone https://github.com/LESSERAFIM-Aespa/TripMate.git
 ```
 
+# 프로젝트 셋업(로컬/CI 공통)
+## 필수 API 키 및 파일
+### Naver Search API
+- 필요 값: `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`
+- 로컬 개발:
+```
+// ~/.gradle/gradle.properties 또는 프로젝트 gradle.properties
+NAVER_CLIENT_ID=발급받은_ID
+NAVER_CLIENT_SECRET=발급받은_SECRET
+```
+- GitHub Actions(Secrets):
+  - `NAVER_CLIENT_ID`
+  - `NAVER_CLIENT_SECRET`
+
+### Firebase
+- 필요 파일: `app/google-services.json`
+- 로컬 개발:
+  - Firebase 콘솔에서 `google-services.json` 다운로드 후 `app/`에 위치
+- GitHub Actions(Secrets):
+  - `GOOGLE_SERVICES_JSON` (파일 내용을 base64 또는 raw 문자열로 저장)
+
+### Release Keystore(배포 빌드)
+- GitHub Actions(Secrets):
+  - `KEYSTORE_FILE` (base64 인코딩된 keystore)
+  - `KEYSTORE_PASSWORD`
+  - `KEY_ALIAS`
+  - `KEY_PASSWORD`
+- 로컬 개발(선택):
+  - 환경 변수로 동일 이름 세팅 또는 `KEYSTORE_PATH` 지정
+
+## 빌드 확인
+```
+./gradlew assembleDebug
+```
+
+# 배포 파이프라인
+- dev 대상 PR: 빌드만 수행 (Android Build 워크플로우)
+- dev → main PR: 빌드 + 스토어 내부테스트 배포 (Android Deploy 워크플로우)
+
 # Stacks
 ## Environment
 <img src="https://img.shields.io/badge/androidstudio-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white"><img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white"><img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white">
@@ -105,8 +144,12 @@
 - **Livedata**: LiveData를 활용하여 데이터 관찰 및 업데이트
 - **Colorpicker dialog**: 컬러 선택을 위한 다이얼로그를 제공하는 ColorPicker 라이브러리 사용
 - **Chart**: 그래프 및 차트를 표현
-- **Addmob**: Google AdMob을 통한 광고 플랫폼 사용
+- **Admob**: Google AdMob을 통한 광고 플랫폼 사용
 - **ViewBinding**: 뷰 바인딩 및 레이아웃 관리
+
+# 아키텍처: MVVM + Clean Architecture
+![image](https://github.com/LESSERAFIM-Aespa/TripMate/assets/76927858/f824893e-d247-4a9a-8211-343655cf285b)
+
 
 ## 폴더구조
 ```

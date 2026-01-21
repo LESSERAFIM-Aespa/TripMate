@@ -3,8 +3,11 @@ package kr.sparta.tripmate.ui.viewmodel.budget.budgetcontent
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import kr.sparta.tripmate.data.model.budget.Budget
 import kr.sparta.tripmate.data.model.budget.BudgetCategories
@@ -21,7 +24,9 @@ import kr.sparta.tripmate.domain.usecase.procedurerepository.GetAllProceduresWit
 import kr.sparta.tripmate.domain.usecase.procedurerepository.UpdateProceduresUseCase
 import kr.sparta.tripmate.ui.budget.budgetcontent.BudgetContentType
 
-class BudgetContentViewModel(
+@HiltViewModel
+class BudgetContentViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val insertBudgetUsecase : InsertBudgetsUseCase,
     private val updateBudgetUsecase : UpdateBudgetsUseCase,
     private val insertCategoriesUseCase: InsertCategoriesUseCase,
@@ -32,27 +37,27 @@ class BudgetContentViewModel(
     private val getLastBudgetUseCase: GetLastBudgetUseCase,
     private val getAllProceduresWithCategoryNumUseCase : GetAllProceduresWithCategoryNumUseCase,
     private val getAllProceduresWithCategoryNumsUseCase : GetAllProceduresWithCategoryNumsUseCase,
-
-    private val entryType: BudgetContentType,
-    private val budgetNum: Int = 0,
 ) : ViewModel() {
+    
     companion object{
         private const val TAG = "BudgetContentViewModel"
     }
+
+    private val entryType: String? = savedStateHandle.get<String>("extra_budget_entry_type")
+    private val budgetNum: Int = savedStateHandle.get<Int>("extra_budget_num") ?: 0
 
     private val _budgetCategories: MutableLiveData<List<BudgetCategories>> = MutableLiveData()
     val budgetCategories: LiveData<List<BudgetCategories>>
         get() = _budgetCategories
 
     init {
-        when (entryType) {
-            BudgetContentType.EDIT -> {
+        when (entryType?.uppercase()) {
+            "EDIT" -> {
                 viewModelScope.launch {
                     val value = getBudgetCategoriesUseCase(budgetNum)
                     _budgetCategories.value = value
                 }
             }
-
             else -> {}
         }
     }

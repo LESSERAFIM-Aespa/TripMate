@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,9 +20,9 @@ import kr.sparta.tripmate.domain.model.community.CommunityEntity
 import kr.sparta.tripmate.domain.model.search.SearchBlogEntity
 import kr.sparta.tripmate.ui.community.CommunityDetailActivity
 import kr.sparta.tripmate.ui.scrap.detail.ScrapDetailActivity
-import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapFactory
 import kr.sparta.tripmate.ui.viewmodel.mypage.scrap.MyPageScrapViewModel
 
+@AndroidEntryPoint
 class MyPageScrapFragment : Fragment() {
     companion object {
         fun newInstance(): MyPageScrapFragment = MyPageScrapFragment()
@@ -60,9 +62,7 @@ class MyPageScrapFragment : Fragment() {
             }
         )
     }
-    private val viewModel: MyPageScrapViewModel by viewModels() {
-        MyPageScrapFactory()
-    }
+    private val viewModel: MyPageScrapViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
